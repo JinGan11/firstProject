@@ -8,4 +8,3 @@
 4、安装vue
 
 5、安装vue-cli
- test1
