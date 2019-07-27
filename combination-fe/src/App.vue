@@ -1,6 +1,6 @@
 <template>
   <el-container ref="container" class="view-container">
-    <aside-menu :sysTitleShow="sysTitleShow" :sysTitle="sysTitle" :isCollapse="isCollapse" :data="data"></aside-menu>
+    <aside-menu :isCollapse="isCollapse" :data="data"></aside-menu>
     <div class="contentBox" :class="{'content-collapse':isCollapse}">
       <el-container>
         <el-header style="background-color: #1E90FF;">
@@ -16,7 +16,7 @@
                 @change="switchLog"
                 active-color="#13ce66">
               </el-switch>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
               <el-dropdown @command="handleCommand" style="margin-right: 10px;">
                 <span class="el-dropdown-link" style="display: flex;align-items: center;color: white;line-height: 40px;">
                   guest
@@ -53,13 +53,10 @@
 <script>
   import MenuItem from './components/MenuItem'
   import AsideMenu from './components/AsideMenu'
-  import img from './assets/logo.png'
 
   export default {
     data() {
       return {
-        sysTitle: img,
-        sysTitleShow: img,
         isLog:false,
         isCollapse: false,
         data: [],
