@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/views/Home'
 import Demo from '@/views/Demo'
-
+import EmployeeManagement from '@/views/employeeManagement/EmployeeList'
 
 
 Vue.use(Router)
@@ -20,6 +20,10 @@ export default new Router({
     path: '/demo1',
     name: 'Demo',
     component: Demo
+  },{
+    path:'/employeeManagement',
+    name:'员工管理',
+    component:EmployeeManagement
   }
   ]
 })
