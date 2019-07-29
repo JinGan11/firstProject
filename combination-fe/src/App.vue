@@ -1,5 +1,6 @@
 <template>
-  <el-container ref="container" class="view-container">
+  <div>
+  <el-container ref="container" class="view-container" v-if="loginIn">aaa
     <aside-menu :isCollapse="isCollapse" :data="data"></aside-menu>
     <div class="contentBox" :class="{'content-collapse':isCollapse}">
       <el-container>
@@ -48,24 +49,36 @@
       </el-container>
     </div>
   </el-container>
+
+  <div id="abc" v-else>
+    <login-page @loginSuccess="loginSuccess"></login-page>
+  </div>
+  <!--<div id="app" v-else-if="loginIn=='false'">-->
+    <!--<router-view/>-->
+  <!--</div>-->
+  </div>
 </template>
 
 <script>
   import MenuItem from './components/MenuItem'
   import AsideMenu from './components/AsideMenu'
+  import LoginPage from './views/Login'
 
   export default {
     data() {
       return {
+        loginIn:false,
         isLog:false,
         isCollapse: false,
         data: [],
-        levelList: null
+        levelList: null,
+        name: 'app'
       }
     },
     created() {
       const self = this;
       var log = localStorage.getItem("switchLog");
+      // self.loginIn = localStorage.getItem('isLogin');
       if(log){
         self.isLog = true;
       }
@@ -74,8 +87,11 @@
       });
       self.getBreadcrumb(true);
     },
-    components: {MenuItem, AsideMenu},
+    components: {MenuItem, AsideMenu, LoginPage},
     methods: {
+      loginSuccess(isSuccess){
+        this.loginIn = isSuccess;
+      },
       switchLog(){
         if(this.isLog){
           localStorage.setItem("switchLog",true);
@@ -128,7 +144,9 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
+            self.loginIn = false;
             self.$router.replace("/");
+
             self.$message({
               type:"success",
               message:"退出成功"
@@ -154,5 +172,14 @@
   @import "./css/combination.css";
   .displaySwitch {
     display: none;
+  }
+
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
   }
 </style>
