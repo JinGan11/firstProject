@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <pagehelper.spring.boot.version>1.2.5</pagehelper.spring.boot.version>
     </properties>
 
     <dependencies>
@@ -48,12 +49,12 @@
             <classifier>jdk15</classifier>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper</artifactId>
-            <version>5.1.2</version>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>${pagehelper.spring.boot.version}</version>
         </dependency>
+
 
         <dependency>
             <groupId>mysql</groupId>

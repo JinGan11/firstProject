@@ -20,7 +20,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="是否离职">
-              <el-input style="width:200px;" v-model="form.isLeave"></el-input>
+              <el-input style="width:200px;" v-model="form.isDimission"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -33,21 +33,21 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="上级部门">
-              <el-input style="width:200px;" v-model="form.uperDepartment"></el-input>
+              <el-input style="width:200px;" v-model="form.upperDepartment"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col style="text-align: center">
             <el-form-item>
-              <el-button type="primary" @click="" style="width:100px">查询</el-button>
+              <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
               <el-button type="primary" style="width:100px" @click="">导出</el-button>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
     </div>
-    <div>
+    <div style="margin-bottom: 10px">
       <el-button type="primary" @click="" style="width:70px">新建</el-button>
       <el-button type="primary" @click="" style="width:70px">修改</el-button>
       <el-button type="primary" @click="" style="width:70px">删除</el-button>
@@ -55,17 +55,17 @@
       <el-button type="primary" @click="" style="width:70px">恢复</el-button>
       <el-button type="primary" @click="" style="width:80px">分配部门</el-button>
     </div>
-    <el-table :data="tableData" border @selection-change="handleSelectionChange" >
+    <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
       <el-table-column type="selection" width="35"></el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
-      <el-table-column prop="satff_num" label="员工编号" width="150"></el-table-column>
+      <el-table-column prop="staff_num" label="员工编号" width="150"></el-table-column>
       <el-table-column prop="accountId" label="登陆账号"width="150"></el-table-column>
       <el-table-column prop="staff_name" label="员工姓名" ></el-table-column>
       <el-table-column prop="staff_sex" label="性别" width="80"></el-table-column>
       <el-table-column prop="staff_telephone" label="员工手机" width="200"></el-table-column>
       <el-table-column prop="staff_email" label="员工邮箱" width="200"></el-table-column>
       <el-table-column prop="department_id" label="所属部门" width="150"></el-table-column>
-      <el-table-column prop="uper_department_id" label="上级部门" width="150"></el-table-column>
+      <el-table-column prop="upper_department_no" label="上级部门" width="150"></el-table-column>
       <el-table-column prop="is_dimission" label="是否离职" width="100"></el-table-column>
     </el-table>
     <el-pagination background
@@ -87,28 +87,29 @@
   export default {
     data() {
       return {
+        total: 0,
+        currentPage: 1,
+        pageSize: 10,
         form: {
           employeeNo: '',
           name: '',
           accountNo: '',
-          isLeave: '',
+          isDimission: '',
           department: '',
-          uperDepartment: '',
+          upperDepartment: '',
         },
         tableData: [],
         selection:[],
         id:'',
-        satff_num:'',
+        staff_num:'',
         accountId:'',
         staff_name:'',
         staff_sex:'',
         staff_telephone:'',
         staff_email:'',
         department_id:'',
-        uper_department_id:'',
-        is_dimission:'',
-        currentPage: 1,
-        pageSize: 10,
+        upper_department_no:'',
+        is_dimission:''
       }
     },
     activated() {
@@ -121,14 +122,36 @@
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;
-        this.getTableData(1, val);
+        this.fetchData(1, val);
       },
       handleCurrentChange(val) {
         this.currentPage = val;
-        this.getTableData(val, this.pageSize);
+        this.fetchData(val, this.pageSize);
       },
       handleSelectionChange(val) {
         this.selection = val;
+      },
+      fetchData() { //获取数据
+        var self = this;
+        var param = {
+          page: self.currentPage,
+          limit: self.pageSize,
+          staff_num:self.form.employeeNo,
+          staff_name:self.form.name,
+          accountId:self.form.accountNo,
+          is_dimission: self.form.isDimission,
+          department:self.form.department ,
+          upper_department_no: self.form.upperDepartment,
+        };
+        self.$http.get('employee/querylist.do_', {
+          params: param
+        }).then((result) => {
+          self.tableData = result.page.list;
+          self.total = result.page.totalCount;
+        }).catch(function (error) {
+          commonUtils.Log("employee/querylist.do_:"+error);
+          self.$message.error("获取数据错误");
+        });
       },
     }
   }
