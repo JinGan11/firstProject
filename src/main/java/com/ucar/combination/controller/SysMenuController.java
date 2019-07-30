@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 /**
- * description:
+ * description:导航栏菜单
  * @author qingyu.lan@ucarinc.com
  * @version 1.0
  * @date: 2019-07-25

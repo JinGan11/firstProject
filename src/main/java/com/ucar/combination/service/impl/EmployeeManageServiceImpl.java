@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.EmployeeManageDao;
+import com.ucar.combination.service.EmployeeManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +14,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * description:
- *
+ * description:员工管理列表
  * @author qingyu.lan@ucarinc.com
  * @version 1.0
  * @date: 2019-07-27 17:24:53
  **/
 @Service
-public class EmployeeMenageServiceImpl implements com.ucar.combination.service.EmployeeMenageService {
+public class EmployeeManageServiceImpl implements EmployeeManageService {
     @Autowired
     private EmployeeManageDao employeeManageDao;
 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * description:
+ * description:菜单管理
  * @author qingyu.lan@ucarinc.com
  * @version 1.0
  * @date: 2019-07-25

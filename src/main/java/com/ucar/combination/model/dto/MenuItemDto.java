@@ -2,7 +2,7 @@ package com.ucar.combination.model.dto;
 
 import java.util.List;
 /**
- * description:
+ * description:菜单实体类
  * @author qingyu.lan@ucarinc.com
  * @version 1.0
  * @date: 2019-07-25

@@ -4,7 +4,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 
-import com.ucar.combination.service.EmployeeMenageService;
+import com.ucar.combination.service.EmployeeManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * description:
- *
+ * description:员工管理列表
  * @author qingyu.lan@ucarinc.com
  * @version 1.0
  * @date: 2019-07-27 17:00:21
@@ -25,7 +24,7 @@ import java.util.Map;
 @RequestMapping("/employee")
 public class EmployeeManageController {
     @Autowired
-    private EmployeeMenageService employeeMenageService;
+    private EmployeeManageService employeeManageService;
 
     @ResponseBody
     @RequestMapping("/querylist.do_")
@@ -47,7 +46,7 @@ public class EmployeeManageController {
         params.put("is_dimission", is_dimission);
         params.put("department", department);
         params.put("upper_department_no", upper_department_no);
-        ResultPage resultPage = employeeMenageService.queryList(new QueryParam(params));
+        ResultPage resultPage = employeeManageService.queryList(new QueryParam(params));
         return new Result().ok().put("page", resultPage);
     }
 
