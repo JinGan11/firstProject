@@ -5,7 +5,7 @@ Vue.use(Vuex)
 var store = new Vuex.Store({
   state: {
     menuListState:[
-      {name:'首页',path:'/'}
+      {name:'首页',path:'/index'}
     ]
   },
   mutations: {
