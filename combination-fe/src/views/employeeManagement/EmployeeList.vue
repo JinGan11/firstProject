@@ -56,7 +56,11 @@
       <el-button type="primary" @click="" style="width:80px">分配部门</el-button>
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
-      <el-table-column type="selection" width="35"></el-table-column>
+      <el-table-column label="选择" width="45">
+        <template scope="scope">
+          <el-radio v-model="selection" :label="scope.row.id" ><span width="0px;"></span></el-radio>
+        </template>
+      </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
       <el-table-column prop="staff_num" label="员工编号" width="150"></el-table-column>
       <el-table-column prop="accountId" label="登陆账号"width="150"></el-table-column>
@@ -107,7 +111,7 @@
           upperDepartment: '',
         },
         tableData: [],
-        selection:[],
+        selection:'',
         id:'',
         staff_num:'',
         accountId:'',
@@ -119,7 +123,8 @@
         department_id:'',
         upper_department_no:'',
         is_dimission:'',
-        isDimissionEnum:{}
+        isDimissionEnum:{},
+
       }
     },
     activated() {
