@@ -63,6 +63,7 @@
   import MenuItem from './components/MenuItem'
   import AsideMenu from './components/AsideMenu'
   import LoginPage from './views/Login'
+  import utils from './common/util'
 
   export default {
     data() {
@@ -86,6 +87,12 @@
         self.data = result.menuList;
       });
       self.getBreadcrumb(true);
+    },
+    mounted(){
+      utils.$on('loginSuccess',(loginFlag)=>{
+        console.log(loginFlag);
+        this.loginSuccess(loginFlag);
+      })
     },
     components: {MenuItem, AsideMenu, LoginPage},
     methods: {
