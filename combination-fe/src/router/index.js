@@ -4,7 +4,7 @@ import Home from '@/views/Home'
 import Demo from '@/views/Demo'
 import Login from '@/views/Login'
 import EmployeeManagement from '@/views/employeeManagement/EmployeeList'
-
+import DepartmentManagement from '@/views/departmentManagement/DepartmentList'
 
 Vue.use(Router)
 
@@ -29,6 +29,10 @@ export default new Router({
     path:'/employeeManagement',
     name:'员工管理',
     component:EmployeeManagement
+  },{
+    path:'/departmentManagement',
+    name:'部门管理',
+    component:DepartmentManagement
   }
   ]
 })
