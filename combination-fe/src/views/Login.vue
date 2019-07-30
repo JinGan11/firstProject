@@ -81,9 +81,8 @@
                   self.visible = true
                 } else {
                   // this.$emit("loginSuccess", true);
+                  window.sessionStorage.setItem("loginUsername",self.loginForm.username);
                   utils.$emit("loginSuccess",true)
-                  App.methods.loginSuccess(true)
-                  console.log(11);
                   self.$router.replace("/index")
                 }
               })
