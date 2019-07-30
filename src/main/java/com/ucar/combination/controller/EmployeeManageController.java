@@ -1,5 +1,6 @@
 package com.ucar.combination.controller;
 
+import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 /**
  * description:员工管理列表
+ *
  * @author qingyu.lan@ucarinc.com
  * @version 1.0
  * @date: 2019-07-27 17:00:21
@@ -32,9 +34,9 @@ public class EmployeeManageController {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         String staff_num = request.getParameter("satff_num");
-        String staff_name =  request.getParameter("staff_name");
+        String staff_name = request.getParameter("staff_name");
         String accountId = request.getParameter("accountId");
-        String is_dimission =  request.getParameter("is_dimission");
+        String is_dimission = request.getParameter("is_dimission");
         String department = request.getParameter("department");
         String upper_department_no = request.getParameter("upper_department_no");
         Map<String, Object> params = new HashMap<String, Object>();
@@ -47,9 +49,9 @@ public class EmployeeManageController {
         params.put("department", department);
         params.put("upper_department_no", upper_department_no);
         ResultPage resultPage = employeeManageService.queryList(new QueryParam(params));
-        return new Result().ok().put("page", resultPage);
+        return new Result().ok().put("page", resultPage).put("SexEnum", CommonEnums.toEnumMap(CommonEnums.Sex.values()))
+                .put("isDismissionEnum",CommonEnums.toEnumMap(CommonEnums.isDimission.values()));
     }
-
 
 
 }

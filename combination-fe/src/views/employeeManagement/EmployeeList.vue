@@ -60,13 +60,21 @@
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
       <el-table-column prop="staff_num" label="员工编号" width="150"></el-table-column>
       <el-table-column prop="accountId" label="登陆账号"width="150"></el-table-column>
-      <el-table-column prop="staff_name" label="员工姓名" ></el-table-column>
-      <el-table-column prop="staff_sex" label="性别" width="80"></el-table-column>
-      <el-table-column prop="staff_telephone" label="员工手机" width="200"></el-table-column>
+      <el-table-column prop="staff_name" label="员工姓名" width="120"></el-table-column>
+      <el-table-column prop="staff_sex" label="性别" width="50" style="text-align: center">
+        <template slot-scope="scope">
+          {{SexEnum[scope.row.staff_sex]}}
+        </template>
+      </el-table-column>
+      <el-table-column prop="staff_telephone" label="员工手机" ></el-table-column>
       <el-table-column prop="staff_email" label="员工邮箱" width="200"></el-table-column>
-      <el-table-column prop="department_id" label="所属部门" width="150"></el-table-column>
+      <el-table-column prop="department_id" label="所属部门" width="120"></el-table-column>
       <el-table-column prop="upper_department_no" label="上级部门" width="150"></el-table-column>
-      <el-table-column prop="is_dimission" label="是否离职" width="100"></el-table-column>
+      <el-table-column prop="is_dimission" label="是否离职" width="100">
+        <template slot-scope="scope">
+          {{isDimissionEnum[scope.row.is_dimission]}}
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
@@ -105,11 +113,13 @@
         accountId:'',
         staff_name:'',
         staff_sex:'',
+        SexEnum:{},
         staff_telephone:'',
         staff_email:'',
         department_id:'',
         upper_department_no:'',
-        is_dimission:''
+        is_dimission:'',
+        isDimissionEnum:{}
       }
     },
     activated() {
@@ -148,6 +158,8 @@
         }).then((result) => {
           self.tableData = result.page.list;
           self.total = result.page.totalCount;
+          self.SexEnum = result.SexEnum;
+          self.isDimissionEnum = result.isDismissionEnum;
         }).catch(function (error) {
           commonUtils.Log("employee/querylist.do_:"+error);
           self.$message.error("获取数据错误");

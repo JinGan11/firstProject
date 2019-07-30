@@ -23,7 +23,7 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/login")
+    @RequestMapping("/login.do_")
     public Result login(@RequestBody(required = false) LoginUser loginUser, HttpSession session) {
         session.setAttribute("username", loginUser.getAccountName());
         return userService.login(loginUser);

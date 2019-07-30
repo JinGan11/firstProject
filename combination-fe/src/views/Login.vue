@@ -73,7 +73,7 @@
               accountName: self.loginForm.username,
               accountPassword: self.loginForm.password
             }
-            self.$http.post('login/login', param)
+            self.$http.post('login/login.do_', param)
               .then(result => {
                 console.log(result.code);
                 if (result.code === 300) {
