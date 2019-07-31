@@ -1,6 +1,10 @@
 package com.ucar.combination.common;
 
+import net.sf.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,6 +54,57 @@ public abstract class CommonEnums {
                 return null;
             }
             for (Sex item : values()) {
+                if (item.getI() == i) {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        public static String i2n(Integer i, String def) {
+            IEnum e = valueOf(i);
+            if (e == null) {
+                return def;
+            }
+            return e.getN();
+        }
+    }
+
+
+    /**
+     * description:数据权限类型枚举
+     * @author junqiang.zhang@ucarinc.com
+     * @version 1.0
+     * @date: 2019-07-30
+     **/
+    public static enum Permission implements IEnum{
+        ALL(1, "全部"),
+        RECURSION(2, "递归"),
+        DEPARMENT(3, "本部门"),
+        SELF(4, "本人"),
+        CHOSSE(5, "手动选择");
+        private final int i;
+        private final String n;
+        Permission(int i, String n) {
+            this.i = i;
+            this.n = n;
+        }
+
+        @Override
+        public String getN() {
+            return n;
+        }
+
+        @Override
+        public int getI() {
+            return i;
+        }
+
+        public static Permission valueOf(Integer i) {
+            if (i == null) {
+                return null;
+            }
+            for (Permission item : values()) {
                 if (item.getI() == i) {
                     return item;
                 }
@@ -120,6 +175,17 @@ public abstract class CommonEnums {
             res.put(item.getI(), item.getN());
         }
         return res;
+    }
+
+    public static List<JSONObject> toJsonList(IEnum[] enumArr) {
+        List<JSONObject> list = new ArrayList<JSONObject>();
+        for (IEnum item : enumArr) {
+            JSONObject js = new JSONObject();
+            js.put("value", item.getI());
+            js.put("label", item.getN());
+            list.add(js);
+        }
+        return list;
     }
 
 }

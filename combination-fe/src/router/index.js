@@ -10,6 +10,7 @@ import RoleApplyApproval from '@/views/roleManagement/RoleApplyApproval'
 import PwdReset from '@/views/personalAccountManagement/pwdReset'
 import AccountInfo from '@/views/personalAccountManagement/AccountInfo'
 import DepartmentSearch from '@/views/search/DepartmentSearch'
+import AccountManagement from '@/views/accountManagement/AccountList'
 
 Vue.use(Router)
 
@@ -58,6 +59,10 @@ export default new Router({
     path:'/search/departSearch',
     name:'部门查询',
     component:DepartmentSearch,
-  },
+  },{
+    path:'/accountManagement',
+    name:'账户查询',
+    component:AccountManagement,
+  }
   ]
 })
