@@ -33,11 +33,11 @@ public class EmployeeManageController {
     public Result list(HttpServletRequest request) {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
-        String staff_num = request.getParameter("satff_num");
-        String staff_name = request.getParameter("staff_name");
+        String staff_num = request.getParameter("staffNum");
+        String staff_name = request.getParameter("staffName");
         String accountId = request.getParameter("accountId");
-        String is_dimission = request.getParameter("is_dimission");
-        String department = request.getParameter("department");
+        String is_dimission = request.getParameter("isDimission");
+        String department = request.getParameter("departmentId");
         String upper_department_no = request.getParameter("upper_department_no");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("page", page);
@@ -52,6 +52,4 @@ public class EmployeeManageController {
         return new Result().ok().put("page", resultPage).put("SexEnum", CommonEnums.toEnumMap(CommonEnums.Sex.values()))
                 .put("isDismissionEnum",CommonEnums.toEnumMap(CommonEnums.isDimission.values()));
     }
-
-
 }

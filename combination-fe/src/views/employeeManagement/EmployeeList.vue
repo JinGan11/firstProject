@@ -5,17 +5,17 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="员工编号">
-              <el-input style="width:200px;" v-model="form.employeeNo"></el-input>
+              <el-input style="width:200px;" v-model="form.staffNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="员工姓名">
-              <el-input style="width:200px;" v-model="form.name"></el-input>
+              <el-input style="width:200px;" v-model="form.staffName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="登陆账号">
-              <el-input style="width:200px;" v-model="form.accountNo"></el-input>
+              <el-input style="width:200px;" v-model="form.accountId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -28,12 +28,12 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="所属部门">
-              <el-input style="width:200px;" v-model="form.department"></el-input>
+              <el-input style="width:200px;" v-model="form.departmentId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="上级部门">
-              <el-input style="width:200px;" v-model="form.upperDepartment"></el-input>
+              <el-input style="width:200px;" v-model="form.upperDepartmentNo"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -62,21 +62,21 @@
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
-      <el-table-column prop="staff_num" label="员工编号" width="150"></el-table-column>
+      <el-table-column prop="staffNum" label="员工编号" width="150"></el-table-column>
       <el-table-column prop="accountId" label="登陆账号"width="150"></el-table-column>
-      <el-table-column prop="staff_name" label="员工姓名" width="120"></el-table-column>
-      <el-table-column prop="staff_sex" label="性别" width="50" style="text-align: center">
+      <el-table-column prop="staffName" label="员工姓名" width="120"></el-table-column>
+      <el-table-column prop="staffSex" label="性别" width="50" style="text-align: center">
         <template slot-scope="scope">
-          {{SexEnum[scope.row.staff_sex]}}
+          {{SexEnum[scope.row.staffSex]}}
         </template>
       </el-table-column>
-      <el-table-column prop="staff_telephone" label="员工手机" ></el-table-column>
-      <el-table-column prop="staff_email" label="员工邮箱" width="200"></el-table-column>
-      <el-table-column prop="department_id" label="所属部门" width="120"></el-table-column>
-      <el-table-column prop="upper_department_no" label="上级部门" width="150"></el-table-column>
-      <el-table-column prop="is_dimission" label="是否离职" width="100">
+      <el-table-column prop="staffTelephone" label="员工手机" ></el-table-column>
+      <el-table-column prop="staffEmail" label="员工邮箱" width="200"></el-table-column>
+      <el-table-column prop="departmentId" label="所属部门" width="120"></el-table-column>
+      <el-table-column prop="upperDepartmentNo" label="上级部门" width="150"></el-table-column>
+      <el-table-column prop="isDimission" label="是否离职" width="100">
         <template slot-scope="scope">
-          {{isDimissionEnum[scope.row.is_dimission]}}
+          {{isDimissionEnum[scope.row.isDimission]}}
         </template>
       </el-table-column>
     </el-table>
@@ -120,33 +120,32 @@
         currentPage: 1,
         pageSize: 10,
         form: {
-          employeeNo: '',
-          name: '',
-          accountNo: '',
+          staffNum: '',
+          staffName: '',
+          accountId: '',
           isDimission: '',
-          department: '',
-          upperDepartment: '',
+          departmentId: '',
+          upperDepartmentNo: '',
         },
         tableData: [],
         selection:'',
         id:'',
-        staff_num:'',
+        staffName:'',
         accountId:'',
         staff_name:'',
-        staff_sex:'',
+        staffSex:'',
         SexEnum:{},
-        staff_telephone:'',
-        staff_email:'',
-        department_id:'',
-        upper_department_no:'',
-        is_dimission:'',
+        staffTelephone:'',
+        staffEmail:'',
+        departmentId:'',
+        upperDepartmentNo:'',
+        isDimission:'',
         isDimissionEnum:{},
         title:'模板',
         dialogVisible:false,
         templateGroupName:'测试',
         description:'测试',
-
-      }
+    }
     },
     activated() {
       commonUtils.Log("页面激活");
@@ -172,17 +171,18 @@
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
-          staff_num:self.form.employeeNo,
-          staff_name:self.form.name,
-          accountId:self.form.accountNo,
-          is_dimission: self.form.isDimission,
-          department:self.form.department ,
-          upper_department_no: self.form.upperDepartment,
+          staffNum:self.form.staffNum,
+          staffName:self.form.staffName,
+          departmentId:self.form.departmentId,
+          isDimission: self.form.isDimission,
+          accountId:self.form.accountId ,
+          upper_department_no: self.form.upperDepartmentNo,
         };
         self.$http.get('employee/querylist.do_', {
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
+          console.log(self.tableData);
           self.total = result.page.totalCount;
           self.SexEnum = result.SexEnum;
           self.isDimissionEnum = result.isDismissionEnum;

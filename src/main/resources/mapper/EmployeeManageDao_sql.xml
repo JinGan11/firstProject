@@ -2,21 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ucar.combination.dao.EmployeeManageDao">
-    <select id="queryList" resultType="map">
+    <select id="queryList" resultType="com.ucar.combination.model.dto.StaffDto">
         SELECT
-        t1.id,
-        t1.staff_num,
-        t3.id accountId,
-        t1.staff_name,
-        t1.staff_sex,
-        t1.staff_telephone,
-        t1.staff_email,
-        t1.department_id,
-        t1.is_dimission ,
-        t2.upper_department_no
+        t1.id                  id,
+        t1.staff_num           staffNum,
+        t3.id                  accountId,
+        t1.staff_name          staffName,
+        t1.staff_sex           staffSex,
+        t1.staff_telephone     staffTelephone,
+        t1.staff_email         staffEmail,
+        t1.department_id       departmentId,
+        t1.is_dimission        isDimission,
+        t2.upper_department_no  upperDepartmentNo
         FROM t_staff t1,t_department t2,t_account t3
         where t1.department_id = t2.id
         and t1.id = t3.staff_id
+        <if test="satff_num != null and satff_num.trim() != ''">
+            AND t1.staff_num =#{satff_num}
+        </if>
+        <if test="staff_name != null and staff_name.trim() != ''">
+            AND t1.staff_name =#{staff_name}
+        </if>
+        <if test="accountId != null and accountId.trim() != ''">
+            AND t3.id =#{accountId}
+        </if>
+        <if test="is_dimission != null and is_dimission.trim() != ''">
+            AND t1.is_dimission =#{is_dimission}
+        </if>
+        <if test="department != null and department.trim() != ''">
+            AND t2.upper_department_no =#{upper_department_no}
+        </if>
         ORDER BY staff_num
     </select>
 </mapper>

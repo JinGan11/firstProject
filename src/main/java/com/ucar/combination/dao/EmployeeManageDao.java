@@ -1,5 +1,7 @@
 package com.ucar.combination.dao;
 
+import com.ucar.combination.model.dto.StaffDto;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,5 +18,5 @@ public interface EmployeeManageDao {
      * @param map
      * @return
      */
-    List<Map<String, Object>> queryList(Map<String, Object> map);
+    List<StaffDto> queryList(Map<String, Object> map);
 }
