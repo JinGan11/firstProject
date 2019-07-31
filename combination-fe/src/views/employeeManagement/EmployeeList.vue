@@ -20,8 +20,16 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="是否离职">
-              <el-input style="width:200px;" v-model="form.isDimission"></el-input>
+              <el-select v-model="form.isDimission" clearable  style="width:200px;" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
             </el-form-item>
+
           </el-col>
         </el-row>
 
@@ -48,7 +56,7 @@
       </el-form>
     </div>
     <div style="margin-bottom: 10px">
-      <el-button type="primary" @click="add" style="width:70px">新建</el-button>
+      <el-button type="primary" @click="" style="width:70px">新建</el-button>
       <el-button type="primary" @click="" style="width:70px">修改</el-button>
       <el-button type="primary" @click="" style="width:70px">删除</el-button>
       <el-button type="primary" @click="" style="width:70px">离职</el-button>
@@ -89,23 +97,6 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
-
-    <el-dialog :title='title' :visible.sync="dialogVisible" :close-on-click-modal="false" width="600px">
-      <div class="dialog-main">
-        <div class="project-name">
-          <span class="dialog-span">分组名称:</span>
-          <el-input style="width: 500px;" v-model="templateGroupName" placeholder="输入分组名称"></el-input>
-        </div>
-        <div class="description">
-          <span class="dialog-span">描述:</span>
-          <el-input type="textarea" :rows="5" style="width: 500px;" resize="none" v-model="description" placeholder="请输入描述信息"></el-input>
-        </div>
-      </div>
-      <template slot="footer">
-        <el-button type="primary" @click="save">保 存</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </template>
-    </el-dialog>
   </home>
 
 </template>
@@ -141,10 +132,13 @@
         upperDepartmentNo:'',
         isDimission:'',
         isDimissionEnum:{},
-        title:'模板',
-        dialogVisible:false,
-        templateGroupName:'测试',
-        description:'测试',
+        options: [{
+          value: '0',
+          label: '在职'
+        }, {
+          value: '1',
+          label: '离职'
+        }]
     }
     },
     activated() {
@@ -191,15 +185,6 @@
           self.$message.error("获取数据错误");
         });
       },
-      save(){
-        this.dialogVisible=false;
-      },
-      cancel(){
-        this.dialogVisible=false;
-      },
-      add(){
-        this.dialogVisible=true;
-      }
     }
   }
 </script>
