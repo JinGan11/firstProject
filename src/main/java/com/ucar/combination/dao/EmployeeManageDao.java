@@ -21,8 +21,14 @@ public interface EmployeeManageDao {
      * @param map
      * @return
      */
-    List<Map<String, Object>> queryList(Map<String, Object> map);
-
-    List<Staff> qryStaffById(User user);
     List<StaffDto> queryList(Map<String, Object> map);
+
+    /**
+     * description: 通过id查询员工信息
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/7/31 16:42
+     * @params user 账户中的员工ID
+     * @return 员工信息
+     */
+    List<Staff> qryStaffById(User user);
 }
