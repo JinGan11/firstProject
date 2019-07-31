@@ -2,25 +2,25 @@
   <div>
     <el-form>
       <el-form-item label="员工编号">
-        <span>{{userInfo.accountId}}</span>
+        <span>{{StaffInfo.staffNum}}</span>
       </el-form-item>
       <el-form-item label="姓名">
-        <span>{{userInfo.accountName}}</span>
+        <span>{{StaffInfo.staffName}}</span>
       </el-form-item>
       <el-form-item label="性别">
-        <span>{{userInfo.sex}}</span>
+        <span>{{StaffInfo.staffSex}}</span>
       </el-form-item>
       <el-form-item label="手机号">
-        <span>{{userInfo.userName}}</span>
+        <span>{{StaffInfo.staffTelephone}}</span>
       </el-form-item>
       <el-form-item label="邮箱">
-        <span>{{userInfo.userName}}</span>
+        <span>{{StaffInfo.staffEmail}}</span>
       </el-form-item>
       <el-form-item label="归属部门">
-        <span>{{userInfo.userName}}</span>
+        <span>{{StaffInfo.departmentName}}</span>
       </el-form-item>
       <el-form-item label="是否离职">
-        <span>{{userInfo.userName}}</span>
+        <span>{{StaffInfo.isDimission}}</span>
       </el-form-item>
 
     </el-form>
@@ -31,27 +31,35 @@
   export default {
      data() {
        return {
-         userInfo: {}
+         StaffInfo: {}
        }
      },
-    mounted: {
-       // this.getUserInfo()
+    created() {
+      this.getUserInfo()
+    },
+    mounted() {
     },
     methods: {
        getUserInfo () {
-         const self = this
-         self.$http.post('user/getUserInfo', param)
+         const self = this;
+         var param = {
+           accountName: window.sessionStorage.getItem("loginUsername")
+         }
+         self.$http.post('user/getEmpInfo', param)
            .then(result => {
              if (result.code === 200) {
-               self.userInfo = result.list[0]
+               console.log(result);
+               self.StaffInfo = result.list[0]
              } else {
-               alert("密码修改失败！")
-               // self.$router.replace("/index")
+               self.$alert("查询失败，请稍后再试！", '消息提醒', {
+                 confirmButtonText: '确定',
+               });
              }
            })
-           .catch(result => {
-             alert("请联系管理员！")
-           })
+           .catch(function (error) {
+             commonUtils.Log("user/updatePwd:" + error);
+             self.$message.error("系统故障，请联系管理员！");
+           });
        }
     }
   }

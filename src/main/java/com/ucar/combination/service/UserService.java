@@ -9,5 +9,5 @@ public interface UserService {
 
     ReturnResult login(LoginUser loginUser);
     ReturnResult updatePassword(User user);
-    ReturnResult getUserInfo(User user);
+    ReturnResult getEmpInfo(User user);
 }

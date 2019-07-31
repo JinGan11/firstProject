@@ -2,15 +2,18 @@ package com.ucar.combination.service.impl;
 
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ReturnResult;
+import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.dao.UserDao;
 import com.ucar.combination.model.HisPassword;
 import com.ucar.combination.model.LoginUser;
+import com.ucar.combination.model.Staff;
 import com.ucar.combination.model.User;
 import com.ucar.combination.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private EmployeeManageDao employeeManageDao;
 
     @Override
     public ReturnResult login(LoginUser loginUser) {
@@ -112,12 +118,22 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    /**
+     * description: 获取员工信息
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/7/31 16:11
+     * @params user 用户的账户
+     * @return 员工信息结果集
+     */
     @Override
-    public ReturnResult getUserInfo(User user) {
+    public ReturnResult getEmpInfo(User user) {
         ReturnResult result = new ReturnResult();
         result.setCode(300);
         List<User> list = userDao.qryAccountByAccountName(user);
+        List<Staff> staffList = new ArrayList<>();
         if (list.size() != 0) {
+            staffList = employeeManageDao.qryStaffById(list.get(0));
+            result.setList(staffList);
             result.setCode(200);
         }
         return result;

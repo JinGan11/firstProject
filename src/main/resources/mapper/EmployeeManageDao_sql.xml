@@ -34,4 +34,20 @@
         </if>
         ORDER BY staff_num
     </select>
+
+    <select id="qryStaffById" parameterType="com.ucar.combination.model.User" resultType="com.ucar.combination.model.Staff">
+        SELECT
+        ts.id,
+        ts.staff_num,
+        ts.staff_name,
+        ts.staff_sex,
+        ts.staff_telephone,
+        ts.staff_email,
+        ts.department_id,
+        ts.is_dimission ,
+        td.department_name
+        FROM t_staff ts,t_department td
+        where ts.department_id = td.id
+        and ts.id = #{staffId}
+    </select>
 </mapper>

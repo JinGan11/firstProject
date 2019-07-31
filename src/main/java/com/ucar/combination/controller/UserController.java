@@ -27,9 +27,9 @@ public class UserController {
         return result;
     }
 
-    @RequestMapping("getUserInfo")
-    public ReturnResult getUserInfo(User user) {
-        ReturnResult result = userService.getUserInfo(user);
+    @RequestMapping("/getEmpInfo")
+    public ReturnResult getEmpInfo(@RequestBody User user) {
+        ReturnResult result = userService.getEmpInfo(user);
         return result;
     }
 
