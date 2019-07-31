@@ -92,9 +92,9 @@
       self.getBreadcrumb(true);
     },
     mounted() {
-      utils.$on('loginSuccess', (loginFlag) => {
+      utils.$on('loginSuccess', (loginFlag,username) => {
         console.log(loginFlag);
-        this.loginSuccess(loginFlag);
+        this.loginSuccess(loginFlag,username);
       })
       if (window.sessionStorage.getItem("loginUsername") === null) {
         this.loginIn = false
@@ -104,10 +104,11 @@
     },
     components: {MenuItem, AsideMenu, LoginPage},
     methods: {
-      loginSuccess(isSuccess) {
+      loginSuccess(isSuccess,username) {
         const self = this;
         self.loginIn = isSuccess;
         console.log(self.loginUserName + "1")
+        window.sessionStorage.setItem("loginUsername",username);
         self.loginUserName = window.sessionStorage.getItem("loginUsername")
         console.log(window.sessionStorage.getItem("loginUsername") + "2")
       },
@@ -167,7 +168,6 @@
             window.sessionStorage.removeItem("loginUsername");
             self.loginUserName = window.sessionStorage.getItem("loginUsername");
             self.$router.replace("/");
-
             self.$message({
               type: "success",
               message: "退出成功"
@@ -179,6 +179,11 @@
             });
           });
         }
+      },
+      clearLoginSession: function() {
+        self.loginIn = false;
+        window.sessionStorage.removeItem("loginUsername");
+        self.loginUserName = window.sessionStorage.getItem("loginUsername");
       },
       getCookie: function() {
         if (document.cookie.length > 0) {

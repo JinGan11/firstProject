@@ -7,6 +7,8 @@ import EmployeeManagement from '@/views/employeeManagement/EmployeeList'
 import DepartmentManagement from '@/views/departmentManagement/DepartmentList'
 import RoleApplyManage from '@/views/roleManagement/RoleApplyManage'
 import RoleApplyApproval from '@/views/roleManagement/RoleApplyApproval'
+import PwdReset from '@/views/personalAccountManagement/pwdReset'
+import AccountInfo from '@/views/personalAccountManagement/AccountInfo'
 
 Vue.use(Router)
 
@@ -43,6 +45,15 @@ export default new Router({
     path:'/roleManagement/approval',
     name:'角色申请审核',
     component:RoleApplyApproval
+  },{
+    path:'/personalAccountManage/pwdReset',
+    name:'密码重置',
+    component:PwdReset
+  },{
+    path:'/personalAccountManage/AccountInfo',
+    name:'个人信息',
+    component:AccountInfo
   }
+
   ]
 })

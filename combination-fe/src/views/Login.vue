@@ -75,20 +75,22 @@
             }
             self.$http.post('login/login.do_', param)
               .then(result => {
-                console.log(result.code);
-                if (result.code === 300) {
-                  // self.loginMsg = result.msg;
+                if (result.code === 200) {
+                  // this.$emit("loginSuccess", true);
+                  // window.sessionStorage.setItem("loginUsername",self.loginForm.username);
+                  utils.$emit("loginSuccess",true,self.loginForm.username);
+                  self.$router.replace("/index");
                   self.visible = true
                 } else {
-                  // this.$emit("loginSuccess", true);
-                  window.sessionStorage.setItem("loginUsername",self.loginForm.username);
-                  utils.$emit("loginSuccess",true)
-                  self.$router.replace("/index")
+                  self.$alert("账号或者密码错误", '消息提醒', {
+                    confirmButtonText: '确定',
+                  });
                 }
               })
-              .catch(result => {
-                alert("请联系管理员！")
-              })
+              .catch(function (error) {
+                commonUtils.Log("user/updatePwd:" + error);
+                self.$message.error("登陆错误，请联系管理员！");
+              });
           } else {
             console.log('error submit!!');
             return false;
