@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ucar.combination.dao.RoleApplyManageDao">
+    <select id="queryList" resultType="map">
+        select t1.apply_id role_apply_id,
+        t1.role_id,
+        t2.`name` role_name,
+        t2.approver_emp,
+        t2.business_line,
+        t3.account_name apply_account_name,
+        t4.staff_num apply_staff_num,
+        t4.staff_name apply_staff_name,
+        t5.department_name apply_department_name,
+        t1.apply_time ,
+        t1.`status`,
+        t1.modify_emp,
+        t1.modify_time,
+        t1.reject_reason
+        from t_role_apply t1,t_role_info t2,t_account t3,t_staff t4 ,t_department t5
+        where t1.role_id=t2.id and t1.apply_id=t4.id
+        and t3.staff_id=t4.id and t5.id=t4.department_id
+
+
+    </select>
+
+</mapper>

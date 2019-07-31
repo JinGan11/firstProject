@@ -5,6 +5,7 @@ import Demo from '@/views/Demo'
 import Login from '@/views/Login'
 import EmployeeManagement from '@/views/employeeManagement/EmployeeList'
 import DepartmentManagement from '@/views/departmentManagement/DepartmentList'
+import RoleApplyManage from '@/views/roleManagement/RoleApplyManage'
 
 Vue.use(Router)
 
@@ -29,10 +30,14 @@ export default new Router({
     path:'/employeeManagement',
     name:'员工管理',
     component:EmployeeManagement
+  }, {
+    path: '/departmentManagement',
+    name: '部门管理',
+    component: DepartmentManagement
   },{
-    path:'/departmentManagement',
-    name:'部门管理',
-    component:DepartmentManagement
+    path:'/roleManagement/apply',
+    name:'角色申请',
+    component:RoleApplyManage
   }
   ]
 })
