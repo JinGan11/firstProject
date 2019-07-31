@@ -1,6 +1,5 @@
 package com.ucar.combination.service.impl;
 
-import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ReturnResult;
 import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.dao.UserDao;
@@ -31,6 +30,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private EmployeeManageDao employeeManageDao;
 
+    /**
+     * description: 登陆
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/7/31 16:48
+     * @params loginUser 用户登陆信息
+     * @return 登陆结果
+     */
     @Override
     public ReturnResult login(LoginUser loginUser) {
         ReturnResult result = new ReturnResult();

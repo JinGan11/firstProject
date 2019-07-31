@@ -21,12 +21,26 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * description: 修改密码
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/7/31 16:52
+     * @params user 存储前台传入的用户信息以及要修改的密码
+     * @return 结果集
+     */
     @RequestMapping("/updatePassword")
     public ReturnResult updatePassword(@RequestBody User user) {
         ReturnResult result = userService.updatePassword(user);
         return result;
     }
 
+    /**
+     * description: 获得员工的具体信息
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/7/31 16:53
+     * @params user 存储员工账户名
+     * @return 返回结果集
+     */
     @RequestMapping("/getEmpInfo")
     public ReturnResult getEmpInfo(@RequestBody User user) {
         ReturnResult result = userService.getEmpInfo(user);
