@@ -51,7 +51,7 @@ export default new Router({
     component:PwdReset
   },{
     path:'/personalAccountManage/AccountInfo',
-    name:'个人信息',
+    name:'个人账户信息',
     component:AccountInfo
   }
 

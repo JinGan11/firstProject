@@ -2,16 +2,6 @@
   <el-form :model="loginForm" status-icon :rules="rules" ref="loginForm" class="login-container" label-position="left"
            label-width="0px" v-loading="loading">
     <h3 class="login_title">系统登录</h3>
-    <el-popover
-      placement="top"
-      width="260"
-      v-model="visible">
-      <div style="text-align: center; margin: 0">
-        <h3 style="padding-bottom: 10px">用户名或密码错误！</h3>
-        <el-button size="mini" type="text" @click="visible = false" style="margin-right: 25px;font-size: 18px">取消</el-button>
-        <el-button type="primary" size="mini" @click="visible = false" style="font-size: 18px">确定</el-button>
-      </div>
-    </el-popover>
     <el-form-item prop="username">
       <el-input type="text" v-model="loginForm.username"
                 autocomplete="off" placeholder="账号"></el-input>
@@ -80,7 +70,7 @@
                   // window.sessionStorage.setItem("loginUsername",self.loginForm.username);
                   utils.$emit("loginSuccess",true,self.loginForm.username);
                   self.$router.replace("/index");
-                  self.visible = true
+                  // self.visible = true
                 } else {
                   self.$alert("账号或者密码错误", '消息提醒', {
                     confirmButtonText: '确定',
