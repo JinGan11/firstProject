@@ -41,6 +41,8 @@ public class AccountManagerController {
         params.put("limit", limit);
         ResultPage resultPage = accountManagerService.queryList(new QueryParam(params));
         return new Result().ok().put("page", resultPage)
-                .put("permissionList",CommonEnums.toJsonList(CommonEnums.Permission.values()));
+                .put("permissionList",CommonEnums.toJsonList(CommonEnums.Permission.values()))
+                .put("permissionEnum",CommonEnums.toEnumMap(CommonEnums.Permission.values()))
+                .put("accountStatusEnum",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()));
     }
 }

@@ -12,6 +12,8 @@
         <result column="permissions" property="premissions"/>
         <result column="account_secret_email" property="secretEmail"/>
         <result column="create_emp" property="creatEmpId"/>
+        <result column="staff_num" property="staffNum"/>
+        <result column="department_name" property="department"/>
         <result column="create_emp_name" property="creatEmpName"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_emp" property="modifyEmpId"/>
@@ -23,26 +25,31 @@
 
     <select id="queryList" resultMap="account">
         SELECT t1.id,
-        account_name,
-        account_password,
-        staff_id,
-        t2.staff_name staff_name,
-        permissions,
-        account_secret_email,
-        t1.create_emp,
-        t3.staff_name create_emp_name,
-        t1.create_time,
-        t1.modify_emp,
-        t4.staff_name modify_emp_name,
-        t1.modify_time,
-        account_state,
-        account_remark
+               account_name,
+               account_password,
+               t1.staff_id,
+               t2.staff_name,
+               t2.staff_num,
+               t5.department_name,
+               permissions,
+               account_secret_email,
+               t1.create_emp,
+               t3.staff_name create_emp_name,
+               t1.create_time,
+               t1.modify_emp,
+               t4.staff_name modify_emp_name,
+               t1.modify_time,
+               account_state,
+               account_remark
         FROM t_account t1
-        LEFT JOIN t_staff t2 ON staff_id = t2.id
-        LEFT JOIN t_staff t3
-        ON t1.create_emp = t3.id
-        LEFT JOIN t_staff t4
-        ON t1.modify_emp = t4.id
+                 LEFT JOIN t_staff t2
+                           ON staff_id = t2.id
+                 LEFT JOIN t_staff t3
+                           ON t1.create_emp = t3.id
+                 LEFT JOIN t_staff t4
+                           ON t1.modify_emp = t4.id
+                 LEFT JOIN t_department t5
+                           ON t2.department_id = t5.id
         ORDER BY id
     </select>
 </mapper>

@@ -74,11 +74,19 @@
       <el-table-column type="selection" width="35"></el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
       <el-table-column prop="name" label="登陆账号" style="width:auto"></el-table-column>
-      <el-table-column prop="staffId" label="员工编号" style="width:auto"></el-table-column>
+      <el-table-column prop="staffNum" label="员工编号" style="width:auto"></el-table-column>
       <el-table-column prop="staffName" label="员工姓名" style="width:auto"></el-table-column>
       <el-table-column prop="department" label="所属部门" style="width:auto"></el-table-column>
-      <el-table-column prop="premissions" label="数据权限类型" style="width:auto"></el-table-column>
-      <el-table-column prop="status" label="账号状态" style="width:auto"></el-table-column>
+      <el-table-column prop="premissions" label="数据权限类型" style="width:auto">
+        <template slot-scope="scope">
+          {{form.dataTypeEnum[scope.row.premissions]}}
+        </template>
+      </el-table-column>
+      <el-table-column prop="status" label="账号状态" style="width:auto">
+        <template slot-scope="scope">
+          {{form.accountStatusEnum[scope.row.status]}}
+        </template>
+      </el-table-column>
       <el-table-column prop="modifyTime" label="操作时间" style="width:auto"></el-table-column>
       <el-table-column prop="modifyEmpName" label="操作人" style="width:auto"></el-table-column>
     </el-table>
@@ -109,7 +117,8 @@
           employeeNo: '',
           name: '',
           dataTypeList:[],
-          dataTypeList1:[{}],
+          dataTypeEnum:{},
+          accountStatusEnum:{},
           dataType: '',
           department: '',
           isRelEmployee: '',
@@ -156,6 +165,9 @@
       self.$http.get('account/querylist.do_').then((result) => {
         self.tableData = result.page.list;
         self.form.dataTypeList = result.permissionList;
+        self.form.dataTypeEnum = result.permissionEnum;
+        self.form.accountStatusEnum = result.accountStatusEnum;
+
       });
     },
   }

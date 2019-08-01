@@ -169,6 +169,55 @@ public abstract class CommonEnums {
         }
     }
 
+    /**
+     * description:账户状态枚举
+     * @author qingyu.lan@ucarinc.com
+     * @version 1.0
+     * @date: 2019-07-30
+     **/
+    public static enum AccountStatusEnum implements IEnum {
+        NORMAl(1, "正常"),
+        FRUZEN(2, "冻结"),
+        INVALID(3, "无效");
+        private final int i;
+        private final String n;
+
+        AccountStatusEnum(int i, String n) {
+            this.i = i;
+            this.n = n;
+        }
+
+        @Override
+        public String getN() {
+            return n;
+        }
+
+        @Override
+        public int getI() {
+            return i;
+        }
+
+        public static AccountStatusEnum valueOf(Integer i) {
+            if (i == null) {
+                return null;
+            }
+            for (AccountStatusEnum item : values()) {
+                if (item.getI() == i) {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        public static String i2n(Integer i, String def) {
+            IEnum e = valueOf(i);
+            if (e == null) {
+                return def;
+            }
+            return e.getN();
+        }
+    }
+
     public static Map<Integer, String> toEnumMap(IEnum[] enumArr) {
         Map<Integer, String> res = new HashMap<>();
         for (IEnum item : enumArr) {

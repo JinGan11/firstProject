@@ -21,6 +21,10 @@ public class Account {
     private BigInteger staffId;
     //员工名
     private String staffName;
+    //员工编号
+    private String staffNum;
+    //所属部门
+    private String department;
     //数据权限类型
     private int premissions;
     //密保邮箱
@@ -161,5 +165,21 @@ public class Account {
 
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public String getStaffNum() {
+        return staffNum;
+    }
+
+    public void setStaffNum(String staffNum) {
+        this.staffNum = staffNum;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 }
