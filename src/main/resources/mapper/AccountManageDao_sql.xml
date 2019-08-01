@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ucar.combination.dao.AccountManageDao">
+
+    <resultMap type="com.ucar.combination.model.Account" id="account">
+        <result column="id" property="id"/>
+        <result column="account_name" property="name"/>
+        <result column="account_password" property="password"/>
+        <result column="staff_id" property="staffId"/>
+        <result column="staff_name" property="staffName"/>
+        <result column="permissions" property="premissions"/>
+        <result column="account_secret_email" property="secretEmail"/>
+        <result column="create_emp" property="creatEmpId"/>
+        <result column="create_emp_name" property="creatEmpName"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_emp" property="modifyEmpId"/>
+        <result column="modify_emp_name" property="modifyEmpName"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="account_state" property="status"/>
+        <result column="account_remark" property="remark"/>
+    </resultMap>
+
+    <select id="queryList" resultMap="account">
+        SELECT t1.id,
+        account_name,
+        account_password,
+        staff_id,
+        t2.staff_name staff_name,
+        permissions,
+        account_secret_email,
+        t1.create_emp,
+        t3.staff_name create_emp_name,
+        t1.create_time,
+        t1.modify_emp,
+        t4.staff_name modify_emp_name,
+        t1.modify_time,
+        account_state,
+        account_remark
+        FROM t_account t1
+        LEFT JOIN t_staff t2 ON staff_id = t2.id
+        LEFT JOIN t_staff t3
+        ON t1.create_emp = t3.id
+        LEFT JOIN t_staff t4
+        ON t1.modify_emp = t4.id
+        ORDER BY id
+    </select>
+</mapper>
+
+

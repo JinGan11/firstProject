@@ -1,12 +1,17 @@
 package com.ucar.combination.controller;
 
 import com.ucar.combination.common.CommonEnums;
+import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
+import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.Account;
+import com.ucar.combination.service.AccountManagerService;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,16 +28,19 @@ import java.util.Map;
 @Controller
 @RequestMapping("/account")
 public class AccountManagerController {
+    @Resource
+    private AccountManagerService accountManagerService;
 
     @ResponseBody
-    @RequestMapping("/permission.do_")
-    public Result permissionList() {
-        return new Result().ok().put("permissionList",CommonEnums.toJsonList(CommonEnums.Permission.values()));
+    @RequestMapping("/querylist.do_")
+    public Result queryList(){
+        String page = "1";
+        String limit = "10";
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("page", page);
+        params.put("limit", limit);
+        ResultPage resultPage = accountManagerService.queryList(new QueryParam(params));
+        return new Result().ok().put("page", resultPage)
+                .put("permissionList",CommonEnums.toJsonList(CommonEnums.Permission.values()));
     }
-
-//    @ResponseBody
-//    @RequestMapping("/querylist.do_")
-//    public Result queryList(){
-//
-//    }
 }
