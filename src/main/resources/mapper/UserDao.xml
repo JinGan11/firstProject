@@ -38,7 +38,7 @@
         id,account_id, history_password, create_time, create_emp, modify_time, modify_emp
         FROM t_history_password
         where account_id = #{id}
-        group by create_time desc
+        order by create_time desc
     </select>
 
     <update id="updatePwdById" parameterType="com.ucar.combination.model.User">
