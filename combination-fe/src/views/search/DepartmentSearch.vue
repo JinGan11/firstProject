@@ -30,10 +30,11 @@
           <el-option label="type1" value="type11"></el-option>
           <el-option label="type2" value="type22"></el-option>
         </el-select>
-      </el-form-item><br>
+      </el-form-item>
+      <br>
       <el-form-item size="100px">
         <el-button type="primary" @click="Search">查询</el-button>
-        <el-button  @click="">导出</el-button>
+        <el-button @click="">导出</el-button>
       </el-form-item>
     </el-form>
     <el-table ref="multipleTable" :data="tableData" border @selection-change='handleSelectionChange'>
@@ -69,27 +70,27 @@
 </template>
 <script>
   export default {
-    data(){
-      return{
-        total:0,
-        currentPage:1,
-        pagesize:10,
-        form:{
-          department_no:'',
+    data() {
+      return {
+        total: 0,
+        currentPage: 1,
+        pagesize: 10,
+        form: {
+          department_no: '',
         },
-        formInline:{
-          departmentName:'',
-          StaffId:'',
-          StaffName:'',
-          telePhone:'',
-          cityName:'',
-          level:'',
-          upperDepartmentNo:'',
-          status:'',
-          departmentType:''
+        formInline: {
+          departmentName: '',
+          StaffId: '',
+          StaffName: '',
+          telePhone: '',
+          cityName: '',
+          level: '',
+          upperDepartmentNo: '',
+          status: '',
+          departmentType: ''
         },
-        tableData:[],
-        department_no:'',
+        tableData: [],
+        department_no: '',
 
       }
     },
@@ -103,16 +104,16 @@
           page: self.currentPage,
           limit: self.pagesize,
           departmentName: self.formInline.departmentName,
-          staffName:self.formInline.staffName,
-          staffId:self.formInline.staffId,
-          telePhone:self.formInline.telePhone,
-          cityName:self.formInline.cityName,
-          level:self.formInline.level,
-          upperDepartmentNo:self.formInline.upperDepartmentNo,
-          status:self.formInline.status,
-          departmentType:self.formInline.departmentType,
+          staffName: self.formInline.staffName,
+          staffId: self.formInline.staffId,
+          telePhone: self.formInline.telePhone,
+          cityName: self.formInline.cityName,
+          level: self.formInline.level,
+          upperDepartmentNo: self.formInline.upperDepartmentNo,
+          status: self.formInline.status,
+          departmentType: self.formInline.departmentType,
         };
-          self.$http.get('/department/searchDepartment.do_', {
+        self.$http.get('/department/searchDepartment.do_', {
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
@@ -134,6 +135,6 @@
         this.currentPage = val;
         this.Search(val, this.pageSize);
       },
-  },
+    },
   }
 </script>

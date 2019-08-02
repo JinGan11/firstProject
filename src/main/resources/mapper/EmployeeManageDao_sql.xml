@@ -4,16 +4,16 @@
 <mapper namespace="com.ucar.combination.dao.EmployeeManageDao">
     <select id="queryList" resultType="com.ucar.combination.model.dto.StaffDto">
         SELECT
-        t1.id                  id,
-        t1.staff_num           staffNum,
-        t3.id                  accountId,
-        t1.staff_name          staffName,
-        t1.staff_sex           staffSex,
-        t1.staff_telephone     staffTelephone,
-        t1.staff_email         staffEmail,
-        t1.department_id       departmentId,
-        t1.is_dimission        isDimission,
-        t2.upper_department_no  upperDepartmentNo
+        t1.id id,
+        t1.staff_num staffNum,
+        t3.id accountId,
+        t1.staff_name staffName,
+        t1.staff_sex staffSex,
+        t1.staff_telephone staffTelephone,
+        t1.staff_email staffEmail,
+        t1.department_id departmentId,
+        t1.is_dimission isDimission,
+        t2.upper_department_no upperDepartmentNo
         FROM t_staff t1,t_department t2,t_account t3
         where t1.department_id = t2.id
         and t1.id = t3.staff_id
@@ -35,7 +35,8 @@
         ORDER BY staff_num
     </select>
 
-    <select id="qryStaffById" parameterType="com.ucar.combination.model.User" resultType="com.ucar.combination.model.Staff">
+    <select id="qryStaffById" parameterType="com.ucar.combination.model.User"
+            resultType="com.ucar.combination.model.Staff">
         SELECT
         ts.id,
         ts.staff_num,
