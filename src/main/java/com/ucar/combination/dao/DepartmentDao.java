@@ -5,6 +5,7 @@ import com.ucar.combination.model.dto.SearchDepartmentDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * description:
@@ -25,5 +26,5 @@ public interface DepartmentDao {
      * @params
      * @return 查询出来的SearchDepartmentDto结果，在
      */
-    List<SearchDepartmentDto> searchDepartment();
+    List<SearchDepartmentDto> searchDepartment(Map<String,Object> map);
 }

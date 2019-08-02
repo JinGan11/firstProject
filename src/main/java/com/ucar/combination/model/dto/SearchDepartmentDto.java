@@ -1,6 +1,7 @@
 package com.ucar.combination.model.dto;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -9,8 +10,8 @@ import java.sql.Timestamp;
  * @author: jing.luo01@ucarinc.com
  * @create: 2019-08-01 17:33
  */
-public class SearchDepartmentDto {
-	private BigInteger id;
+public class SearchDepartmentDto extends BaseBean {
+	private Long id;
 	private String departmentNo;
 	private Integer workplace;
 	private String departmentName;
@@ -26,10 +27,6 @@ public class SearchDepartmentDto {
 	private String supportBusiness;
 	private Integer departmentType;
 	private Integer status;
-	private BigInteger createEmp;
-	private Timestamp createTime;
-	private BigInteger modifyEmp;
-	private Timestamp modifyTime;
 	private String remark;
 	private String cityName;
 	private String companyName;
@@ -50,11 +47,11 @@ public class SearchDepartmentDto {
 		this.companyName = companyName;
 	}
 
-	public BigInteger getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(BigInteger id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -176,38 +173,6 @@ public class SearchDepartmentDto {
 
 	public void setStatus(Integer status) {
 		this.status = status;
-	}
-
-	public BigInteger getCreateEmp() {
-		return createEmp;
-	}
-
-	public void setCreateEmp(BigInteger createEmp) {
-		this.createEmp = createEmp;
-	}
-
-	public Timestamp getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Timestamp createTime) {
-		this.createTime = createTime;
-	}
-
-	public BigInteger getModifyEmp() {
-		return modifyEmp;
-	}
-
-	public void setModifyEmp(BigInteger modifyEmp) {
-		this.modifyEmp = modifyEmp;
-	}
-
-	public Timestamp getModifyTime() {
-		return modifyTime;
-	}
-
-	public void setModifyTime(Timestamp modifyTime) {
-		this.modifyTime = modifyTime;
 	}
 
 	public String getRemark() {

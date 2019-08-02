@@ -5,25 +5,25 @@
         <el-input v-model="formInline.departmentName"></el-input>
       </el-form-item>
       <el-form-item label="负责人ID">
-        <el-input v-model="formInline.departmentStaffId"></el-input>
+        <el-input v-model="formInline.StaffId"></el-input>
       </el-form-item>
       <el-form-item label="负责人姓名">
-        <el-input v-model="formInline.departmentStaffName"></el-input>
+        <el-input v-model="formInline.StaffName"></el-input>
       </el-form-item>
       <el-form-item label="手机号">
-        <el-input v-model="formInline.departmentPhone"></el-input>
+        <el-input v-model="formInline.telePhone"></el-input>
       </el-form-item>
       <el-form-item label="部门所在城市">
-        <el-input v-model="formInline.departmentCity"></el-input>
+        <el-input v-model="formInline.cityName"></el-input>
       </el-form-item>
       <el-form-item label="部门级别">
-        <el-input v-model="formInline.departmentLevel"></el-input>
+        <el-input v-model="formInline.level"></el-input>
       </el-form-item>
       <el-form-item label="上级部门">
-        <el-input v-model="formInline.departmentUpper"></el-input>
+        <el-input v-model="formInline.upperDepartmentNo"></el-input>
       </el-form-item>
       <el-form-item label="状态">
-        <el-input v-model="formInline.departmentStatus"></el-input>
+        <el-input v-model="formInline.status"></el-input>
       </el-form-item>
       <el-form-item label="部门类型">
         <el-select v-model="formInline.departmentType" value="type1">
@@ -71,6 +71,7 @@
   export default {
     data(){
       return{
+        total:0,
         currentPage:1,
         pagesize:10,
         form:{
@@ -78,13 +79,13 @@
         },
         formInline:{
           departmentName:'',
-          departmentStaffId:'',
-          departmentStaffName:'',
-          departmentPhone:'',
-          departmentCity:'',
-          departmentLevel:'',
-          departmentUpper:'',
-          departmentStatus:'',
+          StaffId:'',
+          StaffName:'',
+          telePhone:'',
+          cityName:'',
+          level:'',
+          upperDepartmentNo:'',
+          status:'',
           departmentType:''
         },
         tableData:[],
@@ -101,6 +102,15 @@
         var param = {
           page: self.currentPage,
           limit: self.pagesize,
+          departmentName: self.formInline.departmentName,
+          staffName:self.formInline.staffName,
+          staffId:self.formInline.staffId,
+          telePhone:self.formInline.telePhone,
+          cityName:self.formInline.cityName,
+          level:self.formInline.level,
+          upperDepartmentNo:self.formInline.upperDepartmentNo,
+          status:self.formInline.status,
+          departmentType:self.formInline.departmentType,
         };
           self.$http.get('/department/searchDepartment.do_', {
           params: param
