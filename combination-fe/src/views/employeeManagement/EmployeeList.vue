@@ -55,8 +55,8 @@
       </el-form>
     </div>
     <div style="margin-bottom: 10px">
-      <el-button type="primary" @click="add" style="width:70px">新建</el-button>
-      <el-button type="primary" @click="" style="width:70px">修改</el-button>
+      <el-button type="primary" @click="CreateEmployee" style="width:70px">新建</el-button>
+      <el-button type="primary" @click="ModifyEmployee" style="width:70px">修改</el-button>
       <el-button type="primary" @click="" style="width:70px">删除</el-button>
       <el-button type="primary" @click="" style="width:70px">离职</el-button>
       <el-button type="primary" @click="" style="width:70px">恢复</el-button>
@@ -257,7 +257,7 @@
       },
       modifyEmployee(){//点击修改按钮，跳转到修改页面
         this.$router.replace('/ModifyEmployee')
-      }
+      },
       distributionDepartment(){
         this.distributionDepartmentFlag=true;
       },
