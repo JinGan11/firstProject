@@ -71,7 +71,7 @@
   export default {
     data(){
       return{
-        curentPage:1,
+        currentPage:1,
         pagesize:10,
         form:{
           department_no:'',
@@ -99,7 +99,7 @@
       Search() {
         var self = this;
         var param = {
-          page: self.curentPage,
+          page: self.currentPage,
           limit: self.pagesize,
         };
           self.$http.get('/department/searchDepartment.do_', {
@@ -114,6 +114,15 @@
           console.log('department/querylist.do_' + error);
           self.$message.error("获取数据错误");
         });
+      },
+      handleSizeChange(val) {
+        this.pageSize = val;
+        this.currentPage = 1;
+        this.Search(1, val);
+      },
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        this.Search(val, this.pageSize);
       },
   },
   }
