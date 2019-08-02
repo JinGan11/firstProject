@@ -63,6 +63,14 @@ export default new Router({
     path:'/accountManagement',
     name:'账户查询',
     component:AccountManagement,
+  },{
+    path:'/CreateEmployee',
+    name:'新建员工',
+    component:CreateEmployee
+  },{
+    path:'/modifyEmployee',
+    name:'修改员工信息',
+    component:ModifyEmployee
   }
   ]
 })
