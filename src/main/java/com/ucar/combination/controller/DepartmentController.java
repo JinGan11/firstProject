@@ -36,6 +36,14 @@ public class DepartmentController {
         List<Department> departmentList = departmentService.queryListAll();
         return new Result().put("departments",departmentList);
     }
+    /*
+     * description:
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/2 11:44
+     * @params request HTTPSERVLETREQUEST请求
+
+     * @return 分页的结果集RESULT
+     */
     @ResponseBody
     @RequestMapping("/searchDepartment.do_")
     public Result searchDepartment(HttpServletRequest request){

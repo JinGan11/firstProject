@@ -32,6 +32,14 @@ public class DepartmentServiceImpl implements DepartmentService {
 		return departmentDao.queryListAll();
 	}
 
+	/*
+	 * description:
+	 * @author jing.luo01@ucarinc.com
+	 * @date   2019/8/2 11:42
+	 * @params queryParam 输入查询分页的QueryParam
+
+	 * @return 返回查询部门信息后的SEARCHDEPARTMENT
+	 */
 	@Override
 	public ResultPage searchDepartment(QueryParam queryParam) {
 		Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
