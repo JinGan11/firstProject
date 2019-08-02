@@ -1,5 +1,7 @@
 package com.ucar.combination.model;
 
+import com.ucar.combination.model.dto.BaseBean;
+
 import java.util.Date;
 
 /**
@@ -8,25 +10,21 @@ import java.util.Date;
  * @author: peng.zhang11@ucarinc.com
  * @create: 2019-07-30 16:37
  */
-public class User {
-    private long id;
+public class User extends BaseBean {
+    private Long id;
     private String accountName;
     private String accountPassword;
-    private long staffId;
-    private int permissions;
+    private Long staffId;
+    private Integer permissions;
     private String accountSecretEmail;
-    private Date createTime;
-    private long createEmp;
-    private Date modifyTime;
-    private long modifyEmp;
-    private int accountState;
+    private Integer accountState;
     private String accountRemark;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -46,19 +44,19 @@ public class User {
         this.accountPassword = accountPassword;
     }
 
-    public long getStaffId() {
+    public Long getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(long staffId) {
+    public void setStaffId(Long staffId) {
         this.staffId = staffId;
     }
 
-    public int getPermissions() {
+    public Integer getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(int permissions) {
+    public void setPermissions(Integer permissions) {
         this.permissions = permissions;
     }
 
@@ -70,43 +68,11 @@ public class User {
         this.accountSecretEmail = accountSecretEmail;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public long getCreateEmp() {
-        return createEmp;
-    }
-
-    public void setCreateEmp(long createEmp) {
-        this.createEmp = createEmp;
-    }
-
-    public Date getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-
-    public long getModifyEmp() {
-        return modifyEmp;
-    }
-
-    public void setModifyEmp(long modifyEmp) {
-        this.modifyEmp = modifyEmp;
-    }
-
-    public int getAccountState() {
+    public Integer getAccountState() {
         return accountState;
     }
 
-    public void setAccountState(int accountState) {
+    public void setAccountState(Integer accountState) {
         this.accountState = accountState;
     }
 

@@ -1,5 +1,7 @@
 package com.ucar.combination.model;
 
+import com.ucar.combination.model.dto.BaseBean;
+
 import java.util.Date;
 
 /**
@@ -8,28 +10,24 @@ import java.util.Date;
  * @author: peng.zhang11@ucarinc.com
  * @create: 2019-07-31 15:46
  */
-public class Staff {
-    private long id;
+public class Staff extends BaseBean {
+    private Long id;
     private String staffNum;
     private String staffName;
-    private int staffSex;
+    private Integer staffSex;
     private String staffTelephone;
     private String staffEmail;
-    private long departmentId;
+    private Long departmentId;
     private String departmentName;
-    private int isDimission;
-    private int status;
-    private Date createTime;
-    private long createEmp;
-    private Date modifyTime;
-    private long modifyEmp;
+    private Integer isDimission;
+    private Integer status;
     private String remark;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -49,11 +47,11 @@ public class Staff {
         this.staffName = staffName;
     }
 
-    public int getStaffSex() {
+    public Integer getStaffSex() {
         return staffSex;
     }
 
-    public void setStaffSex(int staffSex) {
+    public void setStaffSex(Integer staffSex) {
         this.staffSex = staffSex;
     }
 
@@ -73,11 +71,11 @@ public class Staff {
         this.staffEmail = staffEmail;
     }
 
-    public long getDepartmentId() {
+    public Long getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(long departmentId) {
+    public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
     }
 
@@ -89,52 +87,20 @@ public class Staff {
         this.departmentName = departmentName;
     }
 
-    public int getIsDimission() {
+    public Integer getIsDimission() {
         return isDimission;
     }
 
-    public void setIsDimission(int isDimission) {
+    public void setIsDimission(Integer isDimission) {
         this.isDimission = isDimission;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public long getCreateEmp() {
-        return createEmp;
-    }
-
-    public void setCreateEmp(long createEmp) {
-        this.createEmp = createEmp;
-    }
-
-    public Date getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
-
-    public long getModifyEmp() {
-        return modifyEmp;
-    }
-
-    public void setModifyEmp(long modifyEmp) {
-        this.modifyEmp = modifyEmp;
     }
 
     public String getRemark() {
