@@ -36,6 +36,7 @@ public class Department {
     private Timestamp modify_time;
     private String remark;
 
+
     public Department(BigInteger id, String department_no, String department_name, String upper_department_no) {
         this.id = id;
         this.department_no = department_no;

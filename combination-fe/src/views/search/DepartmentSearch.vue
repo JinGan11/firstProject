@@ -33,15 +33,49 @@
       </el-form-item><br>
       <el-form-item size="100px">
         <el-button type="primary" @click="Search">查询</el-button>
-        <el-button  @click="OutTable">导出</el-button>
+        <el-button  @click="">导出</el-button>
       </el-form-item>
     </el-form>
+    <el-table ref="multipleTable" :data="tableData" border @selection-change='handleSelectionChange'>
+      <el-table-column label="选择" width="45">
+        <template slot-scope="scope">
+          <el-radio v-model="selection" :label="scope.row.id"><span width="0px;"></span></el-radio>
+        </template>
+      </el-table-column>
+      <el-table-column prop="departmentNo" label="部门编号" width="140"></el-table-column>
+      <el-table-column prop="workplace" label="办公点标识" width="140"></el-table-column>
+      <el-table-column prop="departmentName" label="部门名称" width="140"></el-table-column>
+      <el-table-column prop="staffId" label="负责人ID" width="140"></el-table-column>
+      <el-table-column prop="staffName" label="负责人姓名" width="140"></el-table-column>
+      <el-table-column prop="telephone" label="手机号" width="140"></el-table-column>
+      <el-table-column prop="level" label="部门级别" width="140"></el-table-column>
+      <el-table-column prop="upperDepartmentNo" label="上级部门" width="140"></el-table-column>
+      <el-table-column prop="supportBusiness" label="支持业务线" width="140"></el-table-column>
+      <el-table-column prop="departmentType" label="部门类型" width="140"></el-table-column>
+      <el-table-column prop="status" label="状态" width="140"></el-table-column>
+      <el-table-column prop="cityName" label="所在城市" width="140"></el-table-column>
+      <el-table-column prop="companyName" label="关联公司名称" width="140"></el-table-column>
+    </el-table>
+    <el-pagination background
+                   @size-change="handleSizeChange"
+                   @current-change="handleCurrentChange"
+                   :current-page="currentPage"
+                   :page-sizes="[10, 50, 100, 200]"
+                   :page-size="pageSize"
+                   layout="total, sizes, prev, pager, next, jumper"
+                   :total="total">
+    </el-pagination>
   </home>
 </template>
 <script>
   export default {
     data(){
       return{
+        curentPage:1,
+        pagesize:10,
+        form:{
+          department_no:'',
+        },
         formInline:{
           departmentName:'',
           departmentStaffId:'',
@@ -52,16 +86,35 @@
           departmentUpper:'',
           departmentStatus:'',
           departmentType:''
-        }
+        },
+        tableData:[],
+        department_no:'',
+
       }
     },
-    methods:{
-      Search(){
-
+    methods: {
+      handleSelectionChange(val) {
+        this.selection = val;
       },
-      OutTable(){
-
-      }
-    }
+      Search() {
+        var self = this;
+        var param = {
+          page: self.curentPage,
+          limit: self.pagesize,
+        };
+          self.$http.get('/department/searchDepartment.do_', {
+          params: param
+        }).then((result) => {
+          self.tableData = result.page.list;
+          console.log(self.tableData);
+          self.total = result.page.totalCount;
+          /*self.SexEnum = result.SexEnum;
+          self.isDimissionEnum = result.isDissmissionEnum;*/
+        }).catch(function (error) {
+          console.log('department/querylist.do_' + error);
+          self.$message.error("获取数据错误");
+        });
+      },
+  },
   }
 </script>

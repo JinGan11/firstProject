@@ -1,6 +1,7 @@
 package com.ucar.combination.dao;
 
 import com.ucar.combination.model.Department;
+import com.ucar.combination.model.dto.SearchDepartmentDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,4 +18,5 @@ public interface DepartmentDao {
 
     List<Department> queryListAll();
 
+    List<SearchDepartmentDto> searchDepartment();
 }

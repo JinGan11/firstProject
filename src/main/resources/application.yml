@@ -47,6 +47,8 @@ spring:
 mybatis:
   typeAliasesPackage: com.ucar.combination.model
   mapperLocations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case=true:
 jpa:
   data: MYSQL
   show-sql: true

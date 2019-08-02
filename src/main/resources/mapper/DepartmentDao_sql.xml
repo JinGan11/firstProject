@@ -11,4 +11,32 @@
         FROM t_department
         ORDER BY department_no
     </select>
+    <select id="searchDepartment" resultType="com.ucar.combination.model.dto.SearchDepartmentDto">
+        SELECT
+        T.id,
+        T.department_no,
+        T.workplace,
+        T.department_name,
+        T.staff_id,
+        T.staff_name,
+        T.city_id,
+        T.address,
+        T.telephone,
+        T.email,
+        T.landline,
+        T.upper_department_no,
+        T.support_business,
+        T.department_type,
+        T.status,
+        T.create_emp,
+        T.create_time,
+        T.modify_emp,
+        T.modify_time,
+        T.remark,
+        T1.city_name,
+        T3.company_name
+        FROM t_department T join t_b_city T1 on T.city_id=T1.city_id
+          join t_r_department_company T2 on T.id=T2.department_id join
+          t_company T3 on T2.company_id=T3.company_id
+    </select>
 </mapper>

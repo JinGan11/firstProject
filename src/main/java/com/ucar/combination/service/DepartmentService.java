@@ -1,5 +1,7 @@
 package com.ucar.combination.service;
 
+import com.ucar.combination.common.QueryParam;
+import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Department;
 
 import java.util.List;
@@ -20,5 +22,7 @@ public interface DepartmentService {
      * @return
      */
     List<Department> queryListAll();
+
+    ResultPage searchDepartment(QueryParam queryParam);
 
 }

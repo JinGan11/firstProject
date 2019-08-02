@@ -22,7 +22,7 @@ import java.util.Map;
  **/
 @Service
 public class EmployeeManageServiceImpl implements EmployeeManageService {
-    @Autowired
+    @Autowired(required = false)
     private EmployeeManageDao employeeManageDao;
 
     @Override
