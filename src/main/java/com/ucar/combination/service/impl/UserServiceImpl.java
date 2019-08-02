@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
                 }
             }
         } catch (Exception e) {
-            throw e;
+            e.printStackTrace();
         }
         result.setCode(300);
         result.setMsg("密码不能与近三次的密码相同");

@@ -22,11 +22,14 @@
 <script>
   import App from '../../App'
   import commonUtils from "../../common/commonUtils";
+  import utils from '../../common/util'
   export default {
     data() {
       var validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
+        } else if (!(/((^(?=.*[a-z])(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]{8,16}$)|(^(?=.*\d)(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]{8,16}$)|(^(?=.*\d)(?=.*[a-z])(?=.*\W)[\da-zA-Z\W]{8,16}$)|(^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[\da-zA-Z\W]{8,16}$))/.test(value))) {
+          callback(new Error('请输入8-16位字符，至少包含数字、大写字母、小写字母、特殊字符中的三种类型'));
         } else {
           if (this.ruleForm.checkPass !== '') {
             this.$refs.ruleForm.validateField('checkPass');
@@ -34,6 +37,7 @@
           callback();
         }
       };
+
       var validatePass2 = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再次输入密码'));
@@ -83,16 +87,17 @@
             self.$http.post('user/updatePassword', param)
               .then((result) => {
                 if (result.code === 200) {
-                  self.$alert("密码修改成功", '消息提醒', {
-                    confirmButtonText: '确定',
-                  });
-                  // self.$confirm('密码修改成功，请重新登录', '提示', {
+                  // self.$alert("密码修改成功", '消息提醒', {
                   //   confirmButtonText: '确定',
-                  //   type: 'warning'
-                  // }).then(() => {
-                  //   App.methods.clearLoginSession();
-                  //   self.$router.replace("/")
-                  // })
+                  // });
+                  self.$confirm('密码修改成功，请重新登录', '提示', {
+                    confirmButtonText: '确定',
+                    type: 'warning'
+                  }).then(() => {
+                    utils.$emit("clearLoginSession");
+                    App.methods.clearLoginSession();
+                    self.$router.replace("/")
+                  })
                 } else {
                   self.$alert("密码不能与前三次相同", '消息提醒', {
                     confirmButtonText: '确定',

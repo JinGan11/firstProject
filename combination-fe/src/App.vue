@@ -95,7 +95,11 @@
       utils.$on('loginSuccess', (loginFlag,username) => {
         console.log(loginFlag);
         this.loginSuccess(loginFlag,username);
-      })
+      });
+      utils.$on('clearLoginSession', () => {
+        console.log("test=====================");
+        this.clearLoginSession();
+      });
       if (window.sessionStorage.getItem("loginUsername") === null) {
         this.loginIn = false
       } else {
@@ -181,6 +185,7 @@
         }
       },
       clearLoginSession: function() {
+        const self = this;
         self.loginIn = false;
         window.sessionStorage.removeItem("loginUsername");
         self.loginUserName = window.sessionStorage.getItem("loginUsername");
