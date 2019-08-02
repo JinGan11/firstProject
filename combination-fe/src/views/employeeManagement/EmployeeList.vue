@@ -251,6 +251,13 @@
       add(){
         this.dialogVisible=true;
       },
+      createEmployee(){//点击新建按钮，跳转到新建页面
+        this.$router.replace('/CreateEmployee')
+
+      },
+      modifyEmployee(){//点击修改按钮，跳转到修改页面
+        this.$router.replace('/ModifyEmployee')
+      }
       distributionDepartment(){
         this.distributionDepartmentFlag=true;
       },
