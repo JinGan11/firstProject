@@ -11,6 +11,8 @@ import PwdReset from '@/views/personalAccountManagement/PwdReset'
 import AccountInfo from '@/views/personalAccountManagement/AccountInfo'
 import DepartmentSearch from '@/views/search/DepartmentSearch'
 import AccountManagement from '@/views/accountManagement/AccountList'
+import CreateEmployee from '@/views/employeeManagement/CreateEmployee'
+import ModifyEmployee from '@/views/employeeManagement/ModifyEmployee'
 
 Vue.use(Router)
 
