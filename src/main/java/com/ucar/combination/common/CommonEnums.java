@@ -414,7 +414,6 @@ public abstract class CommonEnums {
     * @Date  9:26 2019/8/3
     */
     public static enum BusinessLineEnum implements IEnum{
-        ALL(0,"全部"),
         MMC(1,"买买车"),
         FCAR(2,"闪贷"),
         CAR(3,"租车"),
@@ -467,7 +466,6 @@ public abstract class CommonEnums {
     * @Date  9:28 2019/8/3
     */
     public static enum applyStatusEnum implements IEnum{
-        ALL(0,"全部"),
         APPLY(1,"已新建"),
         WAIT(2,"待审批"),
         PASS(3,"审批通过"),

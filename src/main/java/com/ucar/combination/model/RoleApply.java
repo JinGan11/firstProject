@@ -9,21 +9,35 @@ import java.util.Date;
  * @date: Create in 9:32 now
  **/
 public class RoleApply {
-    private Long roleApplyId;
+    private Long id;
+    private String applyNum;
     private Long roleId;
     private Integer applyStatus;
-    private Long applyAccountId;
+    private String applyStaffNum;
+    private String applyStaffName;
+    private Integer applyAccountId;
+    private String applyAccountName;
+    private Integer applyDepartmentId;
+    private String applyDepartmentName;
     private Date applyTime;
+    private String rejectReason;
     private Long modifyEmp;
     private Date modifyTime;
-    private String rejectReason;
 
-    public Long getRoleApplyId() {
-        return roleApplyId;
+    public Long getId() {
+        return id;
     }
 
-    public void setRoleApplyId(Long roleApplyId) {
-        this.roleApplyId = roleApplyId;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getApplyNum() {
+        return applyNum;
+    }
+
+    public void setApplyNum(String applyNum) {
+        this.applyNum = applyNum;
     }
 
     public Long getRoleId() {
@@ -42,12 +56,52 @@ public class RoleApply {
         this.applyStatus = applyStatus;
     }
 
-    public Long getApplyAccountId() {
+    public String getApplyStaffNum() {
+        return applyStaffNum;
+    }
+
+    public void setApplyStaffNum(String applyStaffNum) {
+        this.applyStaffNum = applyStaffNum;
+    }
+
+    public String getApplyStaffName() {
+        return applyStaffName;
+    }
+
+    public void setApplyStaffName(String applyStaffName) {
+        this.applyStaffName = applyStaffName;
+    }
+
+    public Integer getApplyAccountId() {
         return applyAccountId;
     }
 
-    public void setApplyAccountId(Long applyAccountId) {
+    public void setApplyAccountId(Integer applyAccountId) {
         this.applyAccountId = applyAccountId;
+    }
+
+    public String getApplyAccountName() {
+        return applyAccountName;
+    }
+
+    public void setApplyAccountName(String applyAccountName) {
+        this.applyAccountName = applyAccountName;
+    }
+
+    public Integer getApplyDepartmentId() {
+        return applyDepartmentId;
+    }
+
+    public void setApplyDepartmentId(Integer applyDepartmentId) {
+        this.applyDepartmentId = applyDepartmentId;
+    }
+
+    public String getApplyDepartmentName() {
+        return applyDepartmentName;
+    }
+
+    public void setApplyDepartmentName(String applyDepartmentName) {
+        this.applyDepartmentName = applyDepartmentName;
     }
 
     public Date getApplyTime() {
@@ -56,6 +110,14 @@ public class RoleApply {
 
     public void setApplyTime(Date applyTime) {
         this.applyTime = applyTime;
+    }
+
+    public String getRejectReason() {
+        return rejectReason;
+    }
+
+    public void setRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
     }
 
     public Long getModifyEmp() {
@@ -72,13 +134,5 @@ public class RoleApply {
 
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
-    }
-
-    public String getRejectReason() {
-        return rejectReason;
-    }
-
-    public void setRejectReason(String rejectReason) {
-        this.rejectReason = rejectReason;
     }
 }

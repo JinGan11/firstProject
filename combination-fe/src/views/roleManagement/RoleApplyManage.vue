@@ -5,7 +5,7 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="角色申请编号">
-              <el-input style="width:150px;" v-model="form.roleApplyId"></el-input>
+              <el-input style="width:150px;" v-model="form.roleApplyNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -102,14 +102,14 @@
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.roleApplyId"><span width="0px;"></span></el-radio>
+          <el-radio v-model="selection" :label="scope.row.id"><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
-      <el-table-column prop="roleApplyId" label="角色申请编号" width="150"></el-table-column>
+      <el-table-column prop="roleApplyNum" label="角色申请编号" width="150"></el-table-column>
       <el-table-column prop="roleId" label="申请角色ID"width="150"></el-table-column>
       <el-table-column prop="roleName" label="申请角色名称"  width="150"></el-table-column>
-      <el-table-column prop="approverEmp" label="审批负责人" width="150"></el-table-column>
+      <el-table-column prop="approverStaffName" label="审批负责人" width="150"></el-table-column>
       <el-table-column prop="businessLine" label="角色支持业务线" width="150" style="text-align: center">
         <template slot-scope="scope">
           {{BusinessLineEnum[scope.row.businessLine]}}
@@ -150,7 +150,7 @@
         currentPage: 1,
         pageSize: 10,
         form: {
-          roleApplyId:'',
+          roleApplyNum:'',
           roleId: '',
           roleName: '',
           applyAccountName:'',
@@ -164,10 +164,11 @@
         tableData: [],
         selection: [],
         radio:'',
-        roleApplyId: '',
+        id:'',
+        roleApplyNum: '',
         roleId: '',
         roleName: '',
-        approverEmp: '',
+        approverStaffName: '',
         BusinessLineEnum:{},
         businessLine: '',
         applyAccountName: '',
@@ -183,7 +184,7 @@
         value:'',
         beginDateScope:'',
         options: [{
-          value: '0',
+          value: '',
           label: '全部'
         }, {
           value: '1',
@@ -208,6 +209,7 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
+      this.fetchData();
     },
     methods: {
       handleSizeChange(val) {
@@ -227,7 +229,7 @@
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
-          roleApplyId:self.form.roleApplyId,
+          roleApplyNum:self.form.roleApplyNum,
           roleId:self.form.roleId,
           roleName:self.form.roleName,
           applyAccountName: self.form.applyAccountName,

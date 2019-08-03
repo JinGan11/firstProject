@@ -9,10 +9,11 @@ import java.util.Date;
  * @date: Create in 9:30 now
  **/
 public class RoleApplyDto {
-    private Long roleApplyId;
+    private Long id;
+    private String roleApplyNum;
     private Long roleId;
     private String roleName;
-    private Long approverEmp;
+    private String approverStaffName;
     private Integer businessLine;
     private String applyAccountName;
     private String applyStaffNum;
@@ -24,11 +25,12 @@ public class RoleApplyDto {
     private Date modifyTime;
     private String rejectReason;
 
-    public RoleApplyDto(Long roleApplyId, Long roleId, String roleName, Long approverEmp, Integer businessLine, String applyAccountName, String applyStaffNum, String applyStaffName, String applyDepartmentName, Date applyTime, Integer applyStatus, Long modifyEmp, Date modifyTime, String rejectReason) {
-        this.roleApplyId = roleApplyId;
+    public RoleApplyDto(Long id, String roleApplyNum, Long roleId, String roleName, String approverStaffName, Integer businessLine, String applyAccountName, String applyStaffNum, String applyStaffName, String applyDepartmentName, Date applyTime, Integer applyStatus, Long modifyEmp, Date modifyTime, String rejectReason) {
+        this.id = id;
+        this.roleApplyNum = roleApplyNum;
         this.roleId = roleId;
         this.roleName = roleName;
-        this.approverEmp = approverEmp;
+        this.approverStaffName = approverStaffName;
         this.businessLine = businessLine;
         this.applyAccountName = applyAccountName;
         this.applyStaffNum = applyStaffNum;
@@ -41,12 +43,20 @@ public class RoleApplyDto {
         this.rejectReason = rejectReason;
     }
 
-    public Long getRoleApplyId() {
-        return roleApplyId;
+    public Long getId() {
+        return id;
     }
 
-    public void setRoleApplyId(Long roleApplyId) {
-        this.roleApplyId = roleApplyId;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getRoleApplyNum() {
+        return roleApplyNum;
+    }
+
+    public void setRoleApplyNum(String roleApplyNum) {
+        this.roleApplyNum = roleApplyNum;
     }
 
     public Long getRoleId() {
@@ -65,12 +75,12 @@ public class RoleApplyDto {
         this.roleName = roleName;
     }
 
-    public Long getApproverEmp() {
-        return approverEmp;
+    public String getApproverStaffName() {
+        return approverStaffName;
     }
 
-    public void setApproverEmp(Long approverEmp) {
-        this.approverEmp = approverEmp;
+    public void setApproverStaffName(String approverStaffName) {
+        this.approverStaffName = approverStaffName;
     }
 
     public Integer getBusinessLine() {

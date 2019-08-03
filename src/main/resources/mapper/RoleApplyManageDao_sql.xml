@@ -2,26 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ucar.combination.dao.RoleApplyManageDao">
     <select id="queryList" resultType="com.ucar.combination.model.dto.RoleApplyDto">
-        select t1.id          roleApplyId,
-        t1.role_id            roleId,
-        t2.role_name          roleName,
-        t2.approver_emp       approverEmp,
-        t2.business_line      businessLine,
-        t3.account_name       applyAccountName,
-        t4.staff_num          applyStaffNum,
-        t4.staff_name         applyStaffName,
-        t5.department_name    applyDepartmentName,
-        t1.apply_time         applyTime,
-        t1.status             applyStatus,
-        t1.modify_emp         modifyEmp,
-        t1.modify_time        modifyTime,
-        t1.reject_reason      rejectReason
-        from t_role_apply t1,t_role_info t2,t_account t3,t_staff t4 ,t_department t5
-        where t1.role_id=t2.id and t1.apply_id=t4.id
-        and t3.staff_id=t4.id and t5.id=t4.department_id
-
-        <if test="roleApplyId!=null and roleApplyId!=''">
-            AND t1.id=#{roleApplyId}
+        select t1.id                id,
+        t1.apply_num                roleApplyNum,
+        t1.role_id                  roleId,
+        t2.role_name                roleName,
+        t2.approver_staff_name      approverStaffName,
+        t2.business_line            businessLine,
+        t1.apply_account_name       applyAccountName,
+        t1.apply_staff_num          applyStaffNum,
+        t1.apply_staff_name         applyStaffName,
+        t1.apply_department_name    applyDepartmentName,
+        t1.apply_time               applyTime,
+        t1.status                   applyStatus,
+        t1.modify_emp               modifyEmp,
+        t1.modify_time              modifyTime,
+        t1.reject_reason            rejectReason
+        from t_role_apply t1,t_role_info t2
+        where t1.role_id=t2.id
+        <if test="roleApplyNum!=null and roleApplyNum!=''">
+            AND t1.apply_num=#{roleApplyNum}
         </if>
         <if test="roleId!=null and roleId!=''">
             AND t1.role_id=#{roleId}
@@ -30,20 +29,22 @@
             AND t2.role_name=#{roleName}
         </if>
         <if test="applyAccountName!=null and applyAccountName!=''">
-            AND t3.account_name=#{applyAccountName}
+            AND t1.apply_account_name=#{applyAccountName}
         </if>
         <if test="applyStaffNum!=null and applyStaffNum!=''">
-            AND t4.staff_num=#{applyStaffNum}
+            AND t1.apply_staff_num =#{applyStaffNum}
         </if>
         <if test="applyStaffName!=null and applyStaffName!=''">
-            AND t4.staff_name=#{applyStaffName}
+            AND t1.apply_staff_name=#{applyStaffName}
         </if>
         <if test="applyDepartmentName!=null and applyDepartmentName!=''">
-            AND t5.department_name=#{applyDepartmentName}
+            AND t1.apply_department_name=#{applyDepartmentName}
         </if>
         <if test="applyStatus!=null and applyStatus!=''">
             AND t1.status=#{applyStatus}
         </if>
+
+
     </select>
 
 </mapper>

@@ -20,8 +20,9 @@ import java.util.List;
  **/
 @Service
 public class RoleApplyManageServiceImpl implements RoleApplyManageService {
-    @Autowired(required=false)
+    @Autowired(required = false)
     private RoleApplyManageDao roleApplyManageDao;
+
 
     @Override
     public ResultPage queryList(QueryParam queryParam) {
