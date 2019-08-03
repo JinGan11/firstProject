@@ -5,22 +5,22 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="角色申请编号">
-              <el-input style="width:150px;" v-model="form.apply_id"></el-input>
+              <el-input style="width:150px;" v-model="form.roleApplyId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请角色ID">
-              <el-input style="width:150px;" v-model="form.role_id"></el-input>
+              <el-input style="width:150px;" v-model="form.roleId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请角色名称">
-              <el-input style="width:150px;" v-model="form.role_name"></el-input>
+              <el-input style="width:150px;" v-model="form.roleName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请人登录账号">
-              <el-input style="width:150px;" v-model="form.account"></el-input>
+              <el-input style="width:150px;" v-model="form.applyAccountName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -28,25 +28,25 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="申请人员工编号">
-              <el-input style="width:150px;" v-model="form.employeeNo"></el-input>
+              <el-input style="width:150px;" v-model="form.applyStaffNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请人员工姓名">
-              <el-input style="width:150px;" v-model="form.name">
+              <el-input style="width:150px;" v-model="form.applyStaffName">
               </el-input>
 
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请人所属部门">
-              <el-input style="width:150px;" v-model="form.accountNo"></el-input>
-
+              <el-input style="width:100px;" v-model="form.applyDepartmentName"></el-input>
+              <el-button type="text">选择</el-button>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="状态">
-              <el-select v-model="value" clearable  style="width:150px;" placeholder="请选择">
+              <el-select v-model="form.applyStatus" clearable  style="width:150px;" placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -61,7 +61,7 @@
           <el-col :span="100">
             <el-form-item label="申请时间">
               <el-date-picker
-                v-model="beginDateScope"
+                v-model="form.applyTime"
                 unlink-panels
                 size="mini"
                 type="daterange"
@@ -75,7 +75,7 @@
           <el-col :span="200">
             <el-form-item label="操作时间">
               <el-date-picker
-                v-model="beginDateScope"
+                v-model="form.modifyTime"
                 unlink-panels
                 size="mini"
                 type="daterange"
@@ -93,31 +93,44 @@
       <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
       <el-button type="primary" @click="" style="width:70px">新建</el-button>
       <el-button type="primary" @click="" style="width:70px">修改</el-button>
-      <el-button type="primary" @click="" style="width:70px">删除</el-button>
+      <el-button type="primary" @click="deleteApply(scope.row)" style="width:70px">删除</el-button>
       <el-button type="primary" @click="" style="width:70px">提交审核</el-button>
       <el-button type="primary" style="width:100px" @click="">导出</el-button>
+      <el-button type="primary" @click="" style="width:100px">条件查询</el-button>
     </div>
-    <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
-      <el-table-column type="selection" width="35"></el-table-column>
+
+    <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
+      <el-table-column label="选择" width="45">
+        <template slot-scope="scope">
+          <el-radio v-model="selection" :label="scope.row.roleApplyId"><span width="0px;"></span></el-radio>
+        </template>
+      </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
-      <el-table-column prop="role_apply_id" label="角色申请编号" width="150"></el-table-column>
-      <el-table-column prop="role_id" label="申请角色ID"width="150"></el-table-column>
-      <el-table-column prop="role_name" label="申请角色名称"  width="150"></el-table-column>
-      <el-table-column prop="approver_emp" label="审批负责人" width="150"></el-table-column>
-      <el-table-column prop="business_line" label="角色支持业务线" width="150"></el-table-column>
-      <el-table-column prop="apply_account_name" label="申请人登录账号" width="150"></el-table-column>
-      <el-table-column prop="apply_staff_num" label="申请人员工编号" width="150"></el-table-column>
-      <el-table-column prop="apply_staff_name" label="申请人员工姓名" width="150"></el-table-column>
-      <el-table-column prop="apply_department_name" label="申请人所属部门" width="150"></el-table-column>
-      <el-table-column prop="apply_time" label="申请时间"width="150"></el-table-column>
-      <el-table-column prop="status" label="状态" width="150"></el-table-column>
-      <el-table-column prop="modify_emp" label="操作人" width="150"></el-table-column>
-      <el-table-column prop="modify_time" label="操作时间" width="150"></el-table-column>
-      <el-table-column prop="reject_reason" label="拒绝原因" width="150"></el-table-column>
+      <el-table-column prop="roleApplyId" label="角色申请编号" width="150"></el-table-column>
+      <el-table-column prop="roleId" label="申请角色ID"width="150"></el-table-column>
+      <el-table-column prop="roleName" label="申请角色名称"  width="150"></el-table-column>
+      <el-table-column prop="approverEmp" label="审批负责人" width="150"></el-table-column>
+      <el-table-column prop="businessLine" label="角色支持业务线" width="150" style="text-align: center">
+        <template slot-scope="scope">
+          {{BusinessLineEnum[scope.row.businessLine]}}
+        </template>
+      </el-table-column>
+      <el-table-column prop="applyAccountName" label="申请人登录账号" width="150"></el-table-column>
+      <el-table-column prop="applyStaffNum" label="申请人员工编号" width="150"></el-table-column>
+      <el-table-column prop="applyStaffName" label="申请人员工姓名" width="150"></el-table-column>
+      <el-table-column prop="applyDepartmentName" label="申请人所属部门" width="150"></el-table-column>
+      <el-table-column prop="applyTime" label="申请时间"width="150"></el-table-column>
+      <el-table-column prop="applyStatus" label="状态" width="150" style="text-align: center">
+        <template slot-scope="scope">
+          {{ApplyStatusEnum[scope.row.applyStatus]}}
+        </template>
+      </el-table-column>
+      <el-table-column prop="modifyEmp" label="操作人" width="150"></el-table-column>
+      <el-table-column prop="modifyTime" label="操作时间" width="150"></el-table-column>
+      <el-table-column prop="rejectReason" label="拒绝原因" width="150"></el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
-                   highlight-current-row
                    @current-change="handleCurrentChange"
                    :current-page="currentPage"
                    :page-sizes="[10, 50, 100, 200]"
@@ -137,45 +150,55 @@
         currentPage: 1,
         pageSize: 10,
         form: {
-          apply_id: '',
-          role_id: '',
-          role_name: '',
+          roleApplyId:'',
+          roleId: '',
+          roleName: '',
+          applyAccountName:'',
+          applyStaffNum:'',
+          applyStaffName:'',
+          applyDepartmentName:'',
+          applyStatus:'',
+          applyTime:'',
+          modifyTime:'',
         },
         tableData: [],
         selection: [],
-        role_apply_id: '',
-        role_id: '',
-        role_name: '',
-        approver_emp: '',
-        business_line: '',
-        apply_account_name: '',
-        apply_staff_num: '',
-        apply_staff_name: '',
-        apply_department_name: '',
-        apply_time: '',
-        status: '',
-        modify_emp: '',
-        modify_time: '',
-        reject_reason: '',
+        radio:'',
+        roleApplyId: '',
+        roleId: '',
+        roleName: '',
+        approverEmp: '',
+        BusinessLineEnum:{},
+        businessLine: '',
+        applyAccountName: '',
+        applyStaffNum: '',
+        applyStaffName: '',
+        applyDepartmentName: '',
+        applyTime: '',
+        ApplyStatusEnum:{},
+        applyStatus: '',
+        modifyEmp: '',
+        modifyTime: '',
+        rejectReason: '',
         value:'',
         beginDateScope:'',
         options: [{
-          value: '选项1',
+          value: '0',
           label: '全部'
         }, {
-          value: '选项2',
+          value: '1',
           label: '已新建'
         }, {
-          value: '选项3',
+          value: '2',
           label: '待审批'
         }, {
-          value: '选项4',
+          value: '3',
           label: '审批通过'
         }, {
-          value: '选项5',
+          value: '4',
           label: '审批拒绝'
         },{
-          value:'选项6',
+          value:'5',
           label:'已删除'
         }]
       }
@@ -204,12 +227,24 @@
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
+          roleApplyId:self.form.roleApplyId,
+          roleId:self.form.roleId,
+          roleName:self.form.roleName,
+          applyAccountName: self.form.applyAccountName,
+          applyStaffNum:self.form.applyStaffNum ,
+          applyStaffName: self.form.applyStaffName,
+          applyDepartmentName:self.form.applyDepartmentName,
+          applyStatus: self.form.applyStatus,
+          applyTime:self.form.applyTime ,
+          modifyTime: self.form.modifyTime,
         };
         self.$http.get('roleApply/querylist.do_', {
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
           self.total = result.page.totalCount;
+          self.BusinessLineEnum = result.BusinessLineEnum;
+          self.ApplyStatusEnum = result.applyStatusEnum;
         }).catch(function (error) {
           commonUtils.Log("roleApply/querylist.do_:"+error);
           self.$message.error("获取数据错误");

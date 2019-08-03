@@ -2,14 +2,22 @@ package com.ucar.combination.service;
 
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
-import org.springframework.stereotype.Service;
 
-
+/**
+ * description:
+ *
+ * @author min.zhang08@ucarinc.com
+ * @date: Create in 9:37 now
+ **/
 public interface RoleApplyManageService {
     /**
-     * 角色申请管理列表
-     * @param queryParam
-     * @return
-     */
+    * @Description:  角色申请管理列表
+    * @Author
+    * @Params
+    * @Return
+    * @Date  9:38 2019/8/3
+    */
+
     ResultPage queryList(QueryParam queryParam);
+
 }

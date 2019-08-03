@@ -218,6 +218,114 @@ public abstract class CommonEnums {
         }
     }
 
+    /**
+    * @Description: 业务线枚举
+    * @Author min.zhang
+    * @Params
+    * @Return
+    * @Date  9:26 2019/8/3
+    */
+    public static enum BusinessLineEnum implements IEnum{
+        ALL(0,"全部"),
+        MMC(1,"买买车"),
+        FCAR(2,"闪贷"),
+        CAR(3,"租车"),
+        UCAR(4,"专车"),
+        SAFE(5,"保险");
+        private final  int i;
+        private final String n;
+
+        BusinessLineEnum(int i, String n) {
+            this.i = i;
+            this.n = n;
+        }
+
+        @Override
+        public int getI() {
+            return i;
+        }
+
+        @Override
+        public String getN() {
+            return n;
+        }
+
+        public static BusinessLineEnum valueOf(Integer i) {
+            if (i == null) {
+                return null;
+            }
+            for (BusinessLineEnum item : values()) {
+                if (item.getI() == i) {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        public static String i2n(Integer i, String def) {
+            IEnum e = valueOf(i);
+            if (e == null) {
+                return def;
+            }
+            return e.getN();
+        }
+    }
+
+    /**
+    * @Description: 角色申请状态
+    * @Author min.zhang08
+    * @Params
+    * @Return
+    * @Date  9:28 2019/8/3
+    */
+    public static enum applyStatusEnum implements IEnum{
+        ALL(0,"全部"),
+        APPLY(1,"已新建"),
+        WAIT(2,"待审批"),
+        PASS(3,"审批通过"),
+        REJECT(4,"审批拒绝"),
+        DELETE(5,"已删除");
+
+        private final  int i;
+        private final String n;
+
+        applyStatusEnum(int i, String n) {
+            this.i = i;
+            this.n = n;
+        }
+
+        @Override
+        public int getI() {
+            return i;
+        }
+
+        @Override
+        public String getN() {
+            return n;
+        }
+
+        public static applyStatusEnum valueOf(Integer i) {
+            if (i == null) {
+                return null;
+            }
+            for (applyStatusEnum item : values()) {
+                if (item.getI() == i) {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        public static String i2n(Integer i, String def) {
+            IEnum e = valueOf(i);
+            if (e == null) {
+                return def;
+            }
+            return e.getN();
+        }
+
+    }
+
     public static Map<Integer, String> toEnumMap(IEnum[] enumArr) {
         Map<Integer, String> res = new HashMap<>();
         for (IEnum item : enumArr) {
