@@ -11,6 +11,15 @@
         FROM t_department
         ORDER BY department_no
     </select>
+    <select id="searchChildDepartment" resultType="com.ucar.combination.model.Department">
+        SELECT
+        department_no,
+        department_name
+        FROM t_department
+        WHERE upper_department_no = #{departmentNo}
+        ORDER BY department_no
+    </select>
+
     <select id="searchDepartment" resultType="com.ucar.combination.model.dto.SearchDepartmentDto">
         SELECT
         T.id,

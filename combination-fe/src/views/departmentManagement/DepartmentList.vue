@@ -5,9 +5,9 @@
 
   <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
     <el-table-column prop="id" label="id"></el-table-column>
-    <el-table-column prop="department_no" label="部门编号"></el-table-column>
-    <el-table-column prop="department_name" label="部门名称"></el-table-column>
-    <el-table-column prop="upper_department_no" label="上级部门编号"></el-table-column>
+    <el-table-column prop="departmentNo" label="部门编号"></el-table-column>
+    <el-table-column prop="departmentName" label="部门名称"></el-table-column>
+    <el-table-column prop="upperDepartmentNo" label="上级部门编号"></el-table-column>
   </el-table>
 
 </home>
@@ -22,16 +22,16 @@
         pageSize: 10,
         form: {
           id: '',
-          department_no: '',
-          department_name: '',
-          upper_department_no: ''
+          departmentNo: '',
+          departmentName: '',
+          upperNepartmentNo: ''
         },
         tableData: [],
         selection:[],
         id: '',
         department_no: '',
         department_name: '',
-        upper_department_no: ''
+        upperDepartmentNo: ''
       }
     },
     activated() {

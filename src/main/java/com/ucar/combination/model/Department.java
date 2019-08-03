@@ -1,9 +1,7 @@
 package com.ucar.combination.model;
 
-import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
-
+import com.ucar.combination.model.dto.BaseBean;
 import java.math.BigInteger;
-import java.sql.Timestamp;
 
 /**
  * description:部门类
@@ -12,52 +10,44 @@ import java.sql.Timestamp;
  * @version 1.0
  * @date 2019/7/30 11:11
  **/
-public class Department {
+public class Department extends BaseBean {
 
-    private BigInteger id;
-    private String department_no;
+    private Long id;
+    private String departmentNo;
     private Integer workplace;
-    private String department_name;
-    private BigInteger staff_id;
-    private String staff_name;
-    private Integer city_id;
+    private String departmentName;
+    private Long staffId;
+    private String staffName;
+    private Integer cityId;
     private String address;
     private String telephone;
     private String email;
     private String landline;
     private Integer level;
-    private String upper_department_no;
-    private String support_business;
-    private Integer department_type;
+    private String upperDepartmentNo;
+    private String supportBusiness;
+    private Integer departmentType;
     private Integer status;
-    private BigInteger create_emp;
-    private Timestamp create_time;
-    private BigInteger modify_emp;
-    private Timestamp modify_time;
     private String remark;
 
-
-    public Department(BigInteger id, String department_no, String department_name, String upper_department_no) {
-        this.id = id;
-        this.department_no = department_no;
-        this.department_name = department_name;
-        this.upper_department_no = upper_department_no;
-    }
-
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getDepartment_no() {
-        return department_no;
+    public void setStaffId(Long staffId) {
+        this.staffId = staffId;
     }
 
-    public void setDepartment_no(String department_no) {
-        this.department_no = department_no;
+    public String getDepartmentNo() {
+        return departmentNo;
+    }
+
+    public void setDepartmentNo(String departmentNo) {
+        this.departmentNo = departmentNo;
     }
 
     public Integer getWorkplace() {
@@ -68,36 +58,32 @@ public class Department {
         this.workplace = workplace;
     }
 
-    public String getDepartment_name() {
-        return department_name;
+    public String getDepartmentName() {
+        return departmentName;
     }
 
-    public void setDepartment_name(String department_name) {
-        this.department_name = department_name;
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 
-    public BigInteger getStaff_id() {
-        return staff_id;
+    public Long getStaffId() {
+        return staffId;
     }
 
-    public void setStaff_id(BigInteger staff_id) {
-        this.staff_id = staff_id;
+    public String getStaffName() {
+        return staffName;
     }
 
-    public String getStaff_name() {
-        return staff_name;
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
     }
 
-    public void setStaff_name(String staff_name) {
-        this.staff_name = staff_name;
+    public Integer getCityId() {
+        return cityId;
     }
 
-    public Integer getCity_id() {
-        return city_id;
-    }
-
-    public void setCity_id(Integer city_id) {
-        this.city_id = city_id;
+    public void setCityId(Integer cityId) {
+        this.cityId = cityId;
     }
 
     public String getAddress() {
@@ -140,28 +126,28 @@ public class Department {
         this.level = level;
     }
 
-    public String getUpper_department_no() {
-        return upper_department_no;
+    public String getUpperDepartmentNo() {
+        return upperDepartmentNo;
     }
 
-    public void setUpper_department_no(String upper_department_no) {
-        this.upper_department_no = upper_department_no;
+    public void setUpperDepartmentNo(String upperDepartmentNo) {
+        this.upperDepartmentNo = upperDepartmentNo;
     }
 
-    public String getSupport_business() {
-        return support_business;
+    public String getSupportBusiness() {
+        return supportBusiness;
     }
 
-    public void setSupport_business(String support_business) {
-        this.support_business = support_business;
+    public void setSupportBusiness(String supportBusiness) {
+        this.supportBusiness = supportBusiness;
     }
 
-    public Integer getDepartment_type() {
-        return department_type;
+    public Integer getDepartmentType() {
+        return departmentType;
     }
 
-    public void setDepartment_type(Integer department_type) {
-        this.department_type = department_type;
+    public void setDepartmentType(Integer departmentType) {
+        this.departmentType = departmentType;
     }
 
     public Integer getStatus() {
@@ -170,38 +156,6 @@ public class Department {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public BigInteger getCreate_emp() {
-        return create_emp;
-    }
-
-    public void setCreate_emp(BigInteger create_emp) {
-        this.create_emp = create_emp;
-    }
-
-    public Timestamp getCreate_time() {
-        return create_time;
-    }
-
-    public void setCreate_time(Timestamp create_time) {
-        this.create_time = create_time;
-    }
-
-    public BigInteger getModify_emp() {
-        return modify_emp;
-    }
-
-    public void setModify_emp(BigInteger modify_emp) {
-        this.modify_emp = modify_emp;
-    }
-
-    public Timestamp getModify_time() {
-        return modify_time;
-    }
-
-    public void setModify_time(Timestamp modify_time) {
-        this.modify_time = modify_time;
     }
 
     public String getRemark() {

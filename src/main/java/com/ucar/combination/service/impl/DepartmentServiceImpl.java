@@ -28,8 +28,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 	@Override
 	public List<Department> queryListAll() {
-
 		return departmentDao.queryListAll();
+	}
+
+	@Override
+	public List<Department> searchChildDepartment(String departmentNo) {
+		return departmentDao.searchChildDepartment(departmentNo);
 	}
 
 	/*

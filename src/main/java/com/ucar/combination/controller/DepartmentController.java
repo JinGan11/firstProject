@@ -39,6 +39,14 @@ public class DepartmentController {
 		return new Result().put("departments", departmentList);
 	}
 
+	@ResponseBody
+	@RequestMapping("/searchChildDepartment.do_")
+	public Result searchChildDepartment(HttpServletRequest request) {
+		String department_no = request.getParameter("department_no");
+		List<Department> departmentList = departmentService.searchChildDepartment(department_no);
+		return new Result().put("departments", departmentList);
+	}
+
 	/*
 	 * description:
 	 * @author jing.luo01@ucarinc.com

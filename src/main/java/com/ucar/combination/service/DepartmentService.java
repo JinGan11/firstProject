@@ -23,6 +23,8 @@ public interface DepartmentService {
      */
     List<Department> queryListAll();
 
+    List<Department> searchChildDepartment(String departmentNo);
+
     ResultPage searchDepartment(QueryParam queryParam);
 
 }

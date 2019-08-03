@@ -19,6 +19,8 @@ public interface DepartmentDao {
 
     List<Department> queryListAll();
 
+    List<Department> searchChildDepartment(String departmentNo);
+
     /*
      * description:
      * @author jing.luo01@ucarinc.com
