@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ucar.combination.dao.CompanyManageDao">
+
+    <resultMap type="com.ucar.combination.model.Company" id="company">
+        <result column="company_id" property="id"/>
+        <result column="company_name" property="companyName"/>
+        <result column="credit_code" property="creditCode"/>
+        <result column="company_type" property="companyType"/>
+        <result column="business_deadline" property="businessDeadline"/>
+        <result column="company_address" property="comopanyAddress"/>
+        <result column="business_scope" property="businessScope"/>
+        <result column="legal_person" property="legalPerson"/>
+        <result column="registered_capital" property="registeredCapital"/>
+        <result column="establish_time" property="establishTime"/>
+        <result column="registered_institution" property="registeredInstitution"/>
+        <result column="issue_date" property="issueDate"/>
+        <result column="registered_status" property="registeredStatus"/>
+        <result column="liscense_path" property="liscensePath"/>
+        <result column="company_nature" property="companyNature"/>
+        <result column="registration_address" property="registrationAddress"/>
+        <result column="bank_name" property="bankName"/>
+        <result column="bank_account" property="bankAccount"/>
+        <result column="telephone" property="telephone"/>
+        <result column="company_mark" property="companyMark"/>
+        <result column="status" property="status"/>
+        <result column="create_emp" property="createEmp"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_emp" property="modifyEmp"/>
+        <result column="modify_time" property="modifyTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <select id="queryList" resultType="com.ucar.combination.model.Company">
+        SELECT
+        id,
+        company_name,
+        credit_code,
+        company_type,
+        company_nature,
+        company_mark,
+        status,
+        modify_emp,
+        modify_time
+        FROM t_company
+        <if test="companyName != null and companyName.trim() != ''">
+            AND companyName =#{companyName}
+        </if>
+        <if test="creditCode != null and creditCode.trim() != ''">
+            AND creditCode =#{creditCode}
+        </if>
+        <if test="companyType != null and companyType.trim() != ''">
+            AND companyType =#{companyType}
+        </if>
+        <if test="companyNature != null and companyNature.trim() != ''">
+            AND companyNature =#{companyNature}
+        </if>
+        <if test="status != null and status.trim() != ''">
+            AND status =#{status}
+        </if>
+
+        ORDER BY id DESC
+    </select>
+</mapper>

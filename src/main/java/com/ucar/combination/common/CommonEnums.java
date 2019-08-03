@@ -1,5 +1,6 @@
 package com.ucar.combination.common;
 
+import com.ucar.combination.model.Company;
 import net.sf.json.JSONObject;
 
 import java.util.ArrayList;
@@ -217,6 +218,193 @@ public abstract class CommonEnums {
             return e.getN();
         }
     }
+
+    /**
+     * description:公司类型枚举
+     *
+     * @author jianan.shu@ucarinc.com
+     * @version 1.0
+     * @date: 2019/8/3 10:34
+     */
+    public static enum CompanyType implements IEnum {
+        MALE(1, "有限责任公司"),
+        FEMALE(2, "股份有限公司");
+        private final int i;
+        private final String n;
+
+        CompanyType(int i, String n) {
+            this.i = i;
+            this.n = n;
+        }
+
+        @Override
+        public int getI() {
+            return i;
+        }
+
+        @Override
+        public String getN() {
+            return n;
+        }
+        public static CompanyType valueOf(Integer i) {
+            if (i == null) {
+                return null;
+            }
+            for (CompanyType item : values()) {
+                if (item.getI() == i) {
+                    return item;
+                }
+            }
+            return null;
+        }
+        public static String i2n(Integer i, String def) {
+            IEnum e = valueOf(i);
+            if (e == null) {
+                return def;
+            }
+            return e.getN();
+        }
+    }
+    /**
+     * description:公司性质枚举
+     *
+     * @author jianan.shu@ucarinc.com
+     * @version 1.0
+     * @date: 2019/8/3 10:34
+     */
+    public static enum CompanyNature implements IEnum {
+        MALE(1, "一般纳税人"),
+        FEMALE(2, "小规模纳税人");
+        private final int i;
+        private final String n;
+
+        CompanyNature(int i, String n) {
+            this.i = i;
+            this.n = n;
+        }
+
+        @Override
+        public int getI() {
+            return i;
+        }
+
+        @Override
+        public String getN() {
+            return n;
+        }
+        public static CompanyNature valueOf(Integer i) {
+            if (i == null) {
+                return null;
+            }
+            for (CompanyNature item : values()) {
+                if (item.getI() == i) {
+                    return item;
+                }
+            }
+            return null;
+        }
+        public static String i2n(Integer i, String def) {
+            IEnum e = valueOf(i);
+            if (e == null) {
+                return def;
+            }
+            return e.getN();
+        }
+    }
+
+    /**
+     * description:公司状态枚举
+     *
+     * @author jianan.shu@ucarinc.com
+     * @version 1.0
+     * @date: 2019/8/3 10:34
+     */
+    public static enum CompanyStatus implements IEnum {
+        MALE(1, "有效"),
+        FEMALE(2, "无效");
+        private final int i;
+        private final String n;
+
+        CompanyStatus(int i, String n) {
+            this.i = i;
+            this.n = n;
+        }
+
+        @Override
+        public int getI() {
+            return i;
+        }
+
+        @Override
+        public String getN() {
+            return n;
+        }
+        public static CompanyStatus valueOf(Integer i) {
+            if (i == null) {
+                return null;
+            }
+            for (CompanyStatus item : values()) {
+                if (item.getI() == i) {
+                    return item;
+                }
+            }
+            return null;
+        }
+        public static String i2n(Integer i, String def) {
+            IEnum e = valueOf(i);
+            if (e == null) {
+                return def;
+            }
+            return e.getN();
+        }
+    }
+    /**
+     * description:总公司标志
+     *
+     * @author jianan.shu@ucarinc.com
+     * @version 1.0
+     * @date: 2019/8/3 11:29
+    */
+    public static enum CompanyMark implements IEnum {
+        MALE(1, "总公司"),
+        FEMALE(2, "子公司");
+        private final int i;
+        private final String n;
+
+        CompanyMark(int i, String n) {
+            this.i = i;
+            this.n = n;
+        }
+
+        @Override
+        public int getI() {
+            return i;
+        }
+
+        @Override
+        public String getN() {
+            return n;
+        }
+        public static CompanyMark valueOf(Integer i) {
+            if (i == null) {
+                return null;
+            }
+            for (CompanyMark item : values()) {
+                if (item.getI() == i) {
+                    return item;
+                }
+            }
+            return null;
+        }
+        public static String i2n(Integer i, String def) {
+            IEnum e = valueOf(i);
+            if (e == null) {
+                return def;
+            }
+            return e.getN();
+        }
+    }
+
 
     /**
     * @Description: 业务线枚举

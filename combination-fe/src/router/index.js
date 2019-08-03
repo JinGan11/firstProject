@@ -15,7 +15,7 @@ import CreateEmployee from '@/views/employeeManagement/CreateEmployee'
 import ModifyEmployee from '@/views/employeeManagement/ModifyEmployee'
 import RoleManagement from '@/views/roleManagement/RoleManagement'
 import DepartmentManagementTest from '@/views/departmentManagement/DepartmentTree'
-
+import CompanyManagement from '@/views/companyManagement/CompanyList'
 Vue.use(Router)
 
 export default new Router({
@@ -83,6 +83,10 @@ export default new Router({
     path:'/departmentManagement/test',
     name:'测试页面',
     component:DepartmentManagementTest
+  },{
+    path:'/companyManagement',
+    name:'公司查询',
+    component:CompanyManagement
   }
   ]
 })
