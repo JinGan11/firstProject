@@ -20,7 +20,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="是否离职">
-              <el-select v-model="form.isDimission" clearable  style="width:200px;" placeholder="请选择">
+              <el-select v-model="form.isDimission" clearable style="width:200px;" placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -62,22 +62,22 @@
       <el-button type="primary" @click="" style="width:70px">恢复</el-button>
       <el-button type="primary" @click="distributionDepartment" style="width:80px">分配部门</el-button>
     </div>
-    <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
+    <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.id" ><span width="0px;"></span></el-radio>
+          <el-radio v-model="selection" :label="scope.row.id"><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
       <el-table-column prop="staffNum" label="员工编号" width="150"></el-table-column>
-      <el-table-column prop="accountId" label="登陆账号"width="150"></el-table-column>
+      <el-table-column prop="accountId" label="登陆账号" width="150"></el-table-column>
       <el-table-column prop="staffName" label="员工姓名" width="120"></el-table-column>
       <el-table-column prop="staffSex" label="性别" width="50" style="text-align: center">
         <template slot-scope="scope">
           {{SexEnum[scope.row.staffSex]}}
         </template>
       </el-table-column>
-      <el-table-column prop="staffTelephone" label="员工手机" ></el-table-column>
+      <el-table-column prop="staffTelephone" label="员工手机"></el-table-column>
       <el-table-column prop="staffEmail" label="员工邮箱" width="200"></el-table-column>
       <el-table-column prop="departmentId" label="所属部门" width="120"></el-table-column>
       <el-table-column prop="upperDepartmentNo" label="上级部门" width="150"></el-table-column>
@@ -96,19 +96,20 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
-    <el-dialog :title="title"  :visible.sync="deleteEmployeeFlag" :close-on-click-modal="false" width="700px">
+    <el-dialog :title="title" :visible.sync="deleteEmployeeFlag" :close-on-click-modal="false" width="700px">
       <div class="dialog-main">
-       <p>确认要删除该员工吗？</p>
+        <p>确认要删除该员工吗？</p>
       </div>
       <template slot="footer">
         <el-button type="primary" @click="sureDelete">确定</el-button>
         <el-button @click="cancelDelete">取消</el-button>
       </template>
     </el-dialog>
-    <el-dialog :title="title"  :visible.sync="distributionDepartmentFlag" :close-on-click-modal="false" width="700px">
+    <el-dialog :title="title" :visible.sync="distributionDepartmentFlag" :close-on-click-modal="false" width="700px">
       <div class="dialog-main">
         <el-form :inline="true" :model="formdiStributionDepartment" class="demo-form-inline" label-width="100px">
-          <el-form-item label="分配部门"></el-form-item><br>
+          <el-form-item label="分配部门"></el-form-item>
+          <br>
           <el-form-item label="员工编号">
             <el-input v-model="formdiStributionDepartment.staffId" placeholder="请输入员工编号"></el-input>
           </el-form-item>
@@ -142,7 +143,8 @@
         </div>
         <div class="description">
           <span class="dialog-span">描述:</span>
-          <el-input type="textarea" :rows="5" style="width: 500px;" resize="none" v-model="description" placeholder="请输入描述信息"></el-input>
+          <el-input type="textarea" :rows="5" style="width: 500px;" resize="none" v-model="description"
+                    placeholder="请输入描述信息"></el-input>
         </div>
       </div>
       <template slot="footer">
@@ -156,6 +158,7 @@
 
 <script>
   import commonUtils from '../../common/commonUtils'
+
   export default {
     data() {
       return {
@@ -172,34 +175,34 @@
           upperDepartmentNo: '',
         },
         tableData: [],
-        selection:'',
-        id:'',
-        staffName:'',
-        accountId:'',
-        staff_name:'',
-        staffSex:'',
-        SexEnum:{},
-        staffTelephone:'',
-        staffEmail:'',
-        departmentId:'',
-        upperDepartmentNo:'',
-        isDimission:'',
-        isDimissionEnum:{},
-        title:'模板',
-        dialogVisible:false,
-        templateGroupName:'测试',
-        description:'测试',
-        staffDtoList:[],
-        formdiStributionDepartment:{
-          staffId:'',
-          staffName:'',
-          staffSex:'',
-          staffPhone:'',
-          staffBeforeDepartment:'',
-          staffAfterDepartment:'',
+        selection: '',
+        id: '',
+        staffName: '',
+        accountId: '',
+        staff_name: '',
+        staffSex: '',
+        SexEnum: {},
+        staffTelephone: '',
+        staffEmail: '',
+        departmentId: '',
+        upperDepartmentNo: '',
+        isDimission: '',
+        isDimissionEnum: {},
+        title: '模板',
+        dialogVisible: false,
+        templateGroupName: '测试',
+        description: '测试',
+        staffDtoList: [],
+        formdiStributionDepartment: {
+          staffId: '',
+          staffName: '',
+          staffSex: '',
+          staffPhone: '',
+          staffBeforeDepartment: '',
+          staffAfterDepartment: '',
         },
-        distributionDepartmentFlag:false,
-        deleteEmployeeFlag:false,
+        distributionDepartmentFlag: false,
+        deleteEmployeeFlag: false,
         options: [{
           value: '0',
           label: '在职'
@@ -207,7 +210,7 @@
           value: '1',
           label: '离职'
         }]
-    }
+      }
     },
     activated() {
       commonUtils.Log("页面激活");
@@ -233,11 +236,11 @@
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
-          staffNum:self.form.staffNum,
-          staffName:self.form.staffName,
-          departmentId:self.form.departmentId,
+          staffNum: self.form.staffNum,
+          staffName: self.form.staffName,
+          departmentId: self.form.departmentId,
           isDimission: self.form.isDimission,
-          accountId:self.form.accountId ,
+          accountId: self.form.accountId,
           upper_department_no: self.form.upperDepartmentNo,
         };
         self.$http.get('employee/querylist.do_', {
@@ -249,50 +252,50 @@
           self.isDimissionEnum = result.isDismissionEnum;
           self.staffDtoList = result.staffDtoList;
         }).catch(function (error) {
-          commonUtils.Log("employee/querylist.do_:"+error);
+          commonUtils.Log("employee/querylist.do_:" + error);
           self.$message.error("获取数据错误");
         });
       },
-      save(){
-        this.dialogVisible=false;
+      save() {
+        this.dialogVisible = false;
       },
-      cancel(){
-        this.dialogVisible=false;
+      cancel() {
+        this.dialogVisible = false;
       },
-      add(){
-        this.dialogVisible=true;
+      add() {
+        this.dialogVisible = true;
       },
-      createEmployee(){//点击新建按钮，跳转到新建页面
+      createEmployee() {//点击新建按钮，跳转到新建页面
         this.$router.replace('/CreateEmployee')
 
       },
-      modifyEmployee(){//点击修改按钮，跳转到修改页面
+      modifyEmployee() {//点击修改按钮，跳转到修改页面
         this.$router.replace('/ModifyEmployee')
       },
-      deleteEmployee(){//删除员工
-        this.deleteEmployeeFlag=true;
+      deleteEmployee() {//删除员工
+        this.deleteEmployeeFlag = true;
       },
-      sureDelete(){//确认框中确认删除员工
+      sureDelete() {//确认框中确认删除员工
 
       },
-      cancelDelete(){//确认框中取消删除员工,并返回到员工管理列表页
+      cancelDelete() {//确认框中取消删除员工,并返回到员工管理列表页
         this.$router.replace('/EmployeeManagement');
       },
-      distributionDepartment(){
-        this.distributionDepartmentFlag=true;
+      distributionDepartment() {
+        this.distributionDepartmentFlag = true;
       },
-      saveDepartment(){
+      saveDepartment() {
 
       },
-      cancelDepartment(){
+      cancelDepartment() {
 
       },
       exportExcel() {
         require.ensure([], () => {
-          const { export_json_to_excel } = require('../../excel/Export2Excel');
-          const tHeader = ['员工编号', '登录账号', '员工姓名','性别','员工手机','员工邮箱','所属部门','上级部门','是否离职'];
+          const {export_json_to_excel} = require('../../excel/Export2Excel');
+          const tHeader = ['员工编号', '登录账号', '员工姓名', '性别', '员工手机', '员工邮箱', '所属部门', '上级部门', '是否离职'];
           // 上面设置Excel的表格第一行的标题
-          const filterVal = ['staffNum', 'accountId', 'staffName','staffSex','staffTelephone','staffEmail','departmentId','upperDepartmentNo','isDimission'];
+          const filterVal = ['staffNum', 'accountId', 'staffName', 'staffSex', 'staffTelephone', 'staffEmail', 'departmentId', 'upperDepartmentNo', 'isDimission'];
           // 上面的staffNum、accountId、staffName是tableData里对象的属性
           const list = this.staffDtoList;  //把data里的tableData存到list
           console.log(list);

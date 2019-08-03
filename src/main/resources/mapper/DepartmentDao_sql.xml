@@ -59,7 +59,9 @@
                 T.upper_department_no=#{upperDepartmentNo}
             </if>
             <if test="status != null and status.trim()!=''">AND T.status=#{status}</if>
-            <if test="departmentType != null and departmentType.trim()!=''">AND T.department_type=#{departmentType}</if>
+            <if test="departmentType != 0 and departmentType != null and departmentType.trim()!=''">AND
+                T.department_type=#{departmentType}
+            </if>
         </where>
     </select>
 </mapper>

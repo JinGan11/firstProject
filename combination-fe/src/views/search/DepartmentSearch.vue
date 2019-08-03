@@ -26,9 +26,12 @@
         <el-input v-model="formInline.status"></el-input>
       </el-form-item>
       <el-form-item label="部门类型">
-        <el-select v-model="formInline.departmentType" value="type1">
-          <el-option label="type1" value="type11"></el-option>
-          <el-option label="type2" value="type22"></el-option>
+        <el-select v-model="formInline.departmentType" value="0">
+          <el-option label="全部" value="0"></el-option>
+          <el-option label="门店" value="1"></el-option>
+          <el-option label="停车场" value="2"></el-option>
+          <el-option label="交车中心" value="3"></el-option>
+          <el-option label="维修厂" value="4"></el-option>
         </el-select>
       </el-form-item>
       <br>

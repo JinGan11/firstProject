@@ -127,11 +127,11 @@
           department: '',
           isDimission: '',
           accountNo: '',
-          create_time:'',
-          create_emp:'',
-          modify_time:'',
-          modify_emp:'',
-          remark:'',
+          create_time: '',
+          create_emp: '',
+          modify_time: '',
+          modify_emp: '',
+          remark: '',
 
         },
         tableData: [],
@@ -143,11 +143,11 @@
         department: '',
         isDimission: '',
         accountNo: '',
-        create_time:'',
-        create_emp:'',
-        modify_time:'',
-        modify_emp:'',
-        remark:'',
+        create_time: '',
+        create_emp: '',
+        modify_time: '',
+        modify_emp: '',
+        remark: '',
       }
     },
 
@@ -161,12 +161,11 @@
       save() {//保存修改后的员工信息
 
       },
-      cancel(){//关闭修改员工页面，返回员工管理列表页面
+      cancel() {//关闭修改员工页面，返回员工管理列表页面
         this.$router.replace('/EmployeeManagement')
       },
 
     },
-
 
 
   }

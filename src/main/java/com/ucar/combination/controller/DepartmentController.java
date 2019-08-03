@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +60,7 @@ public class DepartmentController {
 	public Result searchDepartment(HttpServletRequest request, @RequestParam(defaultValue = "") String page, @RequestParam(defaultValue = "") String limit, @RequestParam(defaultValue = "") String departmentName, @RequestParam(defaultValue = "") String staffName, @RequestParam(defaultValue = "") String staffId, @RequestParam(defaultValue = "") String telePhone, @RequestParam(defaultValue = "") String cityName,
 								   @RequestParam(defaultValue = "") String level, @RequestParam(defaultValue = "") String upperDepartmentNo, @RequestParam(defaultValue = "") String status, @RequestParam(defaultValue = "") String departmentType) {
 		Map<String, Object> params = new HashMap<>();
+		ResultPage resultPage = null;
 		params.put("page", page);
 		params.put("limit", limit);
 		params.put("departmentName", departmentName);
@@ -69,8 +71,24 @@ public class DepartmentController {
 		params.put("level", level);
 		params.put("upperDepartmentNo", upperDepartmentNo);
 		params.put("status", status);
+		/*if ("0".equals(departmentType)&&departmentType!=null) {
+			for (int i = 1; i < 5; i++) {
+				params.put("departmentType", String.valueOf(i));
+				ResultPage resultPage1 = departmentService.searchDepartment(new QueryParam(params));
+				resultPage.setList(resultPage.getList().add(resultPage1.getList()));
+			}
+		} else{
+			params.put("departmentType",  departmentType);
+			resultPage = departmentService.searchDepartment(new QueryParam(params));
+		}
+		List<String> departmentTypeList=null;
+		if ("0".equals(departmentType)&&departmentType!=null){
+			departmentTypeList= Arrays.asList("1","2","3","4");
+		}else {
+			departmentTypeList.add(departmentType);
+		}*/
 		params.put("departmentType", departmentType);
-		ResultPage resultPage = departmentService.searchDepartment(new QueryParam(params));
+		resultPage = departmentService.searchDepartment(new QueryParam(params));
 		return new Result().ok().put("page", resultPage);
 	}
 }
