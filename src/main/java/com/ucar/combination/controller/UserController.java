@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 /**
  * @program: combination
  * @description: 用户Controller
@@ -29,7 +32,10 @@ public class UserController {
      * @return 结果集
      */
     @RequestMapping("/updatePassword")
-    public ReturnResult updatePassword(@RequestBody User user) {
+    public ReturnResult updatePassword(@RequestBody User user, HttpSession session) {
+        //通过session获取用户的Id
+        Long accountId = (Long) session.getAttribute("accountId");
+        user.setCreateEmp(accountId);
         ReturnResult result = userService.updatePassword(user);
         return result;
     }

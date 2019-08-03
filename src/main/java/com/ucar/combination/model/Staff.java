@@ -22,6 +22,15 @@ public class Staff extends BaseBean {
     private Integer isDimission;
     private Integer status;
     private String remark;
+    private Long accountId;
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
 
     public Long getId() {
         return id;

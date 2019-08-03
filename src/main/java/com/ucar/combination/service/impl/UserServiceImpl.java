@@ -4,7 +4,6 @@ import com.ucar.combination.common.ReturnResult;
 import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.dao.UserDao;
 import com.ucar.combination.model.HisPassword;
-import com.ucar.combination.model.LoginUser;
 import com.ucar.combination.model.Staff;
 import com.ucar.combination.model.User;
 import com.ucar.combination.service.UserService;
@@ -12,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,9 +39,9 @@ public class UserServiceImpl implements UserService {
      * @return 登陆结果
      */
     @Override
-    public ReturnResult login(LoginUser loginUser) {
+    public ReturnResult login(User loginUser) {
         ReturnResult result = new ReturnResult();
-        List<LoginUser> list = userDao.qryAccountPwdByAccountName(loginUser);
+        List<User> list = userDao.qryAccountByAccountName(loginUser);
         if (list.size() == 0) {
             result.setCode(300);
             result.setMsg("没有该用户");
@@ -50,6 +51,7 @@ public class UserServiceImpl implements UserService {
             if (md5Password.equals(list.get(0).getAccountPassword())) {
                 result.setCode(200);
                 result.setMsg("登陆成功！");
+                result.setList(list);
                 return result;
             } else {
                 result.setCode(300);
@@ -87,7 +89,6 @@ public class UserServiceImpl implements UserService {
             list = userDao.qryAccountByAccountName(user);
             if (list.size() != 0){
                 userInfo = list.get(0);
-                user.setId(userInfo.getId());
             }
             if (!md5Password.equals(userInfo.getAccountPassword())) {
                 // 查询历史密码

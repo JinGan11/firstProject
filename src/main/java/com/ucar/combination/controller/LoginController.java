@@ -1,7 +1,7 @@
 package com.ucar.combination.controller;
 
 import com.ucar.combination.common.ReturnResult;
-import com.ucar.combination.model.LoginUser;
+import com.ucar.combination.model.User;
 import com.ucar.combination.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * @program: combination
@@ -35,12 +36,16 @@ public class LoginController {
      * @return Result结果集
      */
     @RequestMapping("/login.do_")
-    public ReturnResult login(@RequestBody(required = false) LoginUser loginUser, HttpServletRequest request) {
+    public ReturnResult login(@RequestBody(required = false) User loginUser, HttpServletRequest request) {
         HttpSession session = request.getSession();
         ReturnResult result = userService.login(loginUser);
+        List<User> list = (List<User>) result.getList();
         if (result.getCode() == 200) {
-            session.setAttribute("username", loginUser.getAccountName());
+            System.out.println(list);
+            session.setAttribute("accountName", loginUser.getAccountName());
+            session.setAttribute("accountId", list.get(0).getId());
         }
+        result.setList(null);
         return result;
     }
 }

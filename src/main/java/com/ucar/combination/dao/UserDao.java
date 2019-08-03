@@ -1,7 +1,6 @@
 package com.ucar.combination.dao;
 
 import com.ucar.combination.model.HisPassword;
-import com.ucar.combination.model.LoginUser;
 import com.ucar.combination.model.User;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public interface UserDao {
      * @params loginUser 用户登陆信息
      * @return 返回用户列表
      */
-    List<LoginUser> qryAccountPwdByAccountName(LoginUser loginUser);
+    List<User> qryAccountPwdByAccountName(User loginUser);
 
     /**
      * description: 查询历史密码

@@ -26,7 +26,7 @@
         where account_name = #{accountName}
     </select>
 
-    <select id="qryAccountPwdByAccountName" parameterType="String" resultType="com.ucar.combination.model.LoginUser">
+    <select id="qryAccountPwdByAccountName" parameterType="String" resultType="com.ucar.combination.model.User">
         SELECT
         account_name,account_password
         FROM t_account
