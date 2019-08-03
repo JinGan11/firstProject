@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static com.ucar.combination.common.CommonMethod.objectToMap;
 
 /**
  * description:员工管理列表
- *
  * @author qingyu.lan@ucarinc.com
  * @version 1.0
  * @date: 2019-07-27 17:00:21
@@ -28,9 +30,15 @@ public class EmployeeManageController {
     @Autowired
     private EmployeeManageService employeeManageService;
 
+    /**
+     * 查询员工列表
+     * @param request
+     * @return
+     * @throws IllegalAccessException
+     */
     @ResponseBody
     @RequestMapping("/querylist.do_")
-    public Result list(HttpServletRequest request) {
+    public Result list(HttpServletRequest request) throws IllegalAccessException {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         String staff_num = request.getParameter("staffNum");
@@ -49,7 +57,10 @@ public class EmployeeManageController {
         params.put("department", department);
         params.put("upper_department_no", upper_department_no);
         ResultPage resultPage = employeeManageService.queryList(new QueryParam(params));
+        List<Object> staffDtoList = employeeManageService.getStaffList(new QueryParam(params));
         return new Result().ok().put("page", resultPage).put("SexEnum", CommonEnums.toEnumMap(CommonEnums.Sex.values()))
-                .put("isDismissionEnum",CommonEnums.toEnumMap(CommonEnums.isDimission.values()));
+                .put("isDismissionEnum", CommonEnums.toEnumMap(CommonEnums.isDimission.values()))
+                .put("staffDtoList", objectToMap(staffDtoList));
     }
+
 }

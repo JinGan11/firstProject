@@ -48,7 +48,7 @@
           <el-col style="text-align: center">
             <el-form-item>
               <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
-              <el-button type="primary" style="width:100px" @click="">导出</el-button>
+              <el-button type="primary" style="width:100px" @click="exportExcel">导出</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -147,7 +147,6 @@
 
 <script>
   import commonUtils from '../../common/commonUtils'
-
   export default {
     data() {
       return {
@@ -180,6 +179,7 @@
         dialogVisible:false,
         templateGroupName:'测试',
         description:'测试',
+        staffDtoList:[],
         formdiStributionDepartment:{
           staffId:'',
           staffName:'',
@@ -233,10 +233,10 @@
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
-          console.log(self.tableData);
           self.total = result.page.totalCount;
           self.SexEnum = result.SexEnum;
           self.isDimissionEnum = result.isDismissionEnum;
+          self.staffDtoList = result.staffDtoList;
         }).catch(function (error) {
           commonUtils.Log("employee/querylist.do_:"+error);
           self.$message.error("获取数据错误");
@@ -266,6 +266,22 @@
       },
       cancelDepartment(){
 
+      },
+      exportExcel() {
+        require.ensure([], () => {
+          const { export_json_to_excel } = require('../../excel/Export2Excel');
+          const tHeader = ['员工编号', '登录账号', '员工姓名','性别','员工手机','员工邮箱','所属部门','上级部门','是否离职'];
+          // 上面设置Excel的表格第一行的标题
+          const filterVal = ['staffNum', 'accountId', 'staffName','staffSex','staffTelephone','staffEmail','departmentId','upperDepartmentNo','isDimission'];
+          // 上面的staffNum、accountId、staffName是tableData里对象的属性
+          const list = this.staffDtoList;  //把data里的tableData存到list
+          console.log(list);
+          const data = this.formatJson(filterVal, list);
+          export_json_to_excel(tHeader, data, '员工管理列表excel');
+        })
+      },
+      formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
       }
     }
   }

@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * description:员工管理列表
@@ -25,10 +24,26 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
     @Autowired(required = false)
     private EmployeeManageDao employeeManageDao;
 
+    /**
+     * description：查询员工列表
+     * @author qingyu.lan@ucarinc.com
+     * @param queryParam
+     * @return
+     */
     @Override
     public ResultPage queryList(QueryParam queryParam) {
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
-        List<StaffDto> list = employeeManageDao.queryList(queryParam);
+        List<Object> list = employeeManageDao.queryList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
+    }
+
+    /**
+     * description：导出员工列表
+     * @author qingyu.lan@ucarinc.com
+     * @param queryParam
+     * @return
+     */
+    public List<Object> getStaffList(QueryParam queryParam){
+        return employeeManageDao.queryList(queryParam);
     }
 }

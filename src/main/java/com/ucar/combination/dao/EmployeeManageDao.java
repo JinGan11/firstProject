@@ -21,7 +21,7 @@ public interface EmployeeManageDao {
      * @param map
      * @return
      */
-    List<StaffDto> queryList(Map<String, Object> map);
+    List<Object> queryList(Map<String, Object> map);
 
     /**
      * description: 通过id查询员工信息
