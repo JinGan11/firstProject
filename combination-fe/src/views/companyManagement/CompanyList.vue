@@ -78,17 +78,17 @@
       <el-table-column prop="id" label="编号" width="150"></el-table-column>
       <el-table-column prop="companyName" label="公司名称"width="150"></el-table-column>
       <el-table-column prop="creditCode" label="统一社会信用代码" width="120"></el-table-column>
-      <el-table-column prop="companyType" label="类型" width="50" style="text-align: center">
+      <el-table-column prop="companyType" label="类型" width="150" style="text-align: center">
         <template slot-scope="scope">
           {{CompanyTypeEnum[scope.row.companyType]}}
         </template>
       </el-table-column>
-      <el-table-column prop="companyNature" label="公司性质" width="50" style="text-align: center">
+      <el-table-column prop="companyNature" label="公司性质" width="100" style="text-align: center">
         <template slot-scope="scope">
           {{CompanyNatureEnum[scope.row.companyNature]}}
         </template>
       </el-table-column>
-      <el-table-column prop="companyMark" label="总公司标志" width="50" style="text-align: center">
+      <el-table-column prop="companyMark" label="总公司标志" width="100" style="text-align: center">
         <template slot-scope="scope">
           {{CompanyMarkEnum[scope.row.companyMark]}}
         </template>
