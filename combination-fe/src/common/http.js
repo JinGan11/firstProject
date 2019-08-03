@@ -1,4 +1,5 @@
 import axios from 'axios'
+axios.defaults.withCredentials=true;
 import qs from 'qs'
 
 export default {
@@ -23,7 +24,7 @@ var myInterceptor = axios.interceptors.request.use(function (config) {
   return Promise.reject(error);
 });
 
-// axios.interceptors.request.eject(myInterceptor);
+axios.interceptors.request.eject(myInterceptor);
 
 const downloadUrl = data => {
   var blob = new Blob([data])

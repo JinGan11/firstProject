@@ -1,6 +1,5 @@
 package com.ucar.combination.controller;
 
-import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ReturnResult;
 import com.ucar.combination.model.LoginUser;
 import com.ucar.combination.service.UserService;
