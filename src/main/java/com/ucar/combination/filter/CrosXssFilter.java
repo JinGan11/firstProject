@@ -20,8 +20,8 @@ import java.util.Arrays;
 @WebFilter(urlPatterns = "/*")
 public class CrosXssFilter implements Filter{
     // 多个跨域域名设置
-    public static final String[] ALLOW_DOMAIN = {"http://localhost:8080",
-            "http://localhost:8090", "http://localhost:8081", "http://localhost:8082"};
+    public static final String[] ALLOW_DOMAIN = {"http://localhost:8081",
+            "http://localhost:8082", "http://localhost:8083", "http://localhost:8084", "http://localhost:8084"};
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
