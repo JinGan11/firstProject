@@ -57,7 +57,7 @@
     <div style="margin-bottom: 10px">
       <el-button type="primary" @click="createEmployee" style="width:70px">新建</el-button>
       <el-button type="primary" @click="modifyEmployee" style="width:70px">修改</el-button>
-      <el-button type="primary" @click="" style="width:70px">删除</el-button>
+      <el-button type="primary" @click="deleteEmployee" style="width:70px">删除</el-button>
       <el-button type="primary" @click="" style="width:70px">离职</el-button>
       <el-button type="primary" @click="" style="width:70px">恢复</el-button>
       <el-button type="primary" @click="distributionDepartment" style="width:80px">分配部门</el-button>
@@ -96,6 +96,15 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
+    <el-dialog :title="title"  :visible.sync="deleteEmployeeFlag" :close-on-click-modal="false" width="700px">
+      <div class="dialog-main">
+       <p>确认要删除该员工吗？</p>
+      </div>
+      <template slot="footer">
+        <el-button type="primary" @click="sureDelete">确定</el-button>
+        <el-button @click="cancelDelete">取消</el-button>
+      </template>
+    </el-dialog>
     <el-dialog :title="title"  :visible.sync="distributionDepartmentFlag" :close-on-click-modal="false" width="700px">
       <div class="dialog-main">
         <el-form :inline="true" :model="formdiStributionDepartment" class="demo-form-inline" label-width="100px">
@@ -153,6 +162,7 @@
         total: 0,
         currentPage: 1,
         pageSize: 10,
+
         form: {
           staffNum: '',
           staffName: '',
@@ -189,6 +199,7 @@
           staffAfterDepartment:'',
         },
         distributionDepartmentFlag:false,
+        deleteEmployeeFlag:false,
         options: [{
           value: '0',
           label: '在职'
@@ -257,6 +268,15 @@
       },
       modifyEmployee(){//点击修改按钮，跳转到修改页面
         this.$router.replace('/ModifyEmployee')
+      },
+      deleteEmployee(){//删除员工
+        this.deleteEmployeeFlag=true;
+      },
+      sureDelete(){//确认框中确认删除员工
+
+      },
+      cancelDelete(){//确认框中取消删除员工,并返回到员工管理列表页
+        this.$router.replace('/EmployeeManagement');
       },
       distributionDepartment(){
         this.distributionDepartmentFlag=true;
