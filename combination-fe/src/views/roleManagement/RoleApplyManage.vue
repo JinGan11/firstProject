@@ -258,7 +258,7 @@
         });
       },
       createRoleApply(){//新建角色申请
-        this.$router.replace('/CreateRoleApply')
+        this.$router.replace('/createRoleApply')
       }
     }
   }

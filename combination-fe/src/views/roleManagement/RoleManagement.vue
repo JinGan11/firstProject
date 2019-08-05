@@ -23,8 +23,8 @@
     </div>
     <div style="margin-bottom: 10px">
       <el-button type="primary" @click="createRole" style="width:100px">新建</el-button>
-      <el-button type="primary" @click="" style="width:100px">修改</el-button>
-      <el-button type="primary" @click="" style="width:100px">删除</el-button>
+      <el-button type="primary" @click="modifyRole" style="width:100px">修改</el-button>
+      <el-button type="primary" @click="deletRole" style="width:100px">删除</el-button>
       <el-button type="primary" @click="" style="width:100px">添加账号</el-button>
       <el-button type="primary" @click="" style="width:100px">分配权限</el-button>
     </div>
@@ -71,15 +71,16 @@
           name: '',
         },
         tableData: [],
-        selection:'',
-        roleId:'',
-        roleName:'',
-        accountNum:'',
-        staffNum:'',
-        staffName:'',
-        departmentName:'',
-        roleStatus:'',
-        description:'',
+        selection: '',
+        id: '',
+        roleId: '',
+        roleName: '',
+        accountNum: '',
+        staffNum: '',
+        staffName: '',
+        departmentName: '',
+        roleStatus: '',
+        description: '',
       }
     },
     activated() {
@@ -87,6 +88,7 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
+      this.fetchData();
     },
     methods: {
       handleSizeChange(val) {
@@ -114,13 +116,42 @@
           self.tableData = result.page.list;
           self.total = result.page.totalCount;
         }).catch(function (error) {
-          commonUtils.Log("roleManage/querylist.do_:"+error);
+          commonUtils.Log("roleManage/querylist.do_:" + error);
           self.$message.error("获取数据错误");
         });
-        },
-      createRole(){
+      },
+      createRole() {
         //点击新建按钮，进入新建角色界面
         this.$router.replace('/CreateRole')
+      },
+      modifyRole() {
+        //点击修改按钮，进入修改角色页面
+        this.$router.replace('/ModifyRole')
+      },
+      deletRole() {//删除角色信息
+        this.$confirm('此操作将删除该角色, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          var self = this;
+          var param = {
+            selection:self.selection,
+          };
+          self.$http.get('roleManage/updateStatus.do_', {
+            params: param
+          }).then(() => {
+            self.$message.success("成功删除");
+          }).catch(function (error) {
+            commonUtils.Log("roleManage/updateStatus.do_:" + error);
+            self.$message.error("获取数据错误");
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       }
     }
   }

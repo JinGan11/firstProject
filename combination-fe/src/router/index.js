@@ -14,12 +14,13 @@ import AccountManagement from '@/views/accountManagement/AccountList'
 import CreateEmployee from '@/views/employeeManagement/CreateEmployee'
 import ModifyEmployee from '@/views/employeeManagement/ModifyEmployee'
 import RoleManagement from '@/views/roleManagement/RoleManagement'
-import DepartmentManagementTest from '@/views/departmentManagement/DepartmentTest'
+import DepartmentManagementTest from '@/views/departmentManagement/DepartmentTree'
 import CompanyManagement from '@/views/companyManagement/CompanyList'
 import CreateRole from '@/views/roleManagement/CreateRole'
 import CreateRoleApply from '@/views/roleManagement/CreateRoleApply'
 import CreateCompany from'@/views/companyManagement/CreateCompany'
 import DepartmentAdd from '@/views/departmentManagement/DepartmentAdd'
+import ModifyRole from "@/views/roleManagement/ModifyRole";
 Vue.use(Router)
 
 export default new Router({
@@ -107,6 +108,10 @@ export default new Router({
     path:'/departmentManagement/addDepartment',
     name:'添加部门',
     component:DepartmentAdd
-  }
+  },{
+      path:'/ModifyRole',
+      name:'修改角色',
+      component:ModifyRole
+    }
   ]
 })

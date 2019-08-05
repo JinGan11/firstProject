@@ -12,4 +12,5 @@ import java.util.Map;
  */
 public interface RoleManagementDao {
     List<Map<String, Object>> queryList(Map<String, Object> map);
+    void updateStatus(int id);
 }

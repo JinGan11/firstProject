@@ -16,6 +16,15 @@
         <if test="role_name != null and role_name.trim() != ''">
             AND t1.role_name = #{role_name}
         </if>
+        <if test="id != null">
+            AND t1.id = #{id}
+        </if>
     </select>
+
+    <update id="updateStatus">
+        update t_role_info t1
+        set t1.role_status=0
+        where t1.id = #{id}
+    </update>
 
 </mapper>

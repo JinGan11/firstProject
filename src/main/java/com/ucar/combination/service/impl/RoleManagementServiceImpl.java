@@ -31,4 +31,9 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         System.out.println(list);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
+
+    @Override
+    public void updateStatus(int id){
+        roleManagementDao.updateStatus(id);
+    }
 }

@@ -38,7 +38,17 @@ public class RoleManagementController {
         params.put("limit", limit);
         params.put("role_name",roleName);
         ResultPage resultPage = roleManagementService.queryList(new QueryParam(params));
-//        return new Result().ok().put("page", resultPage);
         return Result.ok().put("page",resultPage);
+    }
+
+    @ResponseBody
+    @RequestMapping("/updateStatus.do_")
+    public void update(HttpServletRequest request){
+        String strid = request.getParameter("selection");
+        if (strid != "") {
+            int id = Integer.parseInt(strid);
+            roleManagementService.updateStatus(id);
+        } else{
+        }
     }
 }

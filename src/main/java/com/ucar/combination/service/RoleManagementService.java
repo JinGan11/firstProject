@@ -13,4 +13,5 @@ import com.ucar.combination.common.ResultPage;
 public interface RoleManagementService {
 
     ResultPage queryList(QueryParam queryParam);
+    void updateStatus(int id);
 }
