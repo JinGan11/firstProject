@@ -31,6 +31,7 @@ public class RoleApplyManageController {
     public Result list(HttpServletRequest request) {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
+        //请求界面中的数据
         String roleApplyNum = request.getParameter("roleApplyNum");
         String roleId = request.getParameter("roleId");
         String roleName = request.getParameter("roleName");
@@ -44,6 +45,7 @@ public class RoleApplyManageController {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("page", page);
         params.put("limit", limit);
+        //对应前端界面中的  未其赋值  查询时 后面的占位符
         params.put("roleApplyNum", roleApplyNum);
         params.put("roleId", roleId);
         params.put("roleName", roleName);

@@ -17,6 +17,7 @@ import RoleManagement from '@/views/roleManagement/RoleManagement'
 import DepartmentManagementTest from '@/views/departmentManagement/DepartmentTree'
 import CompanyManagement from '@/views/companyManagement/CompanyList'
 import CreateRole from '@/views/roleManagement/CreateRole'
+import CreateRoleApply from '@/views/roleManagement/CreateRoleApply'
 Vue.use(Router)
 
 export default new Router({
@@ -89,9 +90,13 @@ export default new Router({
     name:'公司查询',
     component:CompanyManagement
   },{
-      path:'/CreateRole',
-      name:'新建角色',
-      component:CreateRole
-    }
+    path:'/CreateRole',
+    name:'新建角色',
+    component:CreateRole
+  },{
+    path:'/createRoleApply',
+    name:'新建角色申请',
+    component:CreateRoleApply
+  }
   ]
 })

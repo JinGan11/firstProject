@@ -91,7 +91,7 @@
     </div>
     <div style="margin-bottom: 10px; margin-top:20px; margin-left:40px">
       <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
-      <el-button type="primary" @click="" style="width:70px">新建</el-button>
+      <el-button type="primary" @click="createRoleApply" style="width:70px">新建</el-button>
       <el-button type="primary" @click="" style="width:70px">修改</el-button>
       <el-button type="primary" @click="deleteApply(scope.row)" style="width:70px">删除</el-button>
       <el-button type="primary" @click="" style="width:70px">提交审核</el-button>
@@ -240,18 +240,26 @@
           applyTime:self.form.applyTime ,
           modifyTime: self.form.modifyTime,
         };
+        // get请求 只是基本的HTTP调用，用来执行增晒改查  并不表示get用来获取数据
+        // url  请求地址
+        // param  对象 用来替换url中的模板变量，模板变量中未匹配到的属性添加在URL地址后边作为查询参数。
         self.$http.get('roleApply/querylist.do_', {
           params: param
         }).then((result) => {
+          //请求成功回调
           self.tableData = result.page.list;
           self.total = result.page.totalCount;
           self.BusinessLineEnum = result.BusinessLineEnum;
           self.ApplyStatusEnum = result.applyStatusEnum;
         }).catch(function (error) {
+          //请求失败回调
           commonUtils.Log("roleApply/querylist.do_:"+error);
           self.$message.error("获取数据错误");
         });
       },
+      createRoleApply(){//新建角色申请
+        this.$router.replace('/CreateRoleApply')
+      }
     }
   }
 </script>
