@@ -1,6 +1,7 @@
 package com.ucar.combination.dao;
 
 import com.ucar.combination.model.HisPassword;
+import com.ucar.combination.model.UpdateUserPwd;
 import com.ucar.combination.model.User;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public interface UserDao {
      * @params user 用户信息
      * @return 无
      */
-    void updatePwdById(User user);
+    void updatePwdById(UpdateUserPwd userPwd);
 
     /**
      * description: 将旧密码插入到历史密码表中

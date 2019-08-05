@@ -2,13 +2,13 @@ package com.ucar.combination.controller;
 
 import com.ucar.combination.common.ReturnResult;
 import com.ucar.combination.model.User;
+import com.ucar.combination.model.UpdateUserPwd;
 import com.ucar.combination.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -32,11 +32,11 @@ public class UserController {
      * @return 结果集
      */
     @RequestMapping("/updatePassword")
-    public ReturnResult updatePassword(@RequestBody User user, HttpSession session) {
+    public ReturnResult updatePassword(@RequestBody UpdateUserPwd userPwdVo, HttpSession session) {
         //通过session获取用户的Id
         Long accountId = (Long) session.getAttribute("accountId");
-        user.setCreateEmp(accountId);
-        ReturnResult result = userService.updatePassword(user);
+        userPwdVo.setId(accountId);
+        ReturnResult result = userService.updatePassword(userPwdVo);
         return result;
     }
 

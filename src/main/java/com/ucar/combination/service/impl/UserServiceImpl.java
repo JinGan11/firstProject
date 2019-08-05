@@ -6,13 +6,12 @@ import com.ucar.combination.dao.UserDao;
 import com.ucar.combination.model.HisPassword;
 import com.ucar.combination.model.Staff;
 import com.ucar.combination.model.User;
+import com.ucar.combination.model.UpdateUserPwd;
 import com.ucar.combination.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +68,7 @@ public class UserServiceImpl implements UserService {
      * @return 结果集
      */
     @Override
-    public ReturnResult updatePassword(User user) {
+    public ReturnResult updatePassword(UpdateUserPwd userPwd) {
         /**
          * 1.判断之前是否用过
          * 2.是-返回提示 重新设置密码
@@ -79,40 +78,49 @@ public class UserServiceImpl implements UserService {
         ReturnResult result = new ReturnResult();
         result.setCode(200);
         result.setMsg("修改密码成功！");
+        User oldUser = new User();
+        oldUser.setAccountName(userPwd.getAccountName());
+        oldUser.setId(userPwd.getId());
+        oldUser.setAccountPassword(userPwd.getNewPassword());
         List<User> list;
         List<HisPassword> list2;
         User userInfo = null;
-        String md5Password = DigestUtils.md5DigestAsHex(user.getAccountPassword().getBytes());
-        user.setAccountPassword(md5Password);
+        String md5OldPassword = DigestUtils.md5DigestAsHex(userPwd.getOldPassword().getBytes());
+        String md5NewPassword = DigestUtils.md5DigestAsHex(userPwd.getNewPassword().getBytes());
+        userPwd.setNewPassword(md5NewPassword);
         try {
             // 获取完整的账号信息
-            list = userDao.qryAccountByAccountName(user);
+            list = userDao.qryAccountByAccountName(oldUser);
             if (list.size() != 0){
                 userInfo = list.get(0);
             }
-            if (!md5Password.equals(userInfo.getAccountPassword())) {
+            if (!md5OldPassword.equals(userInfo.getAccountPassword())) {
+                result.setMsg("原密码输入密码错误！");
+                result.setCode(303);
+                return result;
+            } else if (!md5NewPassword.equals(userInfo.getAccountPassword())) {
                 // 查询历史密码
                 list2 = userDao.qryHistoryPwdById(list.get(0));
                 if (list2.size() == 0){
                     //插入旧密码表
                     userDao.insertHisPwd(userInfo);
                     //更新新密码
-                    userDao.updatePwdById(user);
+                    userDao.updatePwdById(userPwd);
                     return result;
                 } else {
-                    if (list2.size() == 1 && !md5Password.equals(list2.get(0).getHistoryPassword())){
+                    if (list2.size() == 1 && !md5NewPassword.equals(list2.get(0).getHistoryPassword())){
                         //插入旧密码表
                         userDao.insertHisPwd(userInfo);
                         //更新新密码
-                        userDao.updatePwdById(user);
+                        userDao.updatePwdById(userPwd);
                         return result;
                     }
-                    if (list2.size() > 1 && !md5Password.equals(list2.get(1).getHistoryPassword())
-                            && !md5Password.equals(list2.get(0).getHistoryPassword())){
+                    if (list2.size() > 1 && !md5NewPassword.equals(list2.get(1).getHistoryPassword())
+                            && !md5NewPassword.equals(list2.get(0).getHistoryPassword())){
                         //插入旧密码表
                         userDao.insertHisPwd(userInfo);
                         //更新新密码
-                        userDao.updatePwdById(user);
+                        userDao.updatePwdById(userPwd);
                         return result;
                     }
                 }

@@ -41,9 +41,9 @@
         order by create_time desc
     </select>
 
-    <update id="updatePwdById" parameterType="com.ucar.combination.model.User">
+    <update id="updatePwdById" parameterType="com.ucar.combination.model.UpdateUserPwd">
         update t_account
-        set account_password = #{accountPassword}
+        set account_password = #{newPassword}
         where account_name = #{accountName} and id = #{id}
     </update>
 

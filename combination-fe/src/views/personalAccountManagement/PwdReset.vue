@@ -2,14 +2,14 @@
   <div style="width: 500px;position: fixed; left: 30%; top: 30%;">
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="100px"
              class="demo-ruleForm">
-      <el-form-item label="密码" prop="pass">
-        <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+      <el-form-item label="旧密码">
+        <el-input type="password" v-model="ruleForm.oldPass" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="确认密码" prop="checkPass">
+      <el-form-item label="新密码" prop="newPass">
+        <el-input type="password" v-model="ruleForm.newPass" autocomplete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="确认新密码" prop="checkPass">
         <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
-      </el-form-item>
-      <el-form-item label="再次确认密码" prop="checkPass2">
-        <el-input type="password" v-model="ruleForm.checkPass2" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item style="text-align: center">
         <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -31,7 +31,7 @@
         } else if (!(/((^(?=.*[a-z])(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]{8,16}$)|(^(?=.*\d)(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]{8,16}$)|(^(?=.*\d)(?=.*[a-z])(?=.*\W)[\da-zA-Z\W]{8,16}$)|(^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[\da-zA-Z\W]{8,16}$))/.test(value))) {
           callback(new Error('请输入8-16位字符，至少包含数字、大写字母、小写字母、特殊字符中的三种类型'));
         } else {
-          if (this.ruleForm.checkPass !== '') {
+          if (this.ruleForm.newPass !== '') {
             this.$refs.ruleForm.validateField('checkPass');
           }
           callback();
@@ -41,16 +41,7 @@
       var validatePass2 = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm.pass) {
-          callback(new Error('两次输入密码不一致!'));
-        } else {
-          callback();
-        }
-      };
-      var validatePass3 = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm.pass) {
+        } else if (value !== this.ruleForm.newPass) {
           callback(new Error('两次输入密码不一致!'));
         } else {
           callback();
@@ -58,20 +49,17 @@
       };
       return {
         ruleForm: {
-          pass: '',
+          oldPass: '',
+          newPass: '',
           checkPass: '',
-          checkPass2: '',
         },
         rules: {
-          pass: [
+          newPass: [
             {validator: validatePass, trigger: 'blur'}
           ],
           checkPass: [
             {validator: validatePass2, trigger: 'blur'}
           ],
-          checkPass2: [
-            {validator: validatePass3, trigger: 'blur'}
-          ]
         }
       };
     },
@@ -82,14 +70,12 @@
           if (valid) {
             var param = {
               accountName: window.sessionStorage.getItem("loginUsername"),
-              accountPassword: self.ruleForm.pass
+              oldPassword: self.ruleForm.oldPass,
+              newPassword: self.ruleForm.newPass
             };
             self.$http.post('user/updatePassword', param)
               .then((result) => {
                 if (result.code === 200) {
-                  // self.$alert("密码修改成功", '消息提醒', {
-                  //   confirmButtonText: '确定',
-                  // });
                   self.$confirm('密码修改成功，请重新登录', '提示', {
                     confirmButtonText: '确定',
                     type: 'warning'
@@ -98,8 +84,12 @@
                     App.methods.clearLoginSession();
                     self.$router.replace("/")
                   })
+                } else if (result.code === 300) {
+                  self.$alert("密码不能与前三次相同！", '消息提醒', {
+                    confirmButtonText: '确定',
+                  });
                 } else {
-                  self.$alert("密码不能与前三次相同", '消息提醒', {
+                  self.$alert("旧密码输入错误！", '消息提醒', {
                     confirmButtonText: '确定',
                   });
                 }
