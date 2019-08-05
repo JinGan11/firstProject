@@ -22,7 +22,7 @@
       </el-form>
     </div>
     <div style="margin-bottom: 10px">
-      <el-button type="primary" @click="add" style="width:100px">新建</el-button>
+      <el-button type="primary" @click="createRole" style="width:100px">新建</el-button>
       <el-button type="primary" @click="" style="width:100px">修改</el-button>
       <el-button type="primary" @click="" style="width:100px">删除</el-button>
       <el-button type="primary" @click="" style="width:100px">添加账号</el-button>
@@ -35,13 +35,13 @@
           <el-radio v-model="selection" :label="scope.row.id" ><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
-      <el-table-column prop="roleid" label="角色ID" width="150"></el-table-column>
-      <el-table-column prop="rolename" label="角色名称"width="150"></el-table-column>
-      <el-table-column prop="accountid" label="审批人账号" width="120"></el-table-column>
-      <el-table-column prop="staffid" label="审批人员工编号" ></el-table-column>
-      <el-table-column prop="accountname" label="审批人姓名" width="200"></el-table-column>
-      <el-table-column prop="departmentid" label="审批人所属部门" width="120"></el-table-column>
-      <el-table-column prop="rolestatus" label="状态" width="100"></el-table-column>
+      <el-table-column prop="roleId" label="角色ID" width="150"></el-table-column>
+      <el-table-column prop="roleName" label="角色名称"width="150"></el-table-column>
+      <el-table-column prop="accountName" label="审批人账号" width="120"></el-table-column>
+      <el-table-column prop="staffNum" label="审批人员工编号" ></el-table-column>
+      <el-table-column prop="accountName" label="审批人姓名" width="200"></el-table-column>
+      <el-table-column prop="departmentName" label="审批人所属部门" width="120"></el-table-column>
+      <el-table-column prop="roleStatus" label="状态" width="100"></el-table-column>
       <el-table-column prop="description" label="描述" width="120"></el-table-column>
     </el-table>
 
@@ -71,13 +71,13 @@
         },
         tableData: [],
         selection:'',
-        roleid:'',
-        rolename:'',
-        accountid:'',
-        staffid:'',
-        accountname:'',
-        departmentid:'',
-        rolestatus:'',
+        roleId:'',
+        roleName:'',
+        accountName:'',
+        staffNum:'',
+        staffName:'',
+        departmentName:'',
+        roleStatus:'',
         description:'',
       }
     },
@@ -105,6 +105,7 @@
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
+          roleName: self.form.name,
         };
         self.$http.get('roleManage/querylist.do_', {
           params: param
@@ -115,7 +116,11 @@
           commonUtils.Log("roleManage/querylist.do_:"+error);
           self.$message.error("获取数据错误");
         });
-      },
+        },
+      createRole(){
+        //点击新建按钮，进入新建角色界面
+        this.$router.replace('/CreateRole')
+      }
     }
   }
 </script>

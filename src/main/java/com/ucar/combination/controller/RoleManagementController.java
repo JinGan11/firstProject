@@ -32,9 +32,11 @@ public class RoleManagementController {
     public Result list(HttpServletRequest request){
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
+        String roleName=request.getParameter("roleName");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("page", page);
         params.put("limit", limit);
+        params.put("role_name",roleName);
         ResultPage resultPage = roleManagementService.queryList(new QueryParam(params));
 //        return new Result().ok().put("page", resultPage);
         return Result.ok().put("page",resultPage);

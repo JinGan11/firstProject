@@ -2,20 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ucar.combination.dao.RoleManagementDao">
     <select id="queryList" resultType="com.ucar.combination.model.Role">
-           select
-           t1.id              roleid,
-           t1.role_name       rolename,
-           t2.id             accountid,
-           t3.staff_num      staffid,
-           t3.staff_name     accountname,
-           t3.department_id  departmentid,
-           t1.role_status    rolestatus,
-           t1.description    description
-           from t_role_info t1,t_account t2,t_staff t3
-           where t1.approver_emp=t2.id
-           and t2.staff_id=t3.id
-        <if test="name != null and name.trim() != ''">
-            AND t1.name =#{name}
+        select
+        t1.id              roleId,
+        t1.role_name       roleName,
+        t1.approver_account_name   accountNum,
+        t1.approver_staff_num     staffNum,
+        t1.approver_staff_name     staffName,
+        t1.approver_department_name  departmentName,
+        t1.role_status    roleStatus,
+        t1.description    description
+        from t_role_info t1
+        where 1=1
+        <if test="role_name != null and role_name.trim() != ''">
+            AND t1.role_name = #{role_name}
         </if>
     </select>
 

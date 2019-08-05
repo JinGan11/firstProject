@@ -9,73 +9,73 @@ package com.ucar.combination.model;
  */
 public class Role {
 
-    private long roleid;
-    private String rolename;
-    private String accountid;
-    private long staffid;
-    private String accountname;
-    private String departmentid;
-    private Integer rolestatus;
+    private long roleId;
+    private String roleName;
+    private String accountNum;
+    private long staffNum;
+    private String staffName;
+    private String departmentName;
+    private Integer roleStatus;
     private String description;
 
-    public void setRoleid(long roleid) {
-        this.roleid = roleid;
+    public void setRoleId(long roleId) {
+        this.roleId = roleId;
     }
 
-    public void setRolename(String rolename) {
-        this.rolename = rolename;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
-    public void setAccountid(String accountid) {
-        this.accountid = accountid;
+    public void setAccountNum(String accountNum) {
+        this.accountNum = accountNum;
     }
 
-    public void setStaffid(long staffid) {
-        this.staffid = staffid;
+    public void setStaffNum(long staffNum) {
+        this.staffNum = staffNum;
     }
 
-    public void setAccountname(String accountname) {
-        this.accountname = accountname;
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
     }
 
-    public void setDepartmentid(String departmentid) {
-        this.departmentid = departmentid;
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 
-    public void setRolestatus(Integer rolestatus) {
-        this.rolestatus = rolestatus;
+    public void setRoleStatus(Integer roleStatus) {
+        this.roleStatus = roleStatus;
     }
 
     public void setDescription(String description) {
         this.description = description;
     }
 
-    public long getRoleid() {
-        return roleid;
+    public long getRoleId() {
+        return roleId;
     }
 
-    public String getRolename() {
-        return rolename;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public String getAccountid() {
-        return accountid;
+    public String getAccountNum() {
+        return accountNum;
     }
 
-    public long getStaffid() {
-        return staffid;
+    public long getStaffNum() {
+        return staffNum;
     }
 
-    public String getAccountname() {
-        return accountname;
+    public String getStaffName() {
+        return staffName;
     }
 
-    public String getDepartmentid() {
-        return departmentid;
+    public String getDepartmentName() {
+        return departmentName;
     }
 
-    public Integer getRolestatus() {
-        return rolestatus;
+    public Integer getRoleStatus() {
+        return roleStatus;
     }
 
     public String getDescription() {
