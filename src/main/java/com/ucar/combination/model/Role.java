@@ -12,7 +12,7 @@ public class Role {
     private long roleId;
     private String roleName;
     private String accountNum;
-    private long staffNum;
+    private String staffNum;
     private String staffName;
     private String departmentName;
     private Integer roleStatus;
@@ -30,7 +30,7 @@ public class Role {
         this.accountNum = accountNum;
     }
 
-    public void setStaffNum(long staffNum) {
+    public void setStaffNum(String staffNum) {
         this.staffNum = staffNum;
     }
 
@@ -62,7 +62,7 @@ public class Role {
         return accountNum;
     }
 
-    public long getStaffNum() {
+    public String getStaffNum() {
         return staffNum;
     }
 

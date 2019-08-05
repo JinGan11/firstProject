@@ -38,9 +38,9 @@
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
       <el-table-column prop="roleId" label="角色ID" width="150"></el-table-column>
       <el-table-column prop="roleName" label="角色名称"width="150"></el-table-column>
-      <el-table-column prop="accountName" label="审批人账号" width="120"></el-table-column>
+      <el-table-column prop="accountNum" label="审批人账号" width="120"></el-table-column>
       <el-table-column prop="staffNum" label="审批人员工编号" ></el-table-column>
-      <el-table-column prop="accountName" label="审批人姓名" width="200"></el-table-column>
+      <el-table-column prop="staffName" label="审批人姓名" width="200"></el-table-column>
       <el-table-column prop="departmentName" label="审批人所属部门" width="120"></el-table-column>
       <el-table-column prop="roleStatus" label="状态" width="100"></el-table-column>
       <el-table-column prop="description" label="描述" width="120"></el-table-column>
@@ -74,7 +74,7 @@
         selection:'',
         roleId:'',
         roleName:'',
-        accountName:'',
+        accountNum:'',
         staffNum:'',
         staffName:'',
         departmentName:'',
