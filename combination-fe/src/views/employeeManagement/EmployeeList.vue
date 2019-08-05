@@ -48,7 +48,7 @@
           <el-col style="text-align: center">
             <el-form-item>
               <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
-              <el-button type="primary" style="width:100px" @click="exportExcel">导出</el-button>
+              <el-button type="primary" style="width:100px" @click="add">导出</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -135,20 +135,16 @@
         <el-button @click="cancelDepartment">取消</el-button>
       </template>
     </el-dialog>
-    <el-dialog :title='title' :visible.sync="dialogVisible" :close-on-click-modal="false" width="600px">
-      <div class="dialog-main">
-        <div class="project-name">
-          <span class="dialog-span">分组名称:</span>
-          <el-input style="width: 500px;" v-model="templateGroupName" placeholder="输入分组名称"></el-input>
-        </div>
-        <div class="description">
-          <span class="dialog-span">描述:</span>
-          <el-input type="textarea" :rows="5" style="width: 500px;" resize="none" v-model="description"
-                    placeholder="请输入描述信息"></el-input>
-        </div>
-      </div>
+    <el-dialog :title='excelTitle' :visible.sync="dialogVisible" :close-on-click-modal="false" width="600px">
+      <template>
+        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+        <div style="margin: 15px 0;"></div>
+        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+          <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+        </el-checkbox-group>
+      </template>
       <template slot="footer">
-        <el-button type="primary" @click="save">保 存</el-button>
+        <el-button type="primary" @click="exportExcel">确定导出</el-button>
         <el-button @click="cancel">取 消</el-button>
       </template>
     </el-dialog>
@@ -159,13 +155,24 @@
 <script>
   import commonUtils from '../../common/commonUtils'
 
+  const cityOptions = ['员工编号', '登录账号', '员工姓名', '性别', '员工手机', '员工邮箱', '所属部门', '上级部门', '是否离职'];
   export default {
     data() {
       return {
         total: 0,
         currentPage: 1,
         pageSize: 10,
-
+        excelForm: {
+          staffNum: '',
+          staffName: '',
+          accountId: '',
+          staffSex: '',
+          staffTelephone: '',
+          staffEmail: '',
+          departmentId: '',
+          upperDepartmentNo: '',
+          isDimission: '',
+        },
         form: {
           staffNum: '',
           staffName: '',
@@ -179,7 +186,6 @@
         id: '',
         staffName: '',
         accountId: '',
-        staff_name: '',
         staffSex: '',
         SexEnum: {},
         staffTelephone: '',
@@ -189,6 +195,7 @@
         isDimission: '',
         isDimissionEnum: {},
         title: '模板',
+        excelTitle: '请选择需要导出的字段',
         dialogVisible: false,
         templateGroupName: '测试',
         description: '测试',
@@ -204,12 +211,21 @@
         distributionDepartmentFlag: false,
         deleteEmployeeFlag: false,
         options: [{
+          value: '2',
+          label: '全部'
+        }, {
           value: '0',
           label: '在职'
         }, {
           value: '1',
           label: '离职'
-        }]
+        }],
+        checkAll: false,
+        checkedCities: [],
+        cities: cityOptions,
+        isIndeterminate: true,
+        filterVal: [],
+        list:[]
       }
     },
     activated() {
@@ -239,7 +255,7 @@
           staffNum: self.form.staffNum,
           staffName: self.form.staffName,
           departmentId: self.form.departmentId,
-          isDimission: self.form.isDimission,
+          isDimission: (self.form.isDimission === '2') ? '' : self.form.isDimission,
           accountId: self.form.accountId,
           upper_department_no: self.form.upperDepartmentNo,
         };
@@ -291,20 +307,82 @@
 
       },
       exportExcel() {
+        if(this.checkedCities.length ===0){
+          this.$message({
+            showClose: false,
+            message: '请选择需要导出的字段',
+            type: 'error'
+          });
+        }else{
         require.ensure([], () => {
           const {export_json_to_excel} = require('../../excel/Export2Excel');
-          const tHeader = ['员工编号', '登录账号', '员工姓名', '性别', '员工手机', '员工邮箱', '所属部门', '上级部门', '是否离职'];
+          const tHeader = this.checkedCities;
           // 上面设置Excel的表格第一行的标题
-          const filterVal = ['staffNum', 'accountId', 'staffName', 'staffSex', 'staffTelephone', 'staffEmail', 'departmentId', 'upperDepartmentNo', 'isDimission'];
+
+          const filterVal = this.exportField(this.checkedCities);
           // 上面的staffNum、accountId、staffName是tableData里对象的属性
           const list = this.staffDtoList;  //把data里的tableData存到list
+          for (let i = 0; i < list.length; i++) {
+             if(list[i].isDimission === 0){
+               list[i].isDimission='在职'
+             }else{
+               list[i].isDimission='离职'
+             }
+            if(list[i].staffSex === 1){
+              list[i].staffSex='男'
+            }else{
+              list[i].staffSex='女'
+            }
+          }
           console.log(list);
           const data = this.formatJson(filterVal, list);
           export_json_to_excel(tHeader, data, '员工管理列表excel');
+          this.$message({
+            showClose: true,
+            message: '文件导出成功',
+            type: 'success'
+          });
+          this.dialogVisible=false;
+          this.checkedCities=[];
+          this.filterVal=[];
         })
+        }
       },
       formatJson(filterVal, jsonData) {
         return jsonData.map(v => filterVal.map(j => v[j]))
+      },
+      handleCheckAllChange(val) {
+        this.checkedCities = val ? cityOptions : [];
+        this.isIndeterminate = false;
+      },
+      handleCheckedCitiesChange(value) {
+        let checkedCount = value.length;
+        this.checkAll = checkedCount === this.cities.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+      },
+      exportField(val) {
+        for (let i = 0; i < val.length; i++) {
+          if (this.checkedCities[i] === '员工编号') {
+            this.filterVal.push('staffNum')
+          } else if (this.checkedCities[i] === '登录账号') {
+            this.filterVal.push('accountId')
+          } else if (this.checkedCities[i] === '员工姓名') {
+            this.filterVal.push('staffName')
+          } else if (this.checkedCities[i] === '性别') {
+            this.filterVal.push('staffSex')
+          } else if (this.checkedCities[i] === '员工手机') {
+            this.filterVal.push('staffTelephone')
+          } else if (this.checkedCities[i] === '员工邮箱') {
+            this.filterVal.push('staffEmail')
+          } else if (this.checkedCities[i] === '所属部门') {
+            this.filterVal.push('departmentId')
+          } else if (this.checkedCities[i] === '上级部门') {
+            this.filterVal.push('upperDepartmentNo')
+          } else if (this.checkedCities[i] === '是否离职') {
+            this.filterVal.push('isDimission')
+          }
+        }
+        return this.filterVal;
       }
     }
   }

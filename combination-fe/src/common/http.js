@@ -26,18 +26,6 @@ var myInterceptor = axios.interceptors.request.use(function (config) {
 
 axios.interceptors.request.eject(myInterceptor);
 
-const downloadUrl = data => {
-  var blob = new Blob([data])
-  var downloadElement = document.createElement('a');
-  var href = window.URL.createObjectURL(blob); //创建下载的链接
-  downloadElement.href = href;
-  downloadElement.download = 'code.zip'; //下载后文件名
-  document.body.appendChild(downloadElement);
-  downloadElement.click(); //点击下载
-  document.body.removeChild(downloadElement); //下载完成移除元素
-  window.URL.revokeObjectURL(href); //释放掉blob对象
-}
-
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
   if(response.headers && response.headers['content-type'] === 'application/octet-stream;charset=UTF-8'){
