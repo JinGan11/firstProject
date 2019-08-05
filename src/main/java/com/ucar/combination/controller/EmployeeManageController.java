@@ -1,14 +1,18 @@
 package com.ucar.combination.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 
+import com.ucar.combination.model.Staff;
 import com.ucar.combination.service.EmployeeManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,6 +65,20 @@ public class EmployeeManageController {
         return new Result().ok().put("page", resultPage).put("SexEnum", CommonEnums.toEnumMap(CommonEnums.Sex.values()))
                 .put("isDismissionEnum", CommonEnums.toEnumMap(CommonEnums.isDimission.values()))
                 .put("staffDtoList", objectToMap(staffDtoList));
+    }
+    /**
+     * description:在员工表中插入新员工
+     * @author shiya.li@ucarinc.com
+     * @date   2019/8/5 10:37
+     * @params staff 员工对象
+     * @return 插入成功，返回到员工列表页
+     */
+    @ResponseBody
+    @RequestMapping(value = "/insertStaff",method = RequestMethod.POST)
+    public  String insertStaff(@RequestBody Staff staff){
+        employeeManageService.insertStaff(staff);
+        System.out.println("insertStaff:"+ JSON.toJSONString(staff));
+        return "redirect:querylist.do_";
     }
 
 }

@@ -2,6 +2,7 @@ package com.ucar.combination.service;
 
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.Staff;
 
 import java.util.List;
 
@@ -26,4 +27,10 @@ public interface EmployeeManageService {
      * @return
      */
     public List<Object> getStaffList(QueryParam queryParam);
+    /**
+     * 插入新员工
+     * @param staff
+     * @return
+     */
+    public void insertStaff(Staff staff);
 }

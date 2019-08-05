@@ -157,7 +157,11 @@
     methods: {
       save() {//保存新建员工信息
           var self=this;
-          self.$http.post("employee/insertStaff",self.form).catch(function (error) {
+          self.$http.post("employee/insertStaff",self.form)
+            .then(result => {
+              self.$router.replace("/employeeManagement");
+            })
+            .catch(function (error) {
             commonUtils.Log("employee/insertStaff:"+error);
             self.$message.error("新建用户失败");
           })

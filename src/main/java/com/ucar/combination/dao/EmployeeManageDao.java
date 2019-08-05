@@ -31,4 +31,12 @@ public interface EmployeeManageDao {
      * @return 员工信息
      */
     List<Staff> qryStaffById(User user);
+    /**
+     * description:在员工表中插入新员工
+     * @author shiya.li@ucarinc.com
+     * @date   2019/8/5 9:42
+     * @params staff 员工对象
+     * @return 无
+     */
+    void insertStaff(Staff staff);
 }

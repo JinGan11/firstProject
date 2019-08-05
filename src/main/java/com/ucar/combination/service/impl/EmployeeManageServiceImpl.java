@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.EmployeeManageDao;
+import com.ucar.combination.model.Staff;
 import com.ucar.combination.model.dto.StaffDto;
 import com.ucar.combination.service.EmployeeManageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,4 +47,14 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
     public List<Object> getStaffList(QueryParam queryParam){
         return employeeManageDao.queryList(queryParam);
     }
+    /**
+     * description：插入新员工
+     * @author shiya.li@ucarinc.com
+     * @param staff:员工对象
+     * @return
+     */
+     public void insertStaff(Staff staff){
+         employeeManageDao.insertStaff(staff);
+    }
 }
+

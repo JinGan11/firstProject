@@ -51,4 +51,8 @@
         where ts.department_id = td.id
         and ts.id = #{staffId}
     </select>
+    <insert id="insertStaff" parameterType="com.ucar.combination.model.Staff">
+        insert into t_staff(staff_num,staff_name,staff_sex,staff_telephone,staff_email,department_id,is_dimission,status, create_time, create_emp, modify_time, modify_emp,remark)
+        value(#{staffNum}, #{staffName},#{staffSex},#{staffTelephone},#{staffEmail},#{departmentId},#{isDimission},1, NOW(), 1, NOW(), 1,#{remark})
+    </insert>
 </mapper>
