@@ -32,9 +32,10 @@
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.id" ><span width="0px;"></span></el-radio>
+          <el-radio v-model="selection" :label="scope.row.roleId" ><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
+      <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
       <el-table-column prop="roleId" label="角色ID" width="150"></el-table-column>
       <el-table-column prop="roleName" label="角色名称"width="150"></el-table-column>
       <el-table-column prop="accountName" label="审批人账号" width="120"></el-table-column>

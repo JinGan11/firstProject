@@ -12,7 +12,7 @@
         t1.role_status    roleStatus,
         t1.description    description
         from t_role_info t1
-        where 1=1
+        where t1.role_status=1
         <if test="role_name != null and role_name.trim() != ''">
             AND t1.role_name = #{role_name}
         </if>
