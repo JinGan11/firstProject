@@ -2,22 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ucar.combination.dao.DepartmentDao">
-    <select id="queryListAll" resultType="com.ucar.combination.model.Department">
+    <select id="queryDepartmentTreeAll" resultType="com.ucar.combination.model.dto.DepartmentTreeDto">
         SELECT
         id,
         department_no,
         department_name,
         upper_department_no
         FROM t_department
-        ORDER BY department_no
-    </select>
-    <select id="searchChildDepartment" resultType="com.ucar.combination.model.Department">
-        SELECT
-        department_no,
-        department_name
-        FROM t_department
-        WHERE upper_department_no = #{departmentNo}
-        ORDER BY department_no
+        ORDER BY id
     </select>
 
     <select id="searchDepartment" resultType="com.ucar.combination.model.dto.SearchDepartmentDto">

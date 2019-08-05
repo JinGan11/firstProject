@@ -3,6 +3,7 @@ package com.ucar.combination.service;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Department;
+import com.ucar.combination.model.dto.DepartmentTreeDto;
 
 import java.util.List;
 
@@ -16,14 +17,13 @@ import java.util.List;
 public interface DepartmentService {
 
     /**
-     * description: 查询所有部门
+     * description: 构建树结构部门
      * @author 郑开添（kaitian.zheng@ucarinc.com）
-     * @date 2019/7/30 10:41
-     * @return
+     * @date 2019/8/5 13:45
+     * @params
+     * @return 树的根节点
      */
-    List<Department> queryListAll();
-
-    List<Department> searchChildDepartment(String departmentNo);
+    DepartmentTreeDto buildTree();
 
     ResultPage searchDepartment(QueryParam queryParam);
 

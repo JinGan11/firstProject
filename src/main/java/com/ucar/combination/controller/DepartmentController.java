@@ -5,6 +5,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Department;
+import com.ucar.combination.model.dto.DepartmentTreeDto;
 import com.ucar.combination.service.DepartmentService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +35,10 @@ public class DepartmentController {
 	DepartmentService departmentService;
 
 	@ResponseBody
-	@RequestMapping("/querylist.do_")
-	public Result list(HttpServletRequest request) {
-		List<Department> departmentList = departmentService.queryListAll();
-		return new Result().put("departments", departmentList);
-	}
-
-	@ResponseBody
-	@RequestMapping("/searchChildDepartment.do_")
-	public Result searchChildDepartment(HttpServletRequest request) {
-		String department_no = request.getParameter("department_no");
-		List<Department> departmentList = departmentService.searchChildDepartment(department_no);
-		return new Result().put("departments", departmentList);
+	@RequestMapping("/buildTree.do_")
+	public Result list() {
+		DepartmentTreeDto rootNode = departmentService.buildTree();
+		return new Result().put("departmentDto", rootNode);
 	}
 
 	/*

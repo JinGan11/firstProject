@@ -1,6 +1,7 @@
 package com.ucar.combination.model;
 
 import com.ucar.combination.model.dto.BaseBean;
+
 import java.math.BigInteger;
 
 /**
@@ -29,6 +30,24 @@ public class Department extends BaseBean {
     private Integer departmentType;
     private Integer status;
     private String remark;
+    private String longtude;
+    private String atitude;
+
+    public String getLongtude() {
+        return longtude;
+    }
+
+    public void setLongtude(String longtude) {
+        this.longtude = longtude;
+    }
+
+    public String getAtitude() {
+        return atitude;
+    }
+
+    public void setAtitude(String atitude) {
+        this.atitude = atitude;
+    }
 
     public Long getId() {
         return id;
