@@ -169,7 +169,7 @@
         const self = this;
         // window.open(routeData.href, '_blank');
         const routeData = this.$router.resolve({
-          path: '/demoList',
+          path: '/CreateEmployee',
           query:{
             userId:self.name,
             userInfo:{

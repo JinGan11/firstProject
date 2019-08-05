@@ -72,7 +72,7 @@
     </div>
     <div style="margin-bottom: 10px">
       <el-button type="primary" @click="createEmployee" style="width:70px">新建</el-button>
-      <el-button type="primary" @click="modifyEmployee" style="width:70px">修改</el-button>
+      <el-button type="primary" @click="modifyEmployee" :disabled="isModify" style="width:70px">修改</el-button>
       <el-button type="primary" @click="deleteEmployee" style="width:70px">删除</el-button>
       <el-button type="primary" @click="" style="width:70px">离职</el-button>
       <el-button type="primary" @click="" style="width:70px">恢复</el-button>
@@ -81,7 +81,7 @@
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.id"><span width="0px;"></span></el-radio>
+          <el-radio v-model="selection" :label="scope.row.staffNum" @change="selectionActive"><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
@@ -245,7 +245,8 @@
         cities: cityOptions,
         isIndeterminate: true,
         filterVal: [],
-        list:[]
+        list:[],
+        isModify:true
       }
     },
     filters: {
@@ -314,7 +315,8 @@
 
       },
       modifyEmployee() {//点击修改按钮，跳转到修改页面
-        this.$router.replace('/ModifyEmployee')
+        this.$router.replace('/ModifyEmployee');
+        console.log("selection: "+this.selection)
       },
       deleteEmployee() {//删除员工
         this.deleteEmployeeFlag = true;
@@ -411,6 +413,9 @@
           }
         }
         return this.filterVal;
+      },
+      selectionActive(){
+        this.isModify=false
       }
     }
   }
