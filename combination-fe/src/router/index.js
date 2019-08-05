@@ -14,8 +14,9 @@ import AccountManagement from '@/views/accountManagement/AccountList'
 import CreateEmployee from '@/views/employeeManagement/CreateEmployee'
 import ModifyEmployee from '@/views/employeeManagement/ModifyEmployee'
 import RoleManagement from '@/views/roleManagement/RoleManagement'
+import DepartmentManagementTest from '@/views/departmentManagement/DepartmentTree'
+import CompanyManagement from '@/views/companyManagement/CompanyList'
 import CreateRole from '@/views/roleManagement/CreateRole'
-
 Vue.use(Router)
 
 export default new Router({
@@ -40,8 +41,8 @@ export default new Router({
     name:'员工管理',
     component:EmployeeManagement
   }, {
-    path: '/departmentManagement',
-    name: '部门管理',
+    path: '/departmentManagement/showDepartment',
+    name: '查看部门',
     component: DepartmentManagement
   },{
     path:'/roleManagement/apply',
@@ -79,6 +80,14 @@ export default new Router({
     path:'/roleManagement/roleManagement',
     name:'角色管理',
     component:RoleManagement
+  },{
+    path:'/departmentManagement/test',
+    name:'测试页面',
+    component:DepartmentManagementTest
+  },{
+    path:'/companyManagement',
+    name:'公司查询',
+    component:CompanyManagement
   },{
       path:'/CreateRole',
       name:'新建角色',
