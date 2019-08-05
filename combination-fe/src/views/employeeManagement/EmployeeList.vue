@@ -5,21 +5,21 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="员工编号">
-              <el-input style="width:200px;" v-model="form.staffNum"></el-input>
+              <el-input placeholder="员工编号" style="width:200px;" v-model="form.staffNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="员工姓名">
-              <el-input style="width:200px;" v-model="form.staffName"></el-input>
+              <el-input placeholder="员工姓名" style="width:200px;" v-model="form.staffName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="登陆账号">
-              <el-input style="width:200px;" v-model="form.accountId"></el-input>
+              <el-input placeholder="登陆账号" style="width:200px;" v-model="form.accountId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="是否离职">
+            <el-form-item  label="是否离职">
               <el-select v-model="form.isDimission" clearable style="width:200px;" placeholder="请选择">
                 <el-option
                   v-for="item in options"
@@ -33,15 +33,31 @@
         </el-row>
 
         <el-row>
-          <el-col :span="12">
+          <el-col :span="10">
             <el-form-item label="所属部门">
-              <el-input style="width:200px;" v-model="form.departmentId"></el-input>
+              <el-input placeholder="所属部门" disabled="true" style="width:400px;" v-model="form.departmentId"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="2">
+            <el-button
+              type="text"
+              @click="">选择</el-button>
+            <el-button
+              type="text"
+              @click="">清空</el-button>
+          </el-col>
+          <el-col :span="10">
             <el-form-item label="上级部门">
-              <el-input style="width:200px;" v-model="form.upperDepartmentNo"></el-input>
+              <el-input  placeholder="上级部门" disabled="true" style="width:400px;" v-model="form.upperDepartmentNo"></el-input>
             </el-form-item>
+          </el-col>
+          <el-col :span="2">
+            <el-button
+              type="text"
+              @click="">选择</el-button>
+            <el-button
+              type="text"
+              @click="">清空</el-button>
           </el-col>
         </el-row>
         <el-row>
@@ -77,7 +93,11 @@
           {{SexEnum[scope.row.staffSex]}}
         </template>
       </el-table-column>
-      <el-table-column prop="staffTelephone" label="员工手机"></el-table-column>
+      <el-table-column prop="staffTelephone" label="员工手机">
+        <template slot-scope="scope">
+          {{scope.row.staffTelephone|protect}}
+        </template>
+      </el-table-column>
       <el-table-column prop="staffEmail" label="员工邮箱" width="200"></el-table-column>
       <el-table-column prop="departmentId" label="所属部门" width="120"></el-table-column>
       <el-table-column prop="upperDepartmentNo" label="上级部门" width="150"></el-table-column>
@@ -226,6 +246,14 @@
         isIndeterminate: true,
         filterVal: [],
         list:[]
+      }
+    },
+    filters: {
+      protect: function(value) {
+        if (!value) {
+          return ''
+        }
+        return value.substr(0, 3) + "****" + value.substr(-4);
       }
     },
     activated() {

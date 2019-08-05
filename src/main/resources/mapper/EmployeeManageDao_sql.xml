@@ -32,7 +32,7 @@
         <if test="department != null and department.trim() != ''">
             AND t2.upper_department_no =#{upper_department_no}
         </if>
-        ORDER BY staff_num
+        ORDER BY t1.create_time DESC
     </select>
 
     <select id="qryStaffById" parameterType="com.ucar.combination.model.User"
