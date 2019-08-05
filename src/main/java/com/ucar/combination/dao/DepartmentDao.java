@@ -20,6 +20,8 @@ public interface DepartmentDao {
 
 	List<DepartmentTreeDto> queryDepartmentTreeAll();
 
+	void insertDepartment(Department department);
+
 	/*
 	 * description:
 	 * @author jing.luo01@ucarinc.com

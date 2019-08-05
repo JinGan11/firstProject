@@ -5,8 +5,6 @@ import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Department;
 import com.ucar.combination.model.dto.DepartmentTreeDto;
 
-import java.util.List;
-
 /**
  * description:部门管理
  *
@@ -24,6 +22,15 @@ public interface DepartmentService {
      * @return 树的根节点
      */
     DepartmentTreeDto buildTree();
+
+    /**
+     * description: 插入新部门
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/5 19:27
+     * @params 不包含id在内的department所有属性
+     * @return
+     */
+    void insertDepartment(Department department);
 
     ResultPage searchDepartment(QueryParam queryParam);
 

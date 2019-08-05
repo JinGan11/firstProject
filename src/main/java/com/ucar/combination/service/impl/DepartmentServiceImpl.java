@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.DepartmentDao;
+import com.ucar.combination.model.Department;
 import com.ucar.combination.model.dto.DepartmentTreeDto;
 import com.ucar.combination.model.dto.SearchDepartmentDto;
 import com.ucar.combination.service.DepartmentService;
@@ -31,6 +32,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 	public DepartmentTreeDto buildTree() {
 		List<DepartmentTreeDto> list = departmentDao.queryDepartmentTreeAll();
 		return new DepartmentTreeBuilder().buildTree(list);
+	}
+
+	@Override
+	public void insertDepartment(Department department) {
+		//需要校验，目前测试用
+		departmentDao.insertDepartment(department);
 	}
 
 	/*

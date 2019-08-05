@@ -1,23 +1,20 @@
 package com.ucar.combination.controller;
 
-import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Department;
 import com.ucar.combination.model.dto.DepartmentTreeDto;
 import com.ucar.combination.service.DepartmentService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,6 +37,21 @@ public class DepartmentController {
 		DepartmentTreeDto rootNode = departmentService.buildTree();
 		return new Result().put("departmentDto", rootNode);
 	}
+
+	@ResponseBody
+	@RequestMapping("/addDepartment.do_")
+	public String addDepartment(@RequestBody Department department){
+		// 需要先校验部门编号等信息是否被使用、是否为空
+		//以下为测试用的值
+		department.setCreateEmp(new Long(12345));
+		department.setModifyEmp(new Long(12345));
+		department.setLevel(1);
+		department.setDepartmentType(1);
+		department.setStatus(1);
+		departmentService.insertDepartment(department);
+		return "success";
+	}
+
 
 	/*
 	 * description:

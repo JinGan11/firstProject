@@ -2,8 +2,6 @@ package com.ucar.combination.model;
 
 import com.ucar.combination.model.dto.BaseBean;
 
-import java.math.BigInteger;
-
 /**
  * description:部门类
  *
@@ -30,23 +28,23 @@ public class Department extends BaseBean {
     private Integer departmentType;
     private Integer status;
     private String remark;
-    private String longtude;
-    private String atitude;
+    private String longitude;
+    private String latitude;
 
-    public String getLongtude() {
-        return longtude;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setLongtude(String longtude) {
-        this.longtude = longtude;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
-    public String getAtitude() {
-        return atitude;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setAtitude(String atitude) {
-        this.atitude = atitude;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
     public Long getId() {

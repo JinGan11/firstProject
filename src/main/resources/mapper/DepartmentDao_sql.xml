@@ -11,6 +11,57 @@
         FROM t_department
         ORDER BY id
     </select>
+    <insert id="insertDepartment" parameterType="com.ucar.combination.model.Department">
+        insert into t_department(
+            department_no,
+            workplace,
+            department_name,
+            staff_id,
+            staff_name,
+            city_id,
+            address,
+            telephone,
+            email,
+            landline,
+            level,
+            upper_department_no,
+            support_business,
+            department_type,
+            status,
+            remark,
+            longitude,
+            latitude,
+            create_emp,
+            create_time,
+            modify_emp,
+            modify_time
+        )
+        values(
+            #{departmentNo},
+            #{workplace},
+            #{departmentName},
+            #{staffId},
+            #{staffName},
+            #{cityId},
+            #{address},
+            #{telephone},
+            #{email},
+            #{landline},
+            #{level},
+            #{upperDepartmentNo},
+            #{supportBusiness},
+            #{departmentType},
+            #{status},
+            #{remark},
+            #{longitude},
+            #{latitude},
+            #{createEmp},
+            now(),
+            #{modifyEmp},
+            now()
+        )
+    </insert>
+
 
     <select id="searchDepartment" resultType="com.ucar.combination.model.dto.SearchDepartmentDto">
         SELECT
