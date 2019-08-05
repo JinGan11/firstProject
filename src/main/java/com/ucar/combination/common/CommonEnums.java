@@ -227,8 +227,8 @@ public abstract class CommonEnums {
      * @date: 2019/8/3 10:34
      */
     public static enum CompanyType implements IEnum {
-        MALE(1, "有限责任公司"),
-        FEMALE(2, "股份有限公司");
+        LIABILITY(1, "有限责任公司"),
+        STOCK(2, "股份有限公司");
         private final int i;
         private final String n;
 
@@ -273,8 +273,8 @@ public abstract class CommonEnums {
      * @date: 2019/8/3 10:34
      */
     public static enum CompanyNature implements IEnum {
-        MALE(1, "一般纳税人"),
-        FEMALE(2, "小规模纳税人");
+        ORDINARY(1, "一般纳税人"),
+        SMALL(2, "小规模纳税人");
         private final int i;
         private final String n;
 
@@ -320,8 +320,8 @@ public abstract class CommonEnums {
      * @date: 2019/8/3 10:34
      */
     public static enum CompanyStatus implements IEnum {
-        MALE(1, "有效"),
-        FEMALE(2, "无效");
+        EFFECTIVE(1, "有效"),
+        INVALID(2, "无效");
         private final int i;
         private final String n;
 
@@ -366,8 +366,8 @@ public abstract class CommonEnums {
      * @date: 2019/8/3 11:29
     */
     public static enum CompanyMark implements IEnum {
-        MALE(1, "总公司"),
-        FEMALE(2, "子公司");
+        HEADQUARTERS (1, "总公司"),
+        SUBSIDIARY(2, "子公司");
         private final int i;
         private final String n;
 

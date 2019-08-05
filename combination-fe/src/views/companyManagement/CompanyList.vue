@@ -1,15 +1,15 @@
 <template>
   <home>
-    <div style="width:85%; margin-left: 70px">
-      <el-form ref="form" :model="form" label-width="80px">
+    <div style="width:95%; margin-left: 10px">
+      <el-form ref="form" :model="form" label-width="100px">
         <el-row>
           <el-col :span="6">
-            <el-form-item label="企业名称">
+            <el-form-item label="企业名称" label-width="70px">
               <el-input style="width:200px;" v-model="form.companyName"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
-            <el-form-item label="统一社会信用代码">
+          <el-col :span="6 ">
+            <el-form-item label="统一社会信用代码" >
               <el-input style="width:200px;" v-model="form.creditCode"></el-input>
             </el-form-item>
           </el-col>
@@ -25,6 +25,7 @@
               </el-select>
             </el-form-item>
           </el-col>
+
           <el-col :span="6">
             <el-form-item label="公司性质">
               <el-select v-model="form.companyNature" clearable  style="width:200px;" placeholder="请选择">
@@ -41,8 +42,8 @@
 
         <el-row>
           <el-col :span="6">
-            <el-form-item label="状态">
-              <el-select v-model="form.status" clearable  style="width:200px;" placeholder="请选择">
+            <el-form-item label="状态" >
+              <el-select v-model="form.companyStatus" clearable  style="width:200px;" placeholder="请选择">
                 <el-option
                   v-for="item in options3"
                   :key="item.value"
@@ -50,6 +51,20 @@
                   :value="item.value">
                 </el-option>
               </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="100">
+            <el-form-item label="修改时间">
+              <el-date-picker
+                v-model="form.Time"
+                unlink-panels
+                size="mini"
+                type="daterange"
+                value-format="yyyy-MM-dd"
+                range-separator="至"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期">
+              </el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
@@ -64,7 +79,7 @@
     </div>
 
     <div style="margin-bottom: 10px">
-      <el-button type="primary" @click="" style="width:70px">新建</el-button>
+      <el-button type="primary" @click="createCompany" style="width:70px">新建</el-button>
       <el-button type="primary" @click="" style="width:70px">修改</el-button>
     </div>
 
@@ -93,9 +108,9 @@
           {{CompanyMarkEnum[scope.row.companyMark]}}
         </template>
       </el-table-column>
-      <el-table-column prop="status" label="状态" width="50" style="text-align: center">
+      <el-table-column prop="companyStatus" label="状态" width="50" style="text-align: center">
         <template slot-scope="scope">
-          {{CompanyStatusEnum[scope.row.status]}}
+          {{CompanyStatusEnum[scope.row.companyStatus]}}
         </template>
       </el-table-column>
       <el-table-column prop="modifyTime" label="修改时间" width="120"></el-table-column>
@@ -128,7 +143,7 @@
           creditCode: '',
           companyType: '',
           companyNature: '',
-          status: '',
+          companyStatus: '',
 
         },
         tableData: [],
@@ -141,8 +156,8 @@
         companyNature: '',
         CompanyNatureEnum:{},
         companyMark: '',
-        companyMarkEnum:{},
-        status: '',
+        CompanyMarkEnum:{},
+        companyStatus: '',
         CompanyStatusEnum:{},
         modifyTime: '',
         modifyEmp: '',
@@ -156,16 +171,6 @@
           value: '2',
           label: '股份有限公司'
         }],
-        options3: [{
-          value: '',
-          label: '全部'
-        }, {
-          value: '1',
-          label: '有效'
-        }, {
-          value: '2',
-          label: '无效'
-        }],
         options2: [{
           value: '',
           label: '全部'
@@ -175,6 +180,16 @@
         }, {
           value: '2',
           label: '小规模纳税人'
+        }],
+        options3: [{
+          value: '',
+          label: '全部'
+        }, {
+          value: '1',
+          label: '有效'
+        }, {
+          value: '2',
+          label: '无效'
         }]
       }
     },
@@ -202,11 +217,11 @@
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
-          staffNum:self.form.companyName,
+          companyName:self.form.companyName,
           creditCode:self.form.creditCode,
           companyType:self.form.companyType,
           companyNature:self.form.companyNature,
-          status:self.form.status,
+          companyStatus:self.form.companyStatus,
         };
         self.$http.get('company/querylist.do_', {
           params: param
@@ -217,13 +232,17 @@
           self.CompanyNatureEnum = result.CompanyNatureEnum;
           self.CompanyMarkEnum = result.CompanyMarkEnum;
           self.CompanyStatusEnum = result.CompanyStatusEnum;
-
+          commonUtils.Log(self.tableData);
         }).catch(function (error) {
           commonUtils.Log("company/querylist.do_:"+error);
           self.$message.error("获取数据错误");
         });
         },
+      createCompany(){//点击新建按钮，跳转到新建公司页面
+        this.$router.replace('/CreateCompany')
       },
+      },
+
   }
 
 </script>

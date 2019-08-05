@@ -4,7 +4,7 @@
 <mapper namespace="com.ucar.combination.dao.CompanyManageDao">
 
     <resultMap type="com.ucar.combination.model.Company" id="company">
-        <result column="company_id" property="id"/>
+        <result column="id" property="id"/>
         <result column="company_name" property="companyName"/>
         <result column="credit_code" property="creditCode"/>
         <result column="company_type" property="companyType"/>
@@ -24,7 +24,7 @@
         <result column="bank_account" property="bankAccount"/>
         <result column="telephone" property="telephone"/>
         <result column="company_mark" property="companyMark"/>
-        <result column="status" property="status"/>
+        <result column="status" property="companyStatus"/>
         <result column="create_emp" property="createEmp"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_emp" property="modifyEmp"/>
@@ -40,26 +40,27 @@
         company_type,
         company_nature,
         company_mark,
-        status,
+        status companyStatus,
         modify_emp,
         modify_time
         FROM t_company
+        <where>
         <if test="companyName != null and companyName.trim() != ''">
-            AND companyName =#{companyName}
+            AND company_name =#{companyName}
         </if>
         <if test="creditCode != null and creditCode.trim() != ''">
-            AND creditCode =#{creditCode}
+            AND credit_code =#{creditCode}
         </if>
         <if test="companyType != null and companyType.trim() != ''">
-            AND companyType =#{companyType}
+            AND company_type =#{companyType}
         </if>
         <if test="companyNature != null and companyNature.trim() != ''">
-            AND companyNature =#{companyNature}
+            AND company_nature =#{companyNature}
         </if>
-        <if test="status != null and status.trim() != ''">
-            AND status =#{status}
+        <if test="companyStatus != null and companyStatus.trim() != ''">
+            AND status =#{companyStatus}
         </if>
-
+        </where>
         ORDER BY id DESC
     </select>
 </mapper>

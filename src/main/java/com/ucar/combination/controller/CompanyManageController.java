@@ -36,7 +36,7 @@ public class CompanyManageController {
         String creditCode = request.getParameter("creditCode");
         String companyType = request.getParameter("companyType");
         String companyNature = request.getParameter("companyNature");
-        String status = request.getParameter("status");
+        String companyStatus = request.getParameter("companyStatus");
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("page", page);
@@ -45,8 +45,8 @@ public class CompanyManageController {
         params.put("creditCode",creditCode);
         params.put("companyType", companyType);
         params.put("companyNature", companyNature);
-        params.put("status", status);
-
+        params.put("companyStatus", companyStatus);
+        System.out.println("企业名称： "+companyName+"类型: "+companyType+" 状态："+companyStatus+" 性质："+companyNature);
         ResultPage resultPage = companyManageService.queryList(new QueryParam(params));
         return new Result().ok().put("page", resultPage).put("CompanyTypeEnum", CommonEnums.toEnumMap(CommonEnums.CompanyType.values()))
                 .put("CompanyNatureEnum", CommonEnums.toEnumMap(CommonEnums.CompanyNature.values()))
