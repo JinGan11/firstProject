@@ -10,19 +10,19 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="员工编号">
-              <el-input style="width:160px;" v-model="form.employeeNo"></el-input>
+              <el-input style="width:160px;" v-model="form.staffNo"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="员工姓名">
-              <el-input style="width:160px;" v-model="form.name"></el-input>
+              <el-input style="width:180px;" v-model="form.name"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="数据权限类型">
-              <el-select v-model="form.dataType" clearable placeholder="请选择">
-                <el-option style="width:160px;"
-                  v-for="item in form.dataTypeList"
+              <el-select style="width:180px;" v-model="form.permissions" clearable placeholder="请选择">
+                <el-option
+                  v-for="item in form.permissionsList"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -34,17 +34,35 @@
         <el-row>
           <el-col :span="11">
             <el-form-item label="员工所属部门">
-              <el-input style="width:140px;" v-model="form.department"></el-input>
+              <el-select v-model="form.department" placeholder="请选择" multiple collapse-tags>
+                <el-option  :value="mineStatusValue" style="height: auto">
+                  <el-tree :data="data" check-strictly=true show-checkbox node-key="id" ref="tree" highlight-current :props="defaultProps" @check-change="handleCheckChange"></el-tree>
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="是否关联员工">
-              <el-input style="width:160px;" v-model="form.isRelEmployee"></el-input>
+              <el-select style="width: 180px" v-model="form.isRelStaff" clearable placeholder="请选择">
+                <el-option
+                  v-for="item in form.isRelStaffoptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="账号状态">
-              <el-input style="width:170px;" v-model="form.status"></el-input>
+              <el-select style="width:180px;" v-model="form.status" clearable placeholder="请选择">
+                <el-option
+                  v-for="item in form.accountStatusList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -53,7 +71,7 @@
         <el-row>
           <el-col style="text-align: center">
             <el-form-item>
-              <el-button type="primary" @click="" style="width:100px">查询</el-button>
+              <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
               <el-button type="primary" style="width:100px" @click="">导出</el-button>
             </el-form-item>
           </el-col>
@@ -73,18 +91,18 @@
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
       <el-table-column type="selection" width="35"></el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
-      <el-table-column prop="name" label="登陆账号" style="width:auto"></el-table-column>
+      <el-table-column prop="accountName" label="登陆账号" style="width:auto"></el-table-column>
       <el-table-column prop="staffNum" label="员工编号" style="width:auto"></el-table-column>
       <el-table-column prop="staffName" label="员工姓名" style="width:auto"></el-table-column>
       <el-table-column prop="department" label="所属部门" style="width:auto"></el-table-column>
       <el-table-column prop="premissions" label="数据权限类型" style="width:auto">
         <template slot-scope="scope">
-          {{form.dataTypeEnum[scope.row.premissions]}}
+          {{form.permissionsEnum[scope.row.premissions]}}
         </template>
       </el-table-column>
-      <el-table-column prop="status" label="账号状态" style="width:auto">
+      <el-table-column prop="accountState" label="账号状态" style="width:auto">
         <template slot-scope="scope">
-          {{form.accountStatusEnum[scope.row.status]}}
+          {{form.accountStatusEnum[scope.row.accountState]}}
         </template>
       </el-table-column>
       <el-table-column prop="modifyTime" label="操作时间" style="width:auto"></el-table-column>
@@ -113,16 +131,24 @@
         currentPage: 1,
         pageSize: 10,
         form: {
-          accountNo: '',
-          employeeNo: '',
-          name: '',
-          dataTypeList:[],
-          dataTypeEnum:{},
+          accountNo: null,
+          staffNo: null,
+          name: null,
+          permissionsList:[],
+          permissionsEnum:{},
+          accountStatusList:[],
           accountStatusEnum:{},
-          dataType: '',
-          department: '',
-          isRelEmployee: '',
-          status:''
+          permissions: null,
+          department:null,
+          isRelStaffoptions:[{
+            value: '1',
+            label: '是'
+          },{
+            value: '0',
+            label: '否'
+          }],
+          isRelStaff: null,
+          status:null
         },
         tableData: [],
         selection: [],
@@ -135,6 +161,25 @@
         account_status: '',
         modify_time: '',
         modify_emp: '',
+        data: [{
+          value: 1,
+          label: '分1',
+          children: [{
+            value: 2,
+            label: '分2',
+            children: [{
+              value: 3,
+              label: '分3'
+            },{
+              value: 4,
+              label: '分4'
+            }]
+          }]
+        }],
+        defaultProps: {
+          children: 'children',
+          label: 'label'
+        }
       }
     },
     activated() {
@@ -144,7 +189,13 @@
       commonUtils.Log("页面进来");
     },
     methods: {
-      handleSizeChange(val) {
+      handleCheckChange () {
+        var a = '1';
+      },
+      handleNodeClick(data) {
+        console.log(data);
+      },
+        handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;
         this.fetchData(1, val);
@@ -155,19 +206,47 @@
       },
       handleSelectionChange(val) {
         this.selection = val;
+      },
+      fetchData(){
+        var self = this;
+        var param = {
+          page: self.currentPage,
+          limit: self.pageSize,
+          accountName: self.form.accountNo,
+          staffNo: self.form.staffNo,
+          name:self.form.name,
+          permissions: self.form.permissions,
+          department: self.form.department,
+          isRelStaff: self.form.isRelStaff,
+          status: self.form.status
+        };
+        self.$http.get('account/querylist.do_', {
+          params: param
+        }).then((result) => {
+          self.tableData = result.page.list;
+          self.form.permissionsList = result.permissionList;
+          self.form.permissionsEnum = result.permissionEnum;
+          self.form.accountStatusEnum = result.accountStatusEnum;
+          self.form.accountStatusList = result.accountStatusList;
+          self.total = result.page.totalCount;
+        }).catch(function (error) {
+          commonUtils.Log("employee/querylist.do_:"+error);
+          self.$message.error("获取数据错误")
+        });
       }
     },
     created() {
       const self = this;
-      // self.$http.get('account/permission.do_').then((result) => {
-      //   self.form.dataTypeList = result.permissionList;
-      // });
       self.$http.get('account/querylist.do_').then((result) => {
         self.tableData = result.page.list;
-        self.form.dataTypeList = result.permissionList;
-        self.form.dataTypeEnum = result.permissionEnum;
+        self.form.permissionsList = result.permissionList;
+        self.form.permissionsEnum = result.permissionEnum;
         self.form.accountStatusEnum = result.accountStatusEnum;
-
+        self.form.accountStatusList = result.accountStatusList;
+        self.total = result.page.totalCount;
+      }).catch(function (error) {
+        commonUtils.Log("employee/querylist.do_:"+error);
+        self.$message.error("获取数据错误")
       });
     },
   }

@@ -12,17 +12,21 @@ import java.util.Date;
  **/
 public class Account {
     //id
-    private BigInteger id;
+    private Long id;
     //用户名
-    private String name;
+    private String accountName;
     //用户密码
     private String password;
+    //是否关联员工
+    private int isRelStaff;
     //员工id
-    private BigInteger staffId;
+    private Long staffId;
     //员工名
     private String staffName;
     //员工编号
     private String staffNum;
+    //所属部门id
+    private Long departmentId;
     //所属部门
     private String department;
     //数据权限类型
@@ -32,35 +36,35 @@ public class Account {
     //创建时间
     private Date createTime;
     //创建人id
-    private BigInteger creatEmpId;
+    private Long creatEmpId;
     //创建人
     private String creatEmpName;
     //修改时间
     private Date modifyTime;
     //修改人id
-    private BigInteger modifyEmpId;
+    private Long modifyEmpId;
     //修改人
     private String modifyEmpName;
     //账号状态
-    private  int status;
+    private  int accountState;
 
     private String remark;
     //备注
 
-    public BigInteger getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getAccountName() {
+        return accountName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
     public String getPassword() {
@@ -71,11 +75,11 @@ public class Account {
         this.password = password;
     }
 
-    public BigInteger getStaffId() {
+    public Long getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(BigInteger staffId) {
+    public void setStaffId(Long staffId) {
         this.staffId = staffId;
     }
 
@@ -103,11 +107,11 @@ public class Account {
         this.secretEmail = secretEmail;
     }
 
-    public BigInteger getCreatEmpId() {
+    public Long getCreatEmpId() {
         return creatEmpId;
     }
 
-    public void setCreatEmpId(BigInteger creatEmpId) {
+    public void setCreatEmpId(Long creatEmpId) {
         this.creatEmpId = creatEmpId;
     }
 
@@ -119,12 +123,12 @@ public class Account {
         this.createTime = createTime;
     }
 
-    public int getStatus() {
-        return status;
+    public int getaccountState() {
+        return accountState;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setaccountState(int accountState) {
+        this.accountState = accountState;
     }
 
     public String getRemark() {
@@ -151,11 +155,11 @@ public class Account {
         this.modifyEmpName = modifyEmpName;
     }
 
-    public BigInteger getModifyEmpId() {
+    public Long getModifyEmpId() {
         return modifyEmpId;
     }
 
-    public void setModifyEmpId(BigInteger modifyEmpId) {
+    public void setModifyEmpId(Long modifyEmpId) {
         this.modifyEmpId = modifyEmpId;
     }
 
@@ -181,5 +185,21 @@ public class Account {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public Long getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    public int getIsRelStaff() {
+        return isRelStaff;
+    }
+
+    public void setIsRelStaff(int isRelStaff) {
+        this.isRelStaff = isRelStaff;
     }
 }
