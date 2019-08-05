@@ -42,7 +42,21 @@
           </el-col>
         </el-row>
         <el-row>
-
+            <el-col :span="10">
+              <el-form-item label="支持业务线">
+                  <template v-for="item in chks">
+                    <input type="checkbox" name="hobby" :value="item.id"
+                         :checked="loopsss.indexOf(item.id) > -1"/>{{item.name}}
+                  </template>
+              </el-form-item>
+            </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="描述">
+              <el-input style="width:200px;" v-model="roleForm.description"></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
     </div>
@@ -86,7 +100,7 @@
       </div>
     </div>
   </div>
-  <div>
+  <div style="text-align: center">
       <el-button type="primary" @click="save" style="width:70px">保存</el-button>
       <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
   </div>
@@ -102,6 +116,15 @@
     data() {
       return {
 
+        chks: [
+          {id:1,name:"买买车"},
+          {id:2,name:"租车"},
+          {id:3,name:"闪贷"},
+          {id:4,name:"专车"},
+          {id:5,name:"保险"}
+        ],
+        loopsss:'',
+
         form: {
           createEmp:'',
           createTime:'',
@@ -116,6 +139,8 @@
           staffID:'',
           staffName:'',
           departmentID:'',
+          businessLine:'',
+          description:'',
         },
       }
     },
@@ -127,7 +152,21 @@
     },
     methods: {
       save() {//保存新建角色信息
-
+          this.$confirm('此操作将保存该文件, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            this.$message({
+              type: 'success',
+              message: '保存成功!'
+            });
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消保存'
+            });
+          });
       },
       cancel(){//关闭新建角色页面，返回角色管理列表页面
         this.$router.replace('/roleManagement/roleManagement')
