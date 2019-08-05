@@ -29,7 +29,7 @@
           <el-col :span="10">
             <el-form-item label="申请角色">
               <el-input style="width:250px;"  placeholder="请选择角色" v-model="form.roleName" :disabled="true"></el-input>
-              <el-button type="text">选择</el-button>
+              <el-button type="text" @click="selectRoleForRoleApply">选择</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -53,12 +53,12 @@
           申请账号明细
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" size="mini" @click="">添加</el-button>
+          <el-button type="primary" size="mini" @click="addAccountForApply">添加</el-button>
         </el-col>
       </el-row>
     </div>
     <div style="margin-left: 40px;">
-      <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
+      <el-table ref="multipleTable" :data="tableData" border>
         <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
         <el-table-column prop="accountName" label="申请账号" width="150"></el-table-column>
         <el-table-column prop="staffName" label="关联员工姓名"width="150"></el-table-column>
@@ -161,6 +161,24 @@
           operation:'',
 
         }
+      },
+      methods:{
+        selectRoleForRoleApply(){
+          //点击选择按钮，进入角色选择界面
+          this.$router.replace('/SelectroleRoleApply')
+        },
+        addAccountForApply(){
+          //点击添加按钮，进入账号选择页面
+          this.$router.replace('/SelectAccountRoleApply')
+
+        }
+      },
+      created() {
+        var a = sessionStorage.getItem('id')
+        // let mm=this.$route.params.id;
+        console.log(a)
+        //后台数据库查询
+        //
       }
 
 
