@@ -63,20 +63,29 @@
         <el-row>
           <el-col style="text-align: center">
             <el-form-item>
-              <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
-              <el-button type="primary" style="width:100px" @click="add">导出</el-button>
+              <div v-if="!buttonDisabled">
+                <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
+                <el-button type="primary" style="width:100px" @click="exportExcel">导出</el-button>
+              </div>
+              <div v-else>
+                <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
+              </div>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
     </div>
-    <div style="margin-bottom: 10px">
+    <div style="margin-bottom: 10px" v-if="!buttonDisabled">
       <el-button type="primary" @click="createEmployee" style="width:70px">新建</el-button>
       <el-button type="primary" @click="modifyEmployee" :disabled="disabled" style="width:70px">修改</el-button>
       <el-button type="primary" @click="deleteEmployee" style="width:70px">删除</el-button>
       <el-button type="primary" @click="" style="width:70px">离职</el-button>
       <el-button type="primary" @click="" style="width:70px">恢复</el-button>
       <el-button type="primary" @click="distributionDepartment" style="width:80px">分配部门</el-button>
+    </div>
+    <div style="margin-bottom: 10px" v-else>
+      <el-button type="primary" @click="confirmChoice" style="width:70px">确认选择</el-button>
+      <el-button type="primary" @click="cancelChoice" style="width:70px">取消</el-button>
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <el-table-column label="选择" width="45">
@@ -177,6 +186,11 @@
 
   const employeeOptions = ['员工编号', '登录账号', '员工姓名', '性别', '员工手机', '员工邮箱', '所属部门', '上级部门', '是否离职'];
   export default {
+    name: "employee-list",
+    inject:['test1'],
+    props: {
+      relAccount: false
+    },
     data() {
       return {
         total: 0,
@@ -240,6 +254,8 @@
           value: '1',
           label: '离职'
         }],
+        cloumnDisabled: false,
+        buttonDisabled: false,
         checkAll: false,
         checkedemployees: [],
         employees: employeeOptions,
@@ -262,6 +278,32 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
+    },
+    created(){
+      var self = this;
+      if(self.relAccount) {
+        self.form.isDimission = '在职';
+        self.buttonDisabled = true;
+        self.cloumnDisabled = true;
+        var param = {
+          page: self.currentPage,
+          limit: self.pageSize,
+          isDimission: 0,
+        };
+
+        self.$http.get('employee/querylist.do_', {
+          params: param
+        }).then((result) => {
+          self.tableData = result.page.list;
+          self.total = result.page.totalCount;
+          self.SexEnum = result.SexEnum;
+          self.isDimissionEnum = result.isDismissionEnum;
+          self.staffDtoList = result.staffDtoList;
+        }).catch(function (error) {
+          commonUtils.Log("employee/querylist.do_:" + error);
+          self.$message.error("获取数据错误");
+        })
+      };
     },
     methods: {
       handleSizeChange(val) {
@@ -333,7 +375,9 @@
 
       },
       cancelDepartment() {
-
+      },
+      cancelChoice(){
+        this.test1();
       },
       exportExcel() {
         if(this.checkedemployees.length ===0){
