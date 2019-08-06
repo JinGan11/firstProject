@@ -95,7 +95,7 @@
       <el-button type="primary" @click="" style="width:70px">修改</el-button>
       <el-button type="primary" @click="deleteApply(scope.row)" style="width:70px">删除</el-button>
       <el-button type="primary" @click="" style="width:70px">提交审核</el-button>
-      <el-button type="primary" style="width:100px" @click="">导出</el-button>
+      <el-button type="primary" style="width:100px" @click="out">导出</el-button>
       <el-button type="primary" @click="" style="width:100px">条件查询</el-button>
     </div>
 
@@ -138,11 +138,24 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
+    <el-dialog :title='excelTitle' :visible.sync="dialogVisibleRole" :close-on-click-modal="false" width="600px">
+      <template>
+        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+        <div style="margin: 15px 0;"></div>
+        <el-checkbox-group v-model="checkedRoles" @change="handleCheckedRoleChange">
+          <el-checkbox v-for="role in roles" :label="role" :key="role">{{role}}</el-checkbox>
+        </el-checkbox-group>
+      </template>
+      <template slot="footer">
+        <el-button type="primary" @click="exportExcel">确定导出</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </template>
+    </el-dialog>
   </home>
 </template>
 <script>
   import commonUtils from '../../common/commonUtils'
-
+  const roleOptions = ['角色申请编号', '申请角色ID', '申请角色名称', '审批负责人', '角色支持业务线', '申请人登录账号', '申请人员工姓名', '申请人所属部门', '申请时间','状态','操作人','操作时间','拒绝理由'];
   export default {
     data() {
       return {
@@ -183,6 +196,15 @@
         rejectReason: '',
         value:'',
         beginDateScope:'',
+        excelTitle: '请选择需要导出的字段',
+        dialogVisibleRole: false,
+        roleDtoList: [],
+        checkAll: false,
+        checkedRoles: [],
+        roles: roleOptions,
+        isIndeterminate: true,
+        filterVal: [],
+        list:[],
         options: [{
           value: '',
           label: '全部'
@@ -224,6 +246,9 @@
       handleSelectionChange(val) {
         this.selection = val;
       },
+      cancel() {
+        this.dialogVisibleRole = false;
+      },
       fetchData() { //获取数据
         var self = this;
         var param = {
@@ -252,6 +277,7 @@
           self.total = result.page.totalCount;
           self.BusinessLineEnum = result.BusinessLineEnum;
           self.ApplyStatusEnum = result.applyStatusEnum;
+          self.roleDtoList=result.roleDtoList;
         }).catch(function (error) {
           //请求失败回调
           commonUtils.Log("roleApply/querylist.do_:"+error);
@@ -260,8 +286,103 @@
       },
       createRoleApply(){//新建角色申请
         this.$router.replace('/createRoleApply')
+      },
+      out(){//点击导出按钮触发的函数
+        this.dialogVisibleRole =true;
+      },
+      exportExcel() {
+        if(this.checkedRoles.length ===0){
+          this.$message({
+            showClose: false,
+            message: '请选择需要导出的字段',
+            type: 'error'
+          });
+        }else{
+          require.ensure([], () => {
+            const {export_json_to_excel} = require('../../excel/Export2Excel');
+            const tHeader = this.checkedRoles;
+            // 上面设置Excel的表格第一行的标题
+
+            const filterVal = this.exportField(this.checkedRoles);
+            // 上面的staffNum、accountId、staffName是tableData里对象的属性
+            const list = this.roleDtoList;  //把data里的tableData存到list
+            for (let i = 0; i < list.length; i++) {
+              switch(list[i].applyStatus){
+                case 1: list[i].applyStatus='已新建';
+                  break;
+                case 2: list[i].applyStatus='待审批';
+                  break;
+                case 3: list[i].applyStatus='审批通过';
+                  break;
+                case 4: list[i].applyStatus='审批拒绝';
+                  break;
+                case 5: list[i].applyStatus='已删除';
+                  break;
+              }
+            }
+            console.log(list);
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '角色申请管理列表excel');
+            this.$message({
+              showClose: true,
+              message: '文件导出成功',
+              type: 'success'
+            });
+            this.dialogVisibleRole=false;
+            this.checkedRoles=[];
+            this.filterVal=[];
+          })
+        }
+      },
+      formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
+      },
+      handleCheckAllChange(val) {
+        this.checkedRoles = val ? roleOptions : [];
+        this.isIndeterminate = false;
+      },
+      handleCheckedRoleChange(value) {
+        let checkedCount = value.length;
+        this.checkAll = checkedCount === this.roles.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.roles.length;
+      },
+      exportField(val) {
+        for (let i = 0; i < val.length; i++) {
+          if (this.checkedRoles[i] === '角色申请编号') {
+            this.filterVal.push('roleApplyNum')
+          } else if (this.checkedRoles[i] === '申请角色ID') {
+            this.filterVal.push('roleId')
+          } else if (this.checkedRoles[i] === '申请角色名称') {
+            this.filterVal.push('roleName')
+          } else if (this.checkedRoles[i] === '审批负责人') {
+            this.filterVal.push('approverStaffName')
+          } else if (this.checkedRoles[i] === '角色审批业务线') {
+            this.filterVal.push('businessLine')
+          } else if (this.checkedRoles[i] === '申请人登录账号') {
+            this.filterVal.push('applyAccountName')
+          } else if (this.checkedRoles[i] === '申请人员工编号') {
+            this.filterVal.push('applyStaffNum')
+          } else if (this.checkedRoles[i] === '申请人员工姓名') {
+            this.filterVal.push('applyStaffName')
+          } else if (this.checkedRoles[i] === '申请人所属部门') {
+            this.filterVal.push('applyDepartmentName')
+          }else if (this.checkedRoles[i] === '申请时间') {
+            this.filterVal.push('applyTime')
+          }else if (this.checkedRoles[i] === '状态') {
+            this.filterVal.push('applyStatus')
+          }else if (this.checkedRoles[i] === '操作人') {
+            this.filterVal.push('modifyEmp')
+          }else if (this.checkedRoles[i] === '操作时间') {
+            this.filterVal.push('modifyTime')
+          }else if (this.checkedRoles[i] === '拒绝原因') {
+            this.filterVal.push('rejectReason')
+          }
+        }
+        return this.filterVal;
       }
+
     }
+
   }
 </script>
 

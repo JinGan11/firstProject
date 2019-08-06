@@ -30,4 +30,13 @@ public class RoleApplyManageServiceImpl implements RoleApplyManageService {
         List<RoleApplyDto> list = roleApplyManageDao.queryList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
+    /**
+     * description：导出角色申请列表
+     * @author shiya.li@ucarinc.com
+     * @param queryParam
+     * @return
+     */
+    public List<RoleApplyDto> getRoleList(QueryParam queryParam){
+        return roleApplyManageDao.queryList(queryParam);
+    }
 }

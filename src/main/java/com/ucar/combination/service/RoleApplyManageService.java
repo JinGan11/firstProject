@@ -2,6 +2,9 @@ package com.ucar.combination.service;
 
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.dto.RoleApplyDto;
+
+import java.util.List;
 
 /**
  * description:
@@ -19,5 +22,12 @@ public interface RoleApplyManageService {
     */
 
     ResultPage queryList(QueryParam queryParam);
+
+    /**
+     *
+     * @param queryParam
+     * @return
+     */
+    public List<RoleApplyDto> getRoleList(QueryParam queryParam);
 
 }

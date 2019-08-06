@@ -4,6 +4,7 @@ import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.dto.RoleApplyDto;
 import com.ucar.combination.service.RoleApplyManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -61,8 +63,10 @@ public class RoleApplyManageController {
             Long accountId = (Long) session.getAttribute("accountId");
             params.put("accountId", accountId);
         }
+        List<RoleApplyDto> roleDtoList = roleApplyManageService.getRoleList(new QueryParam(params));
         ResultPage resultPage = roleApplyManageService.queryList(new QueryParam(params));
         return new Result().ok().put("page", resultPage).put("BusinessLineEnum", CommonEnums.toEnumMap(CommonEnums.BusinessLineEnum.values()))
-                .put("applyStatusEnum", CommonEnums.toEnumMap(CommonEnums.applyStatusEnum.values()));
+                .put("applyStatusEnum", CommonEnums.toEnumMap(CommonEnums.applyStatusEnum.values()))
+                .put("roleDtoList", roleDtoList);
     }
 }
