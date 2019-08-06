@@ -65,7 +65,7 @@
             <el-form-item>
               <div v-if="!buttonDisabled">
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
-                <el-button type="primary" style="width:100px" @click="exportExcel">导出</el-button>
+                <el-button type="primary" style="width:100px" @click="add">导出</el-button>
               </div>
               <div v-else>
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
