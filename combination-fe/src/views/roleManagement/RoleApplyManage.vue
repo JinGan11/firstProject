@@ -239,6 +239,7 @@
           applyStatus: self.form.applyStatus,
           applyTime:self.form.applyTime ,
           modifyTime: self.form.modifyTime,
+          type:'角色申请'
         };
         // get请求 只是基本的HTTP调用，用来执行增晒改查  并不表示get用来获取数据
         // url  请求地址

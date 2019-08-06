@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class RoleApplyManageController {
 
     @ResponseBody
     @RequestMapping("/querylist.do_")
-    public Result list(HttpServletRequest request) {
+    public Result list(HttpServletRequest request, HttpSession session) {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         //请求界面中的数据
@@ -56,6 +57,10 @@ public class RoleApplyManageController {
         params.put("applyStatus", applyStatus);
         params.put("applyTime", applyTime);
         params.put("modifyTime", modifyTime);
+        if (request.getParameter("type").equals("角色审核")) {
+            Long accountId = (Long) session.getAttribute("accountId");
+            params.put("accountId", accountId);
+        }
         ResultPage resultPage = roleApplyManageService.queryList(new QueryParam(params));
         return new Result().ok().put("page", resultPage).put("BusinessLineEnum", CommonEnums.toEnumMap(CommonEnums.BusinessLineEnum.values()))
                 .put("applyStatusEnum", CommonEnums.toEnumMap(CommonEnums.applyStatusEnum.values()));

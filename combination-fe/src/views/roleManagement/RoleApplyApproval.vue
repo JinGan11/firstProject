@@ -5,22 +5,22 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="角色申请编号">
-              <el-input style="width:150px;" v-model="form.apply_id"></el-input>
+              <el-input placeholder="角色申请编号" style="width:150px;" v-model="form.roleApplyNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请角色ID">
-              <el-input style="width:150px;" v-model="form.role_id"></el-input>
+              <el-input placeholder="申请角色ID" style="width:150px;" v-model="form.roleId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请角色名称">
-              <el-input style="width:150px;" v-model="form.role_name"></el-input>
+              <el-input placeholder="申请角色名称" style="width:150px;" v-model="form.roleName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请人登录账号">
-              <el-input style="width:150px;" v-model="form.account"></el-input>
+              <el-input placeholder="申请人登录账号" style="width:150px;" v-model="form.applyAccountName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -28,32 +28,20 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="申请人员工编号">
-              <el-input style="width:150px;" v-model="form.employeeNo"></el-input>
+              <el-input placeholder="申请人员工编号" style="width:150px;" v-model="form.applyStaffNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请人员工姓名">
-              <el-input style="width:150px;" v-model="form.name">
+              <el-input placeholder="申请人员工姓名" style="width:150px;" v-model="form.applyStaffName">
               </el-input>
 
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请人所属部门">
-              <el-input style="width:150px;" v-model="form.accountNo"></el-input>
+              <el-input placeholder="申请人所属部门" style="width:150px;" v-model="form.applyDepartmentName"></el-input>
 
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="状态">
-              <el-select v-model="value" clearable  style="width:150px;" placeholder="请选择">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -61,7 +49,7 @@
           <el-col :span="100">
             <el-form-item label="申请时间">
               <el-date-picker
-                v-model="beginDateScope"
+                v-model="applyTime"
                 unlink-panels
                 size="mini"
                 type="daterange"
@@ -75,7 +63,7 @@
           <el-col :span="200">
             <el-form-item label="操作时间">
               <el-date-picker
-                v-model="beginDateScope"
+                v-model="modifyTime"
                 unlink-panels
                 size="mini"
                 type="daterange"
@@ -84,6 +72,13 @@
                 start-placeholder="开始日期"
                 end-placeholder="结束日期">
               </el-date-picker>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col style="text-align: center">
+            <el-form-item>
+              <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -120,7 +115,6 @@
       </el-table-column>
       <el-table-column prop="modifyEmp" label="操作人" width="150"></el-table-column>
       <el-table-column prop="modifyTime" label="操作时间" width="150"></el-table-column>
-      <el-table-column prop="rejectReason" label="拒绝原因" width="150"></el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
@@ -262,10 +256,15 @@
         currentPage: 1,
         pageSize: 10,
         form: {
-          apply_id: '',
-          role_id: '',
-          role_name: '',
-          account:''
+          roleApplyNum:'',
+          roleId: '',
+          roleName: '',
+          applyAccountName:'',
+          applyStaffNum:'',
+          applyStaffName:'',
+          applyDepartmentName:'',
+          applyTime:'',
+          modifyTime:'',
         },
         apply:{
           role_apply_id:'',
@@ -303,28 +302,7 @@
         applyStatus: '',
         modifyEmp: '',
         modifyTime: '',
-        rejectReason: '',
-        value:'',
         beginDateScope:'',
-        options: [{
-          value: '选项1',
-          label: '全部'
-        }, {
-          value: '选项2',
-          label: '已新建'
-        }, {
-          value: '选项3',
-          label: '待审批'
-        }, {
-          value: '选项4',
-          label: '审批通过'
-        }, {
-          value: '选项5',
-          label: '审批拒绝'
-        },{
-          value:'选项6',
-          label:'已删除'
-        }],
         dialogVisible:false,
         title:'角色申请审核',
       }
@@ -356,6 +334,17 @@
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
+          roleApplyNum:self.form.roleApplyNum,
+          roleId:self.form.roleId,
+          roleName:self.form.roleName,
+          applyAccountName: self.form.applyAccountName,
+          applyStaffNum:self.form.applyStaffNum ,
+          applyStaffName: self.form.applyStaffName,
+          applyDepartmentName:self.form.applyDepartmentName,
+          applyStatus: '2',
+          applyTime:self.form.applyTime ,
+          modifyTime: self.form.modifyTime,
+          type:'角色审核'
         };
         self.$http.get('roleApply/querylist.do_', {
           params: param
