@@ -53,4 +53,16 @@ public class DepartmentServiceImpl implements DepartmentService {
 		List<SearchDepartmentDto> list = departmentDao.searchDepartment(queryParam);
 		return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
 	}
+	/*
+	 * description: 访问DAO层得到DEPARTMENT数据库的信息
+	 * @author jing.luo01@ucarinc.com
+	 * @date   2019/8/6 10:13
+	 * @params id 描述
+
+	 * @return
+	 */
+	@Override
+	public Department getDepartmentById(String id) {
+		return departmentDao.getDepartmentById(Long.valueOf(id));
+	}
 }

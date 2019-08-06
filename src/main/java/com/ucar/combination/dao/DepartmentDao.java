@@ -30,4 +30,13 @@ public interface DepartmentDao {
 	 * @return 查询出来的SearchDepartmentDto结果，在
 	 */
 	List<SearchDepartmentDto> searchDepartment(Map<String, Object> map);
+
+	/*
+	 * description:
+	 * @author jing.luo01@ucarinc.com
+	 * @date   2019/8/5 16:53
+	 * @params id 传入一个LONG型的ID进行查找
+	 * @return Department返回一个部门类。
+	 */
+	Department getDepartmentById(Long id);
 }

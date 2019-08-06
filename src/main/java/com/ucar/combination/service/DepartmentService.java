@@ -34,4 +34,14 @@ public interface DepartmentService {
 
     ResultPage searchDepartment(QueryParam queryParam);
 
+    /*
+     * description:
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/6 10:11
+     * @params id  部门ID
+
+     * @return 得到部门信息
+     */
+    Department getDepartmentById(String id);
+
 }

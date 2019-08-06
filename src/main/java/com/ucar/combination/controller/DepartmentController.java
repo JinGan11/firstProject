@@ -5,6 +5,7 @@ import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Department;
 import com.ucar.combination.model.dto.DepartmentTreeDto;
+import com.ucar.combination.service.CompanyManageService;
 import com.ucar.combination.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,8 @@ public class DepartmentController {
 
 	@Autowired
 	DepartmentService departmentService;
+	@Autowired
+	CompanyManageService companyManageService;
 
 	@ResponseBody
 	@RequestMapping("/buildTree.do_")
@@ -94,5 +97,27 @@ public class DepartmentController {
 		params.put("departmentType", departmentType);
 		ResultPage resultPage  = departmentService.searchDepartment(new QueryParam(params));
 		return new Result().ok().put("page", resultPage);
+	}
+	/*
+	 * description:
+	 * @author jing.luo01@ucarinc.com
+	 * @date   2019/8/5 20:01
+	 * @params request 描述
+	 * @param: id 查找的部门主键
+	 * @param: page 前端传过来的PAGE数据
+	     * @param: limit LIMIT语句限制数据
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("selectDepartment.do_")
+	public Result selectDepartment(HttpServletRequest request,@RequestParam(defaultValue = "") String id,@RequestParam(defaultValue = "") String page,@RequestParam(defaultValue = "") String limit){
+		Department department=departmentService.getDepartmentById(id);
+		Map<String,Object> params=new HashMap<>();
+		params.put("page",page);
+		params.put("limit",limit);
+		params.put("id",id);
+		ResultPage resultPage=companyManageService.getCompanyList(new QueryParam(params));
+		return new Result().ok().put("page",resultPage).put("department",department);
+		//到这里了
 	}
 }

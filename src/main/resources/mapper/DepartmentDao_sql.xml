@@ -107,4 +107,28 @@
             </if>
         </where>
     </select>
+    <select id="getDepartmentById" parameterType="java.lang.Long" resultType="com.ucar.combination.model.Department">
+        SELECT T.id,
+        T.department_no,
+        T.workplace,
+        T.department_name,
+        T.staff_id,
+        T.staff_name,
+        T.city_id,
+        T.address,
+        T.telephone,
+        T.email,
+        T.landline,
+        T.level,
+        T.upper_department_no,
+        T.support_business,
+        T.department_type,
+        T.status,
+        T.create_emp,
+        T.create_time,
+        T.modify_emp,
+        T.modify_time,
+        T.remark
+        from  t_department T;
+    </select>
 </mapper>

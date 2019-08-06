@@ -21,4 +21,13 @@ public interface CompanyManageDao<mcmt> {
      * @return：公司列表
      */
     List<Company> queryList(Map<String, Object> map);
+    /*
+     * description: 部门查询的查询公司列表
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/6 10:16
+     * @params map 描述
+    
+     * @return 
+     */
+    List<Company> getCompanyList(Map<String,Object> map);
 }

@@ -63,4 +63,19 @@
         </where>
         ORDER BY id DESC
     </select>
+
+    <select id="getCompanyList" resultType="com.ucar.combination.model.Company">
+        SELECT
+        T.id,
+        T.company_name,
+        T.credit_code,
+        T.company_type,
+        T.company_nature,
+        T.company_mark,
+        T.status,
+        T.modify_emp,
+        T.modify_time
+        FROM t_company T join t_r_department_company T1 on T.id = T1.department_id
+        where T1.id=#{id}
+    </select>
 </mapper>

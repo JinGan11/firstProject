@@ -31,5 +31,19 @@ public class CompanyManageServiceImpl implements CompanyManageService {
         List<Company> list = companyManageDao.queryList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
+    /*
+     * description: 部门查询里面详细页查找详细公司所用方法
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/5 20:03
+     * @params queryParam CONTROLLER传过来的QUERYPARAM对象
+
+     * @return
+     */
+    @Override
+    public ResultPage getCompanyList(QueryParam queryParam) {
+       Page<?> page=PageHelper.startPage(queryParam.getPage(),queryParam.getLimit());
+       List<Company> list=companyManageDao.getCompanyList(queryParam);
+       return new ResultPage(list,(int)page.getTotal(),queryParam.getLimit(),queryParam.getPage());
+    }
 }
 
