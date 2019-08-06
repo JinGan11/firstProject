@@ -1,5 +1,17 @@
 <template>
   <home>
+<!--    <div class="block">-->
+<!--      <span class="demonstration">选择日期</span>-->
+<!--      <el-date-picker-->
+<!--        v-model="birthdayName"-->
+<!--        type="datetimerange"-->
+<!--        range-separator="至"-->
+<!--        start-placeholder="开始日期"-->
+<!--        end-placeholder="结束日期">-->
+<!--      </el-date-picker>-->
+
+<!--    </div>-->
+
     <div style="width:95%; margin-left: 10px">
       <el-form ref="form" :model="form" label-width="100px">
         <el-row>
@@ -53,14 +65,13 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="100">
-            <el-form-item label="修改时间">
+          <el-col :span="6">
+            <el-form-item label="时间" >
               <el-date-picker
-                v-model="form.Time"
-                unlink-panels
-                size="mini"
-                type="daterange"
-                value-format="yyyy-MM-dd"
+                v-model="form.birthdayName"
+                type="datetimerange"
+                format="yyyy-MM-dd HH:mm:ss"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期">
@@ -80,7 +91,7 @@
 
     <div style="margin-bottom: 10px">
       <el-button type="primary" @click="createCompany" style="width:70px">新建</el-button>
-      <el-button type="primary" @click="" style="width:70px">修改</el-button>
+      <el-button type="primary" @click="modifyCompany" style="width:70px">修改</el-button>
     </div>
 
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
@@ -135,6 +146,9 @@
   export default {
     data() {
       return {
+
+        startTime:'',
+        endTime:'',
         total: 0,
         currentPage: 1,
         pageSize: 10,
@@ -144,8 +158,9 @@
           companyType: '',
           companyNature: '',
           companyStatus: '',
-
+          birthdayName:[],
         },
+
         tableData: [],
         selection:'',
         id: '',
@@ -222,6 +237,8 @@
           companyType:self.form.companyType,
           companyNature:self.form.companyNature,
           companyStatus:self.form.companyStatus,
+          startTime:self.form.birthdayName[0],
+          endTime:self.form.birthdayName[1],
         };
         self.$http.get('company/querylist.do_', {
           params: param
@@ -240,6 +257,9 @@
         },
       createCompany(){//点击新建按钮，跳转到新建公司页面
         this.$router.replace('/CreateCompany')
+      },
+      modifyCompany() {//点击修改按钮，跳转到修改页面
+        this.$router.replace('/ModifyCompany')
       },
       },
 

@@ -93,7 +93,7 @@
           </div>
           <el-row>
             <el-col :span="10">
-            <p>附件照片</p>
+              <p>附件照片</p>
             </el-col>
           </el-row>
           <div style="margin-bottom: 10px">
@@ -268,7 +268,7 @@
           });
         });
       },
-      cancel(){//关闭新建公司页面，返回公司管理列表页面
+      cancel(){//关闭修改公司信息页面，返回公司管理列表页面
         this.$router.replace('/CompanyManagement')
       },
     },

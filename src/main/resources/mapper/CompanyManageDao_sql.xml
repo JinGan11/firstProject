@@ -60,6 +60,13 @@
         <if test="companyStatus != null and companyStatus.trim() != ''">
             AND status =#{companyStatus}
         </if>
+        <if test="startTime != null and startTime.trim() != ''">
+            AND modify_time&gt;#{startTime}
+        </if>
+        <if test="endTime !=null and endTime.trim()!=''">
+            AND modify_time&lt;#{endTime}
+        </if>
+
         </where>
         ORDER BY id DESC
     </select>
