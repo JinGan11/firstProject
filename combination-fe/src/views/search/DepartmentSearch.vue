@@ -75,8 +75,8 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
-    <el-dialog :title="详情信息" :visible.sync="dialogVisibleDetail" :close-on-click-modal="false" width="900px">
-      <el-form ref="form" :model="form" label-width="80px">
+    <el-dialog title="详情信息" :visible.sync="dialogVisibleDetail" :close-on-click-modal="false" width="900px">
+      <el-form ref="form" :model="formDetail" label-width="80px">
         <div>
           <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">申请信息</div>
           <el-row>
@@ -302,7 +302,7 @@
           this.totalCompany = resultss.totalCount;
           this.tableCity = resultss.page.list;
         }).catch(function (error) {
-          console.log('department/selectDepartment.do_' + error);
+         /* console.log('department/selectDepartment.do_' + error);*/
           this.$message.error("获取数据错误");
         })
         this.dialogVisibleDetail = true;
@@ -332,8 +332,6 @@
           self.tableData = result.page.list;
           self.total = result.page.totalCount;
           console.log(self.tableData);
-          /*self.SexEnum = result.SexEnum;
-          self.isDimissionEnum = result.isDissmissionEnum;*/
         }).catch(function (error) {
           console.log('department/searchDepartment.do_' + error);
           self.$message.error("获取数据错误");
