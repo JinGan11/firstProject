@@ -98,7 +98,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="手机号" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.telePhone" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.telephone" placeholder=""></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -194,33 +194,33 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="新建时间" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.departmentNo" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.createTime" placeholder=""></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="新建人" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.departmentNo" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.createEmp" placeholder=""></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="修改时间" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.departmentNo" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.modifyTime" placeholder=""></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="修改人" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.departmentNo" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.modifyName" placeholder=""></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="状态" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.departmentNo" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.status" placeholder=""></el-input>
               </el-form-item>
             </el-col>
             <br>
             <el-col :span="12">
               <el-form-item label="备注" label-width="150px">
-                <el-input style="width: 300px;" v-model="formDetail.departmentNo" placeholder=""></el-input>
+                <el-input style="width: 300px;" v-model="formDetail.remark" placeholder=""></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -244,7 +244,7 @@
           departmentName: '',
           staffId: '',
           staffName: '',
-          telePhone: '',
+          telephone: '',
           email: '',
           landline: '',
           cityName: '',
@@ -284,22 +284,23 @@
     methods: {
       ChooseOnDetail() {
         // alert(this.row.tableData[0].departmentNo);
-        this.dialogVisibleDetail = true;
         var param={
-          id:selection,
+          id:this.selection,
           page: this.currentPageCompany,
           limit: this.pageSizeCompany,
         };
-        self.$http.get("/department/selectDepartment.do_",{
+
+        this.$http.get("/department/selectDepartment.do_",{
           params:param
         }).then((resultss) => {
-          this.tableCity=resultss.page.list;
           this.formDetail=resultss.department;
           this.totalCompany=resultss.totalCount;
+          this.tableCity=resultss.page.list;
         }).catch(function (error) {
           console.log('department/selectDepartment.do_' + error);
           this.$message.error("获取数据错误");
         })
+        this.dialogVisibleDetail = true;
       },
       handleSelectionChange(val) {
         this.selection = val;

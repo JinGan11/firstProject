@@ -109,13 +109,13 @@ public class DepartmentController {
 	@ResponseBody
 	@RequestMapping("selectDepartment.do_")
 	public Result selectDepartment(HttpServletRequest request,@RequestParam(defaultValue = "") String id,@RequestParam(defaultValue = "") String page,@RequestParam(defaultValue = "") String limit){
-		Department department=departmentService.getDepartmentById(id);
 		Map<String,Object> params=new HashMap<>();
 		params.put("page",page);
 		params.put("limit",limit);
 		params.put("id",id);
+		Department department=departmentService.getDepartmentById(id);
 		ResultPage resultPage=companyManageService.getCompanyList(new QueryParam(params));
 		return new Result().ok().put("page",resultPage).put("department",department);
-		//到这里了
+		//return new Result().ok().put("department",department);
 	}
 }

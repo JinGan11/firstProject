@@ -24,10 +24,10 @@ public interface CompanyManageDao<mcmt> {
     /*
      * description: 部门查询的查询公司列表
      * @author jing.luo01@ucarinc.com
-     * @date   2019/8/6 10:16
+     * @date   2019/8/6 10:24
      * @params map 描述
-    
-     * @return 
+
+     * @return
      */
     List<Company> getCompanyList(Map<String,Object> map);
 }

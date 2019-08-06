@@ -129,6 +129,7 @@
         T.modify_emp,
         T.modify_time,
         T.remark
-        from  t_department T;
+        from  t_department T
+        where T.id=#{id};
     </select>
 </mapper>
