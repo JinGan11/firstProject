@@ -18,9 +18,32 @@ import java.util.Map;
 @Repository(value = "DepartmentDao")
 public interface DepartmentDao {
 
+	/**
+	 * description: 查找所有有效的部门
+	 * @author 郑开添（kaitian.zheng@ucarinc.com）
+	 * @date 2019/8/6 17:05
+	 * @params
+	 * @return 存放所有有效部门的DepartmentDto的list
+	 */
 	List<DepartmentTreeDto> queryDepartmentTreeAll();
 
+	/**
+	 * description: 插入一个新的部门，创建/修改时间为当前时间
+	 * @author 郑开添（kaitian.zheng@ucarinc.com）
+	 * @date 2019/8/6 17:05
+	 * @params
+	 * @return
+	 */
 	void insertDepartment(Department department);
+
+	/**
+	 * description: 删除部门（逻辑删除）
+	 * @author 郑开添（kaitian.zheng@ucarinc.com）
+	 * @date 2019/8/6 17:06
+	 * @params
+	 * @return
+	 */
+	void deleteDepartment(Long id);
 
 	/*
 	 * description:

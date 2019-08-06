@@ -32,6 +32,15 @@ public interface DepartmentService {
      */
     void insertDepartment(Department department);
 
+    /**
+     * description: 删除部门（逻辑删除）
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/6 16:59
+     * @params
+     * @return
+     */
+    void deleteDepartment(Long departmentId);
+
     ResultPage searchDepartment(QueryParam queryParam);
 
     /*

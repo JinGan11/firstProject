@@ -81,7 +81,7 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="经度">
-            <el-select style="width: 60px" v-model="longitudeDirection" placeholder="">
+            <el-select style="width: 60px" v-model="longitudeDirection" placeholder="选">
               <el-option
                 v-for="item in longitudeOptions"
                 :key="item.value"
@@ -94,7 +94,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="纬度">
-            <el-select style="width: 60px" v-model="latitudeDirection" placeholder="">
+            <el-select style="width: 60px" v-model="latitudeDirection" placeholder="选">
               <el-option
                 v-for="item in latitudeOptions"
                 :key="item.value"

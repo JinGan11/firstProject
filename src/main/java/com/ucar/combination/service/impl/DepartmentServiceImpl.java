@@ -36,8 +36,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 
 	@Override
 	public void insertDepartment(Department department) {
-		//需要校验，目前测试用
 		departmentDao.insertDepartment(department);
+	}
+
+	@Override
+	public void deleteDepartment(Long departmentId) {
+		departmentDao.deleteDepartment(departmentId);
 	}
 
 	/*

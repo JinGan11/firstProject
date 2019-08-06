@@ -4,7 +4,7 @@
     <div>
       <el-button type="primary">新建子部门</el-button>
       <el-button type="primary">修改</el-button>
-      <el-button type="primary">删除</el-button>
+      <el-button type="primary" @click="dialogVisible = true">删除</el-button>
       <el-button type="primary">修改上级部门</el-button>
       <el-button type="primary">关联公司</el-button>
     </div>
@@ -25,6 +25,20 @@
       <br>
       <el-button @click="getCheckedNodes">点击弹出选中的部门的ID</el-button>
     </div>
+
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%">
+      <br>
+      <span>确定要删除该部门吗?</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="deleteDept">确 定</el-button>
+      </span>
+    </el-dialog>
+
+
   </home>
 </template>
 
@@ -36,7 +50,8 @@
           label: 'departmentName',
           children: 'children',
           id: 'id'
-        }
+        },
+        dialogVisible: false
       };
     },
     methods: {
@@ -55,6 +70,7 @@
         alert(this.$refs.tree.getCheckedNodes()[0].id);
       },
       handleClick(data,checked,node){
+        // 手动设置单选
         if(checked === true) {
           this.checkedId = data.id;
           this.$refs.tree.setCheckedKeys([data.id]);
@@ -63,6 +79,18 @@
             this.$refs.tree.setCheckedKeys([data.id]);
           }
         }
+      },
+      deleteDept(){
+        if( this.$refs.tree.getCheckedNodes()[0].children.length > 0 ){
+          alert("无法删除包含下属部门的部门！");
+          return;
+        }
+        var params = {
+          id: this.$refs.tree.getCheckedNodes()[0].id
+        };
+        this.$http.post('department/deleteDepartment.do_',params);
+        this.dialogVisible = false;
+        this.$refs.tree.remove(params.id);
       }
     }
   };

@@ -36,6 +36,13 @@ public class DepartmentController {
 	@Autowired
 	CompanyManageService companyManageService;
 
+	/**
+	 * description: 构建有效部门的树结构
+	 * @author 郑开添（kaitian.zheng@ucarinc.com）
+	 * @date 2019/8/6 19:18
+	 * @params
+	 * @return 树结构根节点
+	 */
 	@ResponseBody
 	@RequestMapping("/buildTree.do_")
 	public Result list() {
@@ -43,6 +50,13 @@ public class DepartmentController {
 		return new Result().put("departmentDto", rootNode);
 	}
 
+	/**
+	 * description: 添加一个新的部门
+	 * @author 郑开添（kaitian.zheng@ucarinc.com）
+	 * @date 2019/8/6 19:18
+	 * @params
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/addDepartment.do_")
 	public String addDepartment(@RequestBody Department department, HttpSession session) {
@@ -54,6 +68,19 @@ public class DepartmentController {
 		return "success";
 	}
 
+	/**
+	 * description: 删除部门（逻辑删除），会导致其下面的部门无法显示
+	 * @author 郑开添（kaitian.zheng@ucarinc.com）
+	 * @date 2019/8/6 19:19
+	 * @params
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/deleteDepartment.do_")
+	public String deleteDepartment(@RequestBody Department department){
+		departmentService.deleteDepartment(department.getId());
+		return "success";
+	}
 
 	/*
 	 * description:
