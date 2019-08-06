@@ -21,6 +21,7 @@
           <el-col :span="10">
             <el-form-item label="审批人账号">
               <el-input style="width:200px;" v-model="roleForm.accountID"></el-input>
+              <a style="color: #ffd908" @click="chooseAccount">选择</a>
             </el-form-item>
           </el-col>
           <el-col :span="10">
@@ -171,7 +172,9 @@
       cancel(){//关闭修改角色页面，返回角色管理列表页面
         this.$router.replace('/roleManagement/roleManagement')
       },
+      chooseAccount(){
 
+      }
     },
 
 

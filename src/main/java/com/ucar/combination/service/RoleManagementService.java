@@ -2,6 +2,7 @@ package com.ucar.combination.service;
 
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.dto.RoleDto;
 
 /**
  * Description: 角色管理
@@ -14,4 +15,5 @@ public interface RoleManagementService {
 
     ResultPage queryList(QueryParam queryParam);
     void updateStatus(int id);
+    void insertRole(RoleDto role);
 }

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.RoleManagementDao;
+import com.ucar.combination.model.dto.RoleDto;
 import com.ucar.combination.service.RoleManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,10 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     @Override
     public void updateStatus(int id){
         roleManagementDao.updateStatus(id);
+    }
+
+    @Override
+    public void insertRole(RoleDto role) {
+        roleManagementDao.insertRole(role);
     }
 }

@@ -1,5 +1,7 @@
 package com.ucar.combination.dao;
 
+import com.ucar.combination.model.dto.RoleDto;
+
 import java.util.List;
 import java.util.Map;
 
@@ -13,4 +15,5 @@ import java.util.Map;
 public interface RoleManagementDao {
     List<Map<String, Object>> queryList(Map<String, Object> map);
     void updateStatus(int id);
+    void insertRole(RoleDto role);
 }

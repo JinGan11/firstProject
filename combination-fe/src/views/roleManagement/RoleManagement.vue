@@ -23,8 +23,8 @@
     </div>
     <div style="margin-bottom: 10px">
       <el-button type="primary" @click="createRole" style="width:100px">新建</el-button>
-      <el-button type="primary" @click="modifyRole" style="width:100px">修改</el-button>
-      <el-button type="primary" @click="deletRole" style="width:100px">删除</el-button>
+      <el-button type="primary" @click="modifyRole" :disabled="isModify" style="width:100px">修改</el-button>
+      <el-button type="primary" @click="deleteRole" :disabled="isModify" style="width:100px">删除</el-button>
       <el-button type="primary" @click="" style="width:100px">添加账号</el-button>
       <el-button type="primary" @click="" style="width:100px">分配权限</el-button>
     </div>
@@ -32,7 +32,7 @@
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.roleId" ><span width="0px;"></span></el-radio>
+          <el-radio v-model="selection" :label="scope.row.roleId" @change="selectionActive"><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
@@ -81,6 +81,7 @@
         departmentName: '',
         roleStatus: '',
         description: '',
+        isModify:true,
       }
     },
     activated() {
@@ -110,7 +111,7 @@
           limit: self.pageSize,
           roleName: self.form.name,
         };
-        self.$http.get('roleManage/querylist.do_', {
+        self.$http.get("roleManage/querylist.do_", {
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
@@ -126,9 +127,10 @@
       },
       modifyRole() {
         //点击修改按钮，进入修改角色页面
-        this.$router.replace('/ModifyRole')
+        this.$router.replace('/ModifyRole');
+        console.log("selection: "+this.selection);
       },
-      deletRole() {//删除角色信息
+      deleteRole() {//删除角色信息
         this.$confirm('此操作将删除该角色, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -152,6 +154,9 @@
             message: '已取消删除'
           });
         });
+      },
+      selectionActive(){
+        this.isModify=false;
       }
     }
   }
