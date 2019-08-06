@@ -19,7 +19,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item  label="是否离职">
+            <el-form-item label="是否离职">
               <el-select v-model="form.isDimission" clearable style="width:200px;" placeholder="请选择">
                 <el-option
                   v-for="item in options"
@@ -41,23 +41,28 @@
           <el-col :span="2">
             <el-button
               type="text"
-              @click="">选择</el-button>
+              @click="">选择
+            </el-button>
             <el-button
               type="text"
-              @click="">清空</el-button>
+              @click="">清空
+            </el-button>
           </el-col>
           <el-col :span="10">
             <el-form-item label="上级部门">
-              <el-input  placeholder="上级部门" disabled="true" style="width:400px;" v-model="form.upperDepartmentNo"></el-input>
+              <el-input placeholder="上级部门" disabled="true" style="width:400px;"
+                        v-model="form.upperDepartmentNo"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="2">
             <el-button
               type="text"
-              @click="">选择</el-button>
+              @click="">选择
+            </el-button>
             <el-button
               type="text"
-              @click="">清空</el-button>
+              @click="">清空
+            </el-button>
           </el-col>
         </el-row>
         <el-row>
@@ -90,7 +95,8 @@
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.staffNum" @change="selectionActive"><span width="0px;"></span></el-radio>
+          <el-radio v-model="selection" :label="scope.row.staffNum" @change="selectionActive"><span width="0px;"></span>
+          </el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
@@ -187,7 +193,7 @@
   const employeeOptions = ['员工编号', '登录账号', '员工姓名', '性别', '员工手机', '员工邮箱', '所属部门', '上级部门', '是否离职'];
   export default {
     name: "employee-list",
-    inject:['test1'],
+    inject: ['test1'],
     props: {
       relAccount: false
     },
@@ -261,12 +267,12 @@
         employees: employeeOptions,
         isIndeterminate: true,
         filterVal: [],
-        list:[],
-        disabled:true
+        list: [],
+        disabled: true,
       }
     },
     filters: {
-      protect: function(value) {
+      protect: function (value) {
         if (!value) {
           return ''
         }
@@ -279,9 +285,9 @@
     mounted() {
       commonUtils.Log("页面进来");
     },
-    created(){
+    created() {
       var self = this;
-      if(self.relAccount) {
+      if (self.relAccount) {
         self.form.isDimission = '在职';
         self.buttonDisabled = true;
         self.cloumnDisabled = true;
@@ -303,7 +309,8 @@
           commonUtils.Log("employee/querylist.do_:" + error);
           self.$message.error("获取数据错误");
         })
-      };
+      }
+      ;
     },
     methods: {
       handleSizeChange(val) {
@@ -376,48 +383,48 @@
       },
       cancelDepartment() {
       },
-      cancelChoice(){
+      cancelChoice() {
         this.test1();
       },
       exportExcel() {
-        if(this.checkedemployees.length ===0){
+        if (this.checkedemployees.length === 0) {
           this.$message({
             showClose: false,
             message: '请选择需要导出的字段',
             type: 'error'
           });
-        }else{
-        require.ensure([], () => {
-          const {export_json_to_excel} = require('../../excel/Export2Excel');
-          const tHeader = this.checkedemployees;
-          // 上面设置Excel的表格第一行的标题
+        } else {
+          require.ensure([], () => {
+            const {export_json_to_excel} = require('../../excel/Export2Excel');
+            const tHeader = this.checkedemployees;
+            // 上面设置Excel的表格第一行的标题
 
-          const filterVal = this.exportField(this.checkedemployees);
-          // 上面的staffNum、accountId、staffName是tableData里对象的属性
-          const list = this.staffDtoList;  //把data里的tableData存到list
-          for (let i = 0; i < list.length; i++) {
-             if(list[i].isDimission === 0){
-               list[i].isDimission='在职'
-             }else if(list[i].isDimission === 1){
-               list[i].isDimission='离职'
-             }
-            if(list[i].staffSex === 1){
-              list[i].staffSex='男'
-            }else if(list[i].staffSex === 2){
-              list[i].staffSex='女'
+            const filterVal = this.exportField(this.checkedemployees);
+            // 上面的staffNum、accountId、staffName是tableData里对象的属性
+            const list = this.staffDtoList;  //把data里的tableData存到list
+            for (let i = 0; i < list.length; i++) {
+              if (list[i].isDimission === 0) {
+                list[i].isDimission = '在职'
+              } else if (list[i].isDimission === 1) {
+                list[i].isDimission = '离职'
+              }
+              if (list[i].staffSex === 1) {
+                list[i].staffSex = '男'
+              } else if (list[i].staffSex === 2) {
+                list[i].staffSex = '女'
+              }
             }
-          }
-          const data = this.formatJson(filterVal, list);
-          export_json_to_excel(tHeader, data, '员工管理列表excel');
-          this.$message({
-            showClose: true,
-            message: '文件导出成功',
-            type: 'success'
-          });
-          this.dialogVisible=false;
-          this.checkedemployees=[];
-          this.filterVal=[];
-        })
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '员工管理列表excel');
+            this.$message({
+              showClose: true,
+              message: '文件导出成功',
+              type: 'success'
+            });
+            this.dialogVisible = false;
+            this.checkedemployees = [];
+            this.filterVal = [];
+          })
         }
       },
       formatJson(filterVal, jsonData) {
@@ -456,8 +463,8 @@
         }
         return this.filterVal;
       },
-      selectionActive(){
-        this.disabled=false
+      selectionActive() {
+        this.disabled = false
       }
     }
   }

@@ -57,7 +57,11 @@
       <el-table-column prop="level" label="部门级别" width="140"></el-table-column>
       <el-table-column prop="upperDepartmentNo" label="上级部门" width="140"></el-table-column>
       <el-table-column prop="supportBusiness" label="支持业务线" width="140"></el-table-column>
-      <el-table-column prop="departmentType" label="部门类型" width="140"></el-table-column>
+      <el-table-column prop="departmentType" label="部门类型" width="140">
+        <template slot-scope="scope">
+          {{DepartmentTypeEnum[scope.row.departmentType]}}
+        </template>
+      </el-table-column>
       <el-table-column prop="status" label="状态" width="140"></el-table-column>
       <el-table-column prop="cityName" label="所在城市" width="140"></el-table-column>
       <el-table-column prop="companyName" label="关联公司名称" width="140"></el-table-column>
@@ -260,8 +264,8 @@
           modifyName: '',
           status: '',
           remark: '',
-          longitude:'',
-          latitude:'',
+          longitude: '',
+          latitude: '',
         },
         formInline: {
           departmentName: '',
@@ -279,23 +283,24 @@
         department_no: '',
         dialogVisibleDetail: false,
         selection: '',
+        DepartmentTypeEnum: {},
       }
     },
     methods: {
       ChooseOnDetail() {
         // alert(this.row.tableData[0].departmentNo);
-        var param={
-          id:this.selection,
+        var param = {
+          id: this.selection,
           page: this.currentPageCompany,
           limit: this.pageSizeCompany,
         };
 
-        this.$http.get("/department/selectDepartment.do_",{
-          params:param
+        this.$http.get("/department/selectDepartment.do_", {
+          params: param
         }).then((resultss) => {
-          this.formDetail=resultss.department;
-          this.totalCompany=resultss.totalCount;
-          this.tableCity=resultss.page.list;
+          this.formDetail = resultss.department;
+          this.totalCompany = resultss.totalCount;
+          this.tableCity = resultss.page.list;
         }).catch(function (error) {
           console.log('department/selectDepartment.do_' + error);
           this.$message.error("获取数据错误");
@@ -323,6 +328,7 @@
         self.$http.get('/department/searchDepartment.do_', {
           params: param
         }).then((result) => {
+          self.DepartmentTypeEnum = result.DepartmentTypeEnum;
           self.tableData = result.page.list;
           self.total = result.page.totalCount;
           console.log(self.tableData);

@@ -1,5 +1,6 @@
 package com.ucar.combination.controller;
 
+import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
@@ -44,8 +45,8 @@ public class DepartmentController {
 
 	@ResponseBody
 	@RequestMapping("/addDepartment.do_")
-	public String addDepartment(@RequestBody Department department, HttpSession session){
-		Long accountId = (Long)session.getAttribute("accountId");
+	public String addDepartment(@RequestBody Department department, HttpSession session) {
+		Long accountId = (Long) session.getAttribute("accountId");
 		department.setCreateEmp(accountId);
 		department.setModifyEmp(accountId);
 
@@ -93,9 +94,10 @@ public class DepartmentController {
 			departmentTypeList.add(departmentType);
 		}*/
 		params.put("departmentType", departmentType);
-		ResultPage resultPage  = departmentService.searchDepartment(new QueryParam(params));
-		return new Result().ok().put("page", resultPage);
+		ResultPage resultPage = departmentService.searchDepartment(new QueryParam(params));
+		return new Result().ok().put("page", resultPage).put("DepartmentTypeEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentType.values()));
 	}
+
 	/*
 	 * description:
 	 * @author jing.luo01@ucarinc.com
@@ -103,19 +105,18 @@ public class DepartmentController {
 	 * @params request 描述
 	 * @param: id 查找的部门主键
 	 * @param: page 前端传过来的PAGE数据
-	     * @param: limit LIMIT语句限制数据
+	 * @param: limit LIMIT语句限制数据
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping("selectDepartment.do_")
-	public Result selectDepartment(HttpServletRequest request,@RequestParam(defaultValue = "") String id,@RequestParam(defaultValue = "") String page,@RequestParam(defaultValue = "") String limit){
-		Map<String,Object> params=new HashMap<>();
-		params.put("page",page);
-		params.put("limit",limit);
-		params.put("id",id);
-		Department department=departmentService.getDepartmentById(id);
-		ResultPage resultPage=companyManageService.getCompanyList(new QueryParam(params));
-		return new Result().ok().put("page",resultPage).put("department",department);
-		//return new Result().ok().put("department",department);
+	public Result selectDepartment(HttpServletRequest request, @RequestParam(defaultValue = "") String id, @RequestParam(defaultValue = "") String page, @RequestParam(defaultValue = "") String limit) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("page", page);
+		params.put("limit", limit);
+		params.put("id", id);
+		Department department = departmentService.getDepartmentById(id);
+		ResultPage resultPage = companyManageService.getCompanyList(new QueryParam(params));
+		return new Result().ok().put("page", resultPage).put("department", department);
 	}
 }
