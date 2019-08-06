@@ -17,11 +17,13 @@
         <el-col :span="8">
           <el-form-item label="部门编号">
             <el-input style="width:200px;" v-model="form.departmentNo" maxlength="7"></el-input>
+            <span style="color: red;">*</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="部门名称">
             <el-input style="width:200px;" v-model="form.departmentName" maxlength="40"></el-input>
+            <span style="color: red;">*</span>
           </el-form-item>
         </el-col>
       </el-row>
@@ -35,7 +37,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="负责人姓名">
-            <el-input style="width:200px;" :disabled="false" v-model="form.staffName" maxlength="30"></el-input>
+            <el-input style="width:200px;" :disabled="true" v-model="form.staffName" maxlength="30"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -44,6 +46,7 @@
         <el-col :span="8">
           <el-form-item label="手机号">
             <el-input style="width:200px;" v-model="form.telephone" maxlength="11"></el-input>
+            <span style="color: red;">*</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -62,6 +65,7 @@
         <el-col :span="8">
           <el-form-item label="所在城市">
             <el-input style="width:200px;" v-model="form.cityId" maxlength="20"></el-input>
+            <span style="color: red;">*</span>
           </el-form-item>
         </el-col>
       </el-row>
@@ -77,20 +81,28 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="经度">
-            <select style="width: 40px">
-              <option value="E">E</option>
-              <option value="W">W</option>
-            </select>
-            <el-input style="width:180px;" v-model="form.longitude" maxlength="19"></el-input>
+            <el-select style="width: 60px" v-model="longitudeDirection" placeholder="">
+              <el-option
+                v-for="item in longitudeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+            <el-input style="width: 140px;" v-model="longitudeNum" maxlength="19"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="纬度">
-            <select style="width: 40px">
-              <option value="N">N</option>
-              <option value="S">S</option>
-            </select>
-            <el-input style="width:180px;" v-model="form.latitude" maxlength="19"></el-input>
+            <el-select style="width: 60px" v-model="latitudeDirection" placeholder="">
+              <el-option
+                v-for="item in latitudeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+            <el-input style="width:140px;" v-model="latitudeNum" maxlength="19"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -102,27 +114,30 @@
 
       <el-row>
         <el-col :span="8">
-          <el-form-item label="部门类型">
-            <select style="width: 200px;">
-              <option>总部</option>
-              <option>分公司</option>
-              <option>管理部</option>
-              <option>区域</option>
-              <option selected>办公点</option>
-            </select>
+          <el-form-item label="部门级别">
+            <el-select style="width: 200px;" v-model="form.level">
+              <el-option
+                v-for="item in departmentLevelOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+            <span style="color: red;">*</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="上级部门">
-            <el-input style="width:200px;" v-model="form.upperDepartmentId" maxlength="20"></el-input>
+            <el-input style="width:200px;" v-model="form.upperDepartmentNo" maxlength="7"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
 
       <el-row>
         <el-col :span="16">
-          <el-form-item label="支持业务线">
-            <el-checkbox-group v-model="form.supportBusiness">
+          <el-form-item label="支持业务线" style="width:400px;">
+            <span style="color: red;">*</span>
+            <el-checkbox-group v-model="supports">
               <el-checkbox label="买买车"></el-checkbox>
               <el-checkbox label="闪贷"></el-checkbox>
               <el-checkbox label="租车"></el-checkbox>
@@ -136,17 +151,21 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="部门类型">
-            <select style="width: 200px;">
-              <option selected>门店</option>
-              <option>停车场</option>
-              <option>交车中心</option>
-              <option>维修厂</option>
-            </select>
+            <el-select style="width: 200px;" v-model="form.departmentType">
+              <el-option
+               v-for="item in departmentTypeOptions"
+               :key="item.value"
+               :label="item.label"
+               :value="item.value">
+              </el-option>
+            </el-select>
+            <span style="color: red;">*</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="办公点标识">
             <el-input style="width:200px;" v-model="form.workplace" maxlength="3"></el-input>
+            <span style="color: red;">*</span>
           </el-form-item>
         </el-col>
       </el-row>
@@ -159,12 +178,12 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="新建时间">
-            <el-input style="width:200px;" :disabled="true"></el-input>
+            <el-input style="width:200px;" :disabled="true" v-model="nowTime"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="新建人">
-            <el-input style="width:200px;" :disabled="true"></el-input>
+            <el-input style="width:200px;" :disabled="true" v-model="createEmpName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -172,12 +191,12 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="修改时间">
-            <el-input style="width:200px;" :disabled="true"></el-input>
+            <el-input style="width:200px;" :disabled="true" v-model="nowTime"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="修改人">
-            <el-input style="width:200px;" :disabled="true"></el-input>
+            <el-input style="width:200px;" :disabled="true" v-model="modifyEmpName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -185,10 +204,14 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="状态">
-            <select style="width:200px;">
-              <option selected>有效</option>
-              <option>无效</option>
-            </select>
+            <el-select v-model="form.status">
+              <el-option
+                v-for="item in statusOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -196,12 +219,16 @@
       <el-row>
         <el-col :span="16">
           <el-form-item label="备注">
-            <el-input style="width:500px;" v-model="form.remark"></el-input>
+            <el-input style="width:500px;" v-model="form.remark" maxlength="255"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
 
     </el-form>
+
+    <br>
+
+    <el-button type="primary" @click="save" style="margin-left: 200px">添加</el-button>
 
     <br>
     <br>
@@ -227,26 +254,104 @@
           landline: '',
           level: '',
           upperDepartmentNo: '',
-          supportBusiness: [],
+          supportBusiness: '',
           departmentType: '',
-          status: '',
+          status: 1,
           remark: '',
-          longtude: '',
-          atitude: '',
-          remark: ''
-        }
+          longitude: '',
+          latitude: ''
+        },
+        supports: [],
+        longitudeNum: '',
+        longitudeDirection: '',
+        latitudeNum: '',
+        latitudeDirection: '',
+        createEmpName: '',
+        modifyEmpName: '',
+        nowTime: '',
+        departmentLevelOptions: [{
+          value: 1,
+          label: '总部'
+        },{
+          value: 2,
+          label: '分公司'
+        },{
+          value: 3,
+          label: '管理部'
+        },{
+          value: 4,
+          label: '区域'
+        },{
+          value: 5,
+          label: '办公点'
+        }],
+        departmentTypeOptions: [{
+          value: 1,
+          label: '门店'
+        },{
+          value: 2,
+          label: '停车场'
+        },{
+          value: 3,
+          label: '交车中心'
+        },{
+          value: 4,
+          label: '维修厂'
+        }],
+        statusOptions:[{
+          value: 1,
+          label: '有效'
+        },{
+          value: 0,
+          label: '无效'
+        }],
+        longitudeOptions: [{
+          value: 'E',
+          label: 'E'
+        },{
+          value: 'W',
+          label: 'W'
+        }],
+        latitudeOptions: [{
+          value: 'N',
+          label: 'N'
+        },{
+          value: 'S',
+          label: 'S'
+        }]
+      }
+    },
+    mounted() {
+      this.createEmpName=window.sessionStorage.getItem("loginUsername");
+      this.modifyEmpName=window.sessionStorage.getItem("loginUsername");
+      // 页面加载完显示当前时间
+      this.nowTime = this.dealWithTime(new Date());
+      // 定时器，定时修改显示的时间
+      let _this = this;
+      this.timer = setInterval(function () {
+        _this.nowTime = _this.dealWithTime(new Date())
+      }, 1000);
+    },
+    destroyed () {
+      // 结束时清除定时器
+      if (this.timer) {
+        clearInterval(this.timer);
       }
     },
     methods: {
-      cancel(){//关闭新建员工页面，返回员工管理列表页面
+      cancel () {
         this.$router.replace('/departmentManagement/showDepartment');
       },
-      choosePerson(){
+      choosePerson () {
         alert("没写呢，别急");
       },
-      save() {//保存新建员工信息
+      save () {
         var self=this;
-        self.form.supportBusiness="测试1&测试2&测试3";
+
+        self.form.supportBusiness = self.$options.methods.addSubSign(self.supports); // 添加分隔符&
+        self.form.longitude = self.longitudeNum + self.longitudeDirection;
+        self.form.latitude = self.latitudeNum + self.latitudeDirection;
+
         self.$http.post("department/addDepartment.do_",self.form)
           .then(result => {
             self.$router.replace("/departmentManagement");
@@ -255,7 +360,32 @@
 
           })
       },
+      dealWithTime (data) {
+        let formatDateTime;
+        let Y = data.getFullYear();
+        let M = data.getMonth() + 1;
+        let D = data.getDate();
+        let H = data.getHours();
+        let Min = data.getMinutes();
+        let S = data.getSeconds();
+        let W = data.getDay();
+        H = H < 10 ? ('0' + H) : H;
+        Min = Min < 10 ? ('0' + Min) : Min;
+        S = S < 10 ? ('0' + S) : S;
+        formatDateTime = Y + '年' + M + '月' + D + '日 ' + H + ':' + Min + ':' + S;
+        return formatDateTime;
+      },
+      addSubSign (data) {
+        var result = data[0];
+        for(var i=1;i<data.length;i++){
+          result=result+"&"+data[i];
+        }
+        return result;
+      },
+      checkInput () {
+        var _form = this.form;
+
+      }
     }
   }
 </script>
-

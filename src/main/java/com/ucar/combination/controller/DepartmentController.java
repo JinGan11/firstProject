@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,14 +44,11 @@ public class DepartmentController {
 
 	@ResponseBody
 	@RequestMapping("/addDepartment.do_")
-	public String addDepartment(@RequestBody Department department){
-		// 需要先校验部门编号等信息是否被使用、是否为空
-		//以下为测试用的值
-		department.setCreateEmp(new Long(12345));
-		department.setModifyEmp(new Long(12345));
-		department.setLevel(1);
-		department.setDepartmentType(1);
-		department.setStatus(1);
+	public String addDepartment(@RequestBody Department department, HttpSession session){
+		Long accountId = (Long)session.getAttribute("accountId");
+		department.setCreateEmp(accountId);
+		department.setModifyEmp(accountId);
+
 		departmentService.insertDepartment(department);
 		return "success";
 	}
