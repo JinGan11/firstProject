@@ -65,7 +65,6 @@ public class DepartmentController {
 	public Result searchDepartment(HttpServletRequest request, @RequestParam(defaultValue = "") String page, @RequestParam(defaultValue = "") String limit, @RequestParam(defaultValue = "") String departmentName, @RequestParam(defaultValue = "") String staffName, @RequestParam(defaultValue = "") String staffId, @RequestParam(defaultValue = "") String telePhone, @RequestParam(defaultValue = "") String cityName,
 								   @RequestParam(defaultValue = "") String level, @RequestParam(defaultValue = "") String upperDepartmentNo, @RequestParam(defaultValue = "") String status, @RequestParam(defaultValue = "") String departmentType) {
 		Map<String, Object> params = new HashMap<>();
-		ResultPage resultPage = null;
 		params.put("page", page);
 		params.put("limit", limit);
 		params.put("departmentName", departmentName);
@@ -93,7 +92,7 @@ public class DepartmentController {
 			departmentTypeList.add(departmentType);
 		}*/
 		params.put("departmentType", departmentType);
-		resultPage = departmentService.searchDepartment(new QueryParam(params));
+		ResultPage resultPage  = departmentService.searchDepartment(new QueryParam(params));
 		return new Result().ok().put("page", resultPage);
 	}
 }

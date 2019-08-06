@@ -89,7 +89,7 @@
         T3.company_name
         FROM t_department T join t_b_city T1 on T.city_id=T1.city_id
         join t_r_department_company T2 on T.id=T2.department_id join
-        t_company T3 on T2.company_id=T3.company_id
+        t_company T3 on T2.company_id=T3.id
         <where>
             <if test="staffId !=null and staffId.trim()!=''">AND T.staff_id=#{staffId}</if>
             <if test="departmentName != null and departmentName.trim()!=''">AND T.department_name=#{departmentName}</if>
