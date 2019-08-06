@@ -34,11 +34,7 @@
         <el-row>
           <el-col :span="11">
             <el-form-item label="员工所属部门">
-              <el-select v-model="form.department" placeholder="请选择" multiple collapse-tags>
-                <el-option  :value="mineStatusValue" style="height: auto">
-                  <el-tree :data="data" check-strictly=true show-checkbox node-key="id" ref="tree" highlight-current :props="defaultProps" @check-change="handleCheckChange"></el-tree>
-                </el-option>
-              </el-select>
+              <el-input style="width:180px;" v-model="form.departmentId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -79,7 +75,7 @@
       </el-form>
     </div>
     <div style="margin-bottom: 10px">
-      <el-button type="primary" @click="" style="width:70px">新建</el-button>
+      <el-button type="primary" @click="creatAccount" style="width:70px">新建</el-button>
       <el-button type="primary" @click="" style="width:70px">修改</el-button>
       <el-button type="primary" @click="" style="width:70px">删除</el-button>
       <el-button type="primary" @click="" style="width:70px">冻结</el-button>
@@ -89,7 +85,12 @@
       <el-button type="primary" @click="" style="width:80px">历史记录</el-button>
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
-      <el-table-column type="selection" width="35"></el-table-column>
+<!--      <el-table-column type="selection" width="35"></el-table-column>-->
+      <el-table-column label="选择" width="45">
+        <template slot-scope="scope">
+          <el-radio v-model="selection" :label="scope.row.id"><span width="0px;"></span></el-radio>
+        </template>
+      </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
       <el-table-column prop="accountName" label="登陆账号" style="width:auto"></el-table-column>
       <el-table-column prop="staffNum" label="员工编号" style="width:auto"></el-table-column>
@@ -139,7 +140,7 @@
           accountStatusList:[],
           accountStatusEnum:{},
           permissions: null,
-          department:null,
+          departmentId:null,
           isRelStaffoptions:[{
             value: '1',
             label: '是'
@@ -216,7 +217,7 @@
           staffNo: self.form.staffNo,
           name:self.form.name,
           permissions: self.form.permissions,
-          department: self.form.department,
+          department: self.form.departmentId,
           isRelStaff: self.form.isRelStaff,
           status: self.form.status
         };
@@ -233,6 +234,9 @@
           commonUtils.Log("employee/querylist.do_:"+error);
           self.$message.error("获取数据错误")
         });
+      },
+      creatAccount(){ //新建账户
+        this.$router.replace('/createAccount')
       }
     },
     created() {
