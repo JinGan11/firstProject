@@ -19,6 +19,7 @@ public class RoleDto extends BaseBean{
     private String departmentName;
     private String description;
 
+
     public void setRoleName(String roleName) {
         this.roleName = roleName;
     }

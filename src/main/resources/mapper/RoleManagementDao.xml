@@ -29,8 +29,8 @@
 
     <insert id="insertRole" parameterType="com.ucar.combination.model.dto.RoleDto">
         insert
-        into t_role_info t1(t1.role_name,t1.business_line,t1.role_status,t1.approver_account_name,t1.approver_staff_num,t1.aapprover_staff_name,t1.approver_department_name,t1.description,t1.create_emp,t1.create_time,t1.modify_emp,t1.modify_time)
-        values (#{roleName},#{businessLine},#{roleStatus},#{accountNum},#{satffNum},#{staffName},#{departmentName},#{createNum},NOW(),#{modifyNum},NOW())
+        into t_role_info(role_name,business_line,role_status,approver_account_name,approver_staff_num,approver_staff_name,approver_department_name,description,create_emp,create_time,modify_emp,modify_time)
+        value(#{roleName},#{businessLine},1,#{accountNum},#{staffNum},#{staffName},#{departmentName},#{description},1,NOW(),1,NOW())
     </insert>
 
 </mapper>

@@ -1,6 +1,5 @@
 package com.ucar.combination.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
@@ -56,6 +55,6 @@ public class RoleManagementController {
     @RequestMapping(value = "/insertRole.do_",method = RequestMethod.POST)
     public void insertRole(@RequestBody RoleDto role){
         roleManagementService.insertRole(role);
-        System.out.println("insertRole:"+ JSON.toJSONString(role));
+       // System.out.println("insertRole:"+ JSON.toJSONString(role));
     }
 }

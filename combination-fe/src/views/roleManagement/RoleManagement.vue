@@ -32,7 +32,7 @@
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.roleId" @change="selectionActive"><span width="0px;"></span></el-radio>
+          <el-radio v-model="selection" :label="scope.row.roleId" @change="selectionActive()"><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>

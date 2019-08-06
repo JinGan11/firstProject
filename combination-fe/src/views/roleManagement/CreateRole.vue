@@ -95,7 +95,7 @@
           <el-row>
             <el-col :span="1">
               <el-form-item label="状态">
-                <el-input style="width:200px;" :disabled="true" v-model="form.roleStatus"></el-input>
+                <el-input placeholder="有效" style="width:200px;" :disabled="true" v-model="form.roleStatus"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -122,7 +122,7 @@
         form: {
           roleName:'',
           businessLine:'',
-          roleStatus:'有效',
+          roleStatus:'',
           accountNum:'',
           staffNum:'',
           staffName:'',
@@ -143,19 +143,30 @@
     },
     methods: {
       save() {//保存新建角色信息
-            var self=this;
-            self.$http.post("roleManage/insertRole",self.form)
-              .then((result) => {
-                self.$router.replace("/roleManagement/roleManagement");
-              })
-              .catch(function (error) {
-                commonUtils.Log("roleManage/insertRole:"+error);
-                self.$message.error("新建角色失败");
-              });
-            this.$message({
-              type: 'success',
-              message: '保存成功!'
+        this.$confirm('此操作将保存该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          var self=this;
+          self.$http.post("roleManage/insertRole.do_", self.form)
+            .then((result) => {
+              self.$router.replace("/roleManagement/roleManagement");
+            })
+            .catch(function (error) {
+              commonUtils.Log("roleManage/insertRole:"+error);
+              self.$message.error("新建角色失败");
             });
+          this.$message({
+            type: 'success',
+            message: '保存成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消保存'
+          });
+        });
       },
       cancel(){//关闭新建角色页面，返回角色管理列表页面
         this.$router.replace('/roleManagement/roleManagement')
