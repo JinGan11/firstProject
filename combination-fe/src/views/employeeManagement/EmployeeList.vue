@@ -15,7 +15,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="登陆账号">
-              <el-input placeholder="登陆账号" style="width:200px;" v-model="form.accountId"></el-input>
+              <el-input placeholder="登陆账号" style="width:200px;" v-model="form.accountName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -99,9 +99,10 @@
           </el-radio>
         </template>
       </el-table-column>
-      <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
-      <el-table-column prop="staffNum" label="员工编号" width="150"></el-table-column>
-      <el-table-column prop="accountId" label="登陆账号" width="150"></el-table-column>
+      <el-table-column prop="id" v-if="false" label="隐藏员工id"></el-table-column>
+      <el-table-column prop="accountId" v-if="false" label="隐藏账户id"></el-table-column>
+      <el-table-column prop="staffNum" label="员工编号" width="150"></el-table-column>accountId
+      <el-table-column prop="accountName" label="登陆账号" width="150"></el-table-column>
       <el-table-column prop="staffName" label="员工姓名" width="120"></el-table-column>
       <el-table-column prop="staffSex" label="性别" width="50" style="text-align: center">
         <template slot-scope="scope">
@@ -216,7 +217,7 @@
         form: {
           staffNum: '',
           staffName: '',
-          accountId: '',
+          accountName: '',
           isDimission: '',
           departmentId: '',
           upperDepartmentNo: '',
@@ -226,6 +227,7 @@
         id: '',
         staffName: '',
         accountId: '',
+        accountName:'',
         staffSex: '',
         SexEnum: {},
         staffTelephone: '',
@@ -334,7 +336,7 @@
           staffName: self.form.staffName,
           departmentId: self.form.departmentId,
           isDimission: (self.form.isDimission === '2') ? '' : self.form.isDimission,
-          accountId: self.form.accountId,
+          accountName: self.form.accountName,
           upper_department_no: self.form.upperDepartmentNo,
         };
         self.$http.get('employee/querylist.do_', {

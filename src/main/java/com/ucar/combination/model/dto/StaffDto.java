@@ -19,13 +19,14 @@ public class StaffDto extends BaseBean {
     private Integer status;
     private String remark;
 
+    private String accountName;
     private Long accountId;
     private String upperDepartmentNo;
 
     public StaffDto() {
     }
 
-    public StaffDto(Long id, String staffNum, String staffName, Integer staffSex, String staffTelephone, String staffEmail, Long departmentId, Integer isDimission, Integer status, String remark, Long accountId, String upperDepartmentNo) {
+    public StaffDto(Long id, String staffNum, String staffName, Integer staffSex, String staffTelephone, String staffEmail, Long departmentId, Integer isDimission, Integer status, String remark, String accountName, Long accountId, String upperDepartmentNo) {
         this.id = id;
         this.staffNum = staffNum;
         this.staffName = staffName;
@@ -36,8 +37,17 @@ public class StaffDto extends BaseBean {
         this.isDimission = isDimission;
         this.status = status;
         this.remark = remark;
+        this.accountName = accountName;
         this.accountId = accountId;
         this.upperDepartmentNo = upperDepartmentNo;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
     public String getUpperDepartmentNo() {

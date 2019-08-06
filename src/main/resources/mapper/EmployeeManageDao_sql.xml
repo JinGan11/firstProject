@@ -4,35 +4,52 @@
 <mapper namespace="com.ucar.combination.dao.EmployeeManageDao">
     <select id="queryList" resultType="com.ucar.combination.model.dto.StaffDto">
         SELECT
+        M.id,
+        createTime,
+        t3.account_name,
+        staffNum,
+        accountId,
+        staffName,
+        staffSex,
+        staffTelephone,
+        staffEmail,
+        departmentId,
+        isDimission,
+        upperDepartmentNo
+        FROM
+        (SELECT
         t1.id id,
         t1.staff_num staffNum,
-        t3.id accountId,
+        t1.account_id accountId,
         t1.staff_name staffName,
         t1.staff_sex staffSex,
         t1.staff_telephone staffTelephone,
         t1.staff_email staffEmail,
         t1.department_id departmentId,
         t1.is_dimission isDimission,
+        t1.create_time createTime,
         t2.upper_department_no upperDepartmentNo
-        FROM t_staff t1,t_department t2,t_account t3
-        where t1.department_id = t2.id
-        and t1.id = t3.staff_id
+        FROM t_staff t1,t_department t2
+        where t1.department_id = t2.id) M
+        LEFT JOIN t_account t3
+        on  t3.id=M.accountId
+        where 1=1
         <if test="satff_num != null and satff_num.trim() != ''">
-            AND t1.staff_num =#{satff_num}
+            AND staffNum =#{satff_num}
         </if>
         <if test="staff_name != null and staff_name.trim() != ''">
-            AND t1.staff_name =#{staff_name}
+            AND staffName =#{staff_name}
         </if>
-        <if test="accountId != null and accountId.trim() != ''">
-            AND t3.id =#{accountId}
+        <if test="accountName != null and accountName.trim() != ''">
+            AND t3.account_name=#{accountName}
         </if>
         <if test="is_dimission != null and is_dimission.trim() != ''">
-            AND t1.is_dimission =#{is_dimission}
+            AND isDimission =#{is_dimission}
         </if>
         <if test="department != null and department.trim() != ''">
-            AND t2.upper_department_no =#{upper_department_no}
+            AND upperDepartmentNo =#{upper_department_no}
         </if>
-        ORDER BY t1.create_time DESC
+        ORDER BY createTime DESC
     </select>
 
     <select id="qryStaffById" parameterType="com.ucar.combination.model.User"
