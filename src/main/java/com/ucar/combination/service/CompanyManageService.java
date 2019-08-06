@@ -2,6 +2,8 @@ package com.ucar.combination.service;
 
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.Company;
+
 /**
  * description:公司管理
  *
@@ -27,4 +29,12 @@ public interface CompanyManageService {
      * @return
      */
     ResultPage getCompanyList(QueryParam queryParam);
+    /**
+     * description: 插入公司信息
+     * @author: jianan.shu@ucarinc.com
+     * @param: company
+     * @date: 2019/8/6 15:12
+     * @return：
+     */
+    void insertCompany(Company company);
 }

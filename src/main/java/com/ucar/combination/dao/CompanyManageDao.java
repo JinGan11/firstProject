@@ -30,4 +30,12 @@ public interface CompanyManageDao<mcmt> {
      * @return
      */
     List<Company> getCompanyList(Map<String,Object> map);
+    /**
+     * description: 插入公司信息
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/6 15:17
+     * @return：
+     */
+    void insertCompany(Company company);
 }

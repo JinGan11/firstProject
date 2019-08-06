@@ -45,5 +45,16 @@ public class CompanyManageServiceImpl implements CompanyManageService {
        List<Company> list=companyManageDao.getCompanyList(queryParam);
        return new ResultPage(list,(int)page.getTotal(),queryParam.getLimit(),queryParam.getPage());
     }
+    /**
+     * description: 插入公司信息
+     * @author: jianan.shu@ucarinc.com
+     * @param: company
+     * @date: 2019/8/6 15:16
+     * @return：
+     */
+    @Override
+    public void insertCompany(Company company){
+        companyManageDao.insertCompany(company);
+    }
 }
 

@@ -124,7 +124,7 @@
           {{CompanyStatusEnum[scope.row.companyStatus]}}
         </template>
       </el-table-column>
-      <el-table-column prop="modifyTime" label="修改时间" width="120"></el-table-column>
+      <el-table-column prop="modifyTime" label="修改时间" width="140"></el-table-column>
       <el-table-column prop="modifyEmp" label="修改人" width="120"></el-table-column>
     </el-table>
     <el-pagination background

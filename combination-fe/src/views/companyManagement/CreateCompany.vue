@@ -6,6 +6,7 @@
         <span style="margin-left: 800px"><el-button type="primary" @click="save" style="width:70px">保存</el-button>
         <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
         </span>
+       <hr ><br>
       </div>
       <div style="width:85%; margin-left: 70px">
         <el-form ref="form" :model="form" label-width="80px">
@@ -35,8 +36,17 @@
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="营业期限">
-                <el-input style="width:200px;" v-model="form.qixian"></el-input>
+              <el-form-item label="营业期限" >
+                <el-date-picker
+                  v-model="businessTerm"
+                  type="daterange"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期">
+                </el-date-picker>
+
               </el-form-item>
             </el-col>
           </el-row>
@@ -67,7 +77,13 @@
           <el-row>
             <el-col :span="10">
               <el-form-item label="成立日期">
-                <el-input style="width:200px;" v-model="form.establishTime"></el-input>
+                <el-date-picker
+                  v-model="form.establishTime"
+                  type="date"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  placeholder="选择日期">
+                </el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="10">
@@ -79,7 +95,13 @@
           <el-row>
             <el-col :span="10">
               <el-form-item label="核准日期">
-                <el-input style="width:200px;" v-model="form.issueDate"></el-input>
+                <el-date-picker
+                  v-model="form.causeTime"
+                  type="date"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  placeholder="选择日期">
+                </el-date-picker>
               </el-form-item>
             </el-col>
             <el-col :span="10">
@@ -89,7 +111,9 @@
             </el-col>
           </el-row>
           <div style="margin-bottom: 10px">
+            <br>
             <span style="font-size: 20px">附件信息</span>
+            <hr ><br>
           </div>
           <el-row>
             <el-col :span="10">
@@ -97,7 +121,9 @@
             </el-col>
           </el-row>
           <div style="margin-bottom: 10px">
+            <br>
             <span style="font-size: 20px">发票信息</span>
+            <hr ><br>
           </div>
           <el-row>
             <el-col :span="10">
@@ -138,29 +164,31 @@
             </el-col>
           </el-row>
           <div style="margin-bottom: 10px">
+            <hr ><br>
             <span style="font-size: 20px">其他信息</span>
+            <br>
           </div>
           <el-row>
             <el-col :span="10">
               <el-form-item label="新建人">
-                <el-input style="width:200px;" v-model="form.createEmp"></el-input>
+                <el-input style="width:200px;" v-model="form.createEmp" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="新建时间">
-                <el-input style="width:200px;" v-model="form.createTime"></el-input>
+                <el-input style="width:200px;" v-model="form.createTime" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
               <el-form-item label="修改人">
-                <el-input style="width:200px;" v-model="form.modifyEmp"></el-input>
+                <el-input style="width:200px;" v-model="form.modifyEmp" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="修改时间">
-                <el-input style="width:200px;" v-model="form.modifyTime"></el-input>
+                <el-input style="width:200px;" v-model="form.modifyTime" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -199,18 +227,21 @@
   export default {
     data() {
       return {
+        businessTerm:[],
+
         form: {
+          businessStartTime:'',
+          businessDeadline:'',
           companyName:'',
           creditCode:'',
           companyType:'',
-          qixian:'',
           companyAddress:'',
           businessScope:'',
           legalPerson:'',
           registeredCapital:'',
           establishTime:'',
           registeredInstitution:'',
-          issueDate:'',
+          causeTime:'',
           registeredStatus:'',
           companyNature:'',
           registrationAddress:'',
@@ -223,7 +254,8 @@
           modifyTime:'',
           modifyEmp:'',
           companyStatus:'',
-          remark:"",
+          remark:'',
+          liscensePath:'',
         },
         options1: [{
           value: '',
@@ -251,22 +283,18 @@
       commonUtils.Log("页面进来");
     },
     methods: {
-      save() {//保存新建角色信息
-        this.$confirm('此操作将保存该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$message({
-            type: 'success',
-            message: '保存成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消保存'
-          });
-        });
+      save() {//保存新建公司信息
+        var self=this;
+        self.form.businessStartTime=self.businessTerm[0];
+        self.form.businessDeadline=self.businessTerm[1];
+        self.form.liscensePath='dfs';
+        self.$http.post("company/createCompany",self.form)
+          .then(result => {
+            self.$router.replace("/CompanyManagement");
+          })
+          .catch(function (error) {
+
+          })
       },
       cancel(){//关闭新建公司页面，返回公司管理列表页面
         this.$router.replace('/CompanyManagement')
