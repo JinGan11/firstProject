@@ -90,7 +90,7 @@
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.id"><span width="0px;"></span></el-radio>
+          <el-radio v-model="selection" :label="scope.row.id" @change="approvalInfo(scope.row)"><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
@@ -127,8 +127,8 @@
                    :total="total">
     </el-pagination>
     <el-dialog :title='title' :visible.sync="dialogVisible" :close-on-click-modal="false" width="900px"> <el-form ref="form" :model="form" label-width="80px">
-      <div>
-        <div style="font-family: Consolas; font-size:20px ; margin-left:50px;margin-bottom: 20px;">申请信息</div>
+      <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
+        <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">申请信息</div>
         <el-row>
           <el-col :span="12">
             <el-form-item label="角色申请编号:" label-width="150px">
@@ -155,8 +155,8 @@
         </el-row>
       </div>
 
-      <div>
-        <div style="font-family: Consolas; font-size:20px ; margin-left:50px;margin-bottom: 20px;">申请账号明细</div>
+      <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 20px;padding-top: 20px">
+        <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">申请账号明细</div>
         <el-table
           style="width: 85%;margin-left: 40px">
           <el-table-column
@@ -187,7 +187,7 @@
       </div>
 
       <div>
-        <div style="font-family: Consolas; font-size:20px ; margin-left:50px;margin-bottom: 20px;">其他信息</div>
+        <div style="font-family: Consolas; font-size:20px ; margin-left:50px;margin-bottom: 20px;padding-top: 20px">其他信息</div>
         <el-row>
           <el-col :span="12">
             <el-form-item label="申请时间:" label-width="150px">
@@ -360,6 +360,19 @@
       },
       approval(){
         this.dialogVisible=true;
+      },
+      approvalInfo(val){
+        this.apply.role_apply_id = val.roleApplyNum;
+        this.apply.role_id = val.roleId;
+        this.apply.approver_emp = val.approverStaffName;
+        this.apply.business_line = this.BusinessLineEnum[val.businessLine];
+        this.apply.apply_staff_num = val.applyStaffNum;
+        this.apply.apply_department_name = val.applyDepartmentName;
+        this.apply.apply_time = val.applyTime;
+        this.apply.apply_staff_name =val.applyStaffName;
+        this.apply.modify_emp = val.modifyEmp;
+        this.apply.modify_time = val.modifyTime;
+        this.apply.statue = this.ApplyStatusEnum[val.applyStatus];
       }
     }
   }
