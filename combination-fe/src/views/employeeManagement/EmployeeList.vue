@@ -72,7 +72,7 @@
     </div>
     <div style="margin-bottom: 10px">
       <el-button type="primary" @click="createEmployee" style="width:70px">新建</el-button>
-      <el-button type="primary" @click="modifyEmployee" :disabled="isModify" style="width:70px">修改</el-button>
+      <el-button type="primary" @click="modifyEmployee" :disabled="disabled" style="width:70px">修改</el-button>
       <el-button type="primary" @click="deleteEmployee" style="width:70px">删除</el-button>
       <el-button type="primary" @click="" style="width:70px">离职</el-button>
       <el-button type="primary" @click="" style="width:70px">恢复</el-button>
@@ -159,8 +159,8 @@
       <template>
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         <div style="margin: 15px 0;"></div>
-        <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-          <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+        <el-checkbox-group v-model="checkedemployees" @change="handleCheckedEmployeesChange">
+          <el-checkbox v-for="city in employees" :label="city" :key="city">{{city}}</el-checkbox>
         </el-checkbox-group>
       </template>
       <template slot="footer">
@@ -175,7 +175,7 @@
 <script>
   import commonUtils from '../../common/commonUtils'
 
-  const cityOptions = ['员工编号', '登录账号', '员工姓名', '性别', '员工手机', '员工邮箱', '所属部门', '上级部门', '是否离职'];
+  const employeeOptions = ['员工编号', '登录账号', '员工姓名', '性别', '员工手机', '员工邮箱', '所属部门', '上级部门', '是否离职'];
   export default {
     data() {
       return {
@@ -241,12 +241,12 @@
           label: '离职'
         }],
         checkAll: false,
-        checkedCities: [],
-        cities: cityOptions,
+        checkedemployees: [],
+        employees: employeeOptions,
         isIndeterminate: true,
         filterVal: [],
         list:[],
-        isModify:true
+        disabled:true
       }
     },
     filters: {
@@ -316,7 +316,6 @@
       },
       modifyEmployee() {//点击修改按钮，跳转到修改页面
         this.$router.replace('/ModifyEmployee');
-        console.log("selection: "+this.selection)
       },
       deleteEmployee() {//删除员工
         this.deleteEmployeeFlag = true;
@@ -337,7 +336,7 @@
 
       },
       exportExcel() {
-        if(this.checkedCities.length ===0){
+        if(this.checkedemployees.length ===0){
           this.$message({
             showClose: false,
             message: '请选择需要导出的字段',
@@ -346,25 +345,24 @@
         }else{
         require.ensure([], () => {
           const {export_json_to_excel} = require('../../excel/Export2Excel');
-          const tHeader = this.checkedCities;
+          const tHeader = this.checkedemployees;
           // 上面设置Excel的表格第一行的标题
 
-          const filterVal = this.exportField(this.checkedCities);
+          const filterVal = this.exportField(this.checkedemployees);
           // 上面的staffNum、accountId、staffName是tableData里对象的属性
           const list = this.staffDtoList;  //把data里的tableData存到list
           for (let i = 0; i < list.length; i++) {
              if(list[i].isDimission === 0){
                list[i].isDimission='在职'
-             }else{
+             }else if(list[i].isDimission === 1){
                list[i].isDimission='离职'
              }
             if(list[i].staffSex === 1){
               list[i].staffSex='男'
-            }else{
+            }else if(list[i].staffSex === 2){
               list[i].staffSex='女'
             }
           }
-          console.log(list);
           const data = this.formatJson(filterVal, list);
           export_json_to_excel(tHeader, data, '员工管理列表excel');
           this.$message({
@@ -373,7 +371,7 @@
             type: 'success'
           });
           this.dialogVisible=false;
-          this.checkedCities=[];
+          this.checkedemployees=[];
           this.filterVal=[];
         })
         }
@@ -382,40 +380,40 @@
         return jsonData.map(v => filterVal.map(j => v[j]))
       },
       handleCheckAllChange(val) {
-        this.checkedCities = val ? cityOptions : [];
+        this.checkedemployees = val ? employeeOptions : [];
         this.isIndeterminate = false;
       },
-      handleCheckedCitiesChange(value) {
+      handleCheckedEmployeesChange(value) {
         let checkedCount = value.length;
-        this.checkAll = checkedCount === this.cities.length;
-        this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+        this.checkAll = checkedCount === this.employees.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.employees.length;
       },
       exportField(val) {
         for (let i = 0; i < val.length; i++) {
-          if (this.checkedCities[i] === '员工编号') {
+          if (this.checkedemployees[i] === '员工编号') {
             this.filterVal.push('staffNum')
-          } else if (this.checkedCities[i] === '登录账号') {
+          } else if (this.checkedemployees[i] === '登录账号') {
             this.filterVal.push('accountId')
-          } else if (this.checkedCities[i] === '员工姓名') {
+          } else if (this.checkedemployees[i] === '员工姓名') {
             this.filterVal.push('staffName')
-          } else if (this.checkedCities[i] === '性别') {
+          } else if (this.checkedemployees[i] === '性别') {
             this.filterVal.push('staffSex')
-          } else if (this.checkedCities[i] === '员工手机') {
+          } else if (this.checkedemployees[i] === '员工手机') {
             this.filterVal.push('staffTelephone')
-          } else if (this.checkedCities[i] === '员工邮箱') {
+          } else if (this.checkedemployees[i] === '员工邮箱') {
             this.filterVal.push('staffEmail')
-          } else if (this.checkedCities[i] === '所属部门') {
+          } else if (this.checkedemployees[i] === '所属部门') {
             this.filterVal.push('departmentId')
-          } else if (this.checkedCities[i] === '上级部门') {
+          } else if (this.checkedemployees[i] === '上级部门') {
             this.filterVal.push('upperDepartmentNo')
-          } else if (this.checkedCities[i] === '是否离职') {
+          } else if (this.checkedemployees[i] === '是否离职') {
             this.filterVal.push('isDimission')
           }
         }
         return this.filterVal;
       },
       selectionActive(){
-        this.isModify=false
+        this.disabled=false
       }
     }
   }
