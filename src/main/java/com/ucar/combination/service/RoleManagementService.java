@@ -21,4 +21,5 @@ public interface RoleManagementService {
     ResultPage getOwnedRoleList();
     ResultPage getnotOwnedRoleList();
     RoleDto getOneInf(int id);
+    void updateByModify(RoleDto role);
 }

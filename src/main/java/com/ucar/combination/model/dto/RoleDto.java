@@ -10,7 +10,7 @@ import java.security.PrivateKey;
  * @Date 2019/8/6 10:53
  */
 public class RoleDto extends BaseBean{
-    private String roleID;
+    private Long roleID;
     private String roleName;
     private Integer businessLine;
     private Integer roleStatus;
@@ -20,11 +20,11 @@ public class RoleDto extends BaseBean{
     private String departmentName;
     private String description;
 
-    public String getRoleID() {
+    public Long getRoleID() {
         return roleID;
     }
 
-    public void setRoleID(String roleID) {
+    public void setRoleID(Long roleID) {
         this.roleID = roleID;
     }
 

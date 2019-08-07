@@ -150,13 +150,13 @@
           type: 'warning'
         }).then(() => {
           var self=this;
-          self.$http.post("roleManage/update", self.form)
+          self.$http.post("roleManage/updateByModify.do_", self.form)
             .then((result) => {
               self.$router.replace("/roleManagement/roleManagement");
             })
             .catch(function (error) {
-              commonUtils.Log("roleManage/insertRole:"+error);
-              self.$message.error("新建角色失败");
+              commonUtils.Log("roleManage/updateByModify.do_:"+error);
+              self.$message.error("修改角色失败");
             });
           this.$message({
             type: 'success',

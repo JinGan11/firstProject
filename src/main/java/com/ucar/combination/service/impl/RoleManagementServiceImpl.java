@@ -108,4 +108,9 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         RoleDto roleDto = roleManagementDao.getOneInf(id);
         return roleDto;
     }
+
+    @Override
+    public void updateByModify(RoleDto role) {
+       roleManagementDao.updateByModify(role);
+    }
 }
