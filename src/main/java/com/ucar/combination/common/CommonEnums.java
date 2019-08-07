@@ -579,6 +579,57 @@ public abstract class CommonEnums {
 		}
 	}
 
+
+	/*
+	 * description: 部门级别的枚举类
+	 * @author jing.luo01@ucarinc.com
+	 * @date   2019/8/6 16:38
+	 * @params enumArr 描述
+
+	 * @return
+	 */
+	public static enum DepartmentLevel implements IEnum{
+		OFFICE_SPACE(1,"办公点"),
+		REGION(2,"区域"),
+		MANAGEMENT(3,"管理部"),
+		BRANCH_OFFICE(4,"分公司"),
+		HEADQUARTERS(5,"总部");
+		private final int i;
+		private final String n;
+
+		DepartmentLevel(int i,String n){
+			this.i=i;
+			this.n=n;
+		}
+
+		@Override
+		public int getI() {
+			return i;
+		}
+
+		@Override
+		public String getN() {
+			return n;
+		}
+		public static DepartmentLevel valueOf(Integer i){
+			if (i==null){
+				return null;
+			}
+			for (DepartmentLevel item:values()){
+				if (item.getI()==i){
+					return item;
+				}
+			}
+			return null;
+		}
+		public static String i2n(Integer i,String n){
+			IEnum e=valueOf(i);
+			if (e==null){
+				return n;
+			}
+			return e.getN();
+		}
+	}
 	public static Map<Integer, String> toEnumMap(IEnum[] enumArr) {
 		Map<Integer, String> res = new HashMap<>();
 		for (IEnum item : enumArr) {

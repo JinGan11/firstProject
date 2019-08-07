@@ -3,6 +3,7 @@ package com.ucar.combination.service;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Department;
+import com.ucar.combination.model.dto.DepartmentDto;
 import com.ucar.combination.model.dto.DepartmentTreeDto;
 
 /**
@@ -51,6 +52,6 @@ public interface DepartmentService {
 
      * @return 得到部门信息
      */
-    Department getDepartmentById(String id);
+    DepartmentDto getDepartmentDtoById(String id);
 
 }

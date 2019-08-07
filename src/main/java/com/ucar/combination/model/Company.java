@@ -46,6 +46,15 @@ public class Company extends BaseBean {
     private Long modifyEmp;
     private Date modifyTime;
     private String remark;
+    private Integer status;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
    // public Long getId() {
      //   return id;

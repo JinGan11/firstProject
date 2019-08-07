@@ -54,7 +54,11 @@
       <el-table-column prop="staffId" label="负责人ID" width="140"></el-table-column>
       <el-table-column prop="staffName" label="负责人姓名" width="140"></el-table-column>
       <el-table-column prop="telephone" label="手机号" width="140"></el-table-column>
-      <el-table-column prop="level" label="部门级别" width="140"></el-table-column>
+      <el-table-column prop="level" label="部门级别" width="140">
+        <template slot-scope="scope">
+          {{LevelEnum[scope.row.level]}}
+        </template>
+      </el-table-column>
       <el-table-column prop="upperDepartmentNo" label="上级部门" width="140"></el-table-column>
       <el-table-column prop="supportBusiness" label="支持业务线" width="140"></el-table-column>
       <el-table-column prop="departmentType" label="部门类型" width="140">
@@ -62,7 +66,11 @@
           {{DepartmentTypeEnum[scope.row.departmentType]}}
         </template>
       </el-table-column>
-      <el-table-column prop="status" label="状态" width="140"></el-table-column>
+      <el-table-column prop="status" label="状态" width="140">
+         <template slot-scope="scope">
+           {{StatusEnum[scope.row.status]}}
+         </template>
+      </el-table-column>
       <el-table-column prop="cityName" label="所在城市" width="140"></el-table-column>
       <el-table-column prop="companyName" label="关联公司名称" width="140"></el-table-column>
     </el-table>
@@ -162,7 +170,8 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="部门类型" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.departmentType" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.departmentType" placeholder="">
+                </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -178,10 +187,26 @@
             <el-table-column prop="id" label="公司编号"></el-table-column>
             <el-table-column prop="companyName" label="公司名称"></el-table-column>
             <el-table-column prop="creditCode" label="统一社会信用代码"></el-table-column>
-            <el-table-column prop="companyType" label="类型"></el-table-column>
-            <el-table-column prop="companyNature" label="公司性质"></el-table-column>
-            <el-table-column prop="companyMark" label="总公司标志"></el-table-column>
-            <el-table-column prop="status" label="公司状态"></el-table-column>
+            <el-table-column prop="companyType" label="类型">
+              <template slot-scope="scope">
+                {{CompanyTypeEnum[scope.row.companyType]}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="companyNature" label="公司性质">
+              <template slot-scope="scope">
+                 {{CompanyNatureEnum[scope.row.companyNature]}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="companyMark" label="总公司标志">
+              <template slot-scope="scope">
+                 {{CompanyMarkEnum[scope.row.companyMark]}}
+              </template>
+            </el-table-column>
+            <el-table-column prop="status" label="公司状态">
+              <template slot-scope="scope">
+                {{CompanyStatusEnum[scope.row.status]}}
+              </template>
+            </el-table-column>
           </el-table>
           <el-pagination background
                          @size-change="handleSizeChangeCompany"
@@ -213,7 +238,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="修改人" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.modifyName" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.modifyEmp" placeholder=""></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -261,7 +286,7 @@
           createTime: '',
           createEmp: '',
           modifyTime: '',
-          modifyName: '',
+          modifyEmp: '',
           status: '',
           remark: '',
           longitude: '',
@@ -284,6 +309,12 @@
         dialogVisibleDetail: false,
         selection: '',
         DepartmentTypeEnum: {},
+        StatusEnum:{},
+        LevelEnum:{},
+        CompanyStatusEnum:{},
+        CompanyTypeEnum:{},
+        CompanyMarkEnum:{},
+        CompanyNatureEnum:{},
       }
     },
     methods: {
@@ -301,10 +332,15 @@
           this.formDetail = resultss.department;
           this.totalCompany = resultss.totalCount;
           this.tableCity = resultss.page.list;
+          this.CompanyStatusEnum=resultss.CompanyStatusEnum;
+          this.CompanyTypeEnum=resultss.CompanyTypeEnum;
+          this.CompanyMarkEnum=resultss.CompanyMarkEnum;
+          this.CompanyNatureEnum=resultss.CompanyNatureEnum;
+          console.log(this.tableCity);
         }).catch(function (error) {
-         /* console.log('department/selectDepartment.do_' + error);*/
+          console.log('department/selectDepartment.do_' + error);
           this.$message.error("获取数据错误");
-        })
+        });
         this.dialogVisibleDetail = true;
       },
       handleSelectionChange(val) {
@@ -328,9 +364,11 @@
         self.$http.get('/department/searchDepartment.do_', {
           params: param
         }).then((result) => {
-          self.DepartmentTypeEnum = result.DepartmentTypeEnum;
           self.tableData = result.page.list;
+          self.DepartmentTypeEnum = result.DepartmentTypeEnum;
+          self.StatusEnum=result.StatusEnum;
           self.total = result.page.totalCount;
+          self.LevelEnum=result.LevelEnum;
           console.log(self.tableData);
         }).catch(function (error) {
           console.log('department/searchDepartment.do_' + error);

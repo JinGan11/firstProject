@@ -5,6 +5,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Department;
+import com.ucar.combination.model.dto.DepartmentDto;
 import com.ucar.combination.model.dto.DepartmentTreeDto;
 import com.ucar.combination.service.CompanyManageService;
 import com.ucar.combination.service.DepartmentService;
@@ -104,25 +105,9 @@ public class DepartmentController {
 		params.put("level", level);
 		params.put("upperDepartmentNo", upperDepartmentNo);
 		params.put("status", status);
-		/*if ("0".equals(departmentType)&&departmentType!=null) {
-			for (int i = 1; i < 5; i++) {
-				params.put("departmentType", String.valueOf(i));
-				ResultPage resultPage1 = departmentService.searchDepartment(new QueryParam(params));
-				resultPage.setList(resultPage.getList().add(resultPage1.getList()));
-			}
-		} else{
-			params.put("departmentType",  departmentType);
-			resultPage = departmentService.searchDepartment(new QueryParam(params));
-		}
-		List<String> departmentTypeList=null;
-		if ("0".equals(departmentType)&&departmentType!=null){
-			departmentTypeList= Arrays.asList("1","2","3","4");
-		}else {
-			departmentTypeList.add(departmentType);
-		}*/
 		params.put("departmentType", departmentType);
 		ResultPage resultPage = departmentService.searchDepartment(new QueryParam(params));
-		return new Result().ok().put("page", resultPage).put("DepartmentTypeEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentType.values()));
+		return new Result().ok().put("page", resultPage).put("DepartmentTypeEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentType.values())).put("StatusEnum",CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values())).put("LevelEnum",CommonEnums.toEnumMap(CommonEnums.DepartmentLevel.values()));
 	}
 
 	/*
@@ -142,8 +127,9 @@ public class DepartmentController {
 		params.put("page", page);
 		params.put("limit", limit);
 		params.put("id", id);
-		Department department = departmentService.getDepartmentById(id);
+		DepartmentDto departmentDto = departmentService.getDepartmentDtoById(id);
 		ResultPage resultPage = companyManageService.getCompanyList(new QueryParam(params));
-		return new Result().ok().put("page", resultPage).put("department", department);
+		//return new Result().ok().put("page", resultPage).put("department", departmentDto).put("DepartmentTypeEnum",CommonEnums.toEnumMap(CommonEnums.DepartmentType.values())).put("LevelEnum",CommonEnums.toEnumMap(CommonEnums.DepartmentLevel.values())).put("StatusEnum",CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values()));
+		return new Result().ok().put("page", resultPage).put("department", departmentDto).put("CompanyTypeEnum",CommonEnums.toEnumMap(CommonEnums.CompanyType.values())).put("CompanyStatusEnum",CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values())).put("CompanyMarkEnum",CommonEnums.toEnumMap(CommonEnums.CompanyMark.values())).put("CompanyNatureEnum",CommonEnums.toEnumMap(CommonEnums.CompanyNature.values()));
 	}
 }

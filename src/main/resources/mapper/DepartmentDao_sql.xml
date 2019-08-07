@@ -81,6 +81,7 @@
         T.telephone,
         T.email,
         T.landline,
+        T.level,
         T.upper_department_no,
         T.support_business,
         T.department_type,
@@ -112,7 +113,7 @@
             </if>
         </where>
     </select>
-    <select id="getDepartmentById" parameterType="java.lang.Long" resultType="com.ucar.combination.model.Department">
+    <select id="getDepartmentDtoById" parameterType="java.lang.Long" resultType="com.ucar.combination.model.dto.DepartmentDto">
         SELECT T.id,
         T.department_no,
         T.workplace,
@@ -133,8 +134,11 @@
         T.create_time,
         T.modify_emp,
         T.modify_time,
-        T.remark
-        from  t_department T
+        T.remark,
+        T.longitude,
+		T.latitude,
+        T1.city_name
+        from  t_department T JOIN t_b_city T1 on T.city_id=T1.city_id
         where T.id=#{id};
     </select>
 </mapper>

@@ -139,7 +139,6 @@
   </home>
 </template>
 
-</template>
 
 <script>
   import commonUtils from '../../common/commonUtils'

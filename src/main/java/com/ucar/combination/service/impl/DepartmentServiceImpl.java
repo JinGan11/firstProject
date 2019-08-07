@@ -6,6 +6,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.DepartmentDao;
 import com.ucar.combination.model.Department;
+import com.ucar.combination.model.dto.DepartmentDto;
 import com.ucar.combination.model.dto.DepartmentTreeDto;
 import com.ucar.combination.model.dto.SearchDepartmentDto;
 import com.ucar.combination.service.DepartmentService;
@@ -66,7 +67,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 	 * @return
 	 */
 	@Override
-	public Department getDepartmentById(String id) {
-		return departmentDao.getDepartmentById(Long.valueOf(id));
+	public DepartmentDto getDepartmentDtoById(String id) {
+		return departmentDao.getDepartmentDtoById(Long.valueOf(id));
 	}
 }

@@ -1,6 +1,7 @@
 package com.ucar.combination.dao;
 
 import com.ucar.combination.model.Department;
+import com.ucar.combination.model.dto.DepartmentDto;
 import com.ucar.combination.model.dto.DepartmentTreeDto;
 import com.ucar.combination.model.dto.SearchDepartmentDto;
 import org.springframework.stereotype.Repository;
@@ -61,5 +62,5 @@ public interface DepartmentDao {
 	 * @params id 传入一个LONG型的ID进行查找
 	 * @return Department返回一个部门类。
 	 */
-	Department getDepartmentById(Long id);
+	DepartmentDto getDepartmentDtoById(Long id);
 }
