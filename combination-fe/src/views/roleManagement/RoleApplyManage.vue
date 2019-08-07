@@ -94,7 +94,7 @@
       <el-button type="primary" @click="createRoleApply"   style="width:70px">新建</el-button>
       <el-button type="primary" @click="" style="width:70px" :disabled="disabled">修改</el-button>
       <el-button type="primary" @click="deleteRoleApply" style="width:70px" :disabled="disabledDelete">删除</el-button>
-      <el-button type="primary" @click="" style="width:70px">提交审核</el-button>
+      <el-button type="primary" @click="commitRoleApply" style="width:70px" :disabled="disabledDelete">提交审核</el-button>
       <el-button type="primary" style="width:100px" @click="out">导出</el-button>
       <el-button type="primary" @click="" style="width:100px">条件查询</el-button>
     </div>
@@ -417,6 +417,35 @@
           });
         });
       },
+
+      commitRoleApply(){//提交审核
+        this.$confirm('此操作将提交该角色申请, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          var self = this;
+          var param = {
+            selection:self.selection,
+          };
+          self.$http.get('roleApply/commitRoleApply.do_', {
+            params: param
+          }).then(() => {
+            self.$message.success("提交角色申请成功");
+          }).catch(function (error) {
+            commonUtils.Log("roleApply/commitRoleApply.do_:" + error);
+            self.$message.error("获取数据错误");
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消提交'
+          });
+        });
+
+
+
+      }
 
     }
 

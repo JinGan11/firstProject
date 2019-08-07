@@ -24,4 +24,13 @@ public interface RoleApplyManageDao {
     * @Date  15:22 2019/8/7
     */
     void deleteRoleApply(String roleApplyNum);
+
+    /**
+    * @Description:  提交审核
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  17:39 2019/8/7
+    */
+    void commitRoleApply(String roleApplyNum);
 }

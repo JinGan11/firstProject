@@ -50,9 +50,17 @@
     </select>
 
 
+    <!--删除角色申请-->
     <update id="deleteRoleApply">
         update t_role_apply t1
         set t1.status=5
+        where t1.apply_num = #{roleApplyNum}
+    </update>
+
+    <!--提交角色申请-->
+    <update id="commitRoleApply">
+        update t_role_apply t1
+        set t1.status=2
         where t1.apply_num = #{roleApplyNum}
     </update>
 

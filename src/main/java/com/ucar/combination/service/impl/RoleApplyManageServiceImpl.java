@@ -53,4 +53,18 @@ public class RoleApplyManageServiceImpl implements RoleApplyManageService {
     public void deleteRoleApply(String roleApplyNum) {
         roleApplyManageDao.deleteRoleApply(roleApplyNum);
     }
+
+    /**
+    * @Description:  提交审核
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  17:41 2019/8/7
+    */
+    @Override
+    public void commitRoleApply(String roleApplyNum) {
+        roleApplyManageDao.commitRoleApply(roleApplyNum);
+
+    }
+
 }

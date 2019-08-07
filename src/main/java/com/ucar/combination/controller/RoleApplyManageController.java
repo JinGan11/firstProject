@@ -79,8 +79,22 @@ public class RoleApplyManageController {
     */
     @ResponseBody
     @RequestMapping("/deleteRoleApply.do_")
-    public void update(HttpServletRequest request){
+    public void deleteRoleApply(HttpServletRequest request){
         String roleApplyNum = request.getParameter("selection");
         roleApplyManageService.deleteRoleApply(roleApplyNum);
+    }
+    
+    /**
+    * @Description:  提交角色申请
+    * @Author: min.zhang08@ucarinc.com  
+    * @Params  
+    * @Return  
+    * @Date  17:40 2019/8/7
+    */
+    @ResponseBody
+    @RequestMapping("/commitRoleApply.do_")
+    public void commitRoleApply(HttpServletRequest request){
+        String roleApplyNum = request.getParameter("selection");
+        roleApplyManageService.commitRoleApply(roleApplyNum);
     }
 }
