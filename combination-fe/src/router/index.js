@@ -123,7 +123,6 @@ export default new Router({
     name:'新建账户',
     component:CreateAccount
   },{
-    path:'/accountManagement/AssignPermission',
     path:'/RoleAccountDetail',
     name:'角色账号明细',
     component:RoleAccountDetail
