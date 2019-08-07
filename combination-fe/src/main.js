@@ -11,7 +11,7 @@ import Http from './common/http'
 import qs from "qs";
 import msg from './common/msg'
 import DialogDrag from '../static/DialogDrag'
-
+import utils from './common/util'
 Date.prototype.Format = function (fmt) { //日期格式化
   var o = {
     "M+": this.getMonth() + 1, //月份
@@ -66,4 +66,22 @@ new Vue({
   store,
   components: { App },
   template: '<App/>'
+});
+//路由守卫
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
+    console.log(to.fullPath);
+    if(window.sessionStorage.getItem("loginUsername")!=null){ //判断本地是否存在access_token
+      next();
+    }else {
+      utils.$emit("loginSuccess",false);
+      alert("登录信息不存在，请重新登录！");
+      next({
+        path:'/'
+      })
+    }
+  }
+  else {
+    next();
+  }
 });

@@ -45,7 +45,7 @@ export default new Router({
   },{
     path: '/',
     name: '登录',
-    component: Login
+    component: Login,
   }, {
     path: '/demo1',
     name: 'Demo',
@@ -53,115 +53,143 @@ export default new Router({
   },{
     path:'/employeeManagement',
     name:'员工管理',
-    component:EmployeeManagement
+    component:EmployeeManagement,
+    meta:{requireAuth:true}
   }, {
     path: '/departmentManagement/showDepartment',
     name: '查看部门',
-    component: DepartmentManagement
+    component: DepartmentManagement,
+    meta:{requireAuth:true}
   },{
     path:'/roleManagement/apply',
     name:'角色申请',
-    component:RoleApplyManage
+    component:RoleApplyManage,
+    meta:{requireAuth:true}
   },{
     path:'/roleManagement/approval',
     name:'角色申请审核',
-    component:RoleApplyApproval
+    component:RoleApplyApproval,
+    meta:{requireAuth:true}
   },{
     path:'/personalAccountManage/pwdReset',
     name:'密码重置',
-    component:PwdReset
+    component:PwdReset,
+    meta:{requireAuth:true}
   },{
     path:'/personalAccountManage/AccountInfo',
     name:'个人账户信息',
-    component:AccountInfo
+    component:AccountInfo,
+    meta:{requireAuth:true}
   },{
     path:'/search/departSearch',
     name:'部门查询',
     component:DepartmentSearch,
+    meta:{requireAuth:true}
   },{
     path:'/accountManagement',
     name:'账户查询',
     component:AccountManagement,
+    meta:{requireAuth:true}
   },{
     path:'/CreateEmployee',
     name:'新建员工',
-    component:CreateEmployee
+    component:CreateEmployee,
+    meta:{requireAuth:true}
   },{
     path:'/modifyEmployee',
     name:'修改员工信息',
-    component:ModifyEmployee
+    component:ModifyEmployee,
+    meta:{requireAuth:true}
   },{
     path:'/roleManagement/roleManagement',
     name:'角色管理',
-    component:RoleManagement
+    component:RoleManagement,
+    meta:{requireAuth:true}
   },{
     path:'/departmentManagement/test',
     name:'测试页面',
-    component:DepartmentManagementTest
+    component:DepartmentManagementTest,
+    meta:{requireAuth:true}
   },{
     path:'/companyManagement',
     name:'公司查询',
-    component:CompanyManagement
+    component:CompanyManagement,
+    meta:{requireAuth:true}
   },{
     path:'/CreateRole',
     name:'新建角色',
-    component:CreateRole
+    component:CreateRole,
+    meta:{requireAuth:true}
   },{
     path:'/createRoleApply',
     name:'新建角色申请',
-    component:CreateRoleApply
+    component:CreateRoleApply,
+    meta:{requireAuth:true}
   },{
     path:'/createCompany',
     name:'新建公司',
-    component:CreateCompany
+    component:CreateCompany,
+    meta:{requireAuth:true}
   },{
     path:'/departmentManagement/addDepartment',
     name:'添加部门',
-    component:DepartmentAdd
+    component:DepartmentAdd,
+    meta:{requireAuth:true}
   },{
       path:'/ModifyRole',
       name:'修改角色',
-      component:ModifyRole
+      component:ModifyRole,
+      meta:{requireAuth:true}
   },{
     path:'/createAccount',
     name:'新建账户',
-    component:CreateAccount
+    component:CreateAccount,
+    meta:{requireAuth:true}
   },{
     path:'/RoleAccountDetail',
     name:'角色账号明细',
-    component:RoleAccountDetail
+    component:RoleAccountDetail,
+    meta:{requireAuth:true}
   },{
     path:'/cityInfoManagement/provinceSearch',
     name:'省/市查询',
-    component:provinceSearch
+    component:provinceSearch,
+    meta:{requireAuth:true}
   },{
     path:'/cityInfoManagement/citySearch',
     name:'城市查询',
-    component:citySearch
+    component:citySearch,
+    meta:{requireAuth:true}
   },{
     path:'/cityInfoManagement/countySearch',
     name:'区县查询',
-    component:countySearch
+    component:countySearch,
+    meta:{requireAuth:true}
   },{
     path:'/accountManagement/AssignPermission',
     name:'分配权限',
-    component:AssignPermission
+    component:AssignPermission,
+    meta:{requireAuth:true}
   },{
     path:'/roleManagement/RoleAssignPermission',
     name:'分配权限',
-    component:RoleAssignPermission
+    component:RoleAssignPermission,
+    meta:{requireAuth:true}
   },{
     path:'/modifyCompany',
     name:'修改公司',
-    component:ModifyCompany
+    component:ModifyCompany,
+    meta:{requireAuth:true}
   },{
     path:'/departmentManagement/changeUpperDepartment',
     name:'修改上级部门',
-    component:DepartmentChangeUpper
+    component:DepartmentChangeUpper,
+    meta:{requireAuth:true}
   },{
     path:'/modifyRoleApply',
     name:'修改角色申请',
-    component:modifyRoleApply
+    component:modifyRoleApply,
+    meta:{requireAuth:true}
   }
   ]
 })

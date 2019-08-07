@@ -184,11 +184,9 @@
     },
     mounted() {
       utils.$on('loginSuccess', (loginFlag, username) => {
-        console.log(loginFlag);
         this.loginSuccess(loginFlag, username);
       });
       utils.$on('clearLoginSession', () => {
-        console.log("test=====================");
         this.clearLoginSession();
       });
       if (window.sessionStorage.getItem("loginUsername") === null) {
@@ -202,10 +200,8 @@
       loginSuccess(isSuccess, username) {
         const self = this;
         self.loginIn = isSuccess;
-        console.log(self.loginUserName + "1")
         window.sessionStorage.setItem("loginUsername", username);
         self.loginUserName = window.sessionStorage.getItem("loginUsername")
-        console.log(window.sessionStorage.getItem("loginUsername") + "2")
       },
       switchLog() {
         if (this.isLog) {
