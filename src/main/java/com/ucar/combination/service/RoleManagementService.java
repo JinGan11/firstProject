@@ -16,4 +16,5 @@ public interface RoleManagementService {
     ResultPage queryList(QueryParam queryParam);
     void updateStatus(int id);
     void insertRole(RoleDto role);
+    RoleDto getOneInf(int id);
 }

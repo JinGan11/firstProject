@@ -42,4 +42,10 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     public void insertRole(RoleDto role) {
         roleManagementDao.insertRole(role);
     }
+
+    @Override
+    public RoleDto getOneInf(int id) {
+        RoleDto roleDto = roleManagementDao.getOneInf(id);
+        return roleDto;
+    }
 }

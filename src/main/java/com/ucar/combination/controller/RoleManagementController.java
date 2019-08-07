@@ -57,4 +57,14 @@ public class RoleManagementController {
         roleManagementService.insertRole(role);
        // System.out.println("insertRole:"+ JSON.toJSONString(role));
     }
+
+    @ResponseBody
+    @RequestMapping("/getOneInf.do_")
+    public Result getOneInf(HttpServletRequest request){
+        String strid = request.getParameter("roleID");
+        int id = Integer.parseInt(strid);
+        RoleDto roleDto = roleManagementService.getOneInf(id);
+        System.out.println("ASDFA");
+        return Result.ok().put("page",roleDto);
+    }
 }

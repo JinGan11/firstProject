@@ -23,7 +23,7 @@
     </div>
     <div style="margin-bottom: 10px">
       <el-button type="primary" @click="createRole" style="width:100px">新建</el-button>
-      <el-button type="primary" @click="modifyRole" :disabled="isModify" style="width:100px">修改</el-button>
+      <el-button type="primary" @click="modifyRole(selection)" :disabled="isModify" style="width:100px">修改</el-button>
       <el-button type="primary" @click="deleteRole" :disabled="isModify" style="width:100px">删除</el-button>
       <el-button type="primary" @click="" style="width:100px">添加账号</el-button>
       <el-button type="primary" @click="" style="width:100px">分配权限</el-button>
@@ -32,7 +32,7 @@
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.roleId" @change="selectionActive()"><span width="0px;"></span></el-radio>
+          <el-radio v-model="selection" :label="scope.row.roleId" @change="selectionActive(scope.row)"><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
@@ -82,6 +82,7 @@
         roleStatus: '',
         description: '',
         isModify:true,
+        dialogVisible:false,
       }
     },
     activated() {
@@ -116,6 +117,7 @@
         }).then((result) => {
           self.tableData = result.page.list;
           self.total = result.page.totalCount;
+          //self.form.name="dsf";
         }).catch(function (error) {
           commonUtils.Log("roleManage/querylist.do_:" + error);
           self.$message.error("获取数据错误");
@@ -123,12 +125,12 @@
       },
       createRole() {
         //点击新建按钮，进入新建角色界面
-        this.$router.replace('/CreateRole')
+        this.$router.replace('/CreateRole');
       },
-      modifyRole() {
-        //点击修改按钮，进入修改角色页面
-        this.$router.replace('/ModifyRole');
-        console.log("selection: "+this.selection);
+      modifyRole(val) {
+        //点击修改按钮，进入修改角色弹窗
+        //this.dialogVisible=true;
+        this.$router.push({path:'/ModifyRole',query:{roleID:val}});
       },
       deleteRole() {//删除角色信息
         this.$confirm('此操作将删除该角色, 是否继续?', '提示', {
@@ -155,9 +157,9 @@
           });
         });
       },
-      selectionActive(){
+      selectionActive(val){
         this.isModify=false;
-      }
+      },
     }
   }
 </script>

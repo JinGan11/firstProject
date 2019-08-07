@@ -16,9 +16,6 @@
         <if test="role_name != null and role_name.trim() != ''">
             AND t1.role_name = #{role_name}
         </if>
-        <if test="id != null">
-            AND t1.id = #{id}
-        </if>
     </select>
 
     <update id="updateStatus">
@@ -32,5 +29,25 @@
         into t_role_info(role_name,business_line,role_status,approver_account_name,approver_staff_num,approver_staff_name,approver_department_name,description,create_emp,create_time,modify_emp,modify_time)
         value(#{roleName},#{businessLine},1,#{accountNum},#{staffNum},#{staffName},#{departmentName},#{description},1,NOW(),1,NOW())
     </insert>
+
+    <select id="getOneInf" resultType="com.ucar.combination.model.dto.RoleDto" parameterType="int">
+                select
+        t1.id              roleID,
+        t1.role_name       roleName,
+        t1.business_line   businessLine,
+        t1.role_status     roleStatus,
+        t1.approver_account_name  accountNum,
+        t1.approver_staff_num       staffNum,
+        t1.approver_staff_name     staffName,
+        t1.approver_department_name  departmentName,
+        t1.description               description,
+        t1.create_emp       createEmp,
+        t1.create_time      createTime,
+        t1.modify_emp       modifyEmp,
+        t1.modify_time      modifyTime
+        from t_role_info t1
+        where t1.id= #{id}
+    </select>
+
 
 </mapper>
