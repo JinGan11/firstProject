@@ -19,4 +19,6 @@ public interface AccountManagerService {
      * @Return： 
      */
     ResultPage queryList(QueryParam queryParam);
+//lzy
+    ResultPage getRoleAccountList(QueryParam queryParam);
 }

@@ -6,6 +6,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.AccountManageDao;
 import com.ucar.combination.model.Account;
+import com.ucar.combination.model.RoleAccount;
 import com.ucar.combination.service.AccountManagerService;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -29,4 +30,13 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         List<Account> list = accountManageDao.queryList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
+//lzy
+    @Override
+    public ResultPage getRoleAccountList(QueryParam queryParam) {
+        Page<?> page = PageHelper.startPage(1,10);
+        List<RoleAccount> list = accountManageDao.getRoleAccountList(queryParam);
+        return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
+    }
+
+
 }

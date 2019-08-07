@@ -1,6 +1,7 @@
 package com.ucar.combination.dao;
 
 import com.ucar.combination.model.Account;
+import com.ucar.combination.model.RoleAccount;
 
 import java.util.List;
 import java.util.Map;
@@ -21,4 +22,6 @@ public interface AccountManageDao {
      * @Return： 
      */
     List<Account> queryList(Map<String, Object> map);
+
+    List<RoleAccount> getRoleAccountList(Map<String, Object> map);
 }

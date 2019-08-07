@@ -21,6 +21,7 @@ import CreateRole from '@/views/roleManagement/CreateRole'
 import CreateRoleApply from '@/views/roleManagement/CreateRoleApply'
 import CreateCompany from'@/views/companyManagement/CreateCompany'
 import DepartmentAdd from '@/views/departmentManagement/DepartmentAdd'
+import RoleAccountDetail from'@/views/search/RoleAccountDetail'
 import ModifyRole from "@/views/roleManagement/ModifyRole";
 import provinceSearch from "@/views/cityInfoManagement/provinceSearch";
 import citySearch from "@/views/cityInfoManagement/citySearch";
@@ -120,6 +121,10 @@ export default new Router({
     path:'/createAccount',
     name:'新建账户',
     component:CreateAccount
+  },{
+    path:'/RoleAccountDetail',
+    name:'角色账号明细',
+    component:RoleAccountDetail
   },{
     path:'/cityInfoManagement/provinceSearch',
     name:'省/市查询',
