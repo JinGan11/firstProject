@@ -13,7 +13,8 @@
         staffSex,
         staffTelephone,
         staffEmail,
-        departmentId,
+        departmentName,
+        upperDepartmentName,
         isDimission,
         upperDepartmentNo
         FROM
@@ -28,9 +29,11 @@
         t1.department_id departmentId,
         t1.is_dimission isDimission,
         t1.create_time createTime,
-        t2.upper_department_no upperDepartmentNo
-        FROM t_staff t1,t_department t2
-        where t1.department_id = t2.id) M
+        t2.upper_department_no upperDepartmentNo,
+        t2.department_name departmentName,
+        t4.department_name upperDepartmentName
+        FROM t_staff t1,t_department t2,t_department t4
+        where t1.department_id = t2.id and t2.upper_department_no=t4.department_no) M
         LEFT JOIN t_account t3
         on  t3.id=M.accountId
         where 1=1

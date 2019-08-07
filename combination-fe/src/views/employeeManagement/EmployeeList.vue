@@ -115,8 +115,8 @@
         </template>
       </el-table-column>
       <el-table-column prop="staffEmail" label="员工邮箱" width="200"></el-table-column>
-      <el-table-column prop="departmentId" label="所属部门" width="120"></el-table-column>
-      <el-table-column prop="upperDepartmentNo" label="上级部门" width="150"></el-table-column>
+      <el-table-column prop="departmentName" label="所属部门" width="120"></el-table-column>
+      <el-table-column prop="upperDepartmentName" label="上级部门" width="150"></el-table-column>
       <el-table-column prop="isDimission" label="是否离职" width="100">
         <template slot-scope="scope">
           {{isDimissionEnum[scope.row.isDimission]}}
@@ -232,8 +232,8 @@
         SexEnum: {},
         staffTelephone: '',
         staffEmail: '',
-        departmentId: '',
-        upperDepartmentNo: '',
+        departmentName: '',
+        upperDepartmentName: '',
         isDimission: '',
         isDimissionEnum: {},
         title: '模板',

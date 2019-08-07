@@ -15,6 +15,7 @@ public class StaffDto extends BaseBean {
     private String staffTelephone;
     private String staffEmail;
     private Long departmentId;
+    private String departmentName;
     private Integer isDimission;
     private Integer status;
     private String remark;
@@ -22,11 +23,12 @@ public class StaffDto extends BaseBean {
     private String accountName;
     private Long accountId;
     private String upperDepartmentNo;
+    private String upperDepartmentName;
 
     public StaffDto() {
     }
 
-    public StaffDto(Long id, String staffNum, String staffName, Integer staffSex, String staffTelephone, String staffEmail, Long departmentId, Integer isDimission, Integer status, String remark, String accountName, Long accountId, String upperDepartmentNo) {
+    public StaffDto(Long id, String staffNum, String staffName, Integer staffSex, String staffTelephone, String staffEmail, Long departmentId, String departmentName, Integer isDimission, Integer status, String remark, String accountName, Long accountId, String upperDepartmentNo, String upperDepartmentName) {
         this.id = id;
         this.staffNum = staffNum;
         this.staffName = staffName;
@@ -34,12 +36,30 @@ public class StaffDto extends BaseBean {
         this.staffTelephone = staffTelephone;
         this.staffEmail = staffEmail;
         this.departmentId = departmentId;
+        this.departmentName = departmentName;
         this.isDimission = isDimission;
         this.status = status;
         this.remark = remark;
         this.accountName = accountName;
         this.accountId = accountId;
         this.upperDepartmentNo = upperDepartmentNo;
+        this.upperDepartmentName = upperDepartmentName;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getUpperDepartmentName() {
+        return upperDepartmentName;
+    }
+
+    public void setUpperDepartmentName(String upperDepartmentName) {
+        this.upperDepartmentName = upperDepartmentName;
     }
 
     public String getAccountName() {
