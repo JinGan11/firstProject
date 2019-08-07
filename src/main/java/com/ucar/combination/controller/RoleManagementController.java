@@ -64,7 +64,7 @@ public class RoleManagementController {
         String strid = request.getParameter("roleID");
         int id = Integer.parseInt(strid);
         RoleDto roleDto = roleManagementService.getOneInf(id);
-        //System.out.println("ASDFA");
+        System.out.println("ASDFA");
         return Result.ok().put("page",roleDto);
     }
 
