@@ -115,6 +115,27 @@
         set t1.account_state=3
         where t1.id = #{id}
     </update>
+
+    <insert id="insertAccountHistory" parameterType="map">
+        insert into t_account_history(
+            account_id,
+            staff_num,
+            staff_name,
+            permissions,
+            history_operation_type,
+            create_emp,
+            create_time
+        )
+        values(
+            #{accountId},
+            #{staffNum},
+            #{staffName},
+            #{permissions},
+            #{historyOperationType},
+            #{createEmp},
+            now()
+        )
+    </insert>
 </mapper>
 
 

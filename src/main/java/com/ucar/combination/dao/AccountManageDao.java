@@ -32,4 +32,13 @@ public interface AccountManageDao {
     void updateStatus(int id);
 
     List<RoleAccount> getRoleAccountList(Map<String, Object> map);
+
+    /**
+     * description：插入账户历史记录
+     * @author qingyu.lan@ucarinc.com
+     * @date   2019/8/8 01：05
+     * @param map
+     * @return
+     */
+    int insertAccountHistory (Map<String, Object> map);
 }
