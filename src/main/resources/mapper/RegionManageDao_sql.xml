@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ucar.combination.dao.RegionManageDao">
+    <select id="provinceSearchList" resultType="com.ucar.combination.model.Region">
+        SELECT
+        	t1.city_id cityID,
+	        t1.international_code regionCode,
+	        t1.country_code countryCode,
+	        t1.area_code regionAreaCode,
+        	t1.city_name_pinyin regionPinyin,
+	        t1.city_name regionName,
+	        t1.`level` regionLevel,
+	        t1.upper_city_name upperRegion,
+	        t1.`status` regionStatus,
+	        t1.create_emp cEmp,
+	        t1.create_time cTime,
+	        t1.modify_emp mEmp,
+	        t1.modify_time mTime,
+	        t1.remark remark
+        FROM
+        	t_b_city t1
+        WHERE
+	        t1.`level` = 1
+		<if test="regionCode != null and regionCode.trim() != ''">
+			AND t1.international_code LIKE #{regionCode}"%"
+		</if>
+		<if test="regionName != null and regionName.trim() != ''">
+			AND t1.city_name LIKE #{regionName}"%"
+		</if>
+		<if test="regionStatus != null and regionStatus.trim() != ''">
+			AND t1.status =#{regionStatus}
+		</if>
+
+    </select>
+
+
+</mapper>
