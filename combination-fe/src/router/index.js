@@ -22,6 +22,9 @@ import CreateRoleApply from '@/views/roleManagement/CreateRoleApply'
 import CreateCompany from'@/views/companyManagement/CreateCompany'
 import DepartmentAdd from '@/views/departmentManagement/DepartmentAdd'
 import ModifyRole from "@/views/roleManagement/ModifyRole";
+import provinceSearch from "@/views/cityInfoManagement/provinceSearch";
+import citySearch from "@/views/cityInfoManagement/citySearch";
+import countySearch from "@/views/cityInfoManagement/countySearch";
 Vue.use(Router)
 
 export default new Router({
@@ -117,6 +120,18 @@ export default new Router({
     path:'/createAccount',
     name:'新建账户',
     component:CreateAccount
+  },{
+    path:'/cityInfoManagement/provinceSearch',
+    name:'省/市查询',
+    component:provinceSearch
+  },{
+    path:'/cityInfoManagement/citySearch',
+    name:'城市查询',
+    component:citySearch
+  },{
+    path:'/cityInfoManagement/countySearch',
+    name:'区县查询',
+    component:countySearch
   }
   ]
 })
