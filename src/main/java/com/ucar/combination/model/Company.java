@@ -15,7 +15,7 @@ import java.util.Date;
  * @date: 2019/8/3 8:56
  */
 public class Company extends BaseBean {
-	private Long id;
+	private Long companyId;
 	private String companyName;
 	private String creditCode;
 	private Integer companyType;
@@ -48,173 +48,96 @@ public class Company extends BaseBean {
 	private String remark;
 	private Integer status;
 
-	public Long getId() {
-		return id;
+	public Long getCompanyId() {
+		return companyId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setCompanyId(Long companyId) {
+		this.companyId = companyId;
 	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	// public Long getId() {
-	//   return id;
-	//}
 
 	public String getCompanyName() {
 		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 
 	public String getCreditCode() {
 		return creditCode;
 	}
 
-	public Integer getCompanyType() {
-		return companyType;
-	}
-
-	public Date getBusinessStartTime() {
-		return businessStartTime;
-	}
-
-	public Date getBusinessDeadline() {
-		return businessDeadline;
-	}
-
-	public String getCompanyAddress() {
-		return companyAddress;
-	}
-
-	public String getBusinessScope() {
-		return businessScope;
-	}
-
-	public String getLegalPerson() {
-		return legalPerson;
-	}
-
-	public Long getRegisteredCapital() {
-		return registeredCapital;
-	}
-
-	public Date getEstablishTime() {
-		return establishTime;
-	}
-
-	public String getRegisteredInstitution() {
-		return registeredInstitution;
-	}
-
-
-	public String getRegisteredStatus() {
-		return registeredStatus;
-	}
-
-	public String getLiscensePath() {
-		return liscensePath;
-	}
-
-	public Integer getCompanyNature() {
-		return companyNature;
-	}
-
-	public String getRegistrationAddress() {
-		return registrationAddress;
-	}
-
-	public String getBankName() {
-		return bankName;
-	}
-
-	public String getBankAccount() {
-		return bankAccount;
-	}
-
-	public String getTelephone() {
-		return telephone;
-	}
-
-	public Integer getCompanyMark() {
-		return companyMark;
-	}
-
-	public Integer getCompanyStatus() {
-		return companyStatus;
-	}
-
-	@Override
-	public Long getCreateEmp() {
-		return createEmp;
-	}
-
-	@Override
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	@Override
-	public Long getModifyEmp() {
-		return modifyEmp;
-	}
-
-	@Override
-	public Date getModifyTime() {
-		return modifyTime;
-	}
-
-	public String getRemark() {
-		return remark;
-	}
-
-	// public void setId(Long id) {
-	//     this.id = id;
-	// }
-
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
-
 	public void setCreditCode(String creditCode) {
 		this.creditCode = creditCode;
+	}
+
+	public Integer getCompanyType() {
+		return companyType;
 	}
 
 	public void setCompanyType(Integer companyType) {
 		this.companyType = companyType;
 	}
 
+	public Date getBusinessStartTime() {
+		return businessStartTime;
+	}
+
 	public void setBusinessStartTime(Date businessStartTime) {
 		this.businessStartTime = businessStartTime;
+	}
+
+	public Date getBusinessDeadline() {
+		return businessDeadline;
 	}
 
 	public void setBusinessDeadline(Date businessDeadline) {
 		this.businessDeadline = businessDeadline;
 	}
 
+	public String getCompanyAddress() {
+		return companyAddress;
+	}
+
 	public void setCompanyAddress(String companyAddress) {
 		this.companyAddress = companyAddress;
+	}
+
+	public String getBusinessScope() {
+		return businessScope;
 	}
 
 	public void setBusinessScope(String businessScope) {
 		this.businessScope = businessScope;
 	}
 
+	public String getLegalPerson() {
+		return legalPerson;
+	}
+
 	public void setLegalPerson(String legalPerson) {
 		this.legalPerson = legalPerson;
+	}
+
+	public Long getRegisteredCapital() {
+		return registeredCapital;
 	}
 
 	public void setRegisteredCapital(Long registeredCapital) {
 		this.registeredCapital = registeredCapital;
 	}
 
+	public Date getEstablishTime() {
+		return establishTime;
+	}
+
 	public void setEstablishTime(Date establishTime) {
 		this.establishTime = establishTime;
+	}
+
+	public String getRegisteredInstitution() {
+		return registeredInstitution;
 	}
 
 	public void setRegisteredInstitution(String registeredInstitution) {
@@ -229,40 +152,81 @@ public class Company extends BaseBean {
 		this.causeTime = causeTime;
 	}
 
+	public String getRegisteredStatus() {
+		return registeredStatus;
+	}
+
 	public void setRegisteredStatus(String registeredStatus) {
 		this.registeredStatus = registeredStatus;
+	}
+
+	public String getLiscensePath() {
+		return liscensePath;
 	}
 
 	public void setLiscensePath(String liscensePath) {
 		this.liscensePath = liscensePath;
 	}
 
+	public Integer getCompanyNature() {
+		return companyNature;
+	}
+
 	public void setCompanyNature(Integer companyNature) {
 		this.companyNature = companyNature;
+	}
+
+	public String getRegistrationAddress() {
+		return registrationAddress;
 	}
 
 	public void setRegistrationAddress(String registrationAddress) {
 		this.registrationAddress = registrationAddress;
 	}
 
+	public String getBankName() {
+		return bankName;
+	}
+
 	public void setBankName(String bankName) {
 		this.bankName = bankName;
+	}
+
+	public String getBankAccount() {
+		return bankAccount;
 	}
 
 	public void setBankAccount(String bankAccount) {
 		this.bankAccount = bankAccount;
 	}
 
+	public String getTelephone() {
+		return telephone;
+	}
+
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
+	}
+
+	public Integer getCompanyMark() {
+		return companyMark;
 	}
 
 	public void setCompanyMark(Integer companyMark) {
 		this.companyMark = companyMark;
 	}
 
+	public Integer getCompanyStatus() {
+		return companyStatus;
+	}
+
 	public void setCompanyStatus(Integer companyStatus) {
 		this.companyStatus = companyStatus;
+	}
+
+	@Override
+	public Long getCreateEmp() {
+		return createEmp;
 	}
 
 	@Override
@@ -271,8 +235,18 @@ public class Company extends BaseBean {
 	}
 
 	@Override
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	@Override
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	@Override
+	public Long getModifyEmp() {
+		return modifyEmp;
 	}
 
 	@Override
@@ -281,11 +255,28 @@ public class Company extends BaseBean {
 	}
 
 	@Override
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	@Override
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
 	}
 
+	public String getRemark() {
+		return remark;
+	}
+
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 }
