@@ -24,6 +24,7 @@ import DepartmentAdd from '@/views/departmentManagement/DepartmentAdd'
 import RoleAccountDetail from'@/views/search/RoleAccountDetail'
 import ModifyRole from "@/views/roleManagement/ModifyRole";
 import AssignPermission from '@/views/accountManagement/AssignPermission'
+import RoleAssignPermission from '@/views/roleManagement/RoleAssignPermission'
 import provinceSearch from "@/views/cityInfoManagement/provinceSearch";
 import citySearch from "@/views/cityInfoManagement/citySearch";
 import countySearch from "@/views/cityInfoManagement/countySearch";
@@ -139,6 +140,14 @@ export default new Router({
     path:'/cityInfoManagement/countySearch',
     name:'区县查询',
     component:countySearch
+  },{
+    path:'/accountManagement/AssignPermission',
+    name:'分配权限',
+    component:AssignPermission
+  },{
+    path:'/roleManagement/RoleAssignPermission',
+    name:'分配权限',
+    component:RoleAssignPermission
   }
   ]
 })

@@ -174,13 +174,6 @@
       handleCheckChange(data, checked, indeterminate) {
         const self = this;
         console.log(self.$refs.tree.getCheckedNodes())
-        // if (checked === true) {
-        //   self.powerSelectedList.push({powerId:data.powerId});
-        //   console.log(self.powerSelectedList)
-        // }else {
-        //   self.powerSelectedList.pop({powerId:data.powerId});
-        //   console.log(self.powerSelectedList)
-        // }
       },
       preservePower() {
         const self = this;

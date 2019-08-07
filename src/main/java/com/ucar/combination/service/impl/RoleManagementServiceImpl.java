@@ -3,14 +3,16 @@ package com.ucar.combination.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
+import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.RoleManagementDao;
-import com.ucar.combination.model.Role;
+import com.ucar.combination.model.*;
 import com.ucar.combination.model.dto.RoleDto;
 import com.ucar.combination.service.RoleManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -112,5 +114,71 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     @Override
     public void updateByModify(RoleDto role) {
        roleManagementDao.updateByModify(role);
+    }
+
+    /**
+     * description: 为角色分配权限
+     * @author peng.zhang11@ucarinc.com
+     * @date 2019/8/6 12:03
+     * @params powerList 权限列表
+     * @return
+     */
+    @Override
+    public Result assignPermission(AssignPermission assignPermission, Long accountId) {
+        //  1.查询该账户已拥有的特殊权限，如果powerList中有而数据库中没有，则表示删除该权限
+        //  2.然后插入powerList中有的，而数据库中没有的
+        List<RolePower> list = roleManagementDao.getRolePowerListById(assignPermission.getRoleInfoId());
+        RolePower rolePower = new RolePower();
+        // 如果该角色没有权限，则全部插入
+        if (list == null || list.size() == 0) {
+            for (int i = 0; i < assignPermission.getPowerList().size(); i++) {
+                //插入该权限
+                rolePower.setRoleInfoId(assignPermission.getRoleInfoId());
+                rolePower.setPowerId(assignPermission.getPowerList().get(i).getPowerId());
+                roleManagementDao.insertRolePower(rolePower);
+            }
+        } else {
+            // 删除角色被移除的权限
+            for (int i = 0; i < list.size(); i++) {
+                for (int j = 0; j < assignPermission.getPowerList().size(); j++) {
+                    if (list.get(i).getPowerId().equals(assignPermission.getPowerList().get(j).getPowerId())) {
+                        break;
+                    }
+                    if (!list.get(i).getPowerId().equals(assignPermission.getPowerList().get(j).getPowerId())
+                            && j == assignPermission.getPowerList().size() -1) {
+                        //删除该角色
+                        rolePower.setRoleInfoId(assignPermission.getRoleInfoId());
+                        rolePower.setPowerId(list.get(i).getPowerId());
+                        roleManagementDao.removeRolePowerById(rolePower);
+                    }
+                }
+            }
+            // 为角色插入新添加的权限
+            for (int i = 0; i < assignPermission.getPowerList().size(); i++) {
+                for (int j = 0; j < list.size(); j++) {
+                    if (assignPermission.getPowerList().get(i).getPowerId().equals(list.get(j).getPowerId())) {
+                        break;
+                    }
+                    if (!assignPermission.getPowerList().get(i).getPowerId().equals(list.get(j).getPowerId())
+                            && j == list.size() -1) {
+                        //插入该权限
+                        rolePower.setRoleInfoId(assignPermission.getRoleInfoId());
+                        rolePower.setPowerId(assignPermission.getPowerList().get(i).getPowerId());
+                        roleManagementDao.insertRolePower(rolePower);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Result getRolePower(RolePower rolePower) {
+        List<RolePower> list = roleManagementDao.getRolePowerListById(rolePower.getRoleInfoId());
+        List rolePowerList = new ArrayList();
+        for (int i = 0; i < list.size(); i++) {
+            rolePowerList.add(list.get(i).getPowerId());
+        }
+        return Result.ok().put("rolePowerList", rolePowerList);
     }
 }

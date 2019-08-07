@@ -26,7 +26,7 @@
       <el-button type="primary" @click="modifyRole(selection)" :disabled="isModify" style="width:100px">修改</el-button>
       <el-button type="primary" @click="deleteRole" :disabled="isModify" style="width:100px">删除</el-button>
       <el-button type="primary" @click="" style="width:100px">添加账号</el-button>
-      <el-button type="primary" @click="" style="width:100px">分配权限</el-button>
+      <el-button type="primary" @click="roleAssignPermission" style="width:100px">分配权限</el-button>
     </div>
 
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
@@ -160,6 +160,15 @@
       selectionActive(val){
         this.isModify=false;
       },
+      roleAssignPermission(){
+        let routeData = this.$router.resolve({
+          name: "分配权限",
+          query: 1,
+          params:{test:1}
+        });
+        window.open(routeData.href, '_blank');
+        // this.$router.replace("/roleManagement/RoleAssignPermission")
+      }
     }
   }
 </script>

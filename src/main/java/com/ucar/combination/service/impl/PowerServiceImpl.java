@@ -157,8 +157,16 @@ public class PowerServiceImpl implements PowerService {
         return null;
     }
 
+    /**
+     * description: 获取账户权限
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/7 14:21
+     * @params
+     * @return
+     */
     @Override
     public Result getAccountPower() {
+        //待完善accountID;要分配的账户的ID,不是修改人ID
         List<AccountPower> list = powerDao.getAccountPowerListById(2L);
         List accountPower = new ArrayList();
         for (int i = 0; i < list.size(); i++) {

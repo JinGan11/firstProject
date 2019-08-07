@@ -3,6 +3,9 @@ package com.ucar.combination.controller;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.AssignPermission;
+import com.ucar.combination.model.PowerList;
+import com.ucar.combination.model.RolePower;
 import com.ucar.combination.model.dto.RoleDto;
 import com.ucar.combination.service.impl.RoleManagementServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -113,5 +117,33 @@ public class RoleManagementController {
     public void updateByModify(@RequestBody RoleDto role){
         roleManagementService.updateByModify(role);
         // System.out.println("insertRole:"+ JSON.toJSONString(role));
+    }
+
+    /**
+     * description: 为角色分配权限
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/5 22:51
+     * @params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/assignPermission")
+    public Result assignPermission(@RequestBody AssignPermission assignPermission, HttpSession session) {
+        Long accountId = (Long) session.getAttribute("accountId");
+        Result result = roleManagementService.assignPermission(assignPermission,accountId);
+        return result;
+    }
+
+    /**
+     * description: 获取角色已拥有的权限
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/7 14:49
+     * @params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getRolePower.do_")
+    public Result getRolePower(@RequestBody RolePower rolePower, HttpSession session) {
+        return roleManagementService.getRolePower(rolePower);
     }
 }

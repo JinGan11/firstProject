@@ -74,6 +74,11 @@
         where t1.id= #{id}
     </select>
 
+    <select id="getRolePowerListById" parameterType="Long" resultType="com.ucar.combination.model.RolePower">
+        select id, role_info_id, power_id
+        from t_r_role_power
+        where role_info_id = #{roleInfoId}
+    </select>
     <update id="updateByModify" parameterType="com.ucar.combination.model.dto.RoleDto">
         update t_role_info t1
         set
@@ -92,4 +97,15 @@
         where t1.id = #{roleID}
     </update>
 
+    <delete id="removeRolePowerById" parameterType="com.ucar.combination.model.RolePower">
+        delete from t_r_role_power
+        where 1=1
+        and role_info_id = #{roleInfoId}
+        and power_id = #{powerId}
+    </delete>
+
+    <insert id="insertRolePower" parameterType="com.ucar.combination.model.RolePower">
+        insert into t_r_role_power(role_info_id, power_id)
+        value(#{roleInfoId}, #{powerId})
+    </insert>
 </mapper>

@@ -3,6 +3,7 @@ package com.ucar.combination.dao;
 import com.ucar.combination.model.AccountRole;
 import com.ucar.combination.model.Role;
 
+import com.ucar.combination.model.RolePower;
 import com.ucar.combination.model.dto.RoleDto;
 import org.springframework.stereotype.Component;
 
@@ -59,4 +60,34 @@ public interface RoleManagementDao {
     void insertAccountRole(AccountRole accountRole);
     RoleDto getOneInf(int id);
     void updateByModify(RoleDto role);
+
+    /**
+     * description: 获取角色已有的权限
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/7 15:03
+     * @params roleId 描述
+
+     * @return
+     */
+    List<RolePower> getRolePowerListById(Long roleId);
+
+    /**
+     * description: 插入权限到角色权限表
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/7 14:37
+     * @params rolePower 角色权限
+     * @return
+     */
+    void insertRolePower(RolePower rolePower);
+
+    /**
+     * description: 删除角色的权限
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/7 14:38
+     * @params rolePower 角色权限
+     * @return
+     */
+    void removeRolePowerById(RolePower rolePower);
+
+
 }

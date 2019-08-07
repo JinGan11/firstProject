@@ -37,6 +37,13 @@ public class PowerController {
         return new Result().put("powerTree", rootNode);
     }
 
+    /**
+     * description: 获取账号已有的权限
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/7 14:59
+     * @params
+     * @return
+     */
     @RequestMapping("/getAccountPower.do_")
     public Result getAccountPower() {
         return powerService.getAccountPower();

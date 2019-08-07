@@ -1,7 +1,11 @@
 package com.ucar.combination.service;
 
 import com.ucar.combination.common.QueryParam;
+import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.AssignPermission;
+import com.ucar.combination.model.PowerList;
+import com.ucar.combination.model.RolePower;
 import com.ucar.combination.model.dto.RoleDto;
 
 /**
@@ -21,5 +25,7 @@ public interface RoleManagementService {
     ResultPage getOwnedRoleList();
     ResultPage getnotOwnedRoleList();
     RoleDto getOneInf(int id);
+    Result assignPermission(AssignPermission assignPermission, Long accountId);
+    Result getRolePower(RolePower rolePower);
     void updateByModify(RoleDto role);
 }
