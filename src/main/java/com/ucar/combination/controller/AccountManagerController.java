@@ -70,6 +70,21 @@ public class AccountManagerController {
                 .put("accountStatusEnum",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()))
                 .put("accountStatusList",CommonEnums.toJsonList(CommonEnums.AccountStatusEnum.values()));
     }
+    /**
+     * description:在账户表更改账户状态为无效
+     * @author shiya.li@ucarinc.com
+     * @date   2019/8/7 9:47
+     * @params 账户id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/updateStatus.do_")
+    public void update(HttpServletRequest request){
+        String strid = request.getParameter("accountId");
+        int id = Integer.parseInt(strid);
+        accountManagerService.updateStatus(id);
+
+    }
 
     /**
      * description: 获取角色信息

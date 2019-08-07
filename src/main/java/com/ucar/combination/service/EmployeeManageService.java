@@ -33,4 +33,12 @@ public interface EmployeeManageService {
      * @return
      */
     public void insertStaff(Staff staff);
+    /**
+     * description:由员工id将员工状态设置为无效
+     * @author shiya.li@ucarinc.com
+     * @date   2019/8/6 17：16
+     * @params id 员工id
+     * @return 无
+     */
+    public void updateStatus(int id);
 }

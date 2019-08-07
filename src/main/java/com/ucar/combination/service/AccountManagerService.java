@@ -21,4 +21,12 @@ public interface AccountManagerService {
     ResultPage queryList(QueryParam queryParam);
 //lzy
     ResultPage getRoleAccountList(QueryParam queryParam);
+    /**
+     * description:由账户id将账户状态设置为无效
+     * @author shiya.li@ucarinc.com
+     * @date   2019/8/6 17：32
+     * @params id 账户id
+     * @return 无
+     */
+    void updateStatus(int id);
 }

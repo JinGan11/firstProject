@@ -16,29 +16,32 @@
     <div style="width:85%; margin-left: 70px">
       <el-form ref="form" :model="form" :data="tableData" label-width="80px">
         <el-row>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="员工编号">
               <el-input style="width:200px;" v-model="form.employeeNo"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="员工姓名">
               <el-input style="width:200px;" v-model="form.name"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="6">
-            <el-form-item label="性别">
+          <el-col :span="8">
+            <!--<el-form-item label="性别">
               <input type="radio" id="man" value="男" v-model="form.picked">
               <label for="man">男</label>
 
               <input type="radio" id="woman" value="女" v-model="form.picked">
               <label for="woman">女</label>
 
+            </el-form-item>-->
+            <el-form-item label="性别">
+              <el-input style="width:200px;" v-model="form.sex"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="员工手机号">
               <el-input style="width:200px;" v-model="form.telephone"></el-input>
             </el-form-item>
@@ -46,24 +49,24 @@
         </el-row>
 
         <el-row>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="员工邮箱">
               <el-input style="width:200px;" v-model="form.email"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="归属部门">
               <el-input style="width:200px;" v-model="form.department"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="是否离职">
               <el-input style="width:200px;" v-model="form.isDimission"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="登录账号">
               <el-input style="width:200px;" v-model="form.accountNo"></el-input>
             </el-form-item>
@@ -72,34 +75,35 @@
 
       </el-form>
     </div>
+    <p>其它信息</p>
     <div style="width:85%; margin-left: 70px">
       <el-form ref="form" :model="form" label-width="80px">
         <el-row>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="新建时间">
-              <el-input style="width:200px;" v-model="form.create_time"></el-input>
+              <el-input style="width:200px;" :disabled="true" v-model="form.create_time"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="新建人">
-              <el-input style="width:200px;" v-model="form.create_emp"></el-input>
+              <el-input style="width:200px;" :disabled="true" v-model="form.create_emp"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="修改时间">
-              <el-input style="width:200px;" v-model="form.modify_time"></el-input>
+              <el-input style="width:200px;" :disabled="true" v-model="form.modify_time"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="修改人">
-              <el-input style="width:200px;" v-model="form.modify_emp"></el-input>
+              <el-input style="width:200px;" :disabled="true"v-model="form.modify_emp"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="备注">
               <el-input style="width:200px;" v-model="form.remark"></el-input>
             </el-form-item>
@@ -121,7 +125,8 @@
         form: {
           employeeNo: '',
           name: '',
-          picked: '',
+          /*picked: '',*/
+          sex:'',
           telephone: '',
           email: '',
           department: '',
@@ -137,7 +142,8 @@
         tableData: [],
         employeeNo: '',
         name: '',
-        picked: '',
+       /* picked: '',*/
+        sex:'',
         telephone: '',
         email: '',
         department: '',

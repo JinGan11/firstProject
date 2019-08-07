@@ -7,7 +7,9 @@ import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 
 import com.ucar.combination.model.Staff;
+import com.ucar.combination.service.AccountManagerService;
 import com.ucar.combination.service.EmployeeManageService;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,6 +35,8 @@ import static com.ucar.combination.common.CommonMethod.objectToMap;
 public class EmployeeManageController {
     @Autowired
     private EmployeeManageService employeeManageService;
+    @Autowired
+    private AccountManagerService accountManagerService;
 
     /**
      * 查询员工列表
@@ -80,5 +84,25 @@ public class EmployeeManageController {
         System.out.println("insertStaff:"+ JSON.toJSONString(staff));
         return "redirect:querylist.do_";
     }
+    /**
+     * description:在员工表更改员工状态为无效
+     * @author shiya.li@ucarinc.com
+     * @date   2019/8/7 9:47
+     * @params 员工id
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/updateStatus.do_")
+    public Result update(HttpServletRequest request){
+        String strid = request.getParameter("id");
+        String straccountId=request.getParameter("accountId");
 
+        int id = Integer.parseInt(strid);
+        int accountId=Integer.parseInt(straccountId);
+        System.out.print("id:"+id);
+        System.out.print("accountId:"+accountId);
+        employeeManageService.updateStatus(id);
+        accountManagerService.updateStatus(accountId);
+        return Result.ok();
+    }
 }

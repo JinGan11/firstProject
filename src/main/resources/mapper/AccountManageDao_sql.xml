@@ -24,8 +24,6 @@
         <result column="account_remark" property="remark"/>
     </resultMap>
 
-
-
     <select id="queryList" resultMap="account">
         SELECT t1.id,
                account_name,
@@ -87,6 +85,11 @@
         from t_role_info a,t_r_account_role b,t_account c,t_staff d,t_department e
         where b.role_id = a.id and b.account_id = c.id and c.staff_id = d.id and d.department_id = e.id
     </select>
+    <update id="updateStatus">
+        update t_account t1
+        set t1.account_state=3
+        where t1.id = #{id}
+    </update>
 </mapper>
 
 

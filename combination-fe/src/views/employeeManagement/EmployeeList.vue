@@ -83,7 +83,7 @@
     <div style="margin-bottom: 10px" v-if="!buttonDisabled">
       <el-button type="primary" @click="createEmployee" style="width:70px">新建</el-button>
       <el-button type="primary" @click="modifyEmployee" :disabled="disabled" style="width:70px">修改</el-button>
-      <el-button type="primary" @click="deleteEmployee" style="width:70px">删除</el-button>
+      <el-button type="primary" @click="deleteEmployee" :disabled="disabled" style="width:70px">删除</el-button>
       <el-button type="primary" @click="" style="width:70px">离职</el-button>
       <el-button type="primary" @click="" style="width:70px">恢复</el-button>
       <el-button type="primary" @click="distributionDepartment" style="width:80px">分配部门</el-button>
@@ -95,8 +95,7 @@
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.staffNum" @change="selectionActive"><span width="0px;"></span>
-          </el-radio>
+          <el-radio v-model="selection" :label="scope.row.id" @change="approvalInfo(scope.row)"><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏员工id"></el-table-column>
@@ -132,15 +131,7 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
-    <el-dialog :title="title" :visible.sync="deleteEmployeeFlag" :close-on-click-modal="false" width="700px">
-      <div class="dialog-main">
-        <p>确认要删除该员工吗？</p>
-      </div>
-      <template slot="footer">
-        <el-button type="primary" @click="sureDelete">确定</el-button>
-        <el-button @click="cancelDelete">取消</el-button>
-      </template>
-    </el-dialog>
+
     <el-dialog :title="title" :visible.sync="distributionDepartmentFlag" :close-on-click-modal="false" width="700px">
       <div class="dialog-main">
         <el-form :inline="true" :model="formdiStributionDepartment" class="demo-form-inline" label-width="100px">
@@ -251,7 +242,7 @@
           staffAfterDepartment: '',
         },
         distributionDepartmentFlag: false,
-        deleteEmployeeFlag: false,
+
         options: [{
           value: '2',
           label: '全部'
@@ -271,6 +262,7 @@
         filterVal: [],
         list: [],
         disabled: true,
+
       }
     },
     filters: {
@@ -368,15 +360,33 @@
       modifyEmployee() {//点击修改按钮，跳转到修改页面
         this.$router.replace('/ModifyEmployee');
       },
-      deleteEmployee() {//删除员工
-        this.deleteEmployeeFlag = true;
+      deleteEmployee() {//逻辑删除员工，员工状态改为无效，账户状态改为无效
+        this.$confirm('此操作将删除该员工, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          var self = this;
+          var param = {
+            id:self.id,
+            accountId:self.accountId,
+          };
+          self.$http.get('employee/updateStatus.do_', {
+            params: param
+          }).then((result) => {
+            self.$message.success("成功删除");
+          }).catch(function (error) {
+            commonUtils.Log("employee/updateStatus.do_" + error);
+            self.$message.error("获取数据错误");
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
       },
-      sureDelete() {//确认框中确认删除员工
 
-      },
-      cancelDelete() {//确认框中取消删除员工,并返回到员工管理列表页
-        this.$router.replace('/EmployeeManagement');
-      },
       distributionDepartment() {
         this.distributionDepartmentFlag = true;
       },
@@ -465,8 +475,11 @@
         }
         return this.filterVal;
       },
-      selectionActive() {
-        this.disabled = false
+      approvalInfo(val){
+        this.disabled = false;
+        this.id = val.id;
+        this.accountId = val.accountId;
+
       }
     }
   }

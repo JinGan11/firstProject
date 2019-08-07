@@ -30,6 +30,17 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         List<Account> list = accountManageDao.queryList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
+    /**
+     * description:由账户id将账户状态设置为无效
+     * @author shiya.li@ucarinc.com
+     * @date   2019/8/6 17：32
+     * @params id 账户id
+     * @return 无
+     */
+    public void updateStatus(int id){
+        accountManageDao.updateStatus(id);
+
+    }
 //lzy
     @Override
     public ResultPage getRoleAccountList(QueryParam queryParam) {
