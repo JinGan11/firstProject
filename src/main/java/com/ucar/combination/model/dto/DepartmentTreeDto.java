@@ -6,7 +6,7 @@ import java.util.List;
  * description:用于构建部门树结构
  *
  * @author 郑开添（kaitian.zheng@ucarinc.com）
- * @version 1.0
+ * @version 1.1
  * @date 2019/8/5 13:41
  **/
 public class DepartmentTreeDto {
@@ -15,13 +15,15 @@ public class DepartmentTreeDto {
     private String departmentNo;
     private String departmentName;
     private String upperDepartmentNo;
+    private Integer status;
     private List<DepartmentTreeDto> children;
 
-    public DepartmentTreeDto(Long id, String departmentNo, String departmentName, String upperDepartmentNo) {
-        this.id = id;
-        this.departmentNo = departmentNo;
-        this.departmentName = departmentName;
-        this.upperDepartmentNo = upperDepartmentNo;
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Long getId() {

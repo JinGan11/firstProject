@@ -7,9 +7,9 @@
         id,
         department_no,
         department_name,
-        upper_department_no
+        upper_department_no,
+        status
         FROM t_department
-        WHERE status=1
         ORDER BY id
     </select>
     <insert id="insertDepartment" parameterType="com.ucar.combination.model.Department">

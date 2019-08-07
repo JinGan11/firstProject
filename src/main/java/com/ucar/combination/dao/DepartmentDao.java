@@ -20,7 +20,7 @@ import java.util.Map;
 public interface DepartmentDao {
 
 	/**
-	 * description: 查找所有有效的部门
+	 * description: 查找所有部门
 	 * @author 郑开添（kaitian.zheng@ucarinc.com）
 	 * @date 2019/8/6 17:05
 	 * @params

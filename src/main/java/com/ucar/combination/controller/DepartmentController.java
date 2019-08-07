@@ -38,7 +38,7 @@ public class DepartmentController {
 	CompanyManageService companyManageService;
 
 	/**
-	 * description: 构建有效部门的树结构
+	 * description: 构建树结构的部门
 	 * @author 郑开添（kaitian.zheng@ucarinc.com）
 	 * @date 2019/8/6 19:18
 	 * @params
