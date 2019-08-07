@@ -630,6 +630,46 @@ public abstract class CommonEnums {
 			return e.getN();
 		}
 	}
+	public static enum DepartmentStatus implements IEnum{
+		EFFECTIVE(1, "有效"),
+		INVALID(2, "无效");
+		private final int i;
+		private final String n;
+
+		DepartmentStatus(int i,String n){
+			this.i=i;
+			this.n=n;
+		}
+
+		@Override
+		public int getI() {
+			return i;
+		}
+
+		@Override
+		public String getN() {
+			return n;
+		}
+		public static DepartmentStatus valueOf(Integer i){
+			if (i==null){
+				return null;
+			}
+			for (DepartmentStatus item:values()){
+				if (item.getI()==i){
+					return item;
+				}
+			}
+			return null;
+		}
+		public static String i2n(Integer i,String n){
+			IEnum e=valueOf(i);
+			if (e==null){
+				return n;
+			}
+			return e.getN();
+		}
+	}
+
 	public static Map<Integer, String> toEnumMap(IEnum[] enumArr) {
 		Map<Integer, String> res = new HashMap<>();
 		for (IEnum item : enumArr) {

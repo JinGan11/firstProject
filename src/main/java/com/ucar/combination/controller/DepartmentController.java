@@ -129,7 +129,7 @@ public class DepartmentController {
 		params.put("id", id);
 		DepartmentDto departmentDto = departmentService.getDepartmentDtoById(id);
 		ResultPage resultPage = companyManageService.getCompanyList(new QueryParam(params));
-		//return new Result().ok().put("page", resultPage).put("department", departmentDto).put("DepartmentTypeEnum",CommonEnums.toEnumMap(CommonEnums.DepartmentType.values())).put("LevelEnum",CommonEnums.toEnumMap(CommonEnums.DepartmentLevel.values())).put("StatusEnum",CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values()));
-		return new Result().ok().put("page", resultPage).put("department", departmentDto).put("CompanyTypeEnum",CommonEnums.toEnumMap(CommonEnums.CompanyType.values())).put("CompanyStatusEnum",CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values())).put("CompanyMarkEnum",CommonEnums.toEnumMap(CommonEnums.CompanyMark.values())).put("CompanyNatureEnum",CommonEnums.toEnumMap(CommonEnums.CompanyNature.values()));
+		//return new Result().ok().put("page", resultPage).put("department", departmentDto);
+		return new Result().ok().put("page", resultPage).put("department", departmentDto).put("CompanyTypeEnum",CommonEnums.toEnumMap(CommonEnums.CompanyType.values())).put("CompanyStatusEnum",CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values())).put("CompanyMarkEnum",CommonEnums.toEnumMap(CommonEnums.CompanyMark.values())).put("CompanyNatureEnum",CommonEnums.toEnumMap(CommonEnums.CompanyNature.values())).put("DepartmentTypeEnum",CommonEnums.toEnumMap(CommonEnums.DepartmentType.values())).put("LevelEnum",CommonEnums.toEnumMap(CommonEnums.DepartmentLevel.values())).put("DepartmentStatusEnum",CommonEnums.toEnumMap(CommonEnums.DepartmentStatus.values()));
 	}
 }

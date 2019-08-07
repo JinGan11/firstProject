@@ -18,7 +18,9 @@
         <el-input v-model="formInline.cityName"></el-input>
       </el-form-item>
       <el-form-item label="部门级别">
-        <el-input v-model="formInline.level"></el-input>
+        <el-input v-model="formInline.level">
+          {{}}
+        </el-input>
       </el-form-item>
       <el-form-item label="上级部门">
         <el-input v-model="formInline.upperDepartmentNo"></el-input>
@@ -67,9 +69,9 @@
         </template>
       </el-table-column>
       <el-table-column prop="status" label="状态" width="140">
-         <template slot-scope="scope">
-           {{StatusEnum[scope.row.status]}}
-         </template>
+        <template slot-scope="scope">
+          {{StatusEnum[scope.row.status]}}
+        </template>
       </el-table-column>
       <el-table-column prop="cityName" label="所在城市" width="140"></el-table-column>
       <el-table-column prop="companyName" label="关联公司名称" width="140"></el-table-column>
@@ -155,7 +157,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="部门级别" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.departmentType" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.level" placeholder=""></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -194,12 +196,12 @@
             </el-table-column>
             <el-table-column prop="companyNature" label="公司性质">
               <template slot-scope="scope">
-                 {{CompanyNatureEnum[scope.row.companyNature]}}
+                {{CompanyNatureEnum[scope.row.companyNature]}}
               </template>
             </el-table-column>
             <el-table-column prop="companyMark" label="总公司标志">
               <template slot-scope="scope">
-                 {{CompanyMarkEnum[scope.row.companyMark]}}
+                {{CompanyMarkEnum[scope.row.companyMark]}}
               </template>
             </el-table-column>
             <el-table-column prop="status" label="公司状态">
@@ -309,12 +311,13 @@
         dialogVisibleDetail: false,
         selection: '',
         DepartmentTypeEnum: {},
-        StatusEnum:{},
-        LevelEnum:{},
-        CompanyStatusEnum:{},
-        CompanyTypeEnum:{},
-        CompanyMarkEnum:{},
-        CompanyNatureEnum:{},
+        StatusEnum: {},
+        LevelEnum: {},
+        CompanyStatusEnum: {},
+        CompanyTypeEnum: {},
+        CompanyMarkEnum: {},
+        CompanyNatureEnum: {},
+        DepartmentStatusEnum: {},
       }
     },
     methods: {
@@ -332,10 +335,14 @@
           this.formDetail = resultss.department;
           this.totalCompany = resultss.totalCount;
           this.tableCity = resultss.page.list;
-          this.CompanyStatusEnum=resultss.CompanyStatusEnum;
-          this.CompanyTypeEnum=resultss.CompanyTypeEnum;
-          this.CompanyMarkEnum=resultss.CompanyMarkEnum;
-          this.CompanyNatureEnum=resultss.CompanyNatureEnum;
+          this.CompanyStatusEnum = resultss.CompanyStatusEnum;
+          this.CompanyTypeEnum = resultss.CompanyTypeEnum;
+          this.CompanyMarkEnum = resultss.CompanyMarkEnum;
+          this.CompanyNatureEnum = resultss.CompanyNatureEnum;
+          //枚举类型转换
+          this.formDetail.departmentType = resultss.DepartmentTypeEnum[this.formDetail.departmentType];
+          this.formDetail.level = resultss.LevelEnum[this.formDetail.level];
+          this.formDetail.status=resultss.DepartmentStatusEnum[this.formDetail.status];
           console.log(this.tableCity);
         }).catch(function (error) {
           console.log('department/selectDepartment.do_' + error);
@@ -366,9 +373,9 @@
         }).then((result) => {
           self.tableData = result.page.list;
           self.DepartmentTypeEnum = result.DepartmentTypeEnum;
-          self.StatusEnum=result.StatusEnum;
+          self.StatusEnum = result.StatusEnum;
           self.total = result.page.totalCount;
-          self.LevelEnum=result.LevelEnum;
+          self.LevelEnum = result.LevelEnum;
           console.log(self.tableData);
         }).catch(function (error) {
           console.log('department/searchDepartment.do_' + error);
