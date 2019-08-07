@@ -1,5 +1,6 @@
 package com.ucar.combination.controller;
 
+import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
@@ -52,7 +53,7 @@ public class RoleManagementController {
         params.put("limit", limit);
         params.put("role_name",roleName);
         ResultPage resultPage = roleManagementService.queryList(new QueryParam(params));
-        return Result.ok().put("page",resultPage);
+        return Result.ok().put("page",resultPage).put("RoleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values()));
     }
 
     /**

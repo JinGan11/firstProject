@@ -29,6 +29,14 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     @Autowired
     private RoleManagementDao roleManagementDao;
 
+    /**
+     * description:取出数据库中的列表数据
+     * @author gan.jin@ucarinc.com
+     * @date 2019/8/7 15:25
+     * @param queryParam
+     * @return com.ucar.combination.common.ResultPage
+     */
+
     @Override
     public ResultPage queryList(QueryParam queryParam) {
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
@@ -36,6 +44,14 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         System.out.println(list);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
+
+    /**
+     * description:依据传入参数主键id逻辑删除
+     * @author gan.jin@ucarinc.com
+     * @date 2019/8/7 15:26
+     * @param id  传入参数主键id
+     * @return void
+     */
 
     @Override
     public void updateStatus(int id){
@@ -105,11 +121,27 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         return resultPage3;
     }
 
+    /**
+     * description:将选中的数据取出
+     * @author gan.jin@ucarinc.com
+     * @date 2019/8/7 15:28
+     * @param id 主键id
+     * @return com.ucar.combination.model.dto.RoleDto 数据对象
+     */
+
     @Override
     public RoleDto getOneInf(int id) {
         RoleDto roleDto = roleManagementDao.getOneInf(id);
         return roleDto;
     }
+
+    /**
+     * description:修改数据
+     * @author gan.jin@ucarinc.com
+     * @date 2019/8/7 15:29
+     * @param role 传入修改的数据
+     * @return void
+     */
 
     @Override
     public void updateByModify(RoleDto role) {

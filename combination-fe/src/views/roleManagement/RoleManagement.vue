@@ -42,7 +42,11 @@
       <el-table-column prop="staffNum" label="审批人员工编号" ></el-table-column>
       <el-table-column prop="staffName" label="审批人姓名" width="200"></el-table-column>
       <el-table-column prop="departmentName" label="审批人所属部门" width="120"></el-table-column>
-      <el-table-column prop="roleStatus" label="状态" width="100"></el-table-column>
+      <el-table-column prop="roleStatus" label="状态" width="100" style="text-align: center">
+         <template slot-scope="scope">
+           {{RoleStatusEnum[scope.row.roleStatus]}}
+          </template>
+      </el-table-column>
       <el-table-column prop="description" label="描述" width="120"></el-table-column>
     </el-table>
 
@@ -71,6 +75,7 @@
           name: '',
         },
         tableData: [],
+        RoleStatusEnum:{},
         selection: '',
         id: '',
         roleId: '',
@@ -117,6 +122,7 @@
         }).then((result) => {
           self.tableData = result.page.list;
           self.total = result.page.totalCount;
+          self.RoleStatusEnum=result.RoleStatusEnum;
           //self.form.name="dsf";
         }).catch(function (error) {
           commonUtils.Log("roleManage/querylist.do_:" + error);
