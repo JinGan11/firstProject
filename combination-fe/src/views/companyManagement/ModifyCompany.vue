@@ -313,6 +313,7 @@
 
           self.form=result.list;
 
+
         }).catch(function (error) {
           commonUtils.Log("company/getCompanyById.do_:" + error);
           self.$message.error("获取数据错误");

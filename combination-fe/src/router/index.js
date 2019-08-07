@@ -148,6 +148,10 @@ export default new Router({
     path:'/roleManagement/RoleAssignPermission',
     name:'分配权限',
     component:RoleAssignPermission
+  },{
+    path:'/modifyCompany',
+    name:'修改公司',
+    component:ModifyCompany
   }
   ]
 })
