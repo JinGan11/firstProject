@@ -23,6 +23,8 @@ public class ResultPage implements Serializable {
     //列表数据
     private List<?> list;
 
+    public ResultPage(){}
+
     /**
      * 分页
      * @param list        列表数据
