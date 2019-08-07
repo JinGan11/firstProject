@@ -78,6 +78,8 @@
 常遇到的问题及其解决办法：
 1.做vue项目的时候,用axio和后台联调时遇到axio不携带cookie问题
 解决办法：axios默认是请求的时候不会带上cookie的，需要通过设置withCredentials: true来解决。
+2.造数据 规范问题
+3.交代码 先加入版本库
 
 
 
