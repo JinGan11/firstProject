@@ -30,4 +30,13 @@ public interface RoleApplyManageService {
      */
     public List<RoleApplyDto> getRoleList(QueryParam queryParam);
 
+    /**
+    * @Description:  删除
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  15:25 2019/8/7
+    */
+    void deleteRoleApply(String roleApplyNum);
+
 }

@@ -69,4 +69,18 @@ public class RoleApplyManageController {
                 .put("applyStatusEnum", CommonEnums.toEnumMap(CommonEnums.applyStatusEnum.values()))
                 .put("roleDtoList", roleDtoList);
     }
+
+    /**
+    * @Description:  删除
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  15:35 2019/8/7
+    */
+    @ResponseBody
+    @RequestMapping("/deleteRoleApply.do_")
+    public void update(HttpServletRequest request){
+        String roleApplyNum = request.getParameter("selection");
+        roleApplyManageService.deleteRoleApply(roleApplyNum);
+    }
 }

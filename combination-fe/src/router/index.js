@@ -27,8 +27,6 @@ import AssignPermission from '@/views/accountManagement/AssignPermission'
 import provinceSearch from "@/views/cityInfoManagement/provinceSearch";
 import citySearch from "@/views/cityInfoManagement/citySearch";
 import countySearch from "@/views/cityInfoManagement/countySearch";
-import SelectroleRoleApply from "../views/roleManagement/SelectroleRoleApply";
-import SelectAccountRoleApply from '@/views/roleManagement/SelectAccountRoleApply'
 Vue.use(Router)
 
 export default new Router({
@@ -108,14 +106,6 @@ export default new Router({
     path:'/createRoleApply',
     name:'新建角色申请',
     component:CreateRoleApply
-  },{
-    path:'/selectroleRoleApply',
-    name:'选择角色',
-    component:SelectroleRoleApply
-  },{
-    path:'/selectAccountRoleApply',
-    name:'选择账户',
-    component:SelectAccountRoleApply
   },{
     path:'/createCompany',
     name:'新建公司',

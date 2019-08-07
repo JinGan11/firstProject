@@ -91,9 +91,9 @@
     </div>
     <div style="margin-bottom: 10px; margin-top:20px; margin-left:40px">
       <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
-      <el-button type="primary" @click="createRoleApply" style="width:70px">新建</el-button>
-      <el-button type="primary" @click="" style="width:70px">修改</el-button>
-      <el-button type="primary" @click="deleteApply(scope.row)" style="width:70px">删除</el-button>
+      <el-button type="primary" @click="createRoleApply"   style="width:70px">新建</el-button>
+      <el-button type="primary" @click="" style="width:70px" :disabled="disabled">修改</el-button>
+      <el-button type="primary" @click="deleteRoleApply" style="width:70px" :disabled="disabledDelete">删除</el-button>
       <el-button type="primary" @click="" style="width:70px">提交审核</el-button>
       <el-button type="primary" style="width:100px" @click="out">导出</el-button>
       <el-button type="primary" @click="" style="width:100px">条件查询</el-button>
@@ -102,7 +102,7 @@
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.id"><span width="0px;"></span></el-radio>
+          <el-radio v-model="selection" @change="buttonActive(scope.row)" :label="scope.row.roleApplyNum" ><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
@@ -162,6 +162,8 @@
         total: 0,
         currentPage: 1,
         pageSize: 10,
+        disabled: true,
+        disabledDelete:true,
         form: {
           roleApplyNum:'',
           roleId: '',
@@ -379,7 +381,42 @@
           }
         }
         return this.filterVal;
-      }
+      },
+
+
+      buttonActive(row){//激活按钮
+        this.disabled = false;
+        if(row.applyStatus === 1){
+          this.disabledDelete=false;
+        }else{
+          this.disabledDelete=true;
+        }
+      },
+      deleteRoleApply() {//删除角色信息
+        this.$confirm('此操作将删除该角色申请, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          var self = this;
+          var param = {
+            selection:self.selection,
+          };
+          self.$http.get('roleApply/deleteRoleApply.do_', {
+            params: param
+          }).then(() => {
+            self.$message.success("成功删除");
+          }).catch(function (error) {
+            commonUtils.Log("roleApply/deleteRoleApply.do_:" + error);
+            self.$message.error("获取数据错误");
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      },
 
     }
 

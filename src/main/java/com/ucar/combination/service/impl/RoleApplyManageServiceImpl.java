@@ -39,4 +39,18 @@ public class RoleApplyManageServiceImpl implements RoleApplyManageService {
     public List<RoleApplyDto> getRoleList(QueryParam queryParam){
         return roleApplyManageDao.queryList(queryParam);
     }
+
+
+
+    /**
+    * @Description:  删除
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  15:26 2019/8/7
+    */
+    @Override
+    public void deleteRoleApply(String roleApplyNum) {
+        roleApplyManageDao.deleteRoleApply(roleApplyNum);
+    }
 }

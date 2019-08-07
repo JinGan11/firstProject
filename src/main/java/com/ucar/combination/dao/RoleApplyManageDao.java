@@ -15,4 +15,13 @@ public interface RoleApplyManageDao {
     * @Date  9:34 2019/8/3
     */
     List<RoleApplyDto> queryList(Map<String, Object> map);
+
+    /**
+    * @Description:  删除角色申请
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  15:22 2019/8/7
+    */
+    void deleteRoleApply(String roleApplyNum);
 }
