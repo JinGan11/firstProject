@@ -27,7 +27,6 @@ import AssignPermission from '@/views/accountManagement/AssignPermission'
 import provinceSearch from "@/views/cityInfoManagement/provinceSearch";
 import citySearch from "@/views/cityInfoManagement/citySearch";
 import countySearch from "@/views/cityInfoManagement/countySearch";
-import AccountPermission from '@/views/accountManagement/AccountPermission'
 Vue.use(Router)
 
 export default new Router({
