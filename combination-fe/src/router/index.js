@@ -29,6 +29,7 @@ import provinceSearch from "@/views/cityInfoManagement/provinceSearch";
 import citySearch from "@/views/cityInfoManagement/citySearch";
 import countySearch from "@/views/cityInfoManagement/countySearch";
 import ModifyCompany from'@/views/companyManagement/ModifyCompany'
+import DepartmentChangeUpper from "@/views/departmentManagement/DepartmentChangeUpper"
 Vue.use(Router)
 
 export default new Router({
@@ -152,6 +153,10 @@ export default new Router({
     path:'/modifyCompany',
     name:'修改公司',
     component:ModifyCompany
+  },{
+    path:'/departmentManagement/changeUpperDepartment',
+    name:'修改上级部门',
+    component:DepartmentChangeUpper
   }
   ]
 })
