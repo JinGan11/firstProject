@@ -28,7 +28,6 @@ import RoleAssignPermission from '@/views/roleManagement/RoleAssignPermission'
 import provinceSearch from "@/views/cityInfoManagement/provinceSearch";
 import citySearch from "@/views/cityInfoManagement/citySearch";
 import countySearch from "@/views/cityInfoManagement/countySearch";
-import ModifyCompany from'@/views/companyManagement/ModifyCompany'
 import DepartmentChangeUpper from "@/views/departmentManagement/DepartmentChangeUpper"
 import ModifyCompany from'@/views/companyManagement/ModifyCompany';
 import modifyRoleApply from '@/views/roleManagement/modifyRoleApply';

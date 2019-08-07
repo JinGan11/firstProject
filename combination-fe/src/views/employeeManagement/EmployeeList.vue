@@ -281,6 +281,7 @@
     },
     created() {
       var self = this;
+      self.fetchData();
       if (self.relAccount) {
         self.form.isDimission = '在职';
         self.buttonDisabled = true;
