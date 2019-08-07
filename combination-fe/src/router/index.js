@@ -30,6 +30,8 @@ import citySearch from "@/views/cityInfoManagement/citySearch";
 import countySearch from "@/views/cityInfoManagement/countySearch";
 import ModifyCompany from'@/views/companyManagement/ModifyCompany'
 import DepartmentChangeUpper from "@/views/departmentManagement/DepartmentChangeUpper"
+import ModifyCompany from'@/views/companyManagement/ModifyCompany';
+import modifyRoleApply from '@/views/roleManagement/modifyRoleApply';
 Vue.use(Router)
 
 export default new Router({
@@ -157,6 +159,10 @@ export default new Router({
     path:'/departmentManagement/changeUpperDepartment',
     name:'修改上级部门',
     component:DepartmentChangeUpper
+  },{
+    path:'/modifyRoleApply',
+    name:'修改角色申请',
+    component:modifyRoleApply
   }
   ]
 })

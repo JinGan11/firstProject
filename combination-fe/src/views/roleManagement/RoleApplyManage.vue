@@ -92,7 +92,7 @@
     <div style="margin-bottom: 10px; margin-top:20px; margin-left:40px">
       <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
       <el-button type="primary" @click="createRoleApply"   style="width:70px">新建</el-button>
-      <el-button type="primary" @click="" style="width:70px" :disabled="disabled">修改</el-button>
+      <el-button type="primary" @click="modifyRoleApply" style="width:70px" :disabled="disabledDelete">修改</el-button>
       <el-button type="primary" @click="deleteRoleApply" style="width:70px" :disabled="disabledDelete">删除</el-button>
       <el-button type="primary" @click="commitRoleApply" style="width:70px" :disabled="disabledDelete">提交审核</el-button>
       <el-button type="primary" style="width:100px" @click="out">导出</el-button>
@@ -289,6 +289,10 @@
       createRoleApply(){//新建角色申请
         this.$router.replace('/createRoleApply')
       },
+      modifyRoleApply(){//修改角色申请
+        this.$router.replace('/modifyRoleApply')
+      },
+
       out(){//点击导出按钮触发的函数
         this.dialogVisibleRole =true;
       },

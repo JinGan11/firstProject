@@ -273,7 +273,7 @@
         <el-button type="primary" @click="selectAccountConfirm" style="width:70px">确认选择</el-button>
         <el-button type="primary" @click="cancelSelectAccount" style="width:70px">取消</el-button>
       </div>
-      <el-table ref="multipleTable" :data="tableData" border  @selection-change="handleSelectAccount" >
+      <el-table ref="multipleTable" :data="tableData" border  @selection-change="handleSelectAccount">
         <el-table-column type="selection" width="35"></el-table-column>
         <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
         <el-table-column prop="accountName" label="登陆账号" style="width:auto"></el-table-column>
@@ -322,215 +322,217 @@
 
 
 <script>
-  import commonUtils from '../../common/commonUtils'
-  export default {
-    name: "createRoleApply",
-    data(){
-      return{
-        total: 0,
-        currentPage: 1,
-        pageSize: 10,
-        title1:'选择角色',
-        title2:'选择账户',
-        dialogVisibleRole: false,
-        dialogVisibleAccount:false,
-        dialogCategory: '',//控制显示对应的具体弹窗
-        multipleSelection: [],
-        tableDataAccount:[],
+    import commonUtils from '../../common/commonUtils'
+    export default {
+        name: "modifyRoleApply",
+        data(){
+          return{
+            total: 0,
+            currentPage: 1,
+            pageSize: 10,
+            title1:'选择角色',
+            title2:'选择账户',
+            dialogVisibleRole: false,
+            dialogVisibleAccount:false,
+            dialogCategory: '',//控制显示对应的具体弹窗
+            multipleSelection: [],
+            tableDataAccount:[],
+            data:[],
+            defaultProps:'',
 
-        formRoleInfo: {//申请信息
-          roleApplyNum: '',
-          roleName: '',
-          approverStaffName: '',
-          businessLine: ''
+            formRoleInfo: {//申请信息
+              roleApplyNum: '',
+              roleName: '',
+              approverStaffName: '',
+              businessLine: ''
+            },
+
+            otherInfo: {//其他信息
+              applyTime: '',
+              applyStaffName: '',
+              modifyTime: '',
+              modifyStaffName: '',
+              approveTime: '',
+              approverStaffName: '',
+              applyStatus: '',
+            },
+
+            formSelectRole: {
+              name: '',
+            },
+            tableDataRole: [],
+            selectionRoleInfo: '',
+
+
+            form: {//选择账户
+              accountNo: null,
+              staffNo: null,
+              name: null,
+              permissionsList:[],
+              permissionsEnum:{},
+              accountStatusList:[],
+              accountStatusEnum:{},
+              permissions: null,
+              department:null,
+              isRelStaffoptions:[{
+                value: '1',
+                label: '是'
+              },{
+                value: '0',
+                label: '否'
+              }],
+              isRelStaff: null,
+              status:null
+            },
+
+            tableData: [],
+            selection: [],
+            id: '',
+            mineStatusValue:'',
+
+            optionOfApply: '',
+            options: [{
+              value: '1',
+              label: '添加'
+            }, {
+              value: '2',
+              label: '移除'
+            }],
+          }
+        },
+      activated() {
+        commonUtils.Log("页面激活");
+      },
+      mounted() {
+        commonUtils.Log("页面进来");
+      },
+      methods: {
+        handleSizeChangeRole(val) {
+          this.pageSize = val;
+          this.currentPage = 1;
+          this.fetchDataRole(1, val);
+        },
+        handleCurrentChangeRole(val) {
+          this.currentPage = val;
+          this.fetchDataRole(val, this.pageSize);
         },
 
-        otherInfo: {//其他信息
-          applyTime: '',
-          applyStaffName: '',
-          modifyTime: '',
-          modifyStaffName: '',
-          approveTime: '',
-          approverStaffName: '',
-          applyStatus: '',
+
+        handleSizeChangeAccount(val) {
+          this.pageSize = val;
+          this.currentPage = 1;
+          this.fetchData(1, val);
+        },
+        handleCurrentChangeAccount(val) {
+          this.currentPage = val;
+          this.fetchData(val, this.pageSize);
         },
 
-        formSelectRole: {
-          name: '',
+
+
+
+        selectRoleForRoleApply(){
+          //点击选择，弹出选择角色对话框
+          this.dialogVisibleRole=true;
+          //显示所有角色列表
+          this.fetchDataRole();
         },
-        tableDataRole: [],
-        selectionRoleInfo: '',
-
-
-        form: {//选择账户
-          accountNo: null,
-          staffNo: null,
-          name: null,
-          permissionsList:[],
-          permissionsEnum:{},
-          accountStatusList:[],
-          accountStatusEnum:{},
-          permissions: null,
-          department:null,
-          isRelStaffoptions:[{
-            value: '1',
-            label: '是'
-          },{
-            value: '0',
-            label: '否'
-          }],
-          isRelStaff: null,
-          status:null
+        fetchDataRole() { //获取数据
+          var self = this;
+          var param = {
+            page: self.currentPage,
+            limit: self.pageSize,
+            roleName: self.formSelectRole.name,
+          };
+          self.$http.get("roleManage/querylist.do_", {
+            params: param
+          }).then((result) => {
+            self.tableDataRole = result.page.list;
+            self.total = result.page.totalCount;
+          }).catch(function (error) {
+            commonUtils.Log("roleManage/querylist.do_:" + error);
+            self.$message.error("获取数据错误");
+          });
+        },
+        getRoleDetails(row) {
+          //获取选中行的数据
+          this.formRoleInfo.roleName=row.roleName;
+          this.formRoleInfo.approverStaffName=row.staffName;
+          this.otherInfo.approverStaffName=row.staffName;
+        },
+        selectRole(){
+          //确认选择按钮 选择角色
+          this.dialogVisibleRole=false;
+        },
+        cancelSelectRole(){
+          //取消按钮
+          this.dialogVisibleRole=false;
         },
 
-        tableData: [],
-        selection: [],
-        id: '',
-        mineStatusValue:'',
 
-        optionOfApply: '',
-        options: [{
-          value: '1',
-          label: '添加'
-        }, {
-          value: '2',
-          label: '移除'
-        }],
+        addAccountForApply(){
+          //点击添加按钮，进入账号选择页面
+          this.dialogVisibleAccount=true;
+          this.fetchData();
+          //清楚表格所选的记录
+          this.$refs.multipleTable.clearSelection();
+        },
+
+        fetchData(){//账户列表
+          var self = this;
+          var param = {
+            page: self.currentPage,
+            limit: self.pageSize,
+            accountName: self.form.accountNo,
+            staffNo: self.form.staffNo,
+            name:self.form.name,
+            permissions: self.form.permissions,
+            department: self.form.departmentId,
+            isRelStaff: self.form.isRelStaff,
+            status: self.form.status
+          };
+          self.$http.get('account/querylist.do_', {
+            params: param
+          }).then((result) => {
+            self.tableData = result.page.list;
+            self.form.permissionsList = result.permissionList;
+            self.form.permissionsEnum = result.permissionEnum;
+            self.form.accountStatusEnum = result.accountStatusEnum;
+            self.form.accountStatusList = result.accountStatusList;
+            self.total = result.page.totalCount;
+          }).catch(function (error) {
+            commonUtils.Log("account/querylist.do_:"+error);
+            self.$message.error("获取数据错误")
+          });
+        },
+        cancelSelectAccount(){
+          //取消按钮
+          this.dialogVisibleAccount=false;
+        },
+        handleSelectAccount(val){
+          this.multipleSelection = val;
+        },
+        selectAccountConfirm(){
+          this.tableDataAccount=this.multipleSelection;
+          for(let i=0;i<this.multipleSelection.length;i++){
+            this.tableDataAccount[i].id=this.multipleSelection[i].id;
+            this.tableDataAccount[i].accountName=this.multipleSelection[i].accountName;
+            this.tableDataAccount[i].staffName=this.multipleSelection[i].staffName;
+            this.tableDataAccount[i].staffNum=this.multipleSelection[i].staffNum;
+            this.tableDataAccount[i].staffDepartmentName=this.multipleSelection[i].department;
+            // this.multipleSelection[i].operationOfDelete=
+          }
+          this.dialogVisibleAccount=false;
+        },
+
+        deleteSelect(index){ //移除添加的账户 删除行
+          this.tableDataAccount.splice(index, 1)
+        },
+
+
       }
-    },
-    activated() {
-      commonUtils.Log("页面激活");
-    },
-    mounted() {
-      commonUtils.Log("页面进来");
-    },
-    methods: {
-      handleSizeChangeRole(val) {
-        this.pageSize = val;
-        this.currentPage = 1;
-        this.fetchDataRole(1, val);
-      },
-      handleCurrentChangeRole(val) {
-        this.currentPage = val;
-        this.fetchDataRole(val, this.pageSize);
-      },
-
-
-      handleSizeChangeAccount(val) {
-        this.pageSize = val;
-        this.currentPage = 1;
-        this.fetchData(1, val);
-      },
-      handleCurrentChangeAccount(val) {
-        this.currentPage = val;
-        this.fetchData(val, this.pageSize);
-      },
-
-
-
-
-      selectRoleForRoleApply(){
-        //点击选择，弹出选择角色对话框
-        this.dialogVisibleRole=true;
-        //显示所有角色列表
-        this.fetchDataRole();
-      },
-      fetchDataRole() { //获取数据
-        var self = this;
-        var param = {
-          page: self.currentPage,
-          limit: self.pageSize,
-          roleName: self.formSelectRole.name,
-        };
-        self.$http.get("roleManage/querylist.do_", {
-          params: param
-        }).then((result) => {
-          self.tableDataRole = result.page.list;
-          self.total = result.page.totalCount;
-        }).catch(function (error) {
-          commonUtils.Log("roleManage/querylist.do_:" + error);
-          self.$message.error("获取数据错误");
-        });
-      },
-      getRoleDetails(row) {
-        //获取选中行的数据
-        this.formRoleInfo.roleName=row.roleName;
-        this.formRoleInfo.approverStaffName=row.staffName;
-        this.otherInfo.approverStaffName=row.staffName;
-      },
-      selectRole(){
-        //确认选择按钮 选择角色
-        this.dialogVisibleRole=false;
-      },
-      cancelSelectRole(){
-        //取消按钮
-        this.dialogVisibleRole=false;
-      },
-
-
-      addAccountForApply(){
-        //点击添加按钮，进入账号选择页面
-        this.dialogVisibleAccount=true;
-        this.fetchData();
-        //清楚表格所选的记录
-        this.$refs.multipleTable.clearSelection();
-      },
-
-      fetchData(){//账户列表
-        var self = this;
-        var param = {
-          page: self.currentPage,
-          limit: self.pageSize,
-          accountName: self.form.accountNo,
-          staffNo: self.form.staffNo,
-          name:self.form.name,
-          permissions: self.form.permissions,
-          department: self.form.departmentId,
-          isRelStaff: self.form.isRelStaff,
-          status: self.form.status
-        };
-        self.$http.get('account/querylist.do_', {
-          params: param
-        }).then((result) => {
-          self.tableData = result.page.list;
-          self.form.permissionsList = result.permissionList;
-          self.form.permissionsEnum = result.permissionEnum;
-          self.form.accountStatusEnum = result.accountStatusEnum;
-          self.form.accountStatusList = result.accountStatusList;
-          self.total = result.page.totalCount;
-        }).catch(function (error) {
-          commonUtils.Log("account/querylist.do_:"+error);
-          self.$message.error("获取数据错误")
-        });
-      },
-      cancelSelectAccount(){
-        //取消按钮
-        this.dialogVisibleAccount=false;
-      },
-      handleSelectAccount(val){
-        this.multipleSelection = val;
-      },
-      selectAccountConfirm(){
-        this.tableDataAccount=this.multipleSelection;
-        for(let i=0;i<this.multipleSelection.length;i++){
-          this.tableDataAccount[i].id=this.multipleSelection[i].id;
-          this.tableDataAccount[i].accountName=this.multipleSelection[i].accountName;
-          this.tableDataAccount[i].staffName=this.multipleSelection[i].staffName;
-          this.tableDataAccount[i].staffNum=this.multipleSelection[i].staffNum;
-          this.tableDataAccount[i].staffDepartmentName=this.multipleSelection[i].department;
-          // this.multipleSelection[i].operationOfDelete=
-        }
-        this.dialogVisibleAccount=false;
-      },
-
-      deleteSelect(index){ //移除添加的账户 删除行
-        this.tableDataAccount.splice(index, 1)
-      },
-
 
     }
-
-  }
 </script>
 
 <style scoped>
