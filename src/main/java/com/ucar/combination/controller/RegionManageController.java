@@ -49,9 +49,9 @@ public class RegionManageController {
         params.put("regionName", regionName);
         params.put("regionStatus", regionStatus);
 
-        for (String key:params.keySet()) {
-            System.out.println("key: "+key+" value: "+params.get(key));
-        }
+//        for (String key:params.keySet()) {
+//            System.out.println("key: "+key+" value: "+params.get(key));
+//        }
 
         ResultPage resultPage=regionManageService.provinceSearchList(new QueryParam(params));
 
