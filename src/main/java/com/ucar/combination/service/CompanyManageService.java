@@ -37,4 +37,12 @@ public interface CompanyManageService {
      * @return：
      */
     void insertCompany(Company company);
+    /**
+     * description: 获取要修改的公司信息
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/7 14:08
+     * @return：
+     */
+    Company getCompanyById(int companyId);
 }

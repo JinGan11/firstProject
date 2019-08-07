@@ -145,7 +145,7 @@
           self.$http.get('roleManage/updateStatus.do_', {
             params: param
           }).then(() => {
-            self.$message.success("成功删除");
+            self.$router.replace("/roleManagement/roleManagement");
           }).catch(function (error) {
             commonUtils.Log("roleManage/updateStatus.do_:" + error);
             self.$message.error("获取数据错误");

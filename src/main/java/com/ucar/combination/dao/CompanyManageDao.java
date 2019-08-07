@@ -2,6 +2,7 @@ package com.ucar.combination.dao;
 
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.Company;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -38,4 +39,12 @@ public interface CompanyManageDao<mcmt> {
      * @return：
      */
     void insertCompany(Company company);
+    /**
+     * description: 得到修改的公司信息
+     * @author: jianan.shu@ucarinc.com
+     * @param: id
+     * @date: 2019/8/7 14:07
+     * @return：
+     */
+    Company getCompanyById(@Param("companyId") int companyId);
 }

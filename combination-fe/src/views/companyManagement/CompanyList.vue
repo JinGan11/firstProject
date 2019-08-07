@@ -91,7 +91,7 @@
 
     <div style="margin-bottom: 10px">
       <el-button type="primary" @click="createCompany" style="width:70px">新建</el-button>
-      <el-button type="primary" @click="modifyCompany" style="width:70px">修改</el-button>
+      <el-button type="primary" @click="modifyCompany(selection)" style="width:70px">修改</el-button>
     </div>
 
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
@@ -255,9 +255,12 @@
         });
         },
       createCompany(){//点击新建按钮，跳转到新建公司页面
+
         this.$router.replace('/CreateCompany')
       },
-      modifyCompany() {//点击修改按钮，跳转到修改页面
+      modifyCompany(val) {//点击修改按钮，跳转到修改页面
+        window.localStorage.setItem('companyId',val);
+        alert(window.localStorage.getItem('companyId'));
         this.$router.replace('/ModifyCompany')
       },
       },

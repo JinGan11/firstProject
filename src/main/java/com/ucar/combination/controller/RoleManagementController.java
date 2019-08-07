@@ -29,6 +29,14 @@ public class RoleManagementController {
     @Autowired(required = false)
     private RoleManagementServiceImpl roleManagementService;
 
+    /**
+     * description:用于接收数据返回前端列表
+     * @author gan.jin@ucarinc.com
+     * @date 2019/8/7 15:18
+     * @param request 前端请求
+     * @return com.ucar.combination.common.Result 返回数据
+     */
+
     @ResponseBody
     @RequestMapping("/querylist.do_")
     public Result list(HttpServletRequest request){
@@ -43,6 +51,14 @@ public class RoleManagementController {
         return Result.ok().put("page",resultPage);
     }
 
+    /**
+     * description:用于逻辑删除数据
+     * @author gan.jin@ucarinc.com
+     * @date 2019/8/7 15:20
+     * @param request 前端请求
+     * @return void
+     */
+
     @ResponseBody
     @RequestMapping("/updateStatus.do_")
     public void update(HttpServletRequest request){
@@ -51,12 +67,28 @@ public class RoleManagementController {
             roleManagementService.updateStatus(id);
     }
 
+    /**
+     * description: 用于插入数据
+     * @author gan.jin@ucarinc.com
+     * @date 2019/8/7 15:21
+     * @param role 前端请求传入对象role
+     * @return void
+     */
+
     @ResponseBody
     @RequestMapping(value = "/insertRole.do_",method = RequestMethod.POST)
     public void insertRole(@RequestBody RoleDto role){
         roleManagementService.insertRole(role);
        // System.out.println("insertRole:"+ JSON.toJSONString(role));
     }
+
+    /**
+     * description:将选中的数据返回到修改页面
+     * @author gan.jin@ucarinc.com
+     * @date 2019/8/7 15:22
+     * @param request 前端请求
+     * @return com.ucar.combination.common.Result 处理结果
+     */
 
     @ResponseBody
     @RequestMapping("/getOneInf.do_")
@@ -66,5 +98,20 @@ public class RoleManagementController {
         RoleDto roleDto = roleManagementService.getOneInf(id);
         System.out.println("ASDFA");
         return Result.ok().put("page",roleDto);
+    }
+
+    /**
+     * description:修改后的数据插入
+     * @author gan.jin@ucarinc.com
+     * @date 2019/8/7 15:23
+     * @param role  传入对象
+     * @return void
+     */
+
+    @ResponseBody
+    @RequestMapping(value = "/updateByModify.do_",method = RequestMethod.POST)
+    public void updateByModify(@RequestBody RoleDto role){
+        roleManagementService.updateByModify(role);
+        // System.out.println("insertRole:"+ JSON.toJSONString(role));
     }
 }

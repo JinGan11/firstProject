@@ -58,4 +58,5 @@ public interface RoleManagementDao {
      */
     void insertAccountRole(AccountRole accountRole);
     RoleDto getOneInf(int id);
+    void updateByModify(RoleDto role);
 }

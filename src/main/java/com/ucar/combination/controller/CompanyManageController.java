@@ -67,4 +67,19 @@ public class CompanyManageController {
         companyManageService.insertCompany(company);
         return "success";
     }
+    /**
+     * description: 获取单一公司信息
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/7 14:20
+     * @return：
+     */
+    @ResponseBody
+    @RequestMapping("/getCompanyById.do_")
+    public Result getOneCompanyById(HttpServletRequest request){
+        String id = request.getParameter("companyId");
+        int companyId = Integer.parseInt(id);
+        Company company = companyManageService.getCompanyById(companyId);
+        return Result.ok().put("list",company);
+    }
 }

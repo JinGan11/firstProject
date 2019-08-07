@@ -56,5 +56,13 @@ public class CompanyManageServiceImpl implements CompanyManageService {
     public void insertCompany(Company company){
         companyManageDao.insertCompany(company);
     }
+
+    @Override
+    public Company getCompanyById(int companyId){
+        Company company=companyManageDao.getCompanyById(companyId);
+        return company;
+    }
+
+
 }
 
