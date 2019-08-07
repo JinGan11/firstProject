@@ -2,25 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ucar.combination.dao.EmployeeManageDao">
+
+    <update id="updateStaffAccount">
+        UPDATE t_staff
+        SET account_id = #{accountId}
+        ,modify_time = NOW()
+        ,modify_emp = #{modifyEmp}
+        <if test="secretEmail != null and secretEmail.trim() != ''">
+        ,staff_email = #{secretEmail}
+        </if>
+        WHERE id = #{staffId};
+    </update>
+
     <select id="queryList" resultType="com.ucar.combination.model.dto.StaffDto">
         SELECT
-        M.id,
-        createTime,
-        t3.account_name,
-        staffNum,
-        accountId,
-        staffName,
-        staffSex,
-        staffTelephone,
-        staffEmail,
-        departmentName,
-        upperDepartmentName,
-        isDimission,
-        upperDepartmentNo
-        FROM
-        (SELECT
         t1.id id,
         t1.staff_num staffNum,
+        t3.account_name,
         t1.account_id accountId,
         t1.staff_name staffName,
         t1.staff_sex staffSex,
@@ -32,25 +30,28 @@
         t2.upper_department_no upperDepartmentNo,
         t2.department_name departmentName,
         t4.department_name upperDepartmentName
-        FROM t_staff t1,t_department t2,t_department t4
-        where t1.department_id = t2.id and t2.upper_department_no=t4.department_no) M
+        FROM t_staff t1
         LEFT JOIN t_account t3
-        on  t3.id=M.accountId
-        where 1=1
+        on (t3.id=t1.account_id)
+        ,t_department t2,t_department t4
+        where t1.department_id = t2.id and t2.upper_department_no=t4.department_no
+        <if test="relAccount == 1">
+            AND (t1.account_id = '' or t1.account_id IS NULL)
+        </if>
         <if test="satff_num != null and satff_num.trim() != ''">
-            AND staffNum =#{satff_num}
+            AND t1.staff_num =#{satff_num}
         </if>
         <if test="staff_name != null and staff_name.trim() != ''">
-            AND staffName =#{staff_name}
+            AND t1.staff_name =#{staff_name}
         </if>
         <if test="accountName != null and accountName.trim() != ''">
             AND t3.account_name=#{accountName}
         </if>
         <if test="is_dimission != null and is_dimission.trim() != ''">
-            AND isDimission =#{is_dimission}
+            AND t1.is_dimission =#{is_dimission}
         </if>
         <if test="department != null and department.trim() != ''">
-            AND upperDepartmentNo =#{upper_department_no}
+            AND t1.is_dimission =#{upper_department_no}
         </if>
         ORDER BY createTime DESC
     </select>

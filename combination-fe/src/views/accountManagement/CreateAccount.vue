@@ -164,20 +164,22 @@
     methods: {
       save() {//保存新建账户信息
         const self = this;
-        var parm={
+        var param={
           accountNum: self.newForm.accountNum,
           password: self.newForm.password,
           staffNum: self.newForm.staffNum,
           permissions: self.newForm.permissions,
-          staffId: self.newForm.permissions,
+          staffId: self.newForm.staffId,
           secretEmail: '',
           remark: self.newForm.remark,
         };
         if(!self.emailDisabled){
-          parm.secretEmail = self.newForm.secretEmail;
+          param.secretEmail = self.newForm.secretEmail;
         }
         self.$http.get('account/createAccount.do_', {
           params: param
+        }).then((result) => {
+          self.$message.info("aaa");
         }).catch(function (error) {
           commonUtils.Log("account/createAccount.do_:"+error);
           self.$message.error("获取数据错误")

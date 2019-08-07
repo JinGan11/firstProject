@@ -9,6 +9,7 @@ import com.ucar.combination.service.AccountManagerService;
 import com.ucar.combination.service.RoleManagementService;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -43,27 +44,37 @@ public class AccountManagerController {
      * @PArams：
      * @Return：
      */
+    @Transactional
     @ResponseBody
     @RequestMapping("/createAccount.do_")
     public Result createAccount(HttpServletRequest request, HttpSession session){
-        String user = (String)session.getAttribute("accountId");
-        String accountNum = request.getParameter("accountNum");
-        String password = request.getParameter("password");
-        String staffId = request.getParameter("staffId");
-        String staffNum = request.getParameter("staffNum");
-        String permissions = request.getParameter("permissions");
-        String secretEmail = request.getParameter("secretEmail");
-        String remark = request.getParameter("remark");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("accountNum", accountNum);
-        params.put("password", password);
-        params.put("staffId", staffId);
-//        params.put("staffNum", staffNum);
-        params.put("permissions", permissions);
-//        params.put("secretEmail", secretEmail);
-        params.put("remark", remark);
-        params.put("createEmp", user);
-        params.put("modifyEmp", user);
+        try {
+            Long user = (Long) session.getAttribute("accountId");
+            String accountNum = request.getParameter("accountNum");
+            String password = request.getParameter("password");
+            String staffId = request.getParameter("staffId");
+            String staffNum = request.getParameter("staffNum");
+            String permissions = request.getParameter("permissions");
+            String secretEmail = request.getParameter("secretEmail");
+            String remark = request.getParameter("remark");
+            Map<String, Object> account = new HashMap<String, Object>();
+            account.put("accountNum", accountNum);
+            account.put("password", password);
+            account.put("permissions", permissions);
+            account.put("remark", remark);
+            account.put("createEmp", user);
+            account.put("modifyEmp", user);
+            Long accountId = accountManagerService.insertAccount(account);
+            Map<String, Object> staff = new HashMap<String, Object>();
+            staff.put("accountId",accountId);
+            staff.put("staffId",staffId);
+            staff.put("secretEmail",secretEmail);
+            staff.put("modifyEmp",user);
+            accountManagerService.updateStaff(staff);
+            System.out.println(1);
+        }catch(Exception e) {
+            throw  new RuntimeException("11");
+        }
         return null;
     }
 

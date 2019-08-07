@@ -23,7 +23,12 @@
         <result column="account_state" property="accountState"/>
         <result column="account_remark" property="remark"/>
     </resultMap>
-    <insert id="createAccount">
+    <select id="selectIdByNum" parameterType="String" resultType="Long">
+        SELECT id FROM t_account
+        WHERE account_name = #{accountNum}
+    </select>
+
+    <insert id="insertAccount">
         INSERT INTO t_account(
             account_name,
             account_password,

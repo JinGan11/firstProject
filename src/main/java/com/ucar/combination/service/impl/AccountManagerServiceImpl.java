@@ -5,12 +5,17 @@ import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.AccountManageDao;
+import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.RoleAccount;
 import com.ucar.combination.service.AccountManagerService;
+import com.ucar.combination.service.EmployeeManageService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
+
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * description:账户管理
@@ -23,6 +28,8 @@ import java.util.List;
 public class AccountManagerServiceImpl implements AccountManagerService {
     @Resource
     private AccountManageDao accountManageDao;
+    @Resource
+    private EmployeeManageDao employeeManageDao;
 
     @Override
     public ResultPage queryList(QueryParam queryParam) {
@@ -41,7 +48,20 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         accountManageDao.updateStatus(id);
 
     }
-//lzy
+
+    @Override
+    public Long insertAccount(Map<String, Object> map) {
+        map.replace("password",DigestUtils.md5DigestAsHex(((String)map.get("password")).getBytes()));
+        accountManageDao.insertAccount(map);
+        return accountManageDao.selectIdByNum((String)map.get("accountNum"));
+    }
+
+    @Override
+    public int updateStaff(Map<String, Object> map) {
+        return employeeManageDao.updateStaffAccount(map);
+    }
+
+    //lzy
     @Override
     public ResultPage getRoleAccountList(QueryParam queryParam) {
         Page<?> page = PageHelper.startPage(1,10);

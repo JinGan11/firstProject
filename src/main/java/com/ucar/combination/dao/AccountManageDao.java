@@ -48,5 +48,16 @@ public interface AccountManageDao {
      * @PArams： map
      * @Return：
      */
-    void createAccount(Map<String, Object> map);
+    int insertAccount(Map<String, Object> map);
+
+    List<RoleAccount> getRoleAccountList(Map<String, Object> map);
+
+    /*
+     * description: 通过用户名查询用户的id
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date：  2019-8-7
+     * @PArams： 用户名
+     * @Return： 用户id
+     */
+    Long selectIdByNum(String accountNum);
 }

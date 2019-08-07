@@ -3,6 +3,8 @@ package com.ucar.combination.service;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 
+import java.util.Map;
+
 /**
  * description:账户管理
  *
@@ -14,12 +16,30 @@ public interface AccountManagerService {
     /*
      * description: 账户管理列表
      * @uthor： junqiang.zhang@ucarinc.com
-     * @Date：    
-     * @PArams： map
-     * @Return： 
+     * @Date：
+     * @PArams：
+     * @Return：
      */
     ResultPage queryList(QueryParam queryParam);
-//lzy
+
+    /*
+     * description: 新建账户,并返回账户id
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date：  2019/8/7
+     * @PArams：账户信息
+     * @Return：账户id
+     */
+    public Long insertAccount(Map<String, Object> map);
+
+    /*
+     * description: 修改员工关联的账户
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date： 2019/8/7
+     * @PArams：
+     * @Return：
+     */
+    public int updateStaff(Map<String, Object> map);
+
     ResultPage getRoleAccountList(QueryParam queryParam);
     /**
      * description:由账户id将账户状态设置为无效

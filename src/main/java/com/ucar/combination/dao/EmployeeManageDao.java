@@ -16,6 +16,14 @@ import java.util.Map;
  * @date: 2019-07-27 17:19:26
  **/
 public interface EmployeeManageDao {
+
+    /*
+     * description: 修改员工关联账户
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date： 2019/8/7
+     */
+    public int updateStaffAccount(Map<String, Object> map);
+
     /**
      * 员工管理列表
      * @param map
