@@ -14,6 +14,8 @@ import com.ucar.combination.model.dto.RoleDto;
 public interface RoleManagementService {
 
     ResultPage queryList(QueryParam queryParam);
+
+    ResultPage getRoleList();
     void updateStatus(int id);
     void insertRole(RoleDto role);
     RoleDto getOneInf(int id);

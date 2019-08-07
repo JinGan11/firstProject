@@ -6,6 +6,7 @@ import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Account;
 import com.ucar.combination.service.AccountManagerService;
+import com.ucar.combination.service.RoleManagementService;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,9 @@ import java.util.Map;
 public class AccountManagerController {
     @Resource
     private AccountManagerService accountManagerService;
+
+    @Resource
+    private RoleManagementService roleManagementService;
 
     @ResponseBody
     @RequestMapping("/querylist.do_")
@@ -65,5 +69,19 @@ public class AccountManagerController {
                 .put("permissionEnum",CommonEnums.toEnumMap(CommonEnums.Permission.values()))
                 .put("accountStatusEnum",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()))
                 .put("accountStatusList",CommonEnums.toJsonList(CommonEnums.AccountStatusEnum.values()));
+    }
+
+    /**
+     * description: 获取角色信息
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/5 12:02
+     * @params 无
+     * @return 角色信息结果集
+     */
+    @ResponseBody
+    @RequestMapping("/getRoleList.do_")
+    public Result getRoleList() {
+        ResultPage resultPage = roleManagementService.getRoleList();
+        return Result.ok().put("page",resultPage);
     }
 }

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ucar.combination.dao.PowerDao">
+
+    <select id="getPowerList" resultType="com.ucar.combination.model.PowerTree">
+        SELECT
+        power_id,
+        power_name,
+        super_id,
+        sort_id
+        FROM t_power
+        ORDER BY power_id
+    </select>
+
+    <select id="getAccountPowerListById" parameterType="Long" resultType="com.ucar.combination.model.AccountPower">
+        select id, power_id
+        from t_r_account_power
+        where account_id = #{accountId}
+    </select>
+
+    <delete id="removeAccountPowerById" parameterType="com.ucar.combination.model.AccountPower">
+        delete from t_r_account_power
+        where 1=1
+        and account_id = #{accountId}
+        and power_id = #{powerId}
+    </delete>
+
+    <insert id="insertAccountPower" parameterType="com.ucar.combination.model.AccountPower">
+        insert into t_r_account_power(account_id, power_id)
+        value(#{accountId}, #{powerId})
+    </insert>
+</mapper>

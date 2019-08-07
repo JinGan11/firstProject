@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.RoleManagementDao;
+import com.ucar.combination.model.Role;
 import com.ucar.combination.model.dto.RoleDto;
 import com.ucar.combination.service.RoleManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,23 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     public void updateStatus(int id){
         roleManagementDao.updateStatus(id);
     }
+
+    /**
+     * description: 获取所有角色数据列表
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/5 10:42
+     * @params 无
+     * @return 角色列表结果集
+     */
+    @Override
+    public ResultPage getRoleList() {
+        ResultPage resultPage = new ResultPage();
+        List<Role> list = roleManagementDao.getRoleList();
+        resultPage.setList(list);
+        return resultPage;
+    }
+
+
 
     @Override
     public void insertRole(RoleDto role) {

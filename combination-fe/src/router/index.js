@@ -26,6 +26,7 @@ import ModifyRole from "@/views/roleManagement/ModifyRole";
 import provinceSearch from "@/views/cityInfoManagement/provinceSearch";
 import citySearch from "@/views/cityInfoManagement/citySearch";
 import countySearch from "@/views/cityInfoManagement/countySearch";
+import AccountPermission from '@/views/accountManagement/AccountPermission'
 Vue.use(Router)
 
 export default new Router({
@@ -137,6 +138,10 @@ export default new Router({
     path:'/cityInfoManagement/countySearch',
     name:'区县查询',
     component:countySearch
+  },{
+    path:'/accountManagement/AccountPermission',
+    name:'分配权限',
+    component:AccountPermission
   }
   ]
 })
