@@ -34,7 +34,7 @@
           </el-col>
           <el-col :span="6" >
             <el-form-item>
-              <el-button type="primary" style="width: 100px"  size="medium">导出</el-button>
+              <el-button type="primary" style="width: 100px" @click="exportExcel"  size="medium">导出</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -81,11 +81,11 @@
         regionCode:'' ,
         regionName:'',
         regionPinyin:'',
-        regionAreaCode:'',
         upperRegion:'',
         regionStatus:'',
         mEmp:'',
         mTime:'',
+        provinceSearchList:[],
 
         options:[{
           value:'',
@@ -134,17 +134,31 @@
           //对取回来的数据进行处理
           self.tableData=result.page.list;
           self.total = result.page.totalCount;
+          self.provinceSearchList=result.provinceSearchList;
           //
 
         }).catch(function (error) {
           commonUtils.Log("/regionManage/provinceSearch:" + error);
           self.$message.error("获取数据错误");
         });
-
+      },
+      exportExcel() {
+        require.ensure([], () => {
+            const {export_json_to_excel} = require('../../excel/Export2Excel');
+            const tHeader = ['国际代码',  '省/直辖市', '名字拼音', '上级区划', '状态', '修改人', '修改时间'];
+            // 上面设置Excel的表格第一行的标题
+            const filterVal = ['regionCode', 'regionName', 'regionPinyin', 'upperRegion', 'regionStatus','mEmp','mTime'];
+            // 上面的'regionCode', 'regionName', 'regionPinyin', 'upperRegion', 'regionStatus' 里对象的属性
+            const list = this.provinceSearchList;  //把data里的tableData存到list
+            //console.log(list);
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '省市搜索列表excel');
+        })
+      },
+      formatJson(filterVal, jsonData) {
+          return jsonData.map(v => filterVal.map(j => v[j]))
       }
 
     }
-
-
   }
 </script>

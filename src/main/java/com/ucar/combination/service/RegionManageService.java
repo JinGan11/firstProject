@@ -3,6 +3,8 @@ package com.ucar.combination.service;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 
+import java.util.List;
+
 /**
  * description:行政区划管理
  *
@@ -19,5 +21,13 @@ public interface RegionManageService {
      * @return <com.ucar.combination.common.ResultPage><返回值说明>
      */
     ResultPage provinceSearchList(QueryParam queryParam);
+    List<Object> getProvinceSearchList(QueryParam queryParam);
+
+    ResultPage citySearchList(QueryParam queryParam);
+    List<Object> getCitySearchList(QueryParam queryParam);
+
+    ResultPage countySearchList(QueryParam queryParam);
+    List<Object> getCountySearchList(QueryParam queryParam);
+
     String testSer();
 }

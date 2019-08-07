@@ -21,6 +21,16 @@ public class Region extends BaseBean {
     private Integer regionLevel;
     private Long upperRegionID;
     private String upperRegion;
+    private String upperRegionTwice;
+
+    public String getUpperRegionTwice() {
+        return upperRegionTwice;
+    }
+
+    public void setUpperRegionTwice(String upperRegionTwice) {
+        this.upperRegionTwice = upperRegionTwice;
+    }
+
     private Integer regionStatus;
     private String cEmp;
     private Timestamp cTime;
