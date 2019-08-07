@@ -23,7 +23,27 @@
         <result column="account_state" property="accountState"/>
         <result column="account_remark" property="remark"/>
     </resultMap>
-
+    <insert id="createAccount">
+        INSERT INTO t_account(
+            account_name,
+            account_password,
+            staff_id,
+            permissions,
+            create_time,
+            create_emp,
+            modify_time,
+            modify_emp
+        )VALUES(
+                #{accountNum},
+                #{password},
+                #{staffId},
+                #{permissions},
+                NOW(),
+                #{createEmp},
+                NOW(),
+                #{modifyEmp}
+        )
+    </insert>
     <select id="queryList" resultMap="account">
         SELECT t1.id,
                account_name,

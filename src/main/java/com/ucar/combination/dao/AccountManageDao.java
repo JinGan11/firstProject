@@ -41,4 +41,12 @@ public interface AccountManageDao {
      * @return
      */
     int insertAccountHistory (Map<String, Object> map);
+    /*
+     * description: 新建账户
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date：  2019-8-6
+     * @PArams： map
+     * @Return：
+     */
+    void createAccount(Map<String, Object> map);
 }

@@ -55,6 +55,7 @@ public class EmployeeManageController {
         String is_dimission = request.getParameter("isDimission");
         String department = request.getParameter("departmentId");
         String upper_department_no = request.getParameter("upper_department_no");
+        String relAccount = request.getParameter("relAccount");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("page", page);
         params.put("limit", limit);
@@ -64,6 +65,7 @@ public class EmployeeManageController {
         params.put("is_dimission", is_dimission);
         params.put("department", department);
         params.put("upper_department_no", upper_department_no);
+        params.put("relAccount",relAccount);
         ResultPage resultPage = employeeManageService.queryList(new QueryParam(params));
         List<Object> staffDtoList = employeeManageService.getStaffList(new QueryParam(params));
         return new Result().ok().put("page", resultPage).put("SexEnum", CommonEnums.toEnumMap(CommonEnums.Sex.values()))

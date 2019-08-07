@@ -5,17 +5,17 @@
         <el-row>
           <el-col :span="5">
             <el-form-item label="登陆账号" >
-              <el-input style="width:140px;" v-model="form.accountNo"></el-input>
+              <el-input style="width:140px;" v-model="form.accountNo" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="员工编号">
-              <el-input style="width:160px;" v-model="form.staffNo"></el-input>
+              <el-input style="width:160px;" v-model="form.staffNo" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="员工姓名">
-              <el-input style="width:180px;" v-model="form.name"></el-input>
+              <el-input style="width:180px;" v-model="form.name" clearable></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -153,34 +153,6 @@
         },
         tableData: [],
         selection: [],
-        id: '',
-        account_name: '',
-        staff_num: '',
-        staff_name: '',
-        department: '',
-        data_type: '',
-        account_status: '',
-        modify_time: '',
-        modify_emp: '',
-        data: [{
-          value: 1,
-          label: '分1',
-          children: [{
-            value: 2,
-            label: '分2',
-            children: [{
-              value: 3,
-              label: '分3'
-            },{
-              value: 4,
-              label: '分4'
-            }]
-          }]
-        }],
-        defaultProps: {
-          children: 'children',
-          label: 'label'
-        }
       }
     },
     activated() {
@@ -231,7 +203,7 @@
           self.form.accountStatusList = result.accountStatusList;
           self.total = result.page.totalCount;
         }).catch(function (error) {
-          commonUtils.Log("employee/querylist.do_:"+error);
+          commonUtils.Log("account/querylist.do_:"+error);
           self.$message.error("获取数据错误")
         });
       },
@@ -252,7 +224,7 @@
         self.form.accountStatusList = result.accountStatusList;
         self.total = result.page.totalCount;
       }).catch(function (error) {
-        commonUtils.Log("employee/querylist.do_:"+error);
+        commonUtils.Log("account/querylist.do_:"+error);
         self.$message.error("获取数据错误")
       });
     },

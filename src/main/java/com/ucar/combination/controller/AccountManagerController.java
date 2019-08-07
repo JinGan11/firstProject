@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,57 @@ public class AccountManagerController {
     @Resource
     private RoleManagementService roleManagementService;
 
+    /*
+     * description: 新建账户
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date：  2019/8/6
+     * @PArams：
+     * @Return：
+     */
+    @ResponseBody
+    @RequestMapping("/createAccount.do_")
+    public Result createAccount(HttpServletRequest request, HttpSession session){
+        String user = (String)session.getAttribute("accountId");
+        String accountNum = request.getParameter("accountNum");
+        String password = request.getParameter("password");
+        String staffId = request.getParameter("staffId");
+        String staffNum = request.getParameter("staffNum");
+        String permissions = request.getParameter("permissions");
+        String secretEmail = request.getParameter("secretEmail");
+        String remark = request.getParameter("remark");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("accountNum", accountNum);
+        params.put("password", password);
+        params.put("staffId", staffId);
+//        params.put("staffNum", staffNum);
+        params.put("permissions", permissions);
+//        params.put("secretEmail", secretEmail);
+        params.put("remark", remark);
+        params.put("createEmp", user);
+        params.put("modifyEmp", user);
+        return null;
+    }
+
+    /*
+     * description: 获取permission枚举
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date：  2019/8/6
+     * @PArams：
+     * @Return：
+     */
+    @ResponseBody
+    @RequestMapping("/premission.do_")
+    public Result premissionList(HttpServletRequest request){
+        return new Result().ok().put("permissionList",CommonEnums.toJsonList(CommonEnums.Permission.values()));
+    }
+
+    /*
+     * description: 账号列表查询
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date：  2019/8
+     * @PArams：
+     * @Return：
+     */
     @ResponseBody
     @RequestMapping("/querylist.do_")
     public Result queryList(HttpServletRequest request){

@@ -12,13 +12,12 @@
     </div>
     <hr style="width: 65%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
     <div style="width:85%; margin-left: 70px; float: left">
-<!--      <el-form ref="form" :model="form" label-width="80px">-->
-      <el-form :model="form" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="100px"
+      <el-form  :model="newForm" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="100px"
                  class="demo-ruleForm">
         <el-row>
           <el-col :span="8">
             <el-form-item label="登录账户">
-              <el-input  v-model="newForm.accountNum" autocomplete="off"></el-input>
+              <el-input  v-model="newForm.accountNum" autocomplete="off" clearable></el-input>
             </el-form-item>
             <div style="position: absolute; width: 0px">
               <el-form-item label="">
@@ -29,11 +28,11 @@
           <el-col :span="8">
             <div style="position: absolute; width: 0px">
             <el-form-item label="">
-              <el-input  type="password"  autocomplete="off"></el-input>
+              <el-input  type="password"  autocomplete="off" ></el-input>
             </el-form-item>
             </div>
             <el-form-item label="密码" prop="password">
-              <el-input  type="password" v-model="newForm.password" autocomplete="off"></el-input>
+              <el-input  type="password" v-model="newForm.password" autocomplete="off" clearable></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -41,31 +40,38 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="关联员工编号">
-              <div style="float: left; width:100px">
-                <el-input style="width: 180px" v-model="newForm.staffNum"></el-input>
+              <div style="float: left; width:100px" >
+                <el-input style="width: 180px" v-model="newForm.staffNum" disabled="true"></el-input>
               </div>
-              <div style="float: right; width:100px"><el-button @click="test">选择</el-button></div>
+              <div style="float: right; width:100px"><el-button @click="changeDialogVisible">选择</el-button></div>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="员工姓名">
-              <el-input v-model="newForm.staffName"></el-input>
+              <el-input v-model="newForm.staffName" disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="8">
+          <el-col :span="6">
             <el-form-item label="数据权限类型">
-              <el-input style="width:200px;" v-model="newForm.permissions"></el-input>
+              <el-select style="width:180px;" v-model="newForm.permissions" clearable placeholder="请选择" @change="pressionChange">
+                <el-option
+                  v-for="item in permissionsList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="密保邮箱">
-              <el-input style="width:200px;" v-model="newForm.secretEmail"></el-input>
+              <el-input style="width:200px;" v-model="newForm.secretEmail" clearable :disabled="emailDisabled"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row v-if="departmentVisible">
           <el-col :span="6">
             <el-form-item label="手动选择部门">
               <el-input style="width:200px;" v-model="newForm.department"></el-input>
@@ -81,7 +87,7 @@
     </div>
     <hr style="width: 65%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
     <div style="width:85%; margin-left: 70px; float: left">
-      <el-form ref="form" :model="form" label-width="80px">
+      <el-form :model="newForm" label-width="80px">
         <el-row>
           <el-col :span="6">
             <el-form-item label="备注">
@@ -92,7 +98,7 @@
       </el-form>
     </div>
   </div>
-    <el-dialog fullscreen="true" :title="title"  :visible.sync="flag1" :close-on-click-modal="false" width="700px">
+    <el-dialog fullscreen :visible.sync="dialogEmployee" :close-on-click-modal="false" width="700px">
       <employee-list :relAccount="relAccount" ></employee-list>
     </el-dialog>
   </home>
@@ -100,6 +106,7 @@
 
 <script>
    import employeeList from '../employeeManagement/EmployeeList'
+   import commonUtils from '../../common/commonUtils'
   export default {
     data() {
       var validatePass = (rule, value, callback) => {
@@ -115,9 +122,12 @@
         }
       };
       return {
-        flag1: false,
-        relAccount: true,
+        dialogEmployee: false,
+        departmentVisible :false,
+        relAccount: 1,
+        permissionsList:[],
         newForm: {
+          staffId: '',
           accountNum: '',
           password: '',
           staffNum: '',
@@ -125,50 +135,82 @@
           permissions:'',
           secretEmail: '',
           department: '',
-          remark:''
+          remark:'',
         },
+        emailDisabled: true,
         rules: {
           password: [
             {validator: validatePass, trigger: 'blur'}
           ]
         },
-        tableData: [],
-        create_time:'',
-        create_emp:'',
-        modify_time:'',
-        modify_emp:'',
-        remark:'',
       }
-    },
-    activated() {
-      commonUtils.Log("页面激活");
-    },
-    mounted() {
-      commonUtils.Log("页面进来");
     },
     components: {employeeList},
     provide(){
       return{
-        test1:this.test1
+        changeDialogVisible:this.changeDialogVisible,
+        chooseStaff:this.chooseStaff
       }
     },
+    created() {
+      const self = this;
+      self.$http.get('account/premission.do_').then((result) => {
+        self.permissionsList = result.permissionList;
+      }).catch(function (error) {
+        commonUtils.Log("account/premission.do_:"+error);
+        self.$message.error("获取数据错误")
+      });
+    },
     methods: {
-      save() {//保存新建员工信息
+      save() {//保存新建账户信息
+        const self = this;
+        var parm={
+          accountNum: self.newForm.accountNum,
+          password: self.newForm.password,
+          staffNum: self.newForm.staffNum,
+          permissions: self.newForm.permissions,
+          staffId: self.newForm.permissions,
+          secretEmail: '',
+          remark: self.newForm.remark,
+        };
+        if(!self.emailDisabled){
+          parm.secretEmail = self.newForm.secretEmail;
+        }
+        self.$http.get('account/createAccount.do_', {
+          params: param
+        }).catch(function (error) {
+          commonUtils.Log("account/createAccount.do_:"+error);
+          self.$message.error("获取数据错误")
+        });
 
       },
-      cancel(){//关闭新建员工页面，返回员工管理列表页面
-
+      cancel(){//关闭新建账户页面，返回账户管理列表页面
+        const self = this;
+        self.$router.replace('/AccountManagement');
       },
-      test() {
-        this.flag1 = true;
+      changeDialogVisible() {//选择员工界面的开关
+        const self = this;
+        self.dialogEmployee = !this.dialogEmployee;
       },
-      test1() {
-        this.flag1 = false;
+      chooseStaff(staffData){//关联员工
+        const self = this;
+        self.newForm.staffNum = staffData.staffNum;
+        self.newForm.staffName = staffData.staffName;
+        self.newForm.staffId = staffData.id;
+        if(staffData.staffEmail==''){
+          this.newForm.secretEmail ='';
+          self.emailDisabled = false;
+        }else{
+          this.newForm.secretEmail = staffData.staffEmail;
+        }
       },
+      pressionChange(){//当数据权限为手动选择是，选择部门框可见
+        const self = this;
+        var a = self.newForm.permissions;
+        self.departmentVisible = (self.newForm.permissions==5)?true:false;
+      }
     },
   }
-
-
 </script>
 
 <style scoped>

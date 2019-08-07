@@ -15,12 +15,12 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="登陆账号">
-              <el-input placeholder="登陆账号" style="width:200px;" v-model="form.accountName"></el-input>
+              <el-input placeholder="登陆账号" :disabled="cloumnDisabled" style="width:200px;" v-model="form.accountName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="是否离职">
-              <el-select v-model="form.isDimission" clearable style="width:200px;" placeholder="请选择">
+            <el-form-item  label="是否离职">
+              <el-select v-model="form.isDimission" clearable :disabled="cloumnDisabled" style="width:200px;" placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -185,9 +185,9 @@
   const employeeOptions = ['员工编号', '登录账号', '员工姓名', '性别', '员工手机', '员工邮箱', '所属部门', '上级部门', '是否离职'];
   export default {
     name: "employee-list",
-    inject: ['test1'],
+    inject:['changeDialogVisible','chooseStaff'],
     props: {
-      relAccount: false
+      relAccount: 0
     },
     data() {
       return {
@@ -242,7 +242,7 @@
           staffAfterDepartment: '',
         },
         distributionDepartmentFlag: false,
-
+        deleteEmployeeFlag: false,
         options: [{
           value: '2',
           label: '全部'
@@ -262,7 +262,6 @@
         filterVal: [],
         list: [],
         disabled: true,
-
       }
     },
     filters: {
@@ -282,14 +281,15 @@
     created() {
       var self = this;
       self.fetchData();
-      if (self.relAccount) {
-        self.form.isDimission = '在职';
+      if(self.relAccount == 1) {
+        self.form.isDimission = '0';
         self.buttonDisabled = true;
         self.cloumnDisabled = true;
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
-          isDimission: 0,
+          isDimission: self.form.isDimission,
+          relAccount: self.relAccount,
         };
 
         self.$http.get('employee/querylist.do_', {
@@ -331,6 +331,7 @@
           isDimission: (self.form.isDimission === '2') ? '' : self.form.isDimission,
           accountName: self.form.accountName,
           upper_department_no: self.form.upperDepartmentNo,
+          relAccount: self.relAccount,
         };
         self.$http.get('employee/querylist.do_', {
           params: param
@@ -396,8 +397,25 @@
       },
       cancelDepartment() {
       },
-      cancelChoice() {
-        this.test1();
+      confirmChoice(){
+        const self = this;
+        if(self.selection!=''){
+          var staffData = {};
+          for(var i = 0;;i++){
+            staffData=self.tableData[i];
+            if(self.selection==staffData.staffNum){
+              break;
+            }
+          }
+          this.chooseStaff(staffData);
+          this.changeDialogVisible();
+        }else {
+          self.$message.info("请选择一名员工");
+        }
+
+      },
+      cancelChoice(){
+        this.changeDialogVisible();
       },
       exportExcel() {
         if (this.checkedemployees.length === 0) {
