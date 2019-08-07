@@ -10,7 +10,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item  label="支持业务线">
-              <el-select v-model="form.isDimission" clearable style="width:200px;" placeholder="请选择">
+              <el-select v-model="form.businessLine" clearable style="width:200px;" placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -40,7 +40,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item  label="角色状态">
-              <el-select v-model="form.isDimission" clearable style="width:200px;" placeholder="请选择">
+              <el-select v-model="form.roleStatus" clearable style="width:200px;" placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -52,7 +52,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item  label="账号状态">
-              <el-select v-model="form.isDimission" clearable style="width:200px;" placeholder="请选择">
+              <el-select v-model="form.accountState" clearable style="width:200px;" placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -64,7 +64,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="所属部门">
-              <el-input placeholder="所属部门" disabled="true" style="width:400px;" v-model="form.departmentId"></el-input>
+              <el-input placeholder="所属部门" disabled="true" style="width:400px;" v-model="form.departmentName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -158,7 +158,7 @@
           departmentName: '',
           roleStatus:'',
           accountState:'',
-          isDimission: '',
+
         },
         form: {
           roleName:'',
@@ -168,7 +168,7 @@
           staffName: '',
           roleStatus:'',
           accountState: '',
-          isDimission: '',
+          // isDimission: '',
           departmentName: '',
         },
         tableData: [],
@@ -276,17 +276,21 @@
       },
       fetchData() { //获取数据
         var self = this;
-        // var param = {
+         var param = {
         //   page: self.currentPage,
         //   limit: self.pageSize,
-        //   staffNum: self.form.staffNum,
-        //   staffName: self.form.staffName,
-        //   departmentId: self.form.departmentId,
+           roleName: self.form.roleName,
+           businessLine:self.form.businessLine,
+           accountName:self.form.accountName,
+           staffNum: self.form.staffNum,
+           staffName:self.form.staffName,
+           roleStatus:self.form.roleStatus,
+           accountState:self.form.accountState,
+           departmentName: self.form.departmentName,
         //   isDimission: (self.form.isDimission === '2') ? '' : self.form.isDimission,
         //   accountId: self.form.accountId,
-        //   upper_department_no: self.form.upperDepartmentNo,
-        // };
-        self.$http.get('roleAccount/getRoleAccountList.do').then((result) => {// {params: param}
+         };
+        self.$http.get('roleAccount/getRoleAccountList.do',{params: param}).then((result) => {
           self.tableData = result.page.list;
           self.total = result.page.totalCount;
           // self.SexEnum = result.SexEnum;

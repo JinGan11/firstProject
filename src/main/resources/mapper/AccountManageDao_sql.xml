@@ -84,7 +84,32 @@
         a.id,a.role_name,a.business_line,c.account_name,d.staff_num,d.staff_name,e.department_name,a.role_status,c.account_state
         from t_role_info a,t_r_account_role b,t_account c,t_staff d,t_department e
         where b.role_id = a.id and b.account_id = c.id and c.staff_id = d.id and d.department_id = e.id
+        <if test="roleName != null and roleName.trim() != ''">
+            and role_name = #{roleName}
+        </if>
+        <if test="businessLine != null and businessLine.trim() != ''">
+            and business_line = #{businessLine}
+        </if>
+        <if test="accountName != null and accountName.trim() != ''">
+            and account_name = #{accountName}
+        </if>
+        <if test="staffNum != null and staffNum.trim() != ''">
+            and staff_num = #{staffNum}
+        </if>
+        <if test="staffName != null and staffName.trim() != ''">
+            and staff_name = #{staffName}
+        </if>
+        <if test="roleStatus != null and roleStatus.trim() != ''">
+            and role_status = #{roleStatus}
+        </if>
+        <if test="accountState != null and accountState.trim() != ''">
+        and account_state = #{accountState}
+        </if>
+        <if test="departmentName != null and departmentName.trim() != ''">
+        and  department_name = #{departmentName}
+        </if>
     </select>
+
     <update id="updateStatus">
         update t_account t1
         set t1.account_state=3
