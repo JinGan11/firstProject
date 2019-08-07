@@ -9,6 +9,7 @@ import com.ucar.combination.utils.PowerTreeBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,7 +78,6 @@ public class PowerServiceImpl implements PowerService {
                         accountRole.setRoleId(list.get(i).getRoleId());
                         roleManagementDao.removeAccountRoleById(accountRole);
                     }
-
                 }
             }
             // 为账户插入新添加的角色
@@ -155,5 +155,15 @@ public class PowerServiceImpl implements PowerService {
             }
         }
         return null;
+    }
+
+    @Override
+    public Result getAccountPower() {
+        List<AccountPower> list = powerDao.getAccountPowerListById(2L);
+        List accountPower = new ArrayList();
+        for (int i = 0; i < list.size(); i++) {
+            accountPower.add(list.get(i).getPowerId());
+        }
+        return Result.ok().put("accountPower", accountPower);
     }
 }

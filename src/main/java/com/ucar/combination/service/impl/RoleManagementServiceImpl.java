@@ -11,6 +11,7 @@ import com.ucar.combination.service.RoleManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -54,11 +55,52 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         return resultPage;
     }
 
-
-
+    /**
+     * description: 为账户插入新添加的角色
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/7 10:20
+     * @params role 角色
+     * @return
+     */
     @Override
     public void insertRole(RoleDto role) {
         roleManagementDao.insertRole(role);
+    }
+
+    /**
+     * description: 获取账户已拥有的角色
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/7 10:20
+     * @params
+     * @return
+     */
+    @Override
+    public ResultPage getOwnedRoleList() {
+        ResultPage resultPage = new ResultPage();
+        List<Role> list = roleManagementDao.getAccountRoleListById(2L);
+        resultPage.setList(list);
+        return resultPage;
+    }
+
+    @Override
+    public ResultPage getnotOwnedRoleList() {
+        ResultPage resultPage1 = getRoleList();
+        ResultPage resultPage2 = getOwnedRoleList();
+        ResultPage resultPage3 = new ResultPage();
+        List<Role> list = (List<Role>) resultPage1.getList();
+        List<Role> ownedList = (List<Role>) resultPage2.getList();
+        //移除已拥有的角色
+        Iterator<Role> it = list.iterator();
+        while(it.hasNext()){
+            Long roleId = it.next().getRoleId();
+            for (int i = 0; i < ownedList.size(); i++) {
+                if(roleId.equals(ownedList.get(i).getRoleId())){
+                    it.remove();
+                }
+            }
+        }
+        resultPage3.setList(list);
+        return resultPage3;
     }
 
     @Override

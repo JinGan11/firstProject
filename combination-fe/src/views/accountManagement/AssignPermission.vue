@@ -3,7 +3,7 @@
     <el-form>
       <div style="height: 80px;display: flex;align-items: center;margin-left: 80%">
         <el-button type="primary" style="margin-right: 10px" @click="preservePower">保存</el-button>
-        <el-button type="primary">取消</el-button>
+        <el-button type="primary" @click="cencel">取消</el-button>
       </div>
       <div style="height: 50px;">
         <label style="margin-left: 5%; font-size: 22px; color: cornflowerblue;">所拥有角色</label>
@@ -37,14 +37,12 @@
           <el-scrollbar style="width: 400px">
             <el-tree
               style="float: left;margin-left: 100px;height: 350px"
-
+              ref="tree"
               :props="defaultProps"
-              node-key="id"
+              node-key="powerId"
               :load="loadNode"
               lazy="true"
-              check-strictly
-              :default-expand-all="true"
-              :default-expanded-keys="[1, 2]"
+              :default-expanded-keys="[1]"
               :default-checked-keys="selectedNodes"
               show-checkbox
               @check-change="handleCheckChange">
@@ -75,7 +73,7 @@
           children: 'children',
           id: 'powerId'
         },
-        selectedNodes:[1,2,3]
+        selectedNodes:[]
 
       }
     },
@@ -97,10 +95,18 @@
       init() {
         const self = this;
         self.$http.get('account/getRoleList.do_').then((result) => {
-          self.roleList = result.page.list;
+          self.roleList = result.notOwnedRole.list;
+          self.selected = result.ownedRole.list;
           console.log(result)
         }).catch(function (error) {
-          commonUtils.Log("account/getRoleList.do_:" + error);
+          commonUtils.Log("account/getRoleList.do_" + error);
+          self.$message.error("获取数据错误")
+        });
+        self.$http.get('power/getAccountPower.do_').then((result) => {
+          self.selectedNodes = result.accountPower;
+          console.log(result)
+        }).catch(function (error) {
+          commonUtils.Log("power/getAccountPower.do_" + error);
           self.$message.error("获取数据错误")
         });
       },
@@ -200,7 +206,12 @@
           .catch(function (error) {
 
           });
-      }
+        self.$router.replace("/accountManagement")
+      },
+      cencel(){
+        this.$router.replace("/accountManagement")
+      },
+
     }
   }
 </script>

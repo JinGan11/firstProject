@@ -37,9 +37,10 @@
     </insert>
 
     <select id="getAccountRoleListById" parameterType="Long" resultType="com.ucar.combination.model.Role">
-        select id, role_id
-        from t_r_account_role
-        where account_id = #{accountId}
+        select ta.id, ta.role_id, tr.role_name
+        from t_r_account_role ta, t_role_info tr
+        where ta.role_id = tr.id
+        and ta.account_id = #{accountId}
     </select>
 
     <delete id="removeAccountRoleById" parameterType="com.ucar.combination.model.AccountRole">

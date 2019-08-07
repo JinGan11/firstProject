@@ -23,6 +23,7 @@ import CreateCompany from'@/views/companyManagement/CreateCompany'
 import DepartmentAdd from '@/views/departmentManagement/DepartmentAdd'
 import RoleAccountDetail from'@/views/search/RoleAccountDetail'
 import ModifyRole from "@/views/roleManagement/ModifyRole";
+import AssignPermission from '@/views/accountManagement/AssignPermission'
 import provinceSearch from "@/views/cityInfoManagement/provinceSearch";
 import citySearch from "@/views/cityInfoManagement/citySearch";
 import countySearch from "@/views/cityInfoManagement/countySearch";
@@ -123,6 +124,7 @@ export default new Router({
     name:'新建账户',
     component:CreateAccount
   },{
+    path:'/accountManagement/AssignPermission',
     path:'/RoleAccountDetail',
     name:'角色账号明细',
     component:RoleAccountDetail
@@ -141,7 +143,7 @@ export default new Router({
   },{
     path:'/accountManagement/AccountPermission',
     name:'分配权限',
-    component:AccountPermission
+    component:AssignPermission
   }
   ]
 })

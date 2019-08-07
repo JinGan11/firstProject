@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.lang.reflect.Array;
 
 /**
  * @version 1.0
@@ -34,6 +35,11 @@ public class PowerController {
     public Result getPowerList() {
         PowerTree rootNode = powerService.buildPowerTree();
         return new Result().put("powerTree", rootNode);
+    }
+
+    @RequestMapping("/getAccountPower.do_")
+    public Result getAccountPower() {
+        return powerService.getAccountPower();
     }
 
     /**

@@ -81,7 +81,8 @@ public class AccountManagerController {
     @ResponseBody
     @RequestMapping("/getRoleList.do_")
     public Result getRoleList() {
-        ResultPage resultPage = roleManagementService.getRoleList();
-        return Result.ok().put("page",resultPage);
+        ResultPage notOwnedRole = roleManagementService.getnotOwnedRoleList();
+        ResultPage ownedRole = roleManagementService.getOwnedRoleList();
+        return Result.ok().put("notOwnedRole" ,notOwnedRole).put("ownedRole", ownedRole);
     }
 }

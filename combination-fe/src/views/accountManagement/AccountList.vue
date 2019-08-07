@@ -81,7 +81,7 @@
       <el-button type="primary" @click="" style="width:70px">冻结</el-button>
       <el-button type="primary" @click="" style="width:70px">解冻</el-button>
       <el-button type="primary" @click="" style="width:80px">密码重置</el-button>
-      <el-button type="primary" @click="" style="width:80px">分配权限</el-button>
+      <el-button type="primary" @click="assignPermission" style="width:80px">分配权限</el-button>
       <el-button type="primary" @click="" style="width:80px">历史记录</el-button>
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
@@ -237,6 +237,9 @@
       },
       creatAccount(){ //新建账户
         this.$router.replace('/createAccount')
+      },
+      assignPermission() {
+        this.$router.replace('/accountManagement/AssignPermission')
       }
     },
     created() {
