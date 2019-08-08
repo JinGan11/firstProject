@@ -74,7 +74,17 @@
         <el-row v-if="departmentVisible">
           <el-col :span="6">
             <el-form-item label="手动选择部门">
-              <el-input style="width:200px;" v-model="newForm.department"></el-input>
+              <el-tree
+                ref="tree"
+                :props="defaultProps"
+                node-key="id"
+                :load="loadNode"
+                lazy="true"
+                show-checkbox
+                check-strictly
+                :render-content="renderContent"
+                @check-change="handleClick">
+              </el-tree>
             </el-form-item>
           </el-col>
         </el-row>
@@ -122,6 +132,12 @@
         }
       };
       return {
+        defaultProps: {
+          label: 'departmentName',
+          children: 'children',
+          id: 'id',
+          status: 'status'
+        },
         dialogEmployee: false,
         departmentVisible :false,
         relAccount: 1,
@@ -162,6 +178,39 @@
       });
     },
     methods: {
+      loadNode(node,resolve){
+        var self = this;
+        self.$http.get('department/buildTree.do_', {
+          params: null
+        }).then((result) => {
+          resolve([result.departmentDto]);
+        }).catch(function (error) {
+
+        });
+      },
+      handleClick(data, sel) {
+        if (sel) {
+          traverseTree(data).forEach((item) => {
+            this.$refs.tree.setChecked(item, true)
+          })
+        } else {
+          traverseTree(data).forEach((item) => {
+            this.$refs.tree.setChecked(item, false)
+          })
+        }
+        function traverseTree(node) {
+          var child = node.children,
+            arr = [];
+
+          arr.push(node.id);
+          if (child) {
+            child.forEach(function (node) {
+              arr = arr.concat(traverseTree(node));
+            });
+          }
+          return arr;
+        }
+      },
       save() {//保存新建账户信息
         const self = this;
         var param={
@@ -188,6 +237,7 @@
       },
       cancel(){//关闭新建账户页面，返回账户管理列表页面
         const self = this;
+        this.$refs.tree.getCheckedNodes();
         self.$router.replace('/AccountManagement');
       },
       changeDialogVisible() {//选择员工界面的开关

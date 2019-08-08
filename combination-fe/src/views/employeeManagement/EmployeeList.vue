@@ -403,7 +403,7 @@
           var staffData = {};
           for(var i = 0;;i++){
             staffData=self.tableData[i];
-            if(self.selection==staffData.staffNum){
+            if(self.selection==staffData.id){
               break;
             }
           }

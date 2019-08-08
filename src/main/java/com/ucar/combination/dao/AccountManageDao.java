@@ -50,8 +50,6 @@ public interface AccountManageDao {
      */
     int insertAccount(Map<String, Object> map);
 
-    List<RoleAccount> getRoleAccountList(Map<String, Object> map);
-
     /*
      * description: 通过用户名查询用户的id
      * @uthor： junqiang.zhang@ucarinc.com
