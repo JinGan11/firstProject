@@ -93,17 +93,17 @@ public class RoleManagementServiceImpl implements RoleManagementService {
      * @return
      */
     @Override
-    public ResultPage getOwnedRoleList() {
+    public ResultPage getOwnedRoleList(Account account) {
         ResultPage resultPage = new ResultPage();
-        List<Role> list = roleManagementDao.getAccountRoleListById(2L);
+        List<Role> list = roleManagementDao.getAccountRoleListById(account.getId());
         resultPage.setList(list);
         return resultPage;
     }
 
     @Override
-    public ResultPage getnotOwnedRoleList() {
+    public ResultPage getnotOwnedRoleList(Account account) {
         ResultPage resultPage1 = getRoleList();
-        ResultPage resultPage2 = getOwnedRoleList();
+        ResultPage resultPage2 = getOwnedRoleList(account);
         ResultPage resultPage3 = new ResultPage();
         List<Role> list = (List<Role>) resultPage1.getList();
         List<Role> ownedList = (List<Role>) resultPage2.getList();
@@ -214,11 +214,15 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     @Override
     public Result getRolePower(RolePower rolePower) {
         List<RolePower> list = roleManagementDao.getRolePowerListById(rolePower.getRoleInfoId());
-        List rolePowerList = new ArrayList();
-        for (int i = 0; i < list.size(); i++) {
-            rolePowerList.add(list.get(i).getPowerId());
+        if (list.size() == 0 || list == null){
+            return Result.ok().put("rolePowerList", null);
+        } else {
+            List rolePowerList = new ArrayList();
+            for (int i = 0; i < list.size(); i++) {
+                rolePowerList.add(list.get(i).getPowerId());
+            }
+            return Result.ok().put("rolePowerList", rolePowerList);
         }
-        return Result.ok().put("rolePowerList", rolePowerList);
     }
 
 

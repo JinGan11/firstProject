@@ -53,13 +53,13 @@ public class PowerServiceImpl implements PowerService {
     public Result modifyAccountRole(RoleList roleList, Long accountId) {
         //  1.先查询改账户已拥有的角色，如果roleList不在已拥有的角色中，则表示被移除需要调用删除语句删除角色
         //  2.再对比没有的角色，一条条插入账户中，
-        List<Role> list = roleManagementDao.getAccountRoleListById(accountId);
+        List<Role> list = roleManagementDao.getAccountRoleListById(roleList.getId());
         AccountRole accountRole = new AccountRole();
         // 如果该账户没有角色，则全部插入
         if (list == null || list.size() == 0) {
             for (int i = 0; i < roleList.getRoleList().size(); i++) {
                 //插入该角色
-                accountRole.setAccountId(accountId);
+                accountRole.setAccountId(roleList.getId());
                 accountRole.setRoleId(roleList.getRoleList().get(i).getRoleId());
                 accountRole.setModifyEmp(accountId);
                 roleManagementDao.insertAccountRole(accountRole);
@@ -74,7 +74,7 @@ public class PowerServiceImpl implements PowerService {
                     if (list.get(i).getRoleId() != roleList.getRoleList().get(j).getRoleId()
                             && j == roleList.getRoleList().size() -1) {
                         //删除该角色
-                        accountRole.setAccountId(accountId);
+                        accountRole.setAccountId(roleList.getId());
                         accountRole.setRoleId(list.get(i).getRoleId());
                         roleManagementDao.removeAccountRoleById(accountRole);
                     }
@@ -89,7 +89,7 @@ public class PowerServiceImpl implements PowerService {
                     if (roleList.getRoleList().get(i).getRoleId() != list.get(j).getRoleId()
                             && j == list.size() -1) {
                         //插入该角色
-                        accountRole.setAccountId(accountId);
+                        accountRole.setAccountId(roleList.getId());
                         accountRole.setRoleId(roleList.getRoleList().get(i).getRoleId());
                         accountRole.setModifyEmp(accountId);
                         roleManagementDao.insertAccountRole(accountRole);
@@ -112,13 +112,13 @@ public class PowerServiceImpl implements PowerService {
     public Result modifySpecialPower(PowerList powerList, Long accountId) {
         //  1.查询该账户已拥有的特殊权限，如果powerList中有而数据库中没有，则表示删除该权限
         //  2.然后插入powerList中有的，而数据库中没有的
-        List<AccountPower> list = powerDao.getAccountPowerListById(accountId);
+        List<AccountPower> list = powerDao.getAccountPowerListById(powerList.getId());
         AccountPower accountPower = new AccountPower();
         // 如果该账户没有权限，则全部插入
         if (list == null || list.size() == 0) {
             for (int i = 0; i < powerList.getPowerList().size(); i++) {
                 //插入该权限
-                accountPower.setAccountId(accountId);
+                accountPower.setAccountId(powerList.getId());
                 accountPower.setPowerId(powerList.getPowerList().get(i).getPowerId());
                 powerDao.insertAccountPower(accountPower);
             }
@@ -132,7 +132,7 @@ public class PowerServiceImpl implements PowerService {
                     if (!list.get(i).getPowerId().equals(powerList.getPowerList().get(j).getPowerId())
                             && j == powerList.getPowerList().size() -1) {
                         //删除该角色
-                        accountPower.setAccountId(accountId);
+                        accountPower.setAccountId(powerList.getId());
                         accountPower.setPowerId(list.get(i).getPowerId());
                         powerDao.removeAccountPowerById(accountPower);
                     }
@@ -147,7 +147,7 @@ public class PowerServiceImpl implements PowerService {
                     if (!powerList.getPowerList().get(i).getPowerId().equals(list.get(j).getPowerId())
                             && j == list.size() -1) {
                         //插入该权限
-                        accountPower.setAccountId(accountId);
+                        accountPower.setAccountId(powerList.getId());
                         accountPower.setPowerId(powerList.getPowerList().get(i).getPowerId());
                         powerDao.insertAccountPower(accountPower);
                     }
@@ -165,9 +165,9 @@ public class PowerServiceImpl implements PowerService {
      * @return
      */
     @Override
-    public Result getAccountPower() {
+    public Result getAccountPower(Account account) {
         //待完善accountID;要分配的账户的ID,不是修改人ID
-        List<AccountPower> list = powerDao.getAccountPowerListById(2L);
+        List<AccountPower> list = powerDao.getAccountPowerListById(account.getId());
         List accountPower = new ArrayList();
         for (int i = 0; i < list.size(); i++) {
             accountPower.add(list.get(i).getPowerId());

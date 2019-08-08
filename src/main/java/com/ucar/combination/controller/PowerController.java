@@ -45,8 +45,8 @@ public class PowerController {
      * @return
      */
     @RequestMapping("/getAccountPower.do_")
-    public Result getAccountPower() {
-        return powerService.getAccountPower();
+    public Result getAccountPower(@RequestBody Account account) {
+        return powerService.getAccountPower(account);
     }
 
     /**

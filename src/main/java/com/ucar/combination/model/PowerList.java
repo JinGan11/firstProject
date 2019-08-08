@@ -9,7 +9,16 @@ import java.util.List;
  * @create: 2019-08-06 10:56
  */
 public class PowerList {
-    public List<Power> powerList;
+    private Long id;
+    private List<Power> powerList;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public List<Power> getPowerList() {
         return powerList;

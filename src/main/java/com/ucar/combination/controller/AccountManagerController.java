@@ -10,6 +10,7 @@ import com.ucar.combination.service.RoleManagementService;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -168,9 +169,9 @@ public class AccountManagerController {
      */
     @ResponseBody
     @RequestMapping("/getRoleList.do_")
-    public Result getRoleList() {
-        ResultPage notOwnedRole = roleManagementService.getnotOwnedRoleList();
-        ResultPage ownedRole = roleManagementService.getOwnedRoleList();
+    public Result getRoleList(@RequestBody Account account) {
+        ResultPage notOwnedRole = roleManagementService.getnotOwnedRoleList(account);
+        ResultPage ownedRole = roleManagementService.getOwnedRoleList(account);
         return Result.ok().put("notOwnedRole" ,notOwnedRole).put("ownedRole", ownedRole);
     }
 }

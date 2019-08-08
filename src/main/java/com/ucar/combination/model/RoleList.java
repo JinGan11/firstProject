@@ -9,7 +9,16 @@ import java.util.List;
  * @create: 2019-08-06 10:57
  */
 public class RoleList {
-    public List<Role> roleList;
+    private Long id;
+    private List<Role> roleList;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public List<Role> getRoleList() {
         return roleList;

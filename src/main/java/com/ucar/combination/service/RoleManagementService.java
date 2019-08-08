@@ -3,6 +3,7 @@ package com.ucar.combination.service;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AssignPermission;
 import com.ucar.combination.model.PowerList;
 import com.ucar.combination.model.RolePower;
@@ -24,8 +25,8 @@ public interface RoleManagementService {
     ResultPage getRoleList();
     void updateStatus(int id);
     void insertRole(RoleDto role);
-    ResultPage getOwnedRoleList();
-    ResultPage getnotOwnedRoleList();
+    ResultPage getOwnedRoleList(Account account);
+    ResultPage getnotOwnedRoleList(Account account);
     RoleDto getOneInf(int id);
     Result assignPermission(AssignPermission assignPermission, Long accountId);
     Result getRolePower(RolePower rolePower);
