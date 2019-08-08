@@ -86,7 +86,7 @@
       <el-button type="primary" @click="deleteEmployee" :disabled="disabled" style="width:70px">删除</el-button>
       <el-button type="primary" @click="quitEmployee" :disabled="disabled" style="width:70px">离职</el-button>
       <el-button type="primary" @click="recovery" :disabled="disabled" style="width:70px">恢复</el-button>
-      <el-button type="primary" @click="distributionDepartment" style="width:80px">分配部门</el-button>
+      <el-button type="primary" @click="distributionDepartment" :disabled="disabled" style="width:80px">分配部门</el-button>
     </div>
     <div style="margin-bottom: 10px" v-else>
       <el-button type="primary" @click="confirmChoice" style="width:70px">确认选择</el-button>
@@ -181,7 +181,7 @@
         :props="defaultProps"
         node-key="id"
         :load="loadNode"
-        :lazy="true"
+        lazy="true"
         check-strictly
         show-checkbox
         :render-content="renderContent"
@@ -474,9 +474,11 @@
         this.departmentVisible=false;
       },
       saveDepartment() {
-
+        this.distributionDepartmentFlag=false;
       },
       cancelDepartment() {
+        this.distributionDepartmentFlag=false;
+        alert("已取消");
       },
       confirmChoice(){
         const self = this;
@@ -593,7 +595,9 @@
       },
       getCheckedNodes() {
         // 用于演示获取部门id的方式
-        alert(this.$refs.tree.getCheckedNodes()[0].id);
+        this.formdiStributionDepartment.staffAfterDepartment=this.$refs.tree.getCheckedNodes()[0].id;
+        this.departmentVisible=false;
+        //alert(this.$refs.tree.getCheckedNodes()[0].id);
       },
       handleClick(data,checked,node){
         // 手动设置单选

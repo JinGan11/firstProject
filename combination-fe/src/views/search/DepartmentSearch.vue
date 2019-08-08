@@ -87,6 +87,7 @@
     </el-pagination>
     <el-dialog title="详情信息" :visible.sync="dialogVisibleDetail" :close-on-click-modal="false" width="900px">
       <el-form ref="form" :model="formDetail" label-width="80px">
+        <hr>
         <div>
           <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">申请信息</div>
           <el-row>
@@ -152,6 +153,7 @@
             </el-col>
           </el-row>
         </div>
+        <hr>
         <div>
           <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">业务信息</div>
           <el-row>
@@ -183,6 +185,7 @@
             </el-col>
           </el-row>
         </div>
+        <hr>
         <div>
           <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">关联公司列表</div>
           <el-table :data="tableCity" ref="multipleTable">
@@ -220,7 +223,9 @@
                          :total="totalCompany">
           </el-pagination>
         </div>
+
         <div>
+          <hr>
           <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">其他信息</div>
           <el-row>
             <el-col :span="12">
