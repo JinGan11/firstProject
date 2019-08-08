@@ -100,7 +100,11 @@
         set t1.status=0
         where t1.id = #{id}
     </update>
-    <update id="updateDimission" parameterType="java.lang.Long">
+    <update id="updateDimission" parameterType="java.lang.String">
         UPDATE t_staff T set T.is_dimission=1 WHERE T.id=#{id};
+    </update>
+
+    <update id="updateDimissionRecovery" parameterType="java.lang.String">
+        UPDATE t_staff T set T.is_dimission=0 WHERE T.id=#{id};
     </update>
 </mapper>

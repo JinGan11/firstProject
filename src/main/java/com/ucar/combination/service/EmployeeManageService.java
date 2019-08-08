@@ -48,7 +48,7 @@ public interface EmployeeManageService {
      * @params
      * @return
      */
-    public int updateDimission(Long id);
+    public int updateDimission(String id);
 
     /**
      * description: 按ID选择员工信息
@@ -58,4 +58,13 @@ public interface EmployeeManageService {
      * @return 员工对象
      */
     public Staff selectById(String id);
+
+    /**
+     * description: 员工恢复
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 14:10
+     * @params 员工ID
+     * @return 更新的数据
+     */
+    public int updateDimissionRecovery(String id);
 }

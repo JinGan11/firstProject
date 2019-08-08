@@ -74,7 +74,7 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
      * @return
      */
     @Override
-    public int updateDimission(Long id) {
+    public int updateDimission(String id) {
         employeeManageDao.updateDimission(id);
         return 0;
     }
@@ -89,6 +89,17 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
     @Override
     public Staff selectById(String id) {
         return employeeManageDao.selectById(id);
+    }
+    /**
+     * description: 员工在职恢复
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 14:11
+     * @params id员工ID
+     * @return 员工操作的多少条数据
+     */
+    @Override
+    public int updateDimissionRecovery(String id) {
+        return employeeManageDao.updateDimissionRecovery(id);
     }
 }
 

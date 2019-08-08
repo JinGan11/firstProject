@@ -85,7 +85,7 @@
       <el-button type="primary" @click="modifyEmployee" :disabled="disabled" style="width:70px">修改</el-button>
       <el-button type="primary" @click="deleteEmployee" :disabled="disabled" style="width:70px">删除</el-button>
       <el-button type="primary" @click="quitEmployee" :disabled="disabled" style="width:70px">离职</el-button>
-      <el-button type="primary" @click="" style="width:70px">恢复</el-button>
+      <el-button type="primary" @click="recovery" :disabled="disabled" style="width:70px">恢复</el-button>
       <el-button type="primary" @click="distributionDepartment" style="width:80px">分配部门</el-button>
     </div>
     <div style="margin-bottom: 10px" v-else>
@@ -415,6 +415,35 @@
           this.$message({
             type: 'info',
             message: '已取消离职'
+          });
+        });
+      },
+      recovery(){
+        this.$confirm('此操作将恢复该员工, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          var self = this;
+          var param = {
+            id:self.selection,
+          };
+          self.$http.get('employee/recoverEmployee.do_', {
+            params: param
+          }).then((result) => {
+            if (result.status=="success"){
+              self.$message.success("恢复成功");
+            } else {
+              self.$message.error("恢复失败")
+            }
+          }).catch(function (error) {
+            commonUtils.Log("employee/recoverEmployee.do_" + error);
+            self.$message.error("恢复失败");
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消恢复'
           });
         });
       },

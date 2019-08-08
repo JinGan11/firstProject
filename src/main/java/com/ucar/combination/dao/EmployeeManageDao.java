@@ -63,7 +63,7 @@ public interface EmployeeManageDao {
      * @params 员工ID
      * @return 状态
      */
-    int updateDimission(Long id);
+    int updateDimission(String id);
 
     /**
      * description: 按ID选择员工信息
@@ -73,4 +73,12 @@ public interface EmployeeManageDao {
      * @return 员工信息
      */
     Staff selectById(String id);
+    /**
+     * description: 员工恢复在职
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 14:12
+     * @params id 员工ID
+     * @return 更新的多少条数据
+     */
+    int updateDimissionRecovery(String id);
 }

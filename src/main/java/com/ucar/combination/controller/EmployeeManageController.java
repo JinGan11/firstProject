@@ -116,29 +116,46 @@ public class EmployeeManageController {
     @ResponseBody
     @RequestMapping("/quitEmployee.do_")
     public Result quitEmployee(HttpServletRequest request, @RequestParam String id){
-        Integer status1=employeeManageService.updateDimission(Long.valueOf(id));
+        Integer status1=employeeManageService.updateDimission(id);
         Integer status2=accountManagerService.updateState(id);
         Staff staff=employeeManageService.selectById(id);
         Account account=accountManagerService.selectById(staff.getAccountId());
-        /*account_id,
-                staff_num,
-                staff_name,
-                permissions,
-                history_operation_type,
-                create_emp,
-                create_time*/
         Map<String,Object> param=new HashMap<>();
         param.put("accountId",staff.getAccountId());
         param.put("staffNum",staff.getStaffNum());
         param.put("staffName",staff.getStaffName());
-        param.put("permissions",account.getPremissions());
+        if (account!=null){
+            param.put("permissions",account.getPremissions());
+        }else {
+            param.put("permissions",null);
+        }
         param.put("historyOperationType","8");
         param.put("createEmp",request.getSession().getAttribute("accountId"));
         Integer status3=accountManagerService.insertAccountHistory(param);
-        if (status1==0&status2==0&status3==1){
+        if (status1==0&status2==0&status3==0){
             return Result.ok().put("status","success");
         }else {
             return Result.ok().put("status","error");
         }
+    }
+    /**
+     * description: 员工恢复在职
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 14:09
+     * @params request 描述
+     * @param: id 员工ID
+     * @return RESULT结果
+     */
+    @ResponseBody
+    @RequestMapping("/recoverEmployee.do_")
+    public Result recoverEmployee(HttpServletRequest request,@RequestParam String id){
+        Integer status1=employeeManageService.updateDimissionRecovery(id);
+        Map<String,Object> status=new HashMap<>();
+        if (status1!=0){
+            return Result.ok().put("status","success");
+        }else {
+            return Result.ok().put("status","error");
+        }
+
     }
 }
