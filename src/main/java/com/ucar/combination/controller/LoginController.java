@@ -1,5 +1,6 @@
 package com.ucar.combination.controller;
 
+import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ReturnResult;
 import com.ucar.combination.model.User;
 import com.ucar.combination.service.UserService;
@@ -47,5 +48,21 @@ public class LoginController {
         }
         result.setList(null);
         return result;
+    }
+
+    /**
+     * description: 退出登陆
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/8 11:34
+     * @params loginUser 描述
+     * @param: request 描述
+     * @return
+     */
+    @RequestMapping("/logout.do_")
+    public Result logout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("accountName");
+        session.removeAttribute("accountId");
+        return Result.ok();
     }
 }

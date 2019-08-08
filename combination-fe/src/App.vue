@@ -19,10 +19,10 @@
                 </el-switch>
 
                 <el-dropdown @command="handleCommand">
-  <span class="el-dropdown-link home_userinfo" style="display: flex;align-items: center;font-size: 26px;color: #000;">
+  <span class="el-dropdown-link home_userinfo" style="display: flex;align-items: center;font-size: 23px;color: #FFF;">
     <span style="margin-bottom: 7px;">{{loginUserName}}</span>
     <i><img src="http://bpic.588ku.com/element_pic/01/40/00/64573ce2edc0728.jpg"
-            style="width: 40px;height: 40px;margin-right: 5px;margin-left: 5px;border-radius: 40px;margin-top:10px "/></i>
+            style="width: 35px;height: 35px;margin-right: 5px;margin-left: 5px;border-radius: 40px;margin-top:13px "/></i>
   </span>
                   <el-dropdown-menu :size="medium" slot="dropdown" style="position: relative;margin-top: -10px">
                     <el-dropdown-item command="getUserInfo">个人信息</el-dropdown-item>
@@ -260,14 +260,21 @@
             cancelButtonText: '取消',
             type: 'warning'
           }).then(() => {
-            self.loginIn = false;
-            window.sessionStorage.removeItem("loginUsername");
-            self.loginUserName = window.sessionStorage.getItem("loginUsername");
-            self.$router.replace("/");
-            self.$message({
-              type: "success",
-              message: "退出成功"
-            });
+            self.$http.get('login/logout.do_')
+              .then(result => {
+                self.loginIn = false;
+                window.sessionStorage.removeItem("loginUsername");
+                self.loginUserName = window.sessionStorage.getItem("loginUsername");
+                self.$router.replace("/");
+                self.$message({
+                  type: "success",
+                  message: "退出成功"
+                });
+              })
+              .catch(function (error) {
+                commonUtils.Log("user/updatePwd:" + error);
+                self.$message.error("系统故障，请联系管理员！");
+              });
           }).catch(() => {
             self.$message({
               type: 'info',
