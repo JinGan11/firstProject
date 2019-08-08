@@ -111,15 +111,11 @@
             </el-col>
           </el-row>
           <div style="margin-bottom: 10px">
-            <br>
             <span style="font-size: 20px">附件信息</span>
-            <hr ><br>
           </div>
-          <el-row>
-            <el-col :span="10">
-            <p>附件照片</p>
-            </el-col>
-          </el-row>
+            营业执照附件：
+            <el-button type="primary" @click="uploadPic" >图片管理</el-button>
+
           <div style="margin-bottom: 10px">
             <br>
             <span style="font-size: 20px">发票信息</span>
@@ -218,6 +214,39 @@
         </el-form>
       </div>
     </div>
+
+    <el-dialog
+      title="图片管理"
+      :visible.sync="dialogVisible"
+      width="50%"
+      :before-close="handleClose">
+      <span>
+
+    <el-upload
+      action="#"
+      list-type="picture-card"
+      :multiple="true"
+      :on-preview="handlePreview"
+      :on-remove="handleRemove"
+      :onChange="getFileList"
+      :auto-upload="false"
+      ref="upload">
+      <i class="el-icon-plus"></i>
+      </el-upload>
+      只能上传jpg/png/gif文件,且不超过2M,最多只能上传20张图片
+        <el-upload
+          class="upload-demo"
+          action="https://jsonplaceholder.typicode.com/posts/"
+          :on-preview="handlePreview"
+          :on-remove="handleRemove"
+          :file-list="fileList"
+          list-type="picture">
+        </el-upload>
+      </span>
+    </el-dialog>
+    <el-dialog :visible.sync="picDetail">
+      <img width="100%" :src="dialogImageUrl" alt="">
+    </el-dialog>
   </home>
 </template>
 
@@ -228,7 +257,11 @@
     data() {
       return {
         businessTerm:[],
-
+        dialogVisible:false,
+        picDetail:false,
+        dialogImageUrl: '',
+        disabled: false,
+        unUploadFile:[],
         form: {
           businessStartTime:'',
           businessDeadline:'',
@@ -274,6 +307,7 @@
           value: '2',
           label: '无效'
         }],
+        fileList: []
       }
     },
     activated() {
@@ -299,6 +333,25 @@
       cancel(){//关闭新建公司页面，返回公司管理列表页面
         this.$router.replace('/CompanyManagement')
       },
+      handleRemove(file, fileList) {
+      },
+      handlePreview(file) {
+        this.dialogImageUrl = file.url;
+        this.picDetail = true;
+      },
+      uploadPic(){
+        this.dialogVisible = true;
+      },
+      handleClose(done,file,fileList) {
+        done();
+        for (let i = 0; i <this.unUploadFile.length ; i++) {
+          this.fileList.push(this.unUploadFile[i]);
+        }
+        this.$refs.upload.clearFiles()
+      },
+      getFileList(file, fileList){
+        this.unUploadFile=fileList;
+      }
     },
   }
 
