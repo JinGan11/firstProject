@@ -8,6 +8,8 @@ import com.ucar.combination.model.PowerList;
 import com.ucar.combination.model.RolePower;
 import com.ucar.combination.model.dto.RoleDto;
 
+import java.util.List;
+
 /**
  * Description: 角色管理
  *
@@ -28,4 +30,5 @@ public interface RoleManagementService {
     Result assignPermission(AssignPermission assignPermission, Long accountId);
     Result getRolePower(RolePower rolePower);
     void updateByModify(RoleDto role);
+    List<RolePower> getRolePowerList(Long roleInfoId);
 }

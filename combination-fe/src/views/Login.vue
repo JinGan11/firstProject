@@ -66,9 +66,7 @@
             self.$http.post('login/login.do_', param)
               .then(result => {
                 if (result.code === 200) {
-                  // this.$emit("loginSuccess", true);
-                  // window.sessionStorage.setItem("loginUsername",self.loginForm.username);
-                  utils.$emit("loginSuccess",true,self.loginForm.username);
+                  utils.$emit("loginSuccess",true,self.loginForm.username, result.powerList);
                   self.$router.replace("/index");
                   // self.visible = true
                 } else {

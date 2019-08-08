@@ -158,7 +158,7 @@ public class PowerServiceImpl implements PowerService {
     }
 
     /**
-     * description: 获取账户权限
+     * description: 获取账户拥有的特殊权限
      * @author peng.zhang11@ucarinc.com
      * @date   2019/8/7 14:21
      * @params
@@ -173,5 +173,105 @@ public class PowerServiceImpl implements PowerService {
             accountPower.add(list.get(i).getPowerId());
         }
         return Result.ok().put("accountPower", accountPower);
+    }
+    /**
+     * description: 获取账户拥有的角色权限和特殊权限的集合
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/8 13:27
+     * @params
+     * @return
+     */
+    @Override
+    public Result getAccountAllPermission(Long accountId) {
+        //存储所有权限的权限ID
+        List powerList = new ArrayList<>();
+        //获取所有角色
+        List<Role> list = roleManagementDao.getAccountRoleListById(accountId);
+        Long roleInfoId;
+        //获取角色的权限
+        for (int k = 0; k < list.size(); k++) {
+            roleInfoId = list.get(k).getRoleId();
+            List<RolePower> rolePowerList = roleManagementDao.getRolePowerListById(roleInfoId);
+            if (powerList == null || powerList.size() == 0) {
+                for (int h = 0; h < rolePowerList.size(); h++) {
+                    powerList.add(rolePowerList.get(h).getPowerId());
+                }
+            } else {
+                for (int i = 0; i < rolePowerList.size(); i++) {
+                    for (int j = 0; j < powerList.size(); j++) {
+                        if (rolePowerList.get(i).getPowerId().equals(powerList.get(j))) {
+                            break;
+                        }
+                        if (!rolePowerList.get(i).getPowerId().equals(powerList.get(j))
+                                && j == powerList.size() -1) {
+                            //插入该权限
+                            powerList.add(rolePowerList.get(i).getPowerId());
+                        }
+                    }
+                }
+            }
+        }
+        //获取特殊权限
+        List<AccountPower> accountPowerList =  powerDao.getAccountPowerListById(accountId);
+        if (powerList == null || powerList.size() == 0) {
+            for (int h = 0; h < accountPowerList.size(); h++) {
+                powerList.add(accountPowerList.get(h).getPowerId());
+            }
+        } else {
+            for (int i = 0; i < accountPowerList.size(); i++) {
+                for (int j = 0; j < powerList.size(); j++) {
+                    if (accountPowerList.get(i).getPowerId().equals(powerList.get(j))) {
+                        break;
+                    }
+                    if (!accountPowerList.get(i).getPowerId().equals(powerList.get(j))
+                            && j == powerList.size() -1) {
+                        //插入该权限
+                        powerList.add(accountPowerList.get(i).getPowerId());
+                    }
+                }
+            }
+        }
+        return Result.ok().put("powerList",powerList);
+    }
+
+    /**
+     * description: 获取角色的所有权限
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/8 13:51
+     * @params
+     * @return
+     */
+    List<Power> getAllRolePowerList() {
+        List<Power> powerList = new ArrayList<>();
+        return null;
+    }
+
+    /**
+     * description: 整合权限，将相同的移除
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/8 14:02
+     * @params
+     * @return
+     */
+    List<Power> integrationPower(List powerList, List<?> roleOrAccountPowerList) {
+//        if (powerList == null || powerList.size() == 0) {
+//            for (int h = 0; h < roleOrAccountPowerList.size(); h++) {
+//                powerList.add(roleOrAccountPowerList.get(h).getPowerId());
+//            }
+//        } else {
+//            for (int i = 0; i < roleOrAccountPowerList.size(); i++) {
+//                for (int j = 0; j < powerList.size(); j++) {
+//                    if (roleOrAccountPowerList.get(i).getPowerId().equals(powerList.get(j))) {
+//                        break;
+//                    }
+//                    if (!roleOrAccountPowerList.get(i).getPowerId().equals(powerList.get(j))
+//                            && j == list.size() -1) {
+//                        //插入该权限
+//                        powerList.add(roleOrAccountPowerList.get(i).getPowerId());
+//                    }
+//                }
+//            }
+//        }
+        return powerList;
     }
 }

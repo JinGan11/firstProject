@@ -167,13 +167,7 @@
         this.isModify=false;
       },
       roleAssignPermission(){
-        let routeData = this.$router.resolve({
-          name: "分配权限",
-          query: 1,
-          params:{test:1}
-        });
-        window.open(routeData.href, '_blank');
-        // this.$router.replace("/roleManagement/RoleAssignPermission")
+        this.$router.replace("/roleManagement/RoleAssignPermission")
       }
     }
   }

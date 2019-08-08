@@ -5,8 +5,6 @@ import com.ucar.combination.model.PowerList;
 import com.ucar.combination.model.PowerTree;
 import com.ucar.combination.model.RoleList;
 
-import java.lang.reflect.Array;
-
 public interface PowerService {
 
     PowerTree buildPowerTree();
@@ -16,4 +14,6 @@ public interface PowerService {
     Result modifySpecialPower(PowerList powerList,Long accountId);
 
     Result getAccountPower();
+
+    Result getAccountAllPermission(Long accountId);
 }

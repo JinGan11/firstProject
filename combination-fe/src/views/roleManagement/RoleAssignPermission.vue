@@ -67,7 +67,7 @@
       init() {
         const self = this;
         var param = {
-          roleInfoId: 9999
+          roleInfoId: 1000
         }
         self.$http.post('roleManage/getRolePower.do_', param).then((result) => {
           self.selectedNodes = result.rolePowerList;

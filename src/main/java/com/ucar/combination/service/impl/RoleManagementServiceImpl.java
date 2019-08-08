@@ -204,6 +204,13 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         return null;
     }
 
+    /**
+     * description: 获取角色已有的权限（转换成了ArrayList形式）
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/8 13:38
+     * @params rolePower 角色信息
+     * @return
+     */
     @Override
     public Result getRolePower(RolePower rolePower) {
         List<RolePower> list = roleManagementDao.getRolePowerListById(rolePower.getRoleInfoId());
@@ -212,5 +219,19 @@ public class RoleManagementServiceImpl implements RoleManagementService {
             rolePowerList.add(list.get(i).getPowerId());
         }
         return Result.ok().put("rolePowerList", rolePowerList);
+    }
+
+
+    /**
+     * description: 获取角色拥有的权限
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/8 13:40
+     * @params
+     * @return
+     */
+    @Override
+    public List<RolePower> getRolePowerList(Long roleInfoId) {
+        List<RolePower> list = roleManagementDao.getRolePowerListById(roleInfoId);
+        return list;
     }
 }

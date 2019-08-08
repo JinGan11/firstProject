@@ -39,24 +39,20 @@ public class UserServiceImpl implements UserService {
      * @return 登陆结果
      */
     @Override
-    public ReturnResult login(User loginUser) {
-        ReturnResult result = new ReturnResult();
+    public Result login(User loginUser) {
         List<User> list = userDao.qryAccountByAccountName(loginUser);
         if (list.size() == 0) {
-            result.setCode(300);
-            result.setMsg("没有该用户");
-            return result;
+            return Result.ok().put("code", 300)
+                    .put("Msg", "没有该用户");
         } else {
             String md5Password = DigestUtils.md5DigestAsHex(loginUser.getAccountPassword().getBytes());
             if (md5Password.equals(list.get(0).getAccountPassword())) {
-                result.setCode(200);
-                result.setMsg("登陆成功！");
-                result.setList(list);
-                return result;
+                return Result.ok().put("code", 200)
+                        .put("Msg", "登陆成功")
+                        .put("list", list);
             } else {
-                result.setCode(300);
-                result.setMsg("密码错误");
-                return result;
+                return Result.ok().put("code", 300)
+                        .put("Msg", "密码错误");
             }
         }
     }

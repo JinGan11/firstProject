@@ -167,12 +167,12 @@ export default new Router({
     meta:{requireAuth:true}
   },{
     path:'/accountManagement/AssignPermission',
-    name:'分配权限',
+    name:'账户分配权限',
     component:AssignPermission,
     meta:{requireAuth:true}
   },{
     path:'/roleManagement/RoleAssignPermission',
-    name:'分配权限',
+    name:'角色分配权限',
     component:RoleAssignPermission,
     meta:{requireAuth:true}
   },{

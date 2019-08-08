@@ -175,7 +175,6 @@
       };
     },
     created() {
-      this.getCookie();
       const self = this;
       var log = localStorage.getItem("switchLog");
       // self.loginIn = localStorage.getItem('isLogin');
@@ -188,8 +187,8 @@
       self.getBreadcrumb(true);
     },
     mounted() {
-      utils.$on('loginSuccess', (loginFlag, username) => {
-        this.loginSuccess(loginFlag, username);
+      utils.$on('loginSuccess', (loginFlag, username, powerList) => {
+        this.loginSuccess(loginFlag, username, powerList);
       });
       utils.$on('clearLoginSession', () => {
         this.clearLoginSession();
@@ -202,10 +201,12 @@
     },
     components: {MenuItem, AsideMenu, LoginPage},
     methods: {
-      loginSuccess(isSuccess, username) {
+      loginSuccess(isSuccess, username, powerList) {
         const self = this;
         self.loginIn = isSuccess;
         window.sessionStorage.setItem("loginUsername", username);
+        window.sessionStorage.setItem("powerList", powerList);
+        console.log(powerList);
         self.loginUserName = window.sessionStorage.getItem("loginUsername")
       },
       switchLog() {

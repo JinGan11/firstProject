@@ -7,7 +7,7 @@ import com.ucar.combination.model.UpdateUserPwd;
 
 public interface UserService {
 
-    ReturnResult login(User loginUser);
+    Result login(User loginUser);
     ReturnResult updatePassword(UpdateUserPwd userPwdVo);
     Result getEmpInfo(User user);
 }
