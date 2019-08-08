@@ -24,7 +24,7 @@
     <i><img src="http://bpic.588ku.com/element_pic/01/40/00/64573ce2edc0728.jpg"
             style="width: 35px;height: 35px;margin-right: 5px;margin-left: 5px;border-radius: 40px;margin-top:13px "/></i>
   </span>
-                  <el-dropdown-menu :size="medium" slot="dropdown" style="position: relative;margin-top: -10px">
+                  <el-dropdown-menu slot="dropdown" style="position: relative;margin-top: -10px">
                     <el-dropdown-item command="getUserInfo">个人信息</el-dropdown-item>
                     <el-dropdown-item command="resetPassword">修改密码</el-dropdown-item>
                     <el-dropdown-item command="logout" divided>注销</el-dropdown-item>
