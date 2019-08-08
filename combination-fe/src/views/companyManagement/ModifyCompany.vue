@@ -128,8 +128,10 @@
           <el-row>
             <el-col :span="10">
               <el-form-item label="公司性质">
-                <el-radio v-model="form.companyNature" label="1">一般纳税人</el-radio>
-                <el-radio v-model="form.companyNature" label="2">小规模纳税人</el-radio>
+                <el-radio-group v-model="form.companyNature">
+                  <el-radio :label="1">一般纳税人</el-radio>
+                  <el-radio :label="2">小规模纳税人</el-radio>
+                </el-radio-group>
               </el-form-item>
             </el-col>
             <el-col :span="10">
@@ -158,8 +160,10 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="总公司标志">
-                <el-radio v-model="form.companyMark" label="1">总公司</el-radio>
-                <el-radio v-model="form.companyMark" label="2">子公司</el-radio>
+                <el-radio-group v-model="form.companyMark">
+                  <el-radio  :label="1">总公司</el-radio>
+                  <el-radio  :label="2">子公司</el-radio>
+                </el-radio-group>
               </el-form-item>
             </el-col>
           </el-row>
@@ -278,28 +282,13 @@
     },
     activated() {
       commonUtils.Log("页面激活");
+
     },
     mounted() {
       commonUtils.Log("页面进来");
       this.fetchData();
     },
     methods: {
-      save() {//保存修改公司信息
-        var self=this;
-        self.form.businessStartTime=self.businessTerm[0];
-        self.form.businessDeadline=self.businessTerm[1];
-        self.form.liscensePath='dfs';
-        self.$http.post("company/createCompany",self.form)
-          .then(result => {
-            self.$router.replace("/CompanyManagement");
-          })
-          .catch(function (error) {
-
-          })
-      },
-      cancel(){//关闭修改公司页面，返回公司管理列表页面
-        this.$router.replace('/CompanyManagement')
-      },
       fetchData(){
         var companyId;
         var self = this;
@@ -310,15 +299,34 @@
         self.$http.get('company/getCompanyById.do_', {
           params: param
         }).then((result) => {
-
           self.form=result.list;
-
-
+          self.form.companyType=String(self.form.companyType);
+          self.form.companyStatus=String(self.form.companyStatus);
+          self.businessTerm[0]=result.list.businessStartTime;
+          self.businessTerm[1]=result.list.businessDeadline;
         }).catch(function (error) {
           commonUtils.Log("company/getCompanyById.do_:" + error);
           self.$message.error("获取数据错误");
         });
-      }
+      },
+      save() {//保存修改公司信息
+        var self=this;
+        var companyId=window.localStorage.getItem('companyId');
+        self.form.companyId=companyId;
+        self.form.businessStartTime=self.businessTerm[0];
+        self.form.businessDeadline=self.businessTerm[1];
+        self.form.liscensePath='dfs';
+        self.$http.post("company/modifyCompany",self.form)
+          .then(result => {
+            self.$router.replace("/CompanyManagement");
+          })
+          .catch(function (error) {
+
+          })
+      },
+      cancel(){//关闭新建公司页面，返回公司管理列表页面
+        this.$router.replace('/CompanyManagement')
+      },
     },
   }
 

@@ -47,4 +47,12 @@ public interface CompanyManageDao<mcmt> {
      * @return：
      */
     Company getCompanyById(@Param("companyId") int companyId);
+    /**
+     * description: 修改公司信息
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/8 9:08
+     * @return：
+     */
+    void updateCompanyById(Company company);
 }

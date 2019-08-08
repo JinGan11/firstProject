@@ -260,7 +260,7 @@
       },
       modifyCompany(val) {//点击修改按钮，跳转到修改页面
         window.localStorage.setItem('companyId',val);
-        alert(window.localStorage.getItem('companyId'));
+        //alert(window.localStorage.getItem('companyId'));
         this.$router.replace('/ModifyCompany')
       },
       },

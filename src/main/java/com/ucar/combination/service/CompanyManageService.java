@@ -45,4 +45,12 @@ public interface CompanyManageService {
      * @return：
      */
     Company getCompanyById(int companyId);
+    /**
+     * description: 修改公司信息
+     * @author: jianan.shu@ucarinc.com
+     * @param: company
+     * @date: 2019/8/8 9:05
+     * @return：
+     */
+    void updateCompanyById(Company company);
 }

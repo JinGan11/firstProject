@@ -15,7 +15,7 @@
         <result column="registered_capital" property="registeredCapital"/>
         <result column="establish_time" property="establishTime"/>
         <result column="registered_institution" property="registeredInstitution"/>
-        <result column="issue_date" property="issueDate"/>
+        <result column="issue_date" property="causeTime"/>
         <result column="registered_status" property="registeredStatus"/>
         <result column="liscense_path" property="liscensePath"/>
         <result column="company_nature" property="companyNature"/>
@@ -148,21 +148,21 @@
         )
     </insert>
 
-    <select id="getCompanyById" parameterType="int" resultType="com.ucar.combination.model.Company"  >
+    <select id="getCompanyById" parameterType="int" resultType="com.ucar.combination.model.Company">
         SELECT
         id  companyId,
         company_name,
         credit_code,
         company_type,
-        business_start_time   businessStartTime,
-        business_deadline,
+        business_start_time  businessStartTime,
+        business_deadline    businessDeadline,
         company_address,
         business_scope,
         legal_person,
         registered_capital,
         establish_time,
         registered_institution,
-        issue_date,
+        issue_date     causeTime,
         registered_status,
         liscense_path,
         company_nature,
@@ -171,7 +171,7 @@
         bank_account,
         telephone,
         company_mark,
-        status,
+        status  companyStatus,
         create_emp,
         create_time,
         modify_emp,
@@ -179,11 +179,39 @@
         remark
         FROM t_company
         <where>
-
          id =#{companyId}
-
         </where>
-
     </select>
 
+    <update id="updateCompanyById" parameterType="com.ucar.combination.model.Company">
+        update t_company t1
+        set
+        t1.company_name = #{companyName},
+        t1.credit_code = #{creditCode},
+        t1.company_type = #{companyType},
+        t1.business_start_time = #{businessStartTime},
+        t1.business_deadline = #{businessDeadline},
+        t1.company_address = #{companyAddress},
+        t1.business_scope = #{businessScope},
+        t1.legal_person = #{legalPerson},
+        t1.registered_capital = #{registeredCapital},
+        t1.establish_time = #{establishTime},
+        t1.registered_institution = #{registeredInstitution},
+        t1.issue_date = #{causeTime},
+        t1.registered_status = #{registeredStatus},
+        t1.liscense_path = #{liscensePath},
+        t1.company_nature = #{companyNature},
+        t1.registration_address = #{registrationAddress},
+        t1.bank_name = #{bankName},
+        t1.bank_account = #{bankAccount},
+        t1.telephone = #{telephone},
+        t1.company_mark = #{companyMark},
+        t1.status = #{companyStatus},
+        t1.create_emp = #{createEmp},
+        t1.create_time = #{createTime},
+        t1.modify_emp = #{modifyEmp},
+        t1.modify_time = #{modifyTime},
+        t1.remark = #{remark}
+        where t1.id = #{companyId}
+    </update>
 </mapper>

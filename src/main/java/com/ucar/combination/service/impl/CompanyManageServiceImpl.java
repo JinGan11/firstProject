@@ -22,7 +22,7 @@ import java.util.List;
  * @date: 2019/8/3 10:19
 */
 @Service
-public class CompanyManageServiceImpl implements CompanyManageService {
+public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManageService {
     @Autowired(required = false)
     private CompanyManageDao companyManageDao;
     @Override
@@ -56,13 +56,29 @@ public class CompanyManageServiceImpl implements CompanyManageService {
     public void insertCompany(Company company){
         companyManageDao.insertCompany(company);
     }
-
+    /**
+     * description: 依据公司Id获取公司信息
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/8 9:25
+     * @return：
+     */
     @Override
     public Company getCompanyById(int companyId){
         Company company=companyManageDao.getCompanyById(companyId);
         return company;
     }
-
+    /**
+     * description: 修改公司信息
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/8 9:26
+     * @return：
+     */
+    @Override
+    public void updateCompanyById(Company company){
+        companyManageDao.updateCompanyById(company);
+    }
 
 }
 

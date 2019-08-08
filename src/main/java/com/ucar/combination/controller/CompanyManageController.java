@@ -32,7 +32,13 @@ import java.util.Map;
 public class CompanyManageController {
     @Autowired
     private CompanyManageService companyManageService;
-
+    /**
+     * description: 依据查询条件获取公司信息
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/8 9:01
+     * @return：
+     */
     @ResponseBody
     @RequestMapping("/querylist.do_")
     public Result list(HttpServletRequest request) {
@@ -81,5 +87,18 @@ public class CompanyManageController {
         int companyId = Integer.parseInt(id);
         Company company = companyManageService.getCompanyById(companyId);
         return Result.ok().put("list",company);
+    }
+    /**
+     * description: 修改公司信息
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/8 9:26
+     * @return：
+     */
+    @ResponseBody
+    @RequestMapping(value = "/modifyCompany",method = RequestMethod.POST)
+    public String updateCompanyById(@RequestBody Company company){
+        companyManageService.updateCompanyById(company);
+        return "success";
     }
 }
