@@ -19,22 +19,25 @@
                 </el-switch>
 
                 <el-dropdown @command="handleCommand">
-                  <span class="el-dropdown-link" style="font-size: 22px">
-                    {{loginUserName}}<i class="el-icon-arrow-down el-icon--right"></i>
-                  </span>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item style="font-size: 18px" command="getUserInfo">个人信息</el-dropdown-item>
-                    <el-dropdown-item style="font-size: 18px" command="resetPassword">修改密码</el-dropdown-item>
-                    <el-dropdown-item style="font-size: 18px" command="logout">注销登陆</el-dropdown-item>
+  <span class="el-dropdown-link home_userinfo" style="display: flex;align-items: center;font-size: 26px;color: #000;">
+    <span style="margin-bottom: 7px;">{{loginUserName}}</span>
+    <i><img src="http://bpic.588ku.com/element_pic/01/40/00/64573ce2edc0728.jpg"
+            style="width: 40px;height: 40px;margin-right: 5px;margin-left: 5px;border-radius: 40px;margin-top:10px "/></i>
+  </span>
+                  <el-dropdown-menu :size="medium" slot="dropdown" style="position: relative;margin-top: -10px">
+                    <el-dropdown-item command="getUserInfo">个人信息</el-dropdown-item>
+                    <el-dropdown-item command="resetPassword">修改密码</el-dropdown-item>
+                    <el-dropdown-item command="logout" divided>注销</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
-                <!--<el-dropdown @command="handleCommand" style="margin-right: 10px;">-->
-                <!--<span class="el-dropdown-link"-->
-                      <!--style="display: flex;align-items: center;color: white;line-height: 40px;">-->
-                  <!--{{loginUserName}}-->
-                <!--</span>-->
+                <!--<el-dropdown @command="handleCommand">-->
+                  <!--<span class="el-dropdown-link" style="font-size: 22px">-->
+                    <!--{{loginUserName}}<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+                  <!--</span>-->
                   <!--<el-dropdown-menu slot="dropdown">-->
-                    <!--<el-dropdown-item command="logout">注销</el-dropdown-item>-->
+                    <!--<el-dropdown-item style="font-size: 18px" command="getUserInfo">个人信息</el-dropdown-item>-->
+                    <!--<el-dropdown-item style="font-size: 18px" command="resetPassword">修改密码</el-dropdown-item>-->
+                    <!--<el-dropdown-item style="font-size: 18px" command="logout">注销登陆</el-dropdown-item>-->
                   <!--</el-dropdown-menu>-->
                 <!--</el-dropdown>-->
               </el-col>
@@ -69,7 +72,7 @@
               <el-input v-model="StaffInfo.staffName" readonly="true" placeholder="无"></el-input>
             </el-form-item>
             <el-form-item label="性别">
-              <el-input v-model="StaffInfo.staffSex" readonly="true" placeholder="无"></el-input>
+              <el-input v-model="sex" readonly="true" placeholder="无" ></el-input>
             </el-form-item>
             <el-form-item label="员工手机">
               <el-input v-model="StaffInfo.staffTelephone" readonly="true" placeholder="无"></el-input>
@@ -81,7 +84,7 @@
               <el-input v-model="StaffInfo.departmentName" readonly="true" placeholder="无"></el-input>
             </el-form-item>
             <el-form-item label="是否离职">
-              <el-input v-model="StaffInfo.isDimission" readonly="true" placeholder="无"></el-input>
+              <el-input v-model="isDimission" readonly="true" placeholder="无"></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -154,6 +157,8 @@
         accountInfoFlag: false,
         resetPasswordFlag: false,
         StaffInfo: {},
+        sex: null,
+        isDimission: null,
         ruleForm: {
           oldPass: '',
           newPass: '',
@@ -277,7 +282,9 @@
             .then(result => {
               if (result.code === 200) {
                 console.log(result);
-                self.StaffInfo = result.list[0]
+                self.StaffInfo = result.list[0];
+                self.sex = result.sex;
+                self.isDimission = result.isDimission;
               } else {
                 self.$alert("查询失败，请稍后再试！", '消息提醒', {
                   confirmButtonText: '确定',

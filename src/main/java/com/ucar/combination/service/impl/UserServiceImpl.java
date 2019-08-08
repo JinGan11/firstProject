@@ -1,5 +1,6 @@
 package com.ucar.combination.service.impl;
 
+import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ReturnResult;
 import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.dao.UserDao;
@@ -141,15 +142,27 @@ public class UserServiceImpl implements UserService {
      * @return 员工信息结果集
      */
     @Override
-    public ReturnResult getEmpInfo(User user) {
-        ReturnResult result = new ReturnResult();
-        result.setCode(300);
+    public Result getEmpInfo(User user) {
+        Result result = new Result();
         List<User> list = userDao.qryAccountByAccountName(user);
         List<Staff> staffList = new ArrayList<>();
         if (list.size() != 0) {
             staffList = employeeManageDao.qryStaffById(list.get(0));
-            result.setList(staffList);
-            result.setCode(200);
+            String sex = null;
+            String isDimission = null;
+            if (staffList.get(0).getStaffSex() == 1){
+                sex = "男";
+            } else if (staffList.get(0).getStaffSex() == 2){
+                sex = "女";
+            }
+            if (staffList.get(0).getIsDimission() == 0 ) {
+                isDimission = "在职";
+            }else {
+                isDimission = "离职";
+            }
+            result.put("list", staffList)
+                    .put("sex", sex)
+                    .put("isDimission", isDimission);
         }
         return result;
     }

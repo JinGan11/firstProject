@@ -1,6 +1,9 @@
 package com.ucar.combination.controller;
 
+import com.ucar.combination.common.CommonEnums;
+import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ReturnResult;
+import com.ucar.combination.model.Staff;
 import com.ucar.combination.model.User;
 import com.ucar.combination.model.UpdateUserPwd;
 import com.ucar.combination.service.UserService;
@@ -48,9 +51,8 @@ public class UserController {
      * @return 返回结果集
      */
     @RequestMapping("/getEmpInfo")
-    public ReturnResult getEmpInfo(@RequestBody User user) {
-        ReturnResult result = userService.getEmpInfo(user);
-        return result;
+    public Result getEmpInfo(@RequestBody User user) {
+        Result result = userService.getEmpInfo(user);
+        return result.put("code", 200);
     }
-
 }
