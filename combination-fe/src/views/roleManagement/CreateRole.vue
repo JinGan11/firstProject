@@ -46,11 +46,14 @@
             <el-col :span="10">
               <el-form-item label="支持业务线">
                   <!--<template v-for="item in chks">
-                    <input type="checkbox" name="hobby" :value="item.id"
+                    <input type="checkbox" name="form.hobby" :value="item.id"
                          :checked="form.loopsss.indexOf(item.id) > -1"/>{{item.name}}
-                  </template>
-                  -->
-                <el-input style="width:200px;" v-model="form.businessLine"></el-input>
+                  </template>-->
+                <input type="checkbox" v-model="form.businessLine" value="买买车">买买车
+                <input type="checkbox" v-model="form.businessLine" value="租车">租车
+                <input type="checkbox" v-model="form.businessLine" value="闪贷">闪贷
+                <input type="checkbox" v-model="form.businessLine" value="专车">专车
+                <input type="checkbox" v-model="form.businessLine" value="保险">保险
               </el-form-item>
             </el-col>
         </el-row>
@@ -121,7 +124,7 @@
 
         form: {
           roleName:'',
-          businessLine:'',
+          businessLine:[],
           roleStatus:'',
           accountNum:'',
           staffNum:'',
@@ -140,6 +143,7 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
+
     },
     methods: {
       save() {//保存新建角色信息
@@ -149,6 +153,7 @@
           type: 'warning'
         }).then(() => {
           var self=this;
+          self.form.businessLine=self.form.businessLine.join(',');
           self.$http.post("roleManage/insertRole.do_", self.form)
             .then((result) => {
               self.$router.replace("/roleManagement/roleManagement");

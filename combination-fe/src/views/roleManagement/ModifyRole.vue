@@ -50,7 +50,11 @@
                      :checked="form.loopsss.indexOf(item.id) > -1"/>{{item.name}}
               </template>
               -->
-              <el-input style="width:200px;" v-model="form.businessLine"></el-input>
+              <input type="checkbox" v-model="form.businessLine" value="买买车">买买车
+              <input type="checkbox" v-model="form.businessLine" value="租车">租车
+              <input type="checkbox" v-model="form.businessLine" value="闪贷">闪贷
+              <input type="checkbox" v-model="form.businessLine" value="专车">专车
+              <input type="checkbox" v-model="form.businessLine" value="保险">保险
             </el-form-item>
           </el-col>
         </el-row>
@@ -95,7 +99,14 @@
             <el-row>
               <el-col :span="1">
                 <el-form-item label="状态">
-                  <el-input placeholder="有效" style="width:200px;" :disabled="true" v-model="form.roleStatus"></el-input>
+                    <el-select v-model="form.roleStatus" :disabled="true" style="width:150px;">
+                      <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -121,7 +132,7 @@
         form: {
           roleID:'',
           roleName:'',
-          businessLine:'',
+          businessLine:[],
           roleStatus:'',
           accountNum:'',
           staffNum:'',
@@ -133,6 +144,15 @@
           modifyEmp:'',
           modifyTime:'',
         },
+        RoleStatusEnum:{},
+        options:[
+          {
+            value:0,
+            label:'无效',
+          },{
+            value:1,
+            label:'有效',
+          }],
       }
     },
     activated() {
@@ -143,13 +163,14 @@
       this.fetchData();
     },
     methods: {
-      save() {//保存新建角色信息
+      save() {//保存修改角色信息
         this.$confirm('此操作将保存该文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           var self=this;
+          self.form.businessLine=self.form.businessLine.join(',');
           self.$http.post("roleManage/updateByModify.do_", self.form)
             .then((result) => {
               self.$router.replace("/roleManagement/roleManagement");
@@ -186,6 +207,8 @@
           params: param
         }).then((result) => {
           self.form=result.page;
+          self.RoleStatusEnum = result.RoleStatusEnum;
+          self.form.businessLine=self.form.businessLine.split(',');
         }).catch(function (error) {
           commonUtils.Log("roleManage/getOneInf.do_:" + error);
           self.$message.error("获取数据错误");

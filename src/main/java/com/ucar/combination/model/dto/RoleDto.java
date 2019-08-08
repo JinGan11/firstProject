@@ -12,7 +12,7 @@ import java.security.PrivateKey;
 public class RoleDto extends BaseBean{
     private Long roleID;
     private String roleName;
-    private Integer businessLine;
+    private String businessLine;
     private Integer roleStatus;
     private String accountNum;
     private String staffNum;
@@ -32,7 +32,7 @@ public class RoleDto extends BaseBean{
         this.roleName = roleName;
     }
 
-    public void setBusinessLine(Integer businessLine) {
+    public void setBusinessLine(String businessLine) {
         this.businessLine = businessLine;
     }
 
@@ -64,7 +64,7 @@ public class RoleDto extends BaseBean{
         return roleName;
     }
 
-    public Integer getBusinessLine() {
+    public String getBusinessLine() {
         return businessLine;
     }
 
