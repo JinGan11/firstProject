@@ -71,6 +71,15 @@ public interface DepartmentDao {
      */
     void updateUpperDepartment(Long id,String upperDepartmentNo);
 
+    /**
+     * description: 根据部门编号查询支持的业务线
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/8 14:51
+     * @params
+     * @return
+     */
+    String selectSupportBusinessByNo(String departmentNo);
+
     /*
      * description:
      * @author jing.luo01@ucarinc.com

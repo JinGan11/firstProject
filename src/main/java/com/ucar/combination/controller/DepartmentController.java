@@ -74,6 +74,19 @@ public class DepartmentController {
     }
 
     /**
+     * description: 根据部门编号查询支持的业务线
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/8 14:50
+     * @params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getSupportBusiness.do_")
+    public String getSupport(String departmentNo){
+        return departmentService.selectSupportBusiness(departmentNo);
+    }
+
+    /**
      * description: 删除部门（逻辑删除），会导致其下面的部门无法显示
      *
      * @return

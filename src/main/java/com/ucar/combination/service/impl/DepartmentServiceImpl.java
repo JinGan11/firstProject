@@ -62,6 +62,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         return null;
     }
 
+    @Override
+    public String selectSupportBusiness(String departmentNo) {
+        return departmentDao.selectSupportBusinessByNo(departmentNo);
+    }
+
     /*
      * description:
      * @author jing.luo01@ucarinc.com

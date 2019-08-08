@@ -83,6 +83,12 @@
         SET upper_department_No=#{upperDepartmentNo}
         WHERE id=#{id}
     </update>
+    <select id="selectSupportBusinessByNo" resultType="String">
+        SELECT support_business
+        FROM t_department
+        WHERE department_no=#{departmentNo}
+        LIMIT 1
+    </select>
 
     <select id="searchDepartment" resultType="com.ucar.combination.model.dto.SearchDepartmentDto">
         SELECT

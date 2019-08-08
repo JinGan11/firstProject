@@ -67,6 +67,15 @@ public interface DepartmentService {
      */
     Boolean updateUpperDepartment(Long id, String upperDepartmentNo);
 
+    /**
+     * description: 获取支持的业务线
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/8 14:21
+     * @params
+     * @return
+     */
+    String selectSupportBusiness(String departmentNo);
+
     ResultPage searchDepartment(QueryParam queryParam);
 
     /*

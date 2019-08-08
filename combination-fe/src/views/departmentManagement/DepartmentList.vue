@@ -2,7 +2,7 @@
   <home style="margin-left: 20px">
     <br>
     <div>
-      <el-button type="primary" v-bind:disabled="operationBtnActive">新建子部门</el-button>
+      <el-button type="primary" v-bind:disabled="operationBtnActive" @click="addDept">新建子部门</el-button>
       <el-button type="primary">修改</el-button>
       <el-button type="primary" @click="dialogVisible = true" v-bind:disabled="operationBtnActive">删除</el-button>
       <el-button type="primary" v-bind:disabled="operationBtnActive" @click="changeUpper">修改上级部门</el-button>
@@ -127,19 +127,20 @@
       renderContent(h, { node, data, store }) {
         // 这里编译器有红色波浪线不影响运行...
         if(data.status != 1){
-          return (
-            <span style="color:red">{node.label}</span>
-          );
+          return (<span style="color:red">{node.label}</span>);
         }else{
-          return (
-            <span>{node.label}</span>
-          );
+          return (<span>{node.label}</span>);
         }
       },
       changeUpper() {
         window.localStorage.setItem("dept_id",this.$refs.tree.getCheckedNodes()[0].id);
         window.localStorage.setItem("dept_name",this.$refs.tree.getCheckedNodes()[0].departmentName);
         this.$router.replace('/departmentManagement/changeUpperDepartment');
+      },
+      addDept() {
+        window.localStorage.setItem("dept_no",this.$refs.tree.getCheckedNodes()[0].departmentNo);
+        window.localStorage.setItem("dept_name",this.$refs.tree.getCheckedNodes()[0].departmentName);
+        this.$router.replace('/departmentManagement/addDepartment');
       }
     }
   };
