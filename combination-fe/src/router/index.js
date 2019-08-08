@@ -31,6 +31,7 @@ import countySearch from "@/views/cityInfoManagement/countySearch";
 import DepartmentChangeUpper from "@/views/departmentManagement/DepartmentChangeUpper"
 import ModifyCompany from'@/views/companyManagement/ModifyCompany';
 import modifyRoleApply from '@/views/roleManagement/modifyRoleApply';
+import RoleInf from "../views/roleManagement/RoleInf";
 Vue.use(Router)
 
 export default new Router({
@@ -190,6 +191,11 @@ export default new Router({
     name:'修改角色申请',
     component:modifyRoleApply,
     meta:{requireAuth:true}
+  }, {
+    path: '/RoleInf',
+    name: '角色信息',
+    component: RoleInf,
+    meta: {requireAuth: true}
   }
   ]
 })
