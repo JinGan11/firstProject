@@ -56,6 +56,25 @@
         ORDER BY createTime DESC
     </select>
 
+    <select id="selectById" parameterType="java.lang.String" resultType="com.ucar.combination.model.Staff">
+        SELECT T.id,
+                T.staff_num,
+                T.staff_name,
+                T.staff_sex,
+                T.staff_telephone,
+                T.staff_email,
+                T.department_id,
+                T.is_dimission,
+                T.status,
+                T.create_time,
+                T.create_emp,
+                T.modify_time,
+                T.modify_emp,
+                T.remark,
+                T.account_id
+                from t_staff T
+                where T.id=#{id};
+    </select>
     <select id="qryStaffById" parameterType="com.ucar.combination.model.User"
             resultType="com.ucar.combination.model.Staff">
         SELECT
@@ -80,5 +99,8 @@
         update t_staff t1
         set t1.status=0
         where t1.id = #{id}
+    </update>
+    <update id="updateDimission" parameterType="java.lang.Long">
+        UPDATE t_staff T set T.is_dimission=1 WHERE T.id=#{id};
     </update>
 </mapper>

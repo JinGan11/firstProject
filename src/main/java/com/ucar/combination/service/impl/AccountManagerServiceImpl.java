@@ -69,5 +69,38 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
 
+    /**
+     * description: 员工账号状态
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 9:57
+     * @params ID员工ID
+     * @return 状态
+     */
+    @Override
+    public int updateState(String id) {
+        return accountManageDao.updateState(id);
+    }
 
+    /**
+     * description: 账户查找
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 10:34
+     * @params 账户ID
+     * @return ACCOUNT
+     */
+    @Override
+    public Account selectById(Long id) {
+        return accountManageDao.selectById(id);
+    }
+    /**
+     * description:插入历史记录
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 10:43
+     * @params 一个MAP存储着所有信息
+     * @return
+     */
+    @Override
+    public int insertAccountHistory(Map<String, Object> map) {
+        return accountManageDao.insertAccountHistory(map);
+    }
 }

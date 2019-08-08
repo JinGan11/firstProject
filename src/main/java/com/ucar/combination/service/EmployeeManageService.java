@@ -41,4 +41,21 @@ public interface EmployeeManageService {
      * @return 无
      */
     public void updateStatus(int id);
+    /**
+     * description: 更新员工离职
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 9:48
+     * @params
+     * @return
+     */
+    public int updateDimission(Long id);
+
+    /**
+     * description: 按ID选择员工信息
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 10:09
+     * @params 员工ID
+     * @return 员工对象
+     */
+    public Staff selectById(String id);
 }

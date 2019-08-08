@@ -4,6 +4,7 @@ import com.ucar.combination.model.dto.StaffDto;
 
 import com.ucar.combination.model.Staff;
 import com.ucar.combination.model.User;
+import org.apache.ibatis.annotations.Lang;
 
 import java.util.List;
 import java.util.Map;
@@ -55,4 +56,21 @@ public interface EmployeeManageDao {
      * @return 无
      */
     void updateStatus(int id);
+    /**
+     * description: 更新员工离职新信息
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 9:49
+     * @params 员工ID
+     * @return 状态
+     */
+    int updateDimission(Long id);
+
+    /**
+     * description: 按ID选择员工信息
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 10:11
+     * @params 员工ID
+     * @return 员工信息
+     */
+    Staff selectById(String id);
 }

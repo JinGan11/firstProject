@@ -35,7 +35,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="所属部门">
-              <el-input placeholder="所属部门" disabled="true" style="width:400px;" v-model="form.departmentId"></el-input>
+              <el-input placeholder="所属部门" :disabled="true" style="width:400px;" v-model="form.departmentId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="2">
@@ -50,7 +50,7 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="上级部门">
-              <el-input placeholder="上级部门" disabled="true" style="width:400px;"
+              <el-input placeholder="上级部门" :disabled="true" style="width:400px;"
                         v-model="form.upperDepartmentNo"></el-input>
             </el-form-item>
           </el-col>
@@ -84,7 +84,7 @@
       <el-button type="primary" @click="createEmployee" style="width:70px">新建</el-button>
       <el-button type="primary" @click="modifyEmployee" :disabled="disabled" style="width:70px">修改</el-button>
       <el-button type="primary" @click="deleteEmployee" :disabled="disabled" style="width:70px">删除</el-button>
-      <el-button type="primary" @click="" style="width:70px">离职</el-button>
+      <el-button type="primary" @click="quitEmployee" :disabled="disabled" style="width:70px">离职</el-button>
       <el-button type="primary" @click="" style="width:70px">恢复</el-button>
       <el-button type="primary" @click="distributionDepartment" style="width:80px">分配部门</el-button>
     </div>
@@ -388,7 +388,36 @@
           });
         });
       },
+      quitEmployee(){
+        this.$confirm('此操作将离职该员工, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          var self = this;
+          var param = {
+            id:self.selection,
+          };
+          self.$http.get('employee/quitEmployee.do_', {
+            params: param
+          }).then((result) => {
+            if (result.status=="success"){
+              self.$message.success("成功离职");
+            } else {
+              self.$message.error("离职失败")
+            }
 
+          }).catch(function (error) {
+            commonUtils.Log("employee/quitEmployee.do_" + error);
+            self.$message.error("获取数据错误");
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消离职'
+          });
+        });
+      },
       distributionDepartment() {
         this.distributionDepartmentFlag = true;
       },

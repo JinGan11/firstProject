@@ -2,6 +2,8 @@ package com.ucar.combination.service;
 
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.Account;
+import com.ucar.combination.model.Staff;
 
 import java.util.Map;
 
@@ -49,4 +51,32 @@ public interface AccountManagerService {
      * @return 无
      */
     void updateStatus(int id);
+
+    /**
+     * description: 设置员工账号
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 9:57
+     * @params id 员工ID
+
+     * @return 状态
+     */
+    int updateState(String id);
+    /**
+     * description: 查找Account
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 10:31
+     * @params 账户ID
+     * @return  ACCOUNT实体
+     */
+    Account selectById(Long id);
+
+    /**
+     * description: 插入历史记录
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 10:45
+     * @params map 描述
+
+     * @return
+     */
+    int insertAccountHistory (Map<String, Object> map);
 }

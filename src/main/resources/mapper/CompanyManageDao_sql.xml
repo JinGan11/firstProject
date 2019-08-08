@@ -73,7 +73,7 @@
 
     <select id="getCompanyList" resultType="com.ucar.combination.model.Company">
         SELECT
-        T.id,
+        T.id as companyId,
         T.company_name,
         T.credit_code,
         T.company_type,

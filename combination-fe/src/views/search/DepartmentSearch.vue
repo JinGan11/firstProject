@@ -186,7 +186,7 @@
         <div>
           <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">关联公司列表</div>
           <el-table :data="tableCity" ref="multipleTable">
-            <el-table-column prop="id" label="公司编号"></el-table-column>
+            <el-table-column prop="companyId" label="公司编号"></el-table-column>
             <el-table-column prop="companyName" label="公司名称"></el-table-column>
             <el-table-column prop="creditCode" label="统一社会信用代码"></el-table-column>
             <el-table-column prop="companyType" label="类型">

@@ -6,16 +6,14 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 
+import com.ucar.combination.model.Account;
 import com.ucar.combination.model.Staff;
 import com.ucar.combination.service.AccountManagerService;
 import com.ucar.combination.service.EmployeeManageService;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -106,5 +104,41 @@ public class EmployeeManageController {
         employeeManageService.updateStatus(id);
         accountManagerService.updateStatus(accountId);
         return Result.ok();
+    }
+
+    /**
+     * description: 员工离职
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 9:43
+     * @params 员工ID
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/quitEmployee.do_")
+    public Result quitEmployee(HttpServletRequest request, @RequestParam String id){
+        Integer status1=employeeManageService.updateDimission(Long.valueOf(id));
+        Integer status2=accountManagerService.updateState(id);
+        Staff staff=employeeManageService.selectById(id);
+        Account account=accountManagerService.selectById(staff.getAccountId());
+        /*account_id,
+                staff_num,
+                staff_name,
+                permissions,
+                history_operation_type,
+                create_emp,
+                create_time*/
+        Map<String,Object> param=new HashMap<>();
+        param.put("accountId",staff.getAccountId());
+        param.put("staffNum",staff.getStaffNum());
+        param.put("staffName",staff.getStaffName());
+        param.put("permissions",account.getPremissions());
+        param.put("historyOperationType","8");
+        param.put("createEmp",request.getSession().getAttribute("accountId"));
+        Integer status3=accountManagerService.insertAccountHistory(param);
+        if (status1==0&status2==0&status3==1){
+            return Result.ok().put("status","success");
+        }else {
+            return Result.ok().put("status","error");
+        }
     }
 }

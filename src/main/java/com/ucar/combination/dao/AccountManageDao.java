@@ -19,7 +19,7 @@ public interface AccountManageDao {
      * @uthor： junqiang.zhang@ucarinc.com
      * @Date：  2019-8-1
      * @PArams： map
-     * @Return： 
+     * @Return：
      */
     List<Account> queryList(Map<String, Object> map);
     /**
@@ -58,4 +58,23 @@ public interface AccountManageDao {
      * @Return： 用户id
      */
     Long selectIdByNum(String accountNum);
+
+    /**
+     * description: 账号状态改变
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 9:59
+     * @params Id 账号ID
+     * @return 账号状态
+     */
+    int updateState(String id);
+
+    /**
+     * description: 查找账户
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 10:36
+     * @params id 账户ID
+
+     * @return Account账户
+     */
+    Account selectById(Long id);
 }

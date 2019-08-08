@@ -93,6 +93,23 @@
         </if>
         ORDER BY id
     </select>
+    <select id="selectById" parameterType="java.lang.Long" resultType="com.ucar.combination.model.Account">
+        SELECT T.id,
+                T.account_name,
+                T.account_password,
+                T.staff_id,
+                T.permissions,
+                T.account_secret_email,
+                T.create_time,
+                T.create_emp,
+                T.modify_time,
+                T.modify_emp,
+                T.account_state,
+                T.account_remark
+                FROM t_account T
+                  where T.id=#{id};
+
+    </select>
     <resultMap type="com.ucar.combination.model.RoleAccount" id="RoleAccount">
         <result column="id" property="id"/>
         <result column="role_name" property="roleName"/>
@@ -139,6 +156,9 @@
         update t_account t1
         set t1.account_state=3
         where t1.id = #{id}
+    </update>
+    <update id="updateState" parameterType="java.lang.String">
+        UPDATE t_account T set T.account_state=0 WHERE T.id=#{id};
     </update>
 
     <insert id="insertAccountHistory" parameterType="map">

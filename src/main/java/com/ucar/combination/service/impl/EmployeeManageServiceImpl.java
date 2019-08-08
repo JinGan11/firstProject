@@ -66,5 +66,29 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
     public void updateStatus(int id){
         employeeManageDao.updateStatus(id);
     }
+    /**
+     * description: 更新员工离职
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 9:48
+     * @params
+     * @return
+     */
+    @Override
+    public int updateDimission(Long id) {
+        employeeManageDao.updateDimission(id);
+        return 0;
+    }
+    /**
+     * description: 按ID选择员工信息
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 10:10
+     * @params id 员工ID
+
+     * @return 员工信息
+     */
+    @Override
+    public Staff selectById(String id) {
+        return employeeManageDao.selectById(id);
+    }
 }
 
