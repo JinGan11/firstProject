@@ -11,6 +11,7 @@
         	t1.city_name_pinyin regionPinyin,
 	        t1.city_name regionName,
 	        t1.`level` regionLevel,
+	        t1.upper_city_id upperRegionID,
 	        t1.upper_city_name upperRegion,
 	        t1.`status` regionStatus,
 	        t1.create_emp cEmp,
@@ -44,6 +45,7 @@
 		t1.city_name_pinyin regionPinyin,
 		t1.city_name regionName,
 		t1.`level` regionLevel,
+		t1.upper_city_id upperRegionID,
 		t1.upper_city_name upperRegion,
 		t1.`status` regionStatus,
 		t1.create_emp cEmp,
@@ -67,6 +69,9 @@
 		<if test="upperRegion != null and upperRegion.trim() != ''">
 			AND t1.upper_city_name LIKE #{upperRegion}"%"
 		</if>
+		<if test="upperRegionID != null and upperRegionID.trim() != ''">
+			AND t1.upper_city_id = #{upperRegionID}
+		</if>
 
 	</select>
 
@@ -80,6 +85,7 @@
 		t1.city_name regionName,
 		t1.`level` regionLevel,
 		t1.upper_city_name upperRegion,
+		t1.upper_city_id upperRegionID,
 		t2.upper_city_name upperRegionTwice ,
 		t1.`status` regionStatus,
 		t1.create_emp cEmp,
@@ -105,6 +111,9 @@
 		</if>
 		<if test="upperRegionTwice != null and upperRegionTwice.trim() != ''">
 			AND t2.upper_city_name LIKE #{upperRegionTwice}"%"
+		</if>
+		<if test="upperRegionID != null and upperRegionID.trim() != ''">
+			AND t1.upper_city_id = #{upperRegionID}
 		</if>
 
 	</select>

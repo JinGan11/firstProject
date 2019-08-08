@@ -68,8 +68,9 @@ public class RegionManageController {
         String regionCode = request.getParameter("regionCode");
         String regionName = request.getParameter("regionName");
         String upperRegion = request.getParameter("upperRegion");
-        String upperRegionTwice = request.getParameter("upperRegionTwice");
+//        String upperRegionTwice = request.getParameter("upperRegionTwice");
         String regionStatus = request.getParameter("regionStatus");
+        String upperRegionID = request.getParameter("upperRegionID");
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("page", page);
@@ -77,7 +78,9 @@ public class RegionManageController {
         params.put("regionCode", regionCode);
         params.put("regionName", regionName);
         params.put("upperRegion",upperRegion);
-        params.put("upperRegionTwice",upperRegionTwice);
+        params.put("upperRegionID",upperRegionID);
+
+//        params.put("upperRegionTwice",upperRegionTwice);
         params.put("regionStatus", regionStatus);
         ResultPage resultPage=regionManageService.citySearchList(new QueryParam(params));
         List<Object> citySearchList = regionManageService.getCitySearchList(new QueryParam(params));
@@ -99,6 +102,7 @@ public class RegionManageController {
         String regionCode = request.getParameter("regionCode");
         String regionName = request.getParameter("regionName");
         String upperRegion = request.getParameter("upperRegion");
+        String upperRegionID = request.getParameter("upperRegionID");
         String regionStatus = request.getParameter("regionStatus");
         String upperRegionTwice = request.getParameter("upperRegionTwice");
 
@@ -109,6 +113,7 @@ public class RegionManageController {
         params.put("regionName", regionName);
         params.put("upperRegionTwice",upperRegionTwice);
         params.put("upperRegion",upperRegion);
+        params.put("upperRegionID",upperRegionID);
         params.put("regionStatus", regionStatus);
         ResultPage resultPage=regionManageService.countySearchList(new QueryParam(params));
         List<Object> countySearchList = regionManageService.getCountySearchList(new QueryParam(params));
