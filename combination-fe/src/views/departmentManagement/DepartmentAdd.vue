@@ -354,7 +354,7 @@
 
         self.$http.post("department/addDepartment.do_",self.form)
           .then(result => {
-            self.$router.replace("/departmentManagement");
+            self.$router.replace("/departmentManagement/showDepartment");
           })
           .catch(function (error) {
 

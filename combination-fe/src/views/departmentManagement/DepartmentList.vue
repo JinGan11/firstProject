@@ -10,6 +10,8 @@
     </div>
     <br>
     <div>
+      <span style="color: red;">红色：无效部门</span>
+      <br/><br/>
       <span>选择要操作的部门</span>
       <br><br>
       <el-tree

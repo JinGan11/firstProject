@@ -67,6 +67,22 @@
         SET status=0
         WHERE id=#{id}
     </update>
+    <select id="queryDepartmentUpperAll" resultType="com.ucar.combination.model.dto.DepartmentUpperDto">
+        SELECT
+        id,
+        department_no,
+        department_name,
+        upper_department_no,
+        status,
+        support_business
+        FROM t_department
+        ORDER BY id
+    </select>
+    <update id="updateUpperDepartment">
+        UPDATE t_department
+        SET upper_department_No=#{upperDepartmentNo}
+        WHERE id=#{id}
+    </update>
 
     <select id="searchDepartment" resultType="com.ucar.combination.model.dto.SearchDepartmentDto">
         SELECT

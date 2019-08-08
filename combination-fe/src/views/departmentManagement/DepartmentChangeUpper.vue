@@ -1,14 +1,17 @@
 <template>
   <home style="margin: 10px 20px">
     <div>
-      <span style="margin-right: 100px">要修改的部门为：{{ dept_name }}</span>
-      <el-button type="primary">保存</el-button>
-      <el-button type="primary">取消</el-button>
+      <span style="margin-right: 100px">正在修改的部门为：{{ dept_name }}</span>
+      <el-button type="primary" v-bind:disabled="cannotSave" @click="save">保存</el-button>
+      <el-button type="primary" @click="cancle">取消</el-button>
     </div>
     <br/>
     <div>
+      <span style="color: red;">红色：无效部门</span><br/>
+      <span style="color: #CDAD00">黄色：本部门、本部门下级部门、业务线不包含本部门</span></span>
+      <br/><br/>
       <span>请选择该部门新的上级部门</span>
-    </div>
+      </div>
     <br/>
     <el-tree
       ref="tree"
@@ -35,8 +38,10 @@
           label: 'departmentName',
           children: 'children',
           id: 'id',
-          status: 'status'
+          status: 'status',
+          canChoose: 'canChoose'
         },
+        cannotSave: true
       }
     },
     mounted() {
@@ -46,8 +51,11 @@
     methods: {
       loadNode(node,resolve){
         var self = this;
-        self.$http.get('department/buildTree.do_', {
-          params: null
+        var params = {
+          id: window.localStorage.getItem("dept_id")
+        };
+        self.$http.get('department/buildUpperTree.do_', {
+          params: params
         }).then((result) => {
           resolve([result.departmentDto]);
         }).catch(function (error) {
@@ -60,10 +68,10 @@
           this.checkedId = data.id;
           this.$refs.tree.setCheckedKeys([data.id]);
           // 设置按钮是否可选（选中节点后调用两次handleClick，第一次checked为true，所以设置按钮写在这）
-          if(data.status === 1){
-            this.operationBtnActive=false;
+          if(data.status === 1 && data.canChoose == true){
+            this.cannotSave=false;
           }else{
-            this.operationBtnActive=true;
+            this.cannotSave=true;
           }
         } else {
           if (this.checkedId == data.id) {
@@ -73,16 +81,36 @@
       },
       renderContent(h, { node, data, store }) {
         // 这里编译器有红色波浪线不影响运行...
-        if(data.status != 1){
-          return (
-            <span style="color:red">{node.label}</span>
-        );
-        }else{
-          return (
-            <span>{node.label}</span>
-        );
+        if(data.status != 1) {
+          return (<span style = "color:red" > {node.label} < /span>);
         }
+        if(data.canChoose == false){
+          return (<span style="color:#CDAD00">{node.label}</span>);
+        }
+        return (<span>{node.label}</span>);
       },
+      save(){
+        var self = this;
+        var params = {
+          id: '',
+          upperDepartmentNo: ''
+        };
+        params.id=self.dept_id;
+        params.upperDepartmentNo=self.$refs.tree.getCheckedNodes()[0].departmentNo;
+        self.$http.post("department/updateUpperDepartment.do_",params)
+          .then(result => {
+            if(result==true){
+              alert("修改成功！");
+              self.$router.replace("/departmentManagement/showDepartment");
+            }
+          })
+          .catch(function (error) {
+
+          })
+      },
+      cancle(){
+        this.$router.replace("/departmentManagement/showDepartment");
+      }
     }
   }
 </script>
