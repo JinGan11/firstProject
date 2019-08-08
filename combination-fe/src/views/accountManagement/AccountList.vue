@@ -76,19 +76,19 @@
     </div>
     <div style="margin-bottom: 10px">
       <el-button type="primary" @click="creatAccount" style="width:70px">新建</el-button>
-      <el-button type="primary" @click="" style="width:70px">修改</el-button>
-      <el-button type="primary" @click="" style="width:70px">删除</el-button>
-      <el-button type="primary" @click="" style="width:70px">冻结</el-button>
-      <el-button type="primary" @click="" style="width:70px">解冻</el-button>
-      <el-button type="primary" @click="" style="width:80px">密码重置</el-button>
-      <el-button type="primary" @click="assignPermission" style="width:80px">分配权限</el-button>
-      <el-button type="primary" @click="" style="width:80px">历史记录</el-button>
+      <el-button type="primary" :disabled="disable" @click="modifyAccount" style="width:70px">修改</el-button>
+      <el-button type="primary" :disabled="disable" @click="" style="width:70px">删除</el-button>
+      <el-button type="primary" :disabled="disable" @click="" style="width:70px">冻结</el-button>
+      <el-button type="primary" :disabled="disable" @click="" style="width:70px">解冻</el-button>
+      <el-button type="primary" :disabled="disable" @click="" style="width:80px">密码重置</el-button>
+      <el-button type="primary" :disabled="disable" @click="assignPermission" style="width:80px">分配权限</el-button>
+      <el-button type="primary" :disabled="disable" @click="" style="width:80px">历史记录</el-button>
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
 <!--      <el-table-column type="selection" width="35"></el-table-column>-->
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.id"><span width="0px;"></span></el-radio>
+          <el-radio v-model="selection" :label="scope.row.id" @change="approvalInfo(scope.row)"><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
@@ -153,6 +153,7 @@
         },
         tableData: [],
         selection: [],
+        disable: true,
       }
     },
     activated() {
@@ -209,6 +210,13 @@
       },
       creatAccount(){ //新建账户
         this.$router.replace('/createAccount')
+      },
+      modifyAccount(){
+        this.$router.replace('/modifyAccount')
+      },
+      approvalInfo(val){
+        this.disable = false;
+        localStorage.setItem("accountId",val.id);
       },
       assignPermission() {
         this.$router.replace('/accountManagement/AssignPermission')

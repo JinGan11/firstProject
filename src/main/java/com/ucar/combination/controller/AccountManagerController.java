@@ -46,6 +46,14 @@ public class AccountManagerController {
      */
     @Transactional
     @ResponseBody
+    @RequestMapping("/selectAccountById.do_")
+    public Result selectAccountById(HttpServletRequest request){
+        String id = request.getParameter("id");
+        return new Result().ok().put("account",accountManagerService.selectAccountById(id));
+    }
+
+    @Transactional
+    @ResponseBody
     @RequestMapping("/createAccount.do_")
     public Result createAccount(HttpServletRequest request, HttpSession session){
         try {
@@ -57,10 +65,12 @@ public class AccountManagerController {
             String permissions = request.getParameter("permissions");
             String secretEmail = request.getParameter("secretEmail");
             String remark = request.getParameter("remark");
+            String tree = request.getParameter("tree");
             Map<String, Object> account = new HashMap<String, Object>();
             account.put("accountNum", accountNum);
             account.put("password", password);
             account.put("permissions", permissions);
+            account.put("staffId", staffId);
             account.put("remark", remark);
             account.put("createEmp", user);
             account.put("modifyEmp", user);
@@ -71,9 +81,8 @@ public class AccountManagerController {
             staff.put("secretEmail",secretEmail);
             staff.put("modifyEmp",user);
             accountManagerService.updateStaff(staff);
-            System.out.println(1);
         }catch(Exception e) {
-            throw  new RuntimeException("11");
+            throw  new RuntimeException("");
         }
         return null;
     }
@@ -86,9 +95,10 @@ public class AccountManagerController {
      * @Return：
      */
     @ResponseBody
-    @RequestMapping("/premission.do_")
-    public Result premissionList(HttpServletRequest request){
-        return new Result().ok().put("permissionList",CommonEnums.toJsonList(CommonEnums.Permission.values()));
+    @RequestMapping("/enums.do_")
+    public Result enumsList(HttpServletRequest request){
+        return new Result().ok().put("permissionList",CommonEnums.toJsonList(CommonEnums.Permission.values()))
+                .put("accountStatusList",CommonEnums.toJsonList(CommonEnums.AccountStatusEnum.values()));
     }
 
     /*

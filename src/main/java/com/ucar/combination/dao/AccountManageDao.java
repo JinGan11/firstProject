@@ -31,6 +31,15 @@ public interface AccountManageDao {
      */
     void updateStatus(int id);
 
+    /*
+     * description: 通过账户id查询账户数据
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date：  2019/8/8
+     * @PArams： 账户id
+     * @Return： com.ucar.combination.model.Account
+     */
+    public Account selectAccountById(String id);
+
     List<RoleAccount> getRoleAccountList(Map<String, Object> map);
 
     /**

@@ -3,6 +3,7 @@ package com.ucar.combination.service;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Account;
+import com.ucar.combination.model.Account;
 import com.ucar.combination.model.Staff;
 
 import java.util.Map;
@@ -23,6 +24,15 @@ public interface AccountManagerService {
      * @Return：
      */
     ResultPage queryList(QueryParam queryParam);
+
+    /*
+     * description: 通过账户id查询账户数据
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date：  2019/8/8
+     * @PArams： 账户id
+     * @Return： com.ucar.combination.model.Account
+     */
+    public Account selectAccountById(String id);
 
     /*
      * description: 新建账户,并返回账户id

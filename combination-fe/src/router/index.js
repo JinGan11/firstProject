@@ -17,6 +17,7 @@ import RoleManagement from '@/views/roleManagement/RoleManagement'
 import DepartmentManagementTest from '@/views/departmentManagement/DepartmentTest'
 import CompanyManagement from '@/views/companyManagement/CompanyList'
 import CreateAccount from '@/views/accountManagement/CreateAccount'
+import ModifyAccount from '@/views/accountManagement/modifyAccount'
 import CreateRole from '@/views/roleManagement/CreateRole'
 import CreateRoleApply from '@/views/roleManagement/CreateRoleApply'
 import CreateCompany from'@/views/companyManagement/CreateCompany'
@@ -144,6 +145,11 @@ export default new Router({
     path:'/createAccount',
     name:'新建账户',
     component:CreateAccount,
+    meta:{requireAuth:true}
+  },{
+    path:'/modifyAccount',
+    name:'新建账户',
+    component:ModifyAccount,
     meta:{requireAuth:true}
   },{
     path:'/RoleAccountDetail',

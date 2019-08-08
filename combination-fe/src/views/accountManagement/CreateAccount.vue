@@ -72,21 +72,23 @@
           </el-col>
         </el-row>
         <el-row v-if="departmentVisible">
-          <el-col :span="6">
-            <el-form-item label="手动选择部门">
-              <el-tree
-                ref="tree"
-                :props="defaultProps"
-                node-key="id"
-                :load="loadNode"
-                lazy="true"
-                show-checkbox
-                check-strictly
-                :render-content="renderContent"
-                @check-change="handleClick">
-              </el-tree>
-            </el-form-item>
-          </el-col>
+          <el-row v-if="departmentVisible">
+            <el-col :span="6">
+              <el-form-item label="手动选择部门">
+                <el-tree
+                  ref="tree"
+                  :props="defaultProps"
+                  node-key="id"
+                  :load="loadNode"
+                  lazy="true"
+                  show-checkbox
+                  check-strictly
+                  :render-content="renderContent"
+                  @check-change="handleClick">
+                </el-tree>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-row>
       </el-form>
     </div>
@@ -213,27 +215,37 @@
       },
       save() {//保存新建账户信息
         const self = this;
-        var param={
-          accountNum: self.newForm.accountNum,
-          password: self.newForm.password,
-          staffNum: self.newForm.staffNum,
-          permissions: self.newForm.permissions,
-          staffId: self.newForm.staffId,
-          secretEmail: '',
-          remark: self.newForm.remark,
-        };
-        if(!self.emailDisabled){
-          param.secretEmail = self.newForm.secretEmail;
+        var tree = '';
+        if(self.newForm.permissions == 5 && this.$refs.tree.getCheckedNodes().length == 0){
+          self.$message.info("请选择部门");
+        }else {
+          if(self.newForm.permissions == 5){
+            for(var i = 0; i < this.$refs.tree.getCheckedNodes().length; i++){
+              tree += this.$refs.tree.getCheckedNodes()[i].id+' ';
+            }
+          }
+          var param = {
+            accountNum: self.newForm.accountNum,
+            password: self.newForm.password,
+            staffNum: self.newForm.staffNum,
+            permissions: self.newForm.permissions,
+            staffId: self.newForm.staffId,
+            secretEmail: '',
+            remark: self.newForm.remark,
+            tree: tree
+          };
+          if (!self.emailDisabled) {
+            param.secretEmail = self.newForm.secretEmail;
+          }
+          self.$http.get('account/createAccount.do_', {
+            params: param
+          }).then((result) => {
+            self.$message.info("aaa");
+          }).catch(function (error) {
+            commonUtils.Log("account/createAccount.do_:" + error);
+            self.$message.error("插入数据错误")
+          });
         }
-        self.$http.get('account/createAccount.do_', {
-          params: param
-        }).then((result) => {
-          self.$message.info("aaa");
-        }).catch(function (error) {
-          commonUtils.Log("account/createAccount.do_:"+error);
-          self.$message.error("获取数据错误")
-        });
-
       },
       cancel(){//关闭新建账户页面，返回账户管理列表页面
         const self = this;
@@ -265,6 +277,3 @@
   }
 </script>
 
-<style scoped>
-
-</style>

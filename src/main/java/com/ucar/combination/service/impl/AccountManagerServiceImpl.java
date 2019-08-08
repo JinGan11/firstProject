@@ -37,6 +37,12 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         List<Account> list = accountManageDao.queryList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
+
+    @Override
+    public Account selectAccountById(String id) {
+        return accountManageDao.selectAccountById(id);
+    }
+
     /**
      * description:由账户id将账户状态设置为无效
      * @author shiya.li@ucarinc.com

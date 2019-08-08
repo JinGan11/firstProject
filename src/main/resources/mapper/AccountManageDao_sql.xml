@@ -17,12 +17,36 @@
         <result column="department_name" property="department"/>
         <result column="create_emp_name" property="creatEmpName"/>
         <result column="create_time" property="createTime"/>
+        <result column="creat_emp_name" property="creatEmpName"/>
+        <result column="create_time" property="createTime"/>
         <result column="modify_emp" property="modifyEmpId"/>
         <result column="modify_emp_name" property="modifyEmpName"/>
         <result column="modify_time" property="modifyTime"/>
         <result column="account_state" property="accountState"/>
         <result column="account_remark" property="remark"/>
     </resultMap>
+    <select id="selectAccountById" parameterType="String" resultMap="account">
+        select t1.id,
+               t1.account_name,
+               t1.account_state,
+               t1.permissions,
+               t2.staff_num,
+               t2.staff_name,
+               t2.staff_email account_secret_email,
+               t1.create_time,
+               t3.account_name creat_emp_name,
+               t1.modify_time,
+               t4.account_name modify_emp_name,
+               t1.account_remark
+        from t_account t1
+                 LEFT JOIN t_staff t2
+                           ON t1.id = t2.account_id
+                 LEFT JOIN t_account t3
+                           ON t1.create_emp = t3.id
+                 LEFT JOIN t_account t4
+                           ON t1.modify_emp = t4.id
+        WHERE t1.id = #{id}
+    </select>
     <select id="selectIdByNum" parameterType="String" resultType="Long">
         SELECT id FROM t_account
         WHERE account_name = #{accountNum}
@@ -51,24 +75,24 @@
     </insert>
     <select id="queryList" resultMap="account">
         SELECT t1.id,
-               account_name,
+               t1.account_name,
                t2.staff_name,
                t2.staff_num,
                t3.department_name,
-               permissions,
-               t4.staff_name modify_emp_name,
+               t1.permissions,
+               t4.account_name modify_emp_name,
                t1.modify_time,
-               account_state
+               t1.account_state
         FROM t_account t1
                  LEFT JOIN t_staff t2
                            ON (t1.id = t2.account_id)
-                 LEFT JOIN t_staff t4
+                 LEFT JOIN t_account t4
                            ON (t1.modify_emp = t4.id)
                  LEFT JOIN t_department t3
                            ON (t2.department_id = t3.id)
-        WHERE account_state != 0
+        WHERE t1.account_state != 0
         <if test="accountName != null and accountName.trim() != ''">
-          and account_name = #{accountName}
+          and t1.account_name = #{accountName}
         </if>
         <if test="staffName != null and staffName.trim() != ''">
           and t2.staff_name = #{staffName}
@@ -77,7 +101,7 @@
           and t2.staff_num = #{staffNum}
         </if>
         <if test="permissions != null and permissions.trim() != ''">
-          and permissions = #{permissions}
+          and t1.permissions = #{permissions}
         </if>
         <if test="departmentId != null and departmentId.trim() != ''">
             and t3.id = #{departmentId}
@@ -89,7 +113,7 @@
             and t1.staff_id = 0
         </if>
         <if test="accountState != null and accountState.trim() != ''">
-            and account_state = #{accountState}
+            and t1.account_state = #{accountState}
         </if>
         ORDER BY id
     </select>
