@@ -46,6 +46,18 @@
         <if test="accountId!=null and accountId!=''">
             AND t1.apply_account_id=#{accountId}
         </if>
+        <if test="applyTimeStart!=null and applyTimeStart!=''">
+            AND t1.apply_time<![CDATA[ <= ]]> #{applyTimeStart}
+        </if>
+        <if test="applyTimeEnd!=null and applyTimeEnd!=''">
+            AND t1.apply_time<![CDATA[ <= ]]> #{applyTimeEnd}
+        </if>
+        <if test="modifyTimeStart!=null and modifyTimeStart!=''">
+            AND t1.modify_time<![CDATA[ >= ]]> #{modifyTimeStart}
+        </if>
+        <if test="modifyTimeEnd!=null and modifyTimeEnd!=''">
+            AND t1.modify_time<![CDATA[ <= ]]> #{modifyTimeEnd}
+        </if>
 
     </select>
 

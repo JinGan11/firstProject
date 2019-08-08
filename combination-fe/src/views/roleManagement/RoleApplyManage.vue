@@ -40,8 +40,9 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请人所属部门">
-              <el-input style="width:100px;" v-model="form.applyDepartmentName"></el-input>
-              <el-button type="text">选择</el-button>
+              <el-input style="width:80px;" v-model="form.applyDepartmentName"></el-input>
+              <el-button type="text" @click="selectDepartment">选择</el-button>
+              <el-button type="text" @click="clearDepartment">清空</el-button>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -58,28 +59,26 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="100">
+          <el-col :span="50">
             <el-form-item label="申请时间">
               <el-date-picker
                 v-model="form.applyTime"
-                unlink-panels
-                size="mini"
-                type="daterange"
-                value-format="yyyy-MM-dd"
+                type="datetimerange"
+                format="yyyy-MM-dd HH:mm:ss"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
           </el-col>
-          <el-col :span="200">
+          <el-col :span="50">
             <el-form-item label="操作时间">
               <el-date-picker
                 v-model="form.modifyTime"
-                unlink-panels
-                size="mini"
-                type="daterange"
-                value-format="yyyy-MM-dd"
+                type="datetimerange"
+                format="yyyy-MM-dd HH:mm:ss"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期">
@@ -151,6 +150,27 @@
         <el-button @click="cancel">取 消</el-button>
       </template>
     </el-dialog>
+
+
+    <el-dialog :title='titleDepartment' :visible.sync="dialogVisibleDepartment"  :close-on-click-modal="false" width="50%">
+      <div>
+        <span>选择要操作的部门</span>
+        <br><br>
+        <el-tree
+          ref="tree"
+          :props="defaultProps"
+          node-key="id"
+          :load="loadNode"
+          lazy="true"
+          check-strictly
+          show-checkbox
+          :render-content="renderContent"
+          @check-change="handleClick">
+        </el-tree>
+        <br>
+        <el-button type="primary" @click="getCheckedDepartment">确定</el-button>
+      </div>
+    </el-dialog>
   </home>
 </template>
 <script>
@@ -164,6 +184,14 @@
         pageSize: 10,
         disabled: true,
         disabledDelete:true,
+        titleDepartment:'选择部门',
+        dialogVisibleDepartment:false,
+
+        applyTimeStart:'',
+        applyTimeEnd:'',
+        modifyTimeStart:'',
+        modifyTimeEnd:'',
+
         form: {
           roleApplyNum:'',
           roleId: '',
@@ -173,8 +201,8 @@
           applyStaffName:'',
           applyDepartmentName:'',
           applyStatus:'',
-          applyTime:'',
-          modifyTime:'',
+          applyTime:[],
+          modifyTime:[],
         },
         tableData: [],
         selection: [],
@@ -225,7 +253,14 @@
         },{
           value:'5',
           label:'已删除'
-        }]
+        }],
+
+        defaultProps: {
+          label: 'departmentName',
+          children: 'children',
+          id: 'id',
+          status: 'status'
+        },
       }
     },
     activated() {
@@ -264,8 +299,10 @@
           applyStaffName: self.form.applyStaffName,
           applyDepartmentName:self.form.applyDepartmentName,
           applyStatus: self.form.applyStatus,
-          applyTime:self.form.applyTime ,
-          modifyTime: self.form.modifyTime,
+          applyTimeStart:self.form.applyTime[0],
+          applyTimeEnd:self.form.applyTime[1],
+          modifyTimeStart: self.form.modifyTime[0],
+          modifyTimeEnd: self.form.modifyTime[1],
           type:'角色申请'
         };
         // get请求 只是基本的HTTP调用，用来执行增晒改查  并不表示get用来获取数据
@@ -446,11 +483,59 @@
             message: '已取消提交'
           });
         });
+      },
 
+      loadNode(node,resolve){
+        var self = this;
+        self.$http.get('department/buildTree.do_', {
+          params: null
+        }).then((result) => {
+          resolve([result.departmentDto]);
+        }).catch(function (error) {
 
-
-      }
-
+        });
+      },
+      getCheckedDepartment() {
+        // 获取部门 回填到文本框中
+        // alert(this.$refs.tree.getCheckedNodes()[0].departmentName);
+        this.form.applyDepartmentName=this.$refs.tree.getCheckedNodes()[0].departmentName;
+        this.dialogVisibleDepartment=false;
+      },
+      handleClick(data,checked,node){
+        // 手动设置单选
+        if(checked === true) {
+          this.checkedId = data.id;
+          this.$refs.tree.setCheckedKeys([data.id]);
+          // 设置按钮是否可选（选中节点后调用两次handleClick，第一次checked为true，所以设置按钮写在这）
+          if(data.status === 1){
+            this.operationBtnActive=false;
+          }else{
+            this.operationBtnActive=true;
+          }
+        } else {
+          if (this.checkedId == data.id) {
+            this.$refs.tree.setCheckedKeys([data.id]);
+          }
+        }
+      },
+      renderContent(h, { node, data, store }) {
+        // 这里编译器有红色波浪线不影响运行...
+        if(data.status != 1){
+          return (
+            <span style="color:red">{node.label}</span>
+        );
+        }else{
+          return (
+            <span>{node.label}</span>
+        );
+        }
+      },
+      selectDepartment(){//选择部门
+        this.dialogVisibleDepartment=true;
+      },
+      clearDepartment(){//清除部门的值
+        this.form.applyDepartmentName='';
+      },
     }
 
   }

@@ -43,8 +43,10 @@ public class RoleApplyManageController {
         String applyStaffName = request.getParameter("applyStaffName");
         String applyDepartmentName = request.getParameter("applyDepartmentName");
         String applyStatus = request.getParameter("applyStatus");
-        String applyTime = request.getParameter("applyTime");
-        String modifyTime = request.getParameter("modifyTime");
+        String applyTimeStart = request.getParameter("applyTimeSatrt");
+        String applyTimeEnd = request.getParameter("applyTimeEnd");
+        String modifyTimeStart = request.getParameter("modifyTimeStart");
+        String modifyTimeEnd = request.getParameter("modifyTimeEnd");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("page", page);
         params.put("limit", limit);
@@ -57,8 +59,11 @@ public class RoleApplyManageController {
         params.put("applyStaffName", applyStaffName);
         params.put("applyDepartmentName", applyDepartmentName);
         params.put("applyStatus", applyStatus);
-        params.put("applyTime", applyTime);
-        params.put("modifyTime", modifyTime);
+        params.put("applyTimeStart", applyTimeStart);
+        params.put("applyTimeEnd", applyTimeEnd);
+        params.put("modifyTimeStart", modifyTimeStart);
+        params.put("modifyTimeEnd", modifyTimeEnd);
+
         if (request.getParameter("type").equals("角色审核")) {
             Long accountId = (Long) session.getAttribute("accountId");
             params.put("accountId", accountId);
