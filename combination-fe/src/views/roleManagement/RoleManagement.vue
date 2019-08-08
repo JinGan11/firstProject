@@ -78,7 +78,7 @@
 
 <script>
   import commonUtils from '../../common/commonUtils'
-  const rolesOptions = ['角色ID', '角色民称', '审批人账号', '审批人员工编号', '审批人姓名', '审批人所属部门', '状态', '描述'];
+  const rolesOptions = ['角色ID', '角色名称', '审批人账号', '审批人员编号', '审批人姓名', '审批人所属部门', '状态', '描述'];
   export default {
     data() {
       return {
@@ -146,7 +146,7 @@
           self.tableData = result.page.list;
           self.total = result.page.totalCount;
           self.RoleStatusEnum = result.RoleStatusEnum;
-          self.roleDtoList=self.tableData;
+          self.roleDtoList=result.roleList;
           //self.form.name="dsf";
         }).catch(function (error) {
           commonUtils.Log("roleManage/querylist.do_:" + error);
@@ -242,7 +242,7 @@
           } else if (this.checkRoles[i] === '审批人账号') {
             this.filterVal.push('accountNum')
           } else if (this.checkRoles[i] === '审批人员编号') {
-            this.filterVal.push('staffId')
+            this.filterVal.push('staffNum')
           } else if (this.checkRoles[i] === '审批人姓名') {
             this.filterVal.push('staffName')
           } else if (this.checkRoles[i] === '审批人所属部门') {

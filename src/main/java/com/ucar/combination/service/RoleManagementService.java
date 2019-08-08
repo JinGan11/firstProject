@@ -6,6 +6,7 @@ import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AssignPermission;
 import com.ucar.combination.model.PowerList;
+import com.ucar.combination.model.Role;
 import com.ucar.combination.model.RolePower;
 import com.ucar.combination.model.dto.RoleDto;
 
@@ -32,4 +33,5 @@ public interface RoleManagementService {
     Result getRolePower(RolePower rolePower);
     void updateByModify(RoleDto role);
     List<RolePower> getRolePowerList(Long roleInfoId);
+    List<Role> queryroleList();
 }

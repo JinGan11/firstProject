@@ -17,6 +17,18 @@
             AND t1.role_name = #{role_name}
         </if>
     </select>
+    <select id="queryroleList" resultType="com.ucar.combination.model.Role">
+         select
+        t1.id              roleId,
+        t1.role_name       roleName,
+        t1.approver_account_name   accountNum,
+        t1.approver_staff_num     staffNum,
+        t1.approver_staff_name     staffName,
+        t1.approver_department_name  departmentName,
+        t1.role_status    roleStatus,
+        t1.description    description
+        from t_role_info t1
+    </select>
 
     <select id="getRoleList" resultType="com.ucar.combination.model.Role">
         select id role_id, role_name

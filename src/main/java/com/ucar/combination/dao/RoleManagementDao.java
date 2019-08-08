@@ -89,5 +89,12 @@ public interface RoleManagementDao {
      */
     void removeRolePowerById(RolePower rolePower);
 
-
+    /**
+     * description: 选择所有角色信息
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 17:46
+     * @params
+     * @return
+     */
+    List<Role> queryroleList();
 }

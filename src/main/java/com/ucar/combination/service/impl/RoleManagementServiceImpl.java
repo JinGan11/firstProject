@@ -238,4 +238,16 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         List<RolePower> list = roleManagementDao.getRolePowerListById(roleInfoId);
         return list;
     }
+
+    /**
+     * description: 获取所有的ROLE信息
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/8 17:44
+     * @params
+     * @return
+     */
+    @Override
+    public List<Role> queryroleList() {
+        return roleManagementDao.queryroleList();
+    }
 }
