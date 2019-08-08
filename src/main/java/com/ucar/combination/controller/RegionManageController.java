@@ -1,5 +1,6 @@
 package com.ucar.combination.controller;
 
+import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
@@ -16,7 +17,6 @@ import java.util.Map;
 
 /**
  * description:行政区划管理
- *
  * @author 杨锴伦（kailun.yang@ucarinc.com）
  * @version 1.0
  * @date 2019-08-06 15:43
@@ -50,7 +50,7 @@ public class RegionManageController {
         params.put("regionStatus", regionStatus);
         ResultPage resultPage=regionManageService.provinceSearchList(new QueryParam(params));
         List<Object> provinceSearchList = regionManageService.getProvinceSearchList(new QueryParam(params));
-        return new Result().ok().put("page",resultPage).put("provinceSearchList",provinceSearchList);
+        return new Result().ok().put("page",resultPage).put("provinceSearchList",provinceSearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
     }
 
     /**
@@ -81,7 +81,7 @@ public class RegionManageController {
         params.put("regionStatus", regionStatus);
         ResultPage resultPage=regionManageService.citySearchList(new QueryParam(params));
         List<Object> citySearchList = regionManageService.getCitySearchList(new QueryParam(params));
-        return new Result().ok().put("page",resultPage).put("citySearchList",citySearchList);
+        return new Result().ok().put("page",resultPage).put("citySearchList",citySearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
     }
 
     /**
@@ -110,15 +110,41 @@ public class RegionManageController {
         params.put("upperRegionTwice",upperRegionTwice);
         params.put("upperRegion",upperRegion);
         params.put("regionStatus", regionStatus);
-
-//        for (String key:params.keySet()) {
-//            System.out.println("key: "+key+" value: "+params.get(key));
-//        }
-
         ResultPage resultPage=regionManageService.countySearchList(new QueryParam(params));
         List<Object> countySearchList = regionManageService.getCountySearchList(new QueryParam(params));
-        return new Result().ok().put("page",resultPage).put("countySearchList",countySearchList);
+        return new Result().ok().put("page",resultPage).put("countySearchList",countySearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
     }
 
 
+    @ResponseBody
+    @RequestMapping("/createProvince")
+    public Result createProvince(HttpServletRequest request) throws  IllegalAccessException{
+
+
+        String regionCode = request.getParameter("regionCode");
+        String regionName = request.getParameter("regionName");
+        String regionPinyin = request.getParameter("regionPinyin");
+        String upperRegion = request.getParameter("upperRegion");
+        String regionStatus = request.getParameter("regionStatus");
+        String mEmp = request.getParameter("mEmp");
+        String mTime = request.getParameter("mTime");
+
+
+
+        Map<String,Object> params=new HashMap<>();
+        params.put("regionCode", regionCode);
+        params.put("regionName", regionName);
+        params.put("regionPinyin",regionPinyin);
+        params.put("upperRegion",upperRegion);
+        params.put("regionStatus", regionStatus);
+        params.put("mEmp",mEmp);
+        params.put("mTime", mTime);
+
+        for(String key:params.keySet()){
+            System.out.println("key: "+key+" value: "+params.get(key));
+        }
+
+//        return new Result().ok().put("msg",map);
+        return null;
+    }
 }

@@ -23,11 +23,27 @@ public interface RegionManageService {
     ResultPage provinceSearchList(QueryParam queryParam);
     List<Object> getProvinceSearchList(QueryParam queryParam);
 
+    /**
+     * description: 城市查询
+     * @author kailun.yang@ucarinc.com
+     * @date <2019-08-07>
+     * @param <[queryParam]> <参数说明>
+     * @return <com.ucar.combination.common.ResultPage><返回值说明>
+     */
     ResultPage citySearchList(QueryParam queryParam);
     List<Object> getCitySearchList(QueryParam queryParam);
 
+    /**
+     * description: 区县查询
+     * @author kailun.yang@ucarinc.com
+     * @date <2019-08-07>
+     * @param <[queryParam]> <参数说明>
+     * @return <com.ucar.combination.common.ResultPage><返回值说明>
+     */
     ResultPage countySearchList(QueryParam queryParam);
     List<Object> getCountySearchList(QueryParam queryParam);
+
+
 
     String testSer();
 }

@@ -20,6 +20,26 @@ public interface RegionManageDao {
      * @return <java.util.List<java.lang.Object>><返回值说明>
      */
     List<Object> provinceSearchList(Map<String, Object> map);
+
+    /**
+     * description: 城市查询
+     * @author kailun.yang@ucarinc.com
+     * @date <2019-08-07>
+     * @param <[map]> <参数说明>
+     * @return <java.util.List<java.lang.Object>><返回值说明>
+     */
     List<Object> citySearchList(Map<String, Object> map);
+
+    /**
+     * description: 区县查询
+     * @author kailun.yang@ucarinc.com
+     * @date <2019-08-07>
+     * @param <[map]> <参数说明>
+     * @return <java.util.List<java.lang.Object>><返回值说明>
+     */
     List<Object> countySearchList(Map<String, Object> map);
+
+
+
+
 }

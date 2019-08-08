@@ -720,6 +720,40 @@ public abstract class CommonEnums {
 		}
 	}
 
+	//区域状态
+	public static enum RegionStatus implements IEnum{
+		EFFECTIVE(1, "有效"),
+		INVALID(0, "无效");
+		private final int i;
+		private final String n;
+
+		RegionStatus(int i, String n) {
+			this.i = i;
+			this.n = n;
+		}
+
+		public static RegionStatus valueOf(Integer i){
+			if (i==null){
+				return null;
+			}
+			for (RegionStatus item:values()){
+				if (item.getI()==i){
+					return item;
+				}
+			}
+			return null;
+		}
+
+		@Override
+		public int getI() {
+			return i;
+		}
+
+		@Override
+		public String getN() {
+			return n;
+		}
+	}
 	public static Map<Integer, String> toEnumMap(IEnum[] enumArr) {
 		Map<Integer, String> res = new HashMap<>();
 		for (IEnum item : enumArr) {
