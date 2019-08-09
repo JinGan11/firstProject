@@ -60,7 +60,7 @@ public interface AccountManagerService {
      * @params id 账户id
      * @return 无
      */
-    void updateStatus(int id);
+    void updateStatus(int id,int status);
 
     /**
      * description: 设置员工账号

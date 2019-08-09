@@ -102,7 +102,7 @@ public class EmployeeManageController {
         System.out.print("id:"+id);
         System.out.print("accountId:"+accountId);
         employeeManageService.updateStatus(id);
-        accountManagerService.updateStatus(accountId);
+        accountManagerService.updateStatus(accountId,3);
         return Result.ok();
     }
 

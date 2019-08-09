@@ -178,7 +178,7 @@
 
     <update id="updateStatus">
         update t_account t1
-        set t1.account_state=3
+        set t1.account_state=#{status}
         where t1.id = #{id}
     </update>
     <update id="updateState" parameterType="java.lang.String">

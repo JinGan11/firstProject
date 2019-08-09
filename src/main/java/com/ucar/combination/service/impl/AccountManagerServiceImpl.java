@@ -50,9 +50,8 @@ public class AccountManagerServiceImpl implements AccountManagerService {
      * @params id 账户id
      * @return 无
      */
-    public void updateStatus(int id){
-        accountManageDao.updateStatus(id);
-
+    public void updateStatus(int id,int status){
+        accountManageDao.updateStatus(id,status);
     }
 
     @Override

@@ -78,8 +78,8 @@
       <el-button type="primary" @click="creatAccount" style="width:70px">新建</el-button>
       <el-button type="primary" :disabled="disable" @click="modifyAccount" style="width:70px">修改</el-button>
       <el-button type="primary" :disabled="disable" @click="" style="width:70px">删除</el-button>
-      <el-button type="primary" :disabled="disable" @click="" style="width:70px">冻结</el-button>
-      <el-button type="primary" :disabled="disable" @click="" style="width:70px">解冻</el-button>
+      <el-button type="primary" :disabled="disable" @click="lock" style="width:70px">冻结</el-button>
+      <el-button type="primary" :disabled="disable" @click="unlock" style="width:70px">解冻</el-button>
       <el-button type="primary" :disabled="disable" @click="" style="width:80px">密码重置</el-button>
       <el-button type="primary" :disabled="disable" @click="assignPermission" style="width:80px">分配权限</el-button>
       <el-button type="primary" :disabled="disable" @click="" style="width:80px">历史记录</el-button>
@@ -236,6 +236,18 @@
       commonUtils.Log("页面进来");
     },
     methods: {
+      lock(){
+        let accountId  = {
+          id:this.selection
+        }
+        this.$http.post("account/lock",accountId)
+      },
+      unlock(){
+        let accountId  = {
+          id:this.selection
+        }
+        this.$http.post("account/unLock",accountId)
+      },
       handleCheckChange () {
         var a = '1';
       },

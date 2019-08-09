@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -156,7 +157,7 @@ public class AccountManagerController {
     public void update(HttpServletRequest request){
         String strid = request.getParameter("accountId");
         int id = Integer.parseInt(strid);
-        accountManagerService.updateStatus(id);
+        accountManagerService.updateStatus(id,3);
 
     }
 
@@ -173,5 +174,23 @@ public class AccountManagerController {
         ResultPage notOwnedRole = roleManagementService.getnotOwnedRoleList(account);
         ResultPage ownedRole = roleManagementService.getOwnedRoleList(account);
         return Result.ok().put("notOwnedRole" ,notOwnedRole).put("ownedRole", ownedRole);
+    }
+    //冻结
+    @ResponseBody
+    @RequestMapping(value = "/lock",method = RequestMethod.POST)
+    public Result lockAccount(@RequestBody Map<String,String> map){
+        String accountId = map.get("id");
+        Integer status = 2;
+        accountManagerService.updateStatus(Integer.parseInt(accountId),status);
+        return null;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/unLock",method = RequestMethod.POST)
+    public Result unLockAccount(@RequestBody Map<String,String> map){
+        String accountId = map.get("id");
+        Integer status = 1;
+        accountManagerService.updateStatus(Integer.parseInt(accountId),status);
+        return null;
     }
 }

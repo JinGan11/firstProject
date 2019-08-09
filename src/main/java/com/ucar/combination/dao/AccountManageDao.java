@@ -29,7 +29,7 @@ public interface AccountManageDao {
      * @params id 账户id
      * @return 无
      */
-    void updateStatus(int id);
+    void updateStatus(int id, int status);
 
     /*
      * description: 通过账户id查询账户数据
