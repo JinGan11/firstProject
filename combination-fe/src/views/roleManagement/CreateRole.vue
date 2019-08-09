@@ -84,7 +84,7 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="新建时间">
-                <el-input style="width:200px;" :disabled="true" placeholder="当前时间" v-model="form.createTime"></el-input>
+                <el-input style="width:200px;" :disabled="true" placeholder="当前时间" v-model="createTime"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -96,7 +96,7 @@
             </el-col>
               <el-col :span="10">
                 <el-form-item label="修改时间">
-                  <el-input style="width:200px;" :disabled="true" placeholder="当前操作时间" v-model="form.modifyTime"></el-input>
+                  <el-input style="width:200px;" :disabled="true" placeholder="当前操作时间" v-model="modifyTime"></el-input>
                 </el-form-item>
               </el-col>
           </el-row>
@@ -255,9 +255,9 @@
           staffName:'',
           departmentName:'',
           description:'',
-          createTime:'',
-          modifyTime:'',
         },
+        createTime:'',
+        modifyTime:'',
         createEmp:'',
         modifyEmp:'',
         accountForm: {//选择账户
@@ -291,10 +291,29 @@
       commonUtils.Log("页面进来");
       this.createEmp=window.sessionStorage.getItem("loginUsername");
       this.modifyEmp=window.sessionStorage.getItem("loginUsername");
+      this.createTime=this.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+      this.modifyTime=this.format(new Date(), "yyyy-MM-dd HH:mm:ss");
     },
 
     methods: {
-      approvalInfo(val){
+
+      format(date, fmt) {//时间格式
+        let o = {
+          "M+": date.getMonth() + 1, //月份
+          "d+": date.getDate(), //日
+          "H+": date.getHours(), //小时
+          "m+": date.getMinutes(), //分
+          "s+": date.getSeconds(), //秒
+          "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+          "S": date.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (let k in o)
+          if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+      },
+
+      approvalInfo(val){//弹窗数据回填函数
         this.form.accountNum = val.accountName;
         this.form.staffNum = val.staffNum;
         this.form.staffName = val.staffName;
@@ -383,7 +402,7 @@
       },
       checkInput(val){
         if (val.form.roleName==''){
-          alert("角色名称不能为空");
+          alert("角色名称不能为空（1-30个字符）");
           return false;
         }
         if (val.form.accountNum==''){

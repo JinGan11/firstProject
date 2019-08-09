@@ -5,6 +5,7 @@
         select
         t1.id              roleId,
         t1.role_name       roleName,
+        t1.business_line   businessLine,
         t1.approver_account_name   accountNum,
         t1.approver_staff_num     staffNum,
         t1.approver_staff_name     staffName,

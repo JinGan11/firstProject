@@ -11,12 +11,21 @@ public class Role {
 
     private long roleId;
     private String roleName;
+    private String businessLine;
     private String accountNum;
     private String staffNum;
     private String staffName;
     private String departmentName;
     private Integer roleStatus;
     private String description;
+
+    public void setBusinessLine(String businessLine) {
+        this.businessLine = businessLine;
+    }
+
+    public String getBusinessLine() {
+        return businessLine;
+    }
 
     public void setRoleId(long roleId) {
         this.roleId = roleId;

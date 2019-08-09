@@ -36,13 +36,13 @@
             width="0px;"></span></el-radio>
         </template>
       </el-table-column>
-      <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
       <el-table-column prop="roleId" label="角色ID" width="150">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="cellTrigger(scope.row.roleId)">{{scope.row.roleId}}</el-button>
         </template>
       </el-table-column>
       <el-table-column prop="roleName" label="角色名称" width="150"></el-table-column>
+      <el-table-column prop="businessLine" v-if="false" label="支持业务线"></el-table-column>
       <el-table-column prop="accountNum" label="审批人账号" width="120"></el-table-column>
       <el-table-column prop="staffNum" label="审批人员工编号"></el-table-column>
       <el-table-column prop="staffName" label="审批人姓名" width="200"></el-table-column>
@@ -161,6 +161,7 @@
         id: '',
         roleId: '',
         roleName: '',
+        businessLine:'',
         accountNum: '',
         staffNum: '',
         staffName: '',
