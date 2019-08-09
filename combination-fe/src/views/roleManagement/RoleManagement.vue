@@ -25,7 +25,7 @@
       <el-button type="primary" @click="createRole" style="width:100px">新建</el-button>
       <el-button type="primary" @click="modifyRole(selection)" :disabled="isModify" style="width:100px">修改</el-button>
       <el-button type="primary" @click="deleteRole" :disabled="isModify" style="width:100px">删除</el-button>
-      <el-button type="primary" @click="" style="width:100px">添加账号</el-button>
+      <el-button type="primary" @click="addAccount" :disabled="isModify" style="width:100px">添加账号</el-button>
       <el-button type="primary" @click="roleAssignPermission" style="width:100px">分配权限</el-button>
     </div>
 
@@ -77,6 +77,39 @@
         <el-button @click="cancel">取 消</el-button>
       </template>
     </el-dialog>
+
+    <el-dialog title='添加账号' :visible.sync="addAccountDialogVisible" :close-on-click-modal="false" width="80%" :fullscreen="true">
+
+      <el-table ref="multipleTable" :data="accountTableData" border @selection-change="handleAccountSelectionChange" >
+        <el-table-column type="selection" width="50px"></el-table-column>
+        <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
+        <el-table-column prop="accountName" label="登陆账号" style="width:auto"></el-table-column>
+        <el-table-column prop="staffNum" label="员工编号" style="width:auto"></el-table-column>
+        <el-table-column prop="staffName" label="员工姓名" style="width:auto"></el-table-column>
+        <el-table-column prop="department" label="所属部门" style="width:auto"></el-table-column>
+        <el-table-column prop="premissions" label="数据权限类型" style="width:auto">
+          <template slot-scope="scope">
+            {{permissionsEnum[scope.row.premissions]}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="accountState" label="账号状态" style="width:auto">
+          <template slot-scope="scope">
+            {{accountStatusEnum[scope.row.accountState]}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="modifyTime" label="操作时间" style="width:auto"></el-table-column>
+        <el-table-column prop="modifyEmpName" label="操作人" style="width:auto"></el-table-column>
+      </el-table>
+      <el-pagination background
+                     @size-change="handleAccountSizeChange"
+                     @current-change="handleAccountCurrentChange"
+                     :current-page="currentAccounytPage"
+                     :page-sizes="[10, 50, 100, 200]"
+                     :page-size="accountPageSize"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="totalAccount">
+      </el-pagination>
+    </el-dialog>
   </home>
 </template>
 
@@ -115,6 +148,14 @@
          list: [],
          disabled: true,
         roleDtoList:[],
+        addAccountDialogVisible:false,
+        accountTableData:[],
+        selectionAccount:[],
+        currentAccounytPage:1,
+        accountPageSize:10,
+        totalAccount:0,
+        permissionsEnum:{},
+        accountStatusEnum:{},
       }
     },
     activated() {
@@ -136,6 +177,18 @@
       },
       handleSelectionChange(val) {
         this.selection = val;
+      },
+      handleAccountSizeChange(val) {
+        this.accountPageSize = val;
+        this.currentAccounytPage = 1;
+        this.fetchAccountData(1, val);
+      },
+      handleAccountCurrentChange(val) {
+        this.currentAccounytPage = val;
+        this.fetchAccountData(val, this.accountPageSize);
+      },
+      handleAccountSelectionChange(val) {
+        this.selectionAccount = val;
       },
       fetchData() { //获取数据
         var self = this;
@@ -199,6 +252,28 @@
       },
       roleAssignPermission() {
         this.$router.replace("/roleManagement/RoleAssignPermission")
+      },
+      addAccount(){
+        this.addAccountDialogVisible=true;
+        this.fetchAccountData();
+      },
+      fetchAccountData(){
+        var self = this;
+        var param = {
+          page: self.currentAccounytPage,
+          limit: self.accountPageSize,
+        };
+        self.$http.get('account/querylist.do_', {
+          params: param
+        }).then((result) => {
+          self.accountTableData = result.page.list;
+          self.permissionsEnum = result.permissionEnum;
+          self.accountStatusEnum = result.accountStatusEnum;
+          self.totalAccount = result.page.totalCount;
+        }).catch(function (error) {
+          commonUtils.Log("account/querylist.do_:"+error);
+          self.$message.error("获取数据错误")
+        });
       },
 
 
