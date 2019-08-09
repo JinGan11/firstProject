@@ -415,7 +415,7 @@
         this.formRoleInfo.businessLine=sessionStorage.getItem('businessLineFromApply');
         this.otherInfo.approverStaffName=sessionStorage.getItem('approverStaffNameFromApply');
         this.otherInfo.applyTime=sessionStorage.getItem('applyTimeFromApply');
-        this.otherInfo.applyStaffName=sessionStorage.getItem('loginUsername');
+        this.otherInfo.applyAccountName=sessionStorage.getItem('loginUsername');
         this.otherInfo.modifyTime=sessionStorage.getItem('modifyTimeFromApply');
         this.otherInfo.modifyStaffName=sessionStorage.getItem('modifyEmpFromApply');
         this.showAccountListByApplyId();
@@ -552,10 +552,10 @@
           self.$http.get('roleApply/showAccountListByApplyId.do_', {
             params: param
           }).then((result) => {
-            alert(111111);
+
             //请求成功回调
             self.tableDataAccount = result.list;
-            alert(22222);
+
           }).catch(function (error) {
             //请求失败回调
             commonUtils.Log("roleApply/showAccountListByApplyId.do_:"+error);

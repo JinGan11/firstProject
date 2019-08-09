@@ -65,6 +65,7 @@
         <el-table-column prop="staffName" label="关联员工姓名"width="150"></el-table-column>
         <el-table-column prop="staffNum" label="关联员工编号"  width="150"></el-table-column>
         <el-table-column prop="staffDepartmentName" label="关联员工所属部门" width="200"></el-table-column>
+<!--        <el-table-column prop="department" label="关联员工所属部门" width="200"></el-table-column>-->
         <el-table-column prop="applyOperation" label="申请操作" width="150" style="text-align: center">
           <el-select v-model="optionOfApply" clearable style="width:100px;" placeholder="请选择">
             <el-option
@@ -353,7 +354,9 @@
         dialogCategory: '',//控制显示对应的具体弹窗
         multipleSelection: [],
         tableDataAccount:[],
-        accountList:[],
+        accountIdList:[],
+        accountLength:'',
+        roleId:'',
 
         formRoleInfo: {//申请信息
           roleApplyNum: '',
@@ -416,6 +419,20 @@
           value: '2',
           label: '移除'
         }],
+        forms:{
+            roleApplyNum:"",
+            roleId:"",
+            roleName:"",
+            applyStatus:"",
+            applyAccountName:"",
+            applyStaffNum:"",
+            applyStaffName:"",
+            applyDepartmentName:"",
+            applyTime:"",
+            modifyStaffName:"",
+            modifyTime:"",
+            accountList:[],
+        },
       }
     },
     activated() {
@@ -423,9 +440,13 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
-      this.otherInfo.applyStaffName=sessionStorage.getItem('loginUsername');
+      this.otherInfo.applyAccountName=sessionStorage.getItem('loginUsername');
       this.otherInfo.modifyStaffName=sessionStorage.getItem('loginUsername');
+      this.queryLoginInRoleApply();
+      // window.localStorage.setItem("tableDataAccount",tableDataAccount)
     },
+
+
     methods: {
       handleSizeChangeRole(val) {
         this.pageSize = val;
@@ -457,6 +478,30 @@
         //显示所有角色列表
         this.fetchDataRole();
       },
+
+      queryLoginInRoleApply(){//获取当前登录账号 部门 员工
+        var self = this;
+        var applyAccountName=sessionStorage.getItem('loginUsername');
+        var param = {
+          applyAccountName: applyAccountName,
+        };
+        self.$http.get('roleApply/queryLoginInRoleApply.do_', {
+          params: param
+        }).then((result) => {
+          self.otherInfo=result.page;
+        }).catch(function (error) {
+          commonUtils.Log("roleApply/queryLoginInRoleApply.do_" + error);
+          self.$message.error("获取数据错误");
+        });
+
+
+      },
+
+
+
+
+
+
       fetchDataRole() { //获取数据
         var self = this;
         var param = {
@@ -476,6 +521,7 @@
       },
       getRoleDetails(row) {
         //获取选中行的数据
+        this.roleId=row.roleId;
         this.formRoleInfo.roleName=row.roleName;
         this.formRoleInfo.approverStaffName=row.staffName;
         this.otherInfo.approverStaffName=row.staffName;
@@ -533,16 +579,32 @@
         this.multipleSelection = val;
       },
       selectAccountConfirm(){
+        // sessionStorage.setItem('accountLength', this.tableDataAccount.length);
+        // this.accountLength=sessionStorage.getItem('accountLength');
+        // alert(this.accountLength);
+
         this.tableDataAccount=this.multipleSelection;
+        // alert(this.tableDataAccount.length);
         for(let i=0;i<this.multipleSelection.length;i++){
           this.tableDataAccount[i].id=this.multipleSelection[i].id;
           this.tableDataAccount[i].accountName=this.multipleSelection[i].accountName;
           this.tableDataAccount[i].staffName=this.multipleSelection[i].staffName;
           this.tableDataAccount[i].staffNum=this.multipleSelection[i].staffNum;
           this.tableDataAccount[i].staffDepartmentName=this.multipleSelection[i].department;
-          // this.multipleSelection[i].operationOfDelete=
         }
+
+        // for(let i=0;i<this.multipleSelection.length;i++){
+        //   this.tableDataAccount.id.push(this.multipleSelection[i].id);
+        //   this.tableDataAccount.accountName.push(this.multipleSelection[i].accountName);
+        //   this.tableDataAccount.staffName.push(this.multipleSelection[i].staffName);
+        //   this.tableDataAccount.staffNum.push(this.multipleSelection[i].staffNum);
+        //   this.tableDataAccount.staffDepartmentName.push(this.multipleSelection[i].department);
+        // }
+        //alert(this.multipleSelection.accountName);
+        // this.tableDataAccount.push(this.multipleSelection);
         this.dialogVisibleAccount=false;
+
+
       },
 
       deleteSelect(index){ //移除添加的账户 删除行
@@ -550,31 +612,60 @@
       },
 
 
-      saveRoleApply(){
+      saveRoleApply(){//保存角色申请
         for(let i=0;i<this.tableDataAccount.length;i++){
-          this.accountList[i]=this.tableDataAccount[i].accountName;
-          alert(this.accountList[i])
+          console.log(this.tableDataAccount[i].accountName)
+          this.accountIdList.push(this.tableDataAccount[i].accountName);
+          alert(this.accountIdList[i])
         }
-        alert(this.formRoleInfo.roleName);
-        var self=this;
-        var param={
-          roleName: self.formRoleInfo.roleName,
-          applyStatus: self.otherInfo.applyStatus,
-          applyAccountName:self.otherInfo.applyAccountName,
-          applyStaffNum: self.otherInfo.applyStaffNum,
-          applyStaffName:self.otherInfo.applyStaffName,
-          applyDepartmentName: self.otherInfo.applyDepartmentName,
-          applyTime:self.otherInfo.applyTime,
-          modifyStaffName:self.otherInfo.modifyStaffName,
-          modifyTime:self.otherInfo.modifyTime,
-          accountList:self.accountList
-        };
+        // this.accountList.push(this.tableDataAccount.accountName);
+          var self=this;
+        self.forms.roleApplyNum=self.formRoleInfo.roleApplyNum,
+        self.forms.roleId=self.roleId,
+        self.forms.roleName=self.formRoleInfo.roleName,
+        self.forms.applyStatus=self.otherInfo.applyStatus,
+        self.forms.applyAccountName=self.otherInfo.applyAccountName,
+        self.forms.applyStaffNum=self.otherInfo.applyStaffNum,
+        self.forms.applyStaffName=self.otherInfo.applyStaffName,
+        self.forms.applyDepartmentName=self.otherInfo.applyDepartmentName,
+        self.forms.applyTime=self.otherInfo.applyTime,
+        self.forms.modifyStaffName=self.otherInfo.modifyStaffName,
+        self.forms.modifyTime=self.otherInfo.modifyTime,
+        self.forms.accountList=self.accountList,
+
+          // roleId:self.roleId,
+            // roleName: self.formRoleInfo.roleName,
+            // applyStatus: self.otherInfo.applyStatus,
+            // applyAccountName:self.otherInfo.applyAccountName,
+            // applyStaffNum: self.otherInfo.applyStaffNum,
+            // applyStaffName:self.otherInfo.applyStaffName,
+            // applyDepartmentName: self.otherInfo.applyDepartmentName,
+            // applyTime:self.otherInfo.applyTime,
+            // modifyStaffName:self.otherInfo.modifyStaffName,
+            // modifyTime:self.otherInfo.modifyTime,
+            // accountList:self.accountList
+        // var param={
+        //   roleApplyNum:self.formRoleInfo.roleApplyNum,
+        //   roleId:self.roleId,
+        //   roleName: self.formRoleInfo.roleName,
+        //   applyStatus: self.otherInfo.applyStatus,
+        //   applyAccountName:self.otherInfo.applyAccountName,
+        //   applyStaffNum: self.otherInfo.applyStaffNum,
+        //   applyStaffName:self.otherInfo.applyStaffName,
+        //   applyDepartmentName: self.otherInfo.applyDepartmentName,
+        //   applyTime:self.otherInfo.applyTime,
+        //   modifyStaffName:self.otherInfo.modifyStaffName,
+        //   modifyTime:self.otherInfo.modifyTime,
+        //   accountList:self.accountList
+        // };
 
 
         // alert(this.tableDataAccount[0].accountName);
 
-        self.$http.get("roleApply/createRoleApply.do_", {
-          params: param}).then(result => {
+
+        self.$http.post("roleApply/createRoleApply.do_",self.forms)
+          .then(result => {
+            alert("新建成功");
             self.$router.replace("/roleManagement/apply");
           }).catch(function (error) {
             commonUtils.Log("/roleManagement/apply"+error);

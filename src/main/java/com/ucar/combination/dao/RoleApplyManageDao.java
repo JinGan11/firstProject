@@ -1,7 +1,5 @@
 package com.ucar.combination.dao;
-import com.ucar.combination.model.dto.AccountListByApplyIdDto;
-import com.ucar.combination.model.dto.CreateRoleApplyDto;
-import com.ucar.combination.model.dto.RoleApplyDto;
+import com.ucar.combination.model.dto.*;
 
 import java.util.List;
 import java.util.Map;
@@ -55,4 +53,14 @@ public interface RoleApplyManageDao {
     * @Date  10:56 2019/8/9
     */
     List<AccountListByApplyIdDto> showAccountListByApplyId(Long applyId);
+
+    /**
+    * @Description: 角色申请  获取当前登录账号的 具体信息
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  20:30 2019/8/9
+    */
+
+    LoginInfoInRoleApplyDto queryLoginInRoleApply(String applyAccountName);
 }

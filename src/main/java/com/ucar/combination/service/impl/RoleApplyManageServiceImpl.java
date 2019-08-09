@@ -7,6 +7,7 @@ import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.RoleApplyManageDao;
 import com.ucar.combination.model.dto.AccountListByApplyIdDto;
 import com.ucar.combination.model.dto.CreateRoleApplyDto;
+import com.ucar.combination.model.dto.LoginInfoInRoleApplyDto;
 import com.ucar.combination.model.dto.RoleApplyDto;
 import com.ucar.combination.service.RoleApplyManageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,12 @@ public class RoleApplyManageServiceImpl implements RoleApplyManageService {
     public List showAccountListByApplyId(Long applyId) {
         List<AccountListByApplyIdDto> accountListByApplyIdDtos=roleApplyManageDao.showAccountListByApplyId(applyId);
         return accountListByApplyIdDtos;
+    }
+
+    @Override
+    public LoginInfoInRoleApplyDto queryLoginInRoleApply(String applyAccountName) {
+        LoginInfoInRoleApplyDto loginInfoInRoleApplyDto = roleApplyManageDao.queryLoginInRoleApply(applyAccountName);
+        return loginInfoInRoleApplyDto;
     }
 
 }

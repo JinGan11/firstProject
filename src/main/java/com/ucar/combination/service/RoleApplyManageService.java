@@ -4,6 +4,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.dto.AccountListByApplyIdDto;
 import com.ucar.combination.model.dto.CreateRoleApplyDto;
+import com.ucar.combination.model.dto.LoginInfoInRoleApplyDto;
 import com.ucar.combination.model.dto.RoleApplyDto;
 
 import java.util.List;
@@ -67,5 +68,14 @@ public interface RoleApplyManageService {
     * @Date  11:08 2019/8/9
     */
     List<AccountListByApplyIdDto> showAccountListByApplyId(Long applyId);
+
+    /**
+    * @Description:  角色申请  获取当前登录信息的
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  20:35 2019/8/9
+    */
+    LoginInfoInRoleApplyDto queryLoginInRoleApply(String applyAccountName);
 
 }
