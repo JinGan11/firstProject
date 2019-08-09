@@ -5,7 +5,7 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="角色名称">
-              <el-input style="width:200px;" v-model="form.name"></el-input>
+              <el-input style="width:200px;" placeholder="角色名称" v-model="form.name"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="3">
@@ -232,7 +232,8 @@
           self.$http.get('roleManage/updateStatus.do_', {
             params: param
           }).then(() => {
-            self.$router.replace("/roleManagement/roleManagement");
+            self.$message.info("成功删除")
+            this.$router.go(0);
           }).catch(function (error) {
             commonUtils.Log("roleManage/updateStatus.do_:" + error);
             self.$message.error("获取数据错误");

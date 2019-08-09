@@ -13,54 +13,54 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="角色名称">
-              <el-input style="width:200px;" v-model="form.roleName"></el-input>
+              <el-input style="width:200px;" :disabled="true" v-model="form.roleName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="10">
             <el-form-item label="审批人账号">
-              <el-input style="width:200px;" v-model="form.accountNum"></el-input>
+              <el-input style="width:200px;" :disabled="true" v-model="form.accountNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="审批人员工编号">
-              <el-input style="width:200px;" v-model="form.staffNum"></el-input>
+              <el-input style="width:200px;" :disabled="true" v-model="form.staffNum"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="10">
             <el-form-item label="审批人姓名">
-              <el-input style="width:200px;" v-model="form.staffName"></el-input>
+              <el-input style="width:200px;" :disabled="true" v-model="form.staffName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="审批人所属部门">
-              <el-input style="width:200px;" v-model="form.departmentName"></el-input>
+              <el-input style="width:200px;" :disabled="true" v-model="form.departmentName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="10">
+          <el-col :span="15">
             <el-form-item label="支持业务线">
               <!--<template v-for="item in chks">
                 <input type="checkbox" name="hobby" :value="item.id"
                      :checked="form.loopsss.indexOf(item.id) > -1"/>{{item.name}}
               </template>
               -->
-              <input type="checkbox" v-model="form.businessLine" value="买买车">买买车
-              <input type="checkbox" v-model="form.businessLine" value="租车">租车
-              <input type="checkbox" v-model="form.businessLine" value="闪贷">闪贷
-              <input type="checkbox" v-model="form.businessLine" value="专车">专车
-              <input type="checkbox" v-model="form.businessLine" value="保险">保险
+              <input type="checkbox" :disabled="true" v-model="form.businessLine" value="买买车">买买车
+              <input type="checkbox" :disabled="true" v-model="form.businessLine" value="租车">租车
+              <input type="checkbox" :disabled="true" v-model="form.businessLine" value="闪贷">闪贷
+              <input type="checkbox" :disabled="true" v-model="form.businessLine" value="专车">专车
+              <input type="checkbox" :disabled="true" v-model="form.businessLine" value="保险">保险
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="10">
             <el-form-item label="描述">
-              <el-input style="width:200px;" v-model="form.description"></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" :disabled="true" v-model="form.description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>

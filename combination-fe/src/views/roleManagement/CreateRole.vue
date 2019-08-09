@@ -9,42 +9,42 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="角色ID">
-              <el-input style="width:200px;" :disabled="true" v-model="form.roleID"></el-input>
+              <el-input style="width:200px;" :disabled="true"  placeholder="保存自动填入" v-model="form.roleID"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="角色名称">
-              <el-input style="width:200px;" v-model="form.roleName"></el-input>
+              <el-input style="width:200px;" placeholder="请填入名称" v-model="form.roleName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="10">
             <el-form-item label="审批人账号">
-              <el-input style="width:200px;" v-model="form.accountNum"></el-input>
+              <el-input style="width:200px;" :disabled="true"  placeholder="选择回填信息账号" v-model="form.accountNum"></el-input>
               <a style="color: #ffd408" @click="chooseAccount">选择</a>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="审批人员工编号">
-              <el-input style="width:200px;" v-model="form.staffNum"></el-input>
+              <el-input style="width:200px;" :disabled="true"  placeholder="回填信息" v-model="form.staffNum"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="10">
             <el-form-item label="审批人姓名">
-              <el-input style="width:200px;" v-model="form.staffName"></el-input>
+              <el-input style="width:200px;" :disabled="true"  placeholder="回填信息" v-model="form.staffName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="审批人所属部门">
-              <el-input style="width:200px;" v-model="form.departmentName"></el-input>
+              <el-input style="width:200px;" :disabled="true"  placeholder="回填信息" v-model="form.departmentName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-            <el-col :span="10">
+            <el-col :span="15">
               <el-form-item label="支持业务线">
                   <!--<template v-for="item in chks">
                     <input type="checkbox" name="form.hobby" :value="item.id"
@@ -61,7 +61,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="描述">
-              <el-input style="width:200px;" v-model="form.description"></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="填写角色描述" v-model="form.description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -76,24 +76,24 @@
           <el-row>
             <el-col :span="10">
               <el-form-item label="新建人">
-                <el-input style="width:200px;" :disabled="true" v-model="form.createEmp"></el-input>
+                <el-input style="width:200px;" :disabled="true" placeholder="当前操作账户" v-model="form.createEmp"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="新建时间">
-                <el-input style="width:200px;" :disabled="true" v-model="form.createTime"></el-input>
+                <el-input style="width:200px;" :disabled="true" placeholder="当前时间" v-model="form.createTime"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
               <el-form-item label="修改人">
-                <el-input style="width:200px;" :disabled="true" v-model="form.modifyEmp"></el-input>
+                <el-input style="width:200px;" :disabled="true" placeholder="当前操作账户" v-model="form.modifyEmp"></el-input>
               </el-form-item>
             </el-col>
               <el-col :span="10">
                 <el-form-item label="修改时间">
-                  <el-input style="width:200px;" :disabled="true" v-model="form.modifyTime"></el-input>
+                  <el-input style="width:200px;" :disabled="true" placeholder="当前操作时间" v-model="form.modifyTime"></el-input>
                 </el-form-item>
               </el-col>
           </el-row>
@@ -120,17 +120,17 @@
           <el-row>
             <el-col :span="5">
               <el-form-item label="登陆账号" >
-                <el-input style="width:140px;" v-model="accountForm.accountNo" clearable></el-input>
+                <el-input style="width:140px;" placeholder="登录账号" v-model="accountForm.accountNo" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="员工编号">
-                <el-input style="width:160px;" v-model="accountForm.staffNo" clearable></el-input>
+                <el-input style="width:160px;" placeholder="员工编号" v-model="accountForm.staffNo" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="员工姓名">
-                <el-input style="width:180px;" v-model="accountForm.name" clearable></el-input>
+                <el-input style="width:150px;" placeholder="员工姓名" v-model="accountForm.name" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -149,7 +149,7 @@
           <el-row>
             <el-col :span="11">
               <el-form-item label="员工所属部门">
-                <el-input style="width:180px;" v-model="accountForm.departmentId"></el-input>
+                <el-input style="width:180px;" placeholder="员工所属部门" v-model="accountForm.departmentId"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
