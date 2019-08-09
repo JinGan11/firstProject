@@ -1,16 +1,16 @@
 <template>
   <home>
-<!--    <div class="block">-->
-<!--      <span class="demonstration">选择日期</span>-->
-<!--      <el-date-picker-->
-<!--        v-model="birthdayName"-->
-<!--        type="datetimerange"-->
-<!--        range-separator="至"-->
-<!--        start-placeholder="开始日期"-->
-<!--        end-placeholder="结束日期">-->
-<!--      </el-date-picker>-->
+    <!--    <div class="block">-->
+    <!--      <span class="demonstration">选择日期</span>-->
+    <!--      <el-date-picker-->
+    <!--        v-model="birthdayName"-->
+    <!--        type="datetimerange"-->
+    <!--        range-separator="至"-->
+    <!--        start-placeholder="开始日期"-->
+    <!--        end-placeholder="结束日期">-->
+    <!--      </el-date-picker>-->
 
-<!--    </div>-->
+    <!--    </div>-->
 
     <div style="width:95%; margin-left: 10px">
       <el-form ref="form" :model="form" label-width="100px">
@@ -20,14 +20,14 @@
               <el-input style="width:200px;" v-model="form.companyName"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6 ">
-            <el-form-item label="统一社会信用代码" >
-              <el-input style="width:200px;" v-model="form.creditCode"></el-input>
+          <el-col :span="6">
+            <el-form-item label="统一社会信用代码" label-width="135px" style="margin-left: 20px" >
+              <el-input style="width:200px" v-model="form.creditCode"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="类型">
-              <el-select v-model="form.companyType" clearable  style="width:200px;" placeholder="请选择">
+            <el-form-item label="类型" style="margin-left: 60px">
+              <el-select v-model="form.companyType" clearable  style="width:130px;" placeholder="请选择">
                 <el-option
                   v-for="item in options1"
                   :key="item.value"
@@ -39,8 +39,8 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="公司性质">
-              <el-select v-model="form.companyNature" clearable  style="width:200px;" placeholder="请选择">
+            <el-form-item label="公司性质" style="margin-left: 20px">
+              <el-select v-model="form.companyNature" clearable  style="width:150px;" placeholder="请选择">
                 <el-option
                   v-for="item in options2"
                   :key="item.value"
@@ -91,13 +91,13 @@
 
     <div style="margin-bottom: 10px">
       <el-button type="primary" @click="createCompany" style="width:70px">新建</el-button>
-      <el-button type="primary" @click="modifyCompany(selection)" style="width:70px">修改</el-button>
+      <el-button type="primary" @click="modifyCompany(selection)" :disabled="disabled" style="width:70px">修改</el-button>
     </div>
 
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.id" ><span width="0px;"></span></el-radio>
+          <el-radio v-model="selection" :label="scope.row.id" @change="changeButton"><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
@@ -145,7 +145,7 @@
   export default {
     data() {
       return {
-
+        disabled:true,
         startTime:'',
         endTime:'',
         total: 0,
@@ -224,6 +224,7 @@
         this.fetchData(val, this.pageSize);
       },
       handleSelectionChange(val) {
+        this.disabled = false;
         this.selection = val;
       },
       fetchData() { //获取数据
@@ -253,7 +254,7 @@
           commonUtils.Log("company/querylist.do_:"+error);
           self.$message.error("获取数据错误");
         });
-        },
+      },
       createCompany(){//点击新建按钮，跳转到新建公司页面
 
         this.$router.replace('/CreateCompany')
@@ -263,7 +264,10 @@
         //alert(window.localStorage.getItem('companyId'));
         this.$router.replace('/ModifyCompany')
       },
+      changeButton(){
+        this.disabled=false;
       },
+    },
 
   }
 

@@ -4,6 +4,8 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Company;
 
+import java.util.Map;
+
 /**
  * description:公司管理
  *
@@ -37,14 +39,10 @@ public interface CompanyManageService {
      * @return：
      */
     void insertCompany(Company company);
-    /**
-     * description: 获取要修改的公司信息
-     * @author: jianan.shu@ucarinc.com
-     * @param:
-     * @date: 2019/8/7 14:08
-     * @return：
-     */
-    Company getCompanyById(int companyId);
+
+
+    Map getCompanyById(int companyId);
+
     /**
      * description: 修改公司信息
      * @author: jianan.shu@ucarinc.com
@@ -53,4 +51,12 @@ public interface CompanyManageService {
      * @return：
      */
     void updateCompanyById(Company company);
+    /**
+     * description: 校验统一社会信用代码
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/8 15:31
+     * @return：
+     */
+    int creditCodeValidate(String creditCode);
 }

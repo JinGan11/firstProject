@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -67,9 +68,20 @@ public class CompanyManageController {
                 .put("CompanyMarkEnum", CommonEnums.toEnumMap(CommonEnums.CompanyMark.values()))
                 .put("CompanyStatusEnum", CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values()));
     }
+    /**
+     * description: 新建公司
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/8 11:23
+     * @return：
+     */
     @ResponseBody
     @RequestMapping(value = "/createCompany",method = RequestMethod.POST)
-    public String createCompany(@RequestBody Company company){
+    public String createCompany(@RequestBody Company company, HttpSession session){
+
+        Long accountId = (Long) session.getAttribute("accountId");
+        company.setCreateEmp(accountId);
+        company.setModifyEmp(accountId);
         companyManageService.insertCompany(company);
         return "success";
     }
@@ -85,8 +97,8 @@ public class CompanyManageController {
     public Result getOneCompanyById(HttpServletRequest request){
         String id = request.getParameter("companyId");
         int companyId = Integer.parseInt(id);
-        Company company = companyManageService.getCompanyById(companyId);
-        return Result.ok().put("list",company);
+        Map<String,Object>list=companyManageService.getCompanyById(companyId);
+        return Result.ok().put("list",list);
     }
     /**
      * description: 修改公司信息
@@ -97,7 +109,9 @@ public class CompanyManageController {
      */
     @ResponseBody
     @RequestMapping(value = "/modifyCompany",method = RequestMethod.POST)
-    public String updateCompanyById(@RequestBody Company company){
+    public String updateCompanyById(@RequestBody Company company, HttpSession session){
+        Long accountId = (Long) session.getAttribute("accountId");
+        company.setModifyEmp(accountId);
         companyManageService.updateCompanyById(company);
         return "success";
     }

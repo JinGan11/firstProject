@@ -55,4 +55,21 @@ public interface CompanyManageDao<mcmt> {
      * @return：
      */
     void updateCompanyById(Company company);
+    /**
+     * description: 获取账户姓名
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/8 12:30
+     * @return：
+     */
+    String getEmpById(long accountId);
+    /**
+     * description: 统一社会信用代码校验
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/8 15:32
+     * @return：
+     */
+    Integer creditCodeValidate(@Param("creditCode")String creditCode);
+
 }

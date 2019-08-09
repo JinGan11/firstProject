@@ -299,30 +299,65 @@
         self.$http.get('company/getCompanyById.do_', {
           params: param
         }).then((result) => {
-          self.form=result.list;
+          self.form=result.list.company;
+          self.form.createEmp=result.list.createEmp;
+          self.form.modifyEmp=result.list.modifyEmp;
           self.form.companyType=String(self.form.companyType);
           self.form.companyStatus=String(self.form.companyStatus);
-          self.businessTerm[0]=result.list.businessStartTime;
-          self.businessTerm[1]=result.list.businessDeadline;
+          self.businessTerm[0]=result.list.company.businessStartTime;
+          self.businessTerm[1]=result.list.company.businessDeadline;
         }).catch(function (error) {
           commonUtils.Log("company/getCompanyById.do_:" + error);
           self.$message.error("获取数据错误");
         });
       },
       save() {//保存修改公司信息
-        var self=this;
-        var companyId=window.localStorage.getItem('companyId');
-        self.form.companyId=companyId;
-        self.form.businessStartTime=self.businessTerm[0];
-        self.form.businessDeadline=self.businessTerm[1];
-        self.form.liscensePath='dfs';
-        self.$http.post("company/modifyCompany",self.form)
-          .then(result => {
-            self.$router.replace("/CompanyManagement");
-          })
-          .catch(function (error) {
-
-          })
+        this.$confirm('此操作将保存该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          var self=this;
+          var companyId=window.localStorage.getItem('companyId');
+          self.form.companyId=companyId;
+          self.form.businessStartTime=self.businessTerm[0];
+          self.form.businessDeadline=self.businessTerm[1];
+          self.form.liscensePath='dfs';
+          self.form.createEmp='';
+          self.form.modifyEmp=''
+          self.$http.post("company/modifyCompany",self.form)
+            .then((result) => {
+              self.$router.replace("/CompanyManagement");
+            })
+            .catch(function (error) {
+              commonUtils.Log("company/modifyCompany:"+error);
+              self.$message.error("修改公司失败");
+            });
+          this.$message({
+            type: 'success',
+            message: '保存成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消保存'
+          });
+        });
+        // var self=this;
+        // var companyId=window.localStorage.getItem('companyId');
+        // self.form.companyId=companyId;
+        // self.form.businessStartTime=self.businessTerm[0];
+        // self.form.businessDeadline=self.businessTerm[1];
+        // self.form.liscensePath='dfs';
+        // self.form.createEmp='';
+        // self.form.modifyEmp='';
+        // self.$http.post("company/modifyCompany",self.form)
+        //   .then(result => {
+        //     self.$router.replace("/CompanyManagement");
+        //   })
+        //   .catch(function (error) {
+        //
+        //   })
       },
       cancel(){//关闭新建公司页面，返回公司管理列表页面
         this.$router.replace('/CompanyManagement')

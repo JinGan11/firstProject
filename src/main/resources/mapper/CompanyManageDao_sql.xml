@@ -141,45 +141,45 @@
             #{companyMark},
             #{companyStatus},
             #{createEmp},
-            #{createTime},
+            now(),
             #{modifyEmp},
-            #{modifyTime},
+            now(),
             #{remark}
         )
     </insert>
 
     <select id="getCompanyById" parameterType="int" resultType="com.ucar.combination.model.Company">
         SELECT
-        id  companyId,
-        company_name,
-        credit_code,
-        company_type,
-        business_start_time  businessStartTime,
-        business_deadline    businessDeadline,
-        company_address,
-        business_scope,
-        legal_person,
-        registered_capital,
-        establish_time,
-        registered_institution,
-        issue_date     causeTime,
-        registered_status,
-        liscense_path,
-        company_nature,
-        registration_address,
-        bank_name,
-        bank_account,
-        telephone,
-        company_mark,
-        status  companyStatus,
-        create_emp,
-        create_time,
-        modify_emp,
-        modify_time,
-        remark
-        FROM t_company
+        T.id  companyId,
+        T.company_name,
+        T.credit_code,
+        T.company_type,
+        T.business_start_time  businessStartTime,
+        T.business_deadline    businessDeadline,
+        T.company_address,
+        T.business_scope,
+        T.legal_person,
+        T.registered_capital,
+        T.establish_time,
+        T.registered_institution,
+        T.issue_date     causeTime,
+        T.registered_status,
+        T.liscense_path,
+        T.company_nature,
+        T.registration_address,
+        T.bank_name,
+        T.bank_account,
+        T.telephone,
+        T.company_mark,
+        T.status  companyStatus,
+        T.create_emp,
+        T.create_time,
+        T.modify_emp,
+        T.modify_time,
+        T.remark
+        FROM t_company T
         <where>
-         id =#{companyId}
+         T.id =#{companyId}
         </where>
     </select>
 
@@ -207,11 +207,24 @@
         t1.telephone = #{telephone},
         t1.company_mark = #{companyMark},
         t1.status = #{companyStatus},
-        t1.create_emp = #{createEmp},
-        t1.create_time = #{createTime},
         t1.modify_emp = #{modifyEmp},
-        t1.modify_time = #{modifyTime},
+        t1.modify_time = now(),
         t1.remark = #{remark}
         where t1.id = #{companyId}
     </update>
+    <select id="getEmpById" parameterType="long" resultType="string">
+        SELECT
+        account_name
+        FROM  t_account
+        <where>
+            id =#{accountId}
+        </where>
+    </select>
+
+    <select id="creditCodeValidate" parameterType="String" resultType="java.lang.Integer">
+         select count(*)
+         from  t_company
+         where credit_code=#{creditCode}
+    </select>
+
 </mapper>

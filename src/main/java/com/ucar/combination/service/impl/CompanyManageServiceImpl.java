@@ -5,14 +5,14 @@ import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.CompanyManageDao;
-import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.model.Company;
-import com.ucar.combination.model.dto.StaffDto;
 import com.ucar.combination.service.CompanyManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * description:
@@ -63,10 +63,16 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      * @date: 2019/8/8 9:25
      * @return：
      */
-    @Override
-    public Company getCompanyById(int companyId){
+
+    public Map getCompanyById(int companyId){
         Company company=companyManageDao.getCompanyById(companyId);
-        return company;
+        String createEmp=companyManageDao.getEmpById(company.getCreateEmp());
+        String modifyEmp=companyManageDao.getEmpById(company.getModifyEmp());
+        Map<String,Object> resultMap=new HashMap<String, Object>();
+        resultMap.put("company",company);
+        resultMap.put("createEmp",createEmp);
+        resultMap.put("modifyEmp",modifyEmp);
+        return resultMap;
     }
     /**
      * description: 修改公司信息
@@ -75,9 +81,24 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      * @date: 2019/8/8 9:26
      * @return：
      */
-    @Override
+
     public void updateCompanyById(Company company){
         companyManageDao.updateCompanyById(company);
+    }
+    /**
+     * description: 校验统一社会信用代码
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/8 15:36
+     * @return：
+     */
+    public int creditCodeValidate(String creditCode){
+        Integer validate ;
+        validate = companyManageDao.creditCodeValidate(creditCode);
+        if(validate == null){
+            return 0;
+        }
+        return validate.intValue();
     }
 
 }

@@ -12,6 +12,7 @@
         <el-form ref="form" :model="form" label-width="80px">
           <el-row>
             <el-col :span="10">
+
               <el-form-item label="公司名称">
                 <el-input style="width:200px;" v-model="form.companyName"></el-input>
               </el-form-item>
@@ -172,7 +173,7 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="新建时间">
-                <el-input style="width:200px;" v-model="form.createTime" :disabled="true"></el-input>
+                <el-input style="width:200px;" v-model="nowTime" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -184,7 +185,7 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="修改时间">
-                <el-input style="width:200px;" v-model="form.modifyTime" :disabled="true"></el-input>
+                <el-input style="width:200px;" v-model="nowTime" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -290,6 +291,7 @@
           remark:'',
           liscensePath:'',
         },
+        nowTime: '',
         options1: [{
           value: '',
           label: '全部'
@@ -312,24 +314,70 @@
     },
     activated() {
       commonUtils.Log("页面激活");
+
     },
     mounted() {
-      commonUtils.Log("页面进来");
+      this.form.createEmp=window.sessionStorage.getItem("loginUsername");
+      this.form.modifyEmp=window.sessionStorage.getItem("loginUsername");
+      // 页面加载完显示当前时间
+      this.nowTime = this.dealWithTime(new Date());
+      // 定时器，定时修改显示的时间
+      let _this = this;
+      this.timer = setInterval(function () {
+        _this.nowTime = _this.dealWithTime(new Date())
+      }, 1000);
+    },
+    destroyed () {
+      // 结束时清除定时器
+      if (this.timer) {
+        clearInterval(this.timer);
+      }
     },
     methods: {
       save() {//保存新建公司信息
-        var self=this;
-        self.form.businessStartTime=self.businessTerm[0];
-        self.form.businessDeadline=self.businessTerm[1];
-        self.form.liscensePath='dfs';
-        self.$http.post("company/createCompany",self.form)
-          .then(result => {
-            self.$router.replace("/CompanyManagement");
-          })
-          .catch(function (error) {
-
-          })
-      },
+        this.$confirm('此操作将保存该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          var self=this;
+          self.form.businessStartTime=self.businessTerm[0];
+          self.form.businessDeadline=self.businessTerm[1];
+          self.form.liscensePath='dfs';
+          self.form.createEmp='';
+          self.form.modifyEmp='';
+          self.$http.post("company/createCompany", self.form)
+            .then((result) => {
+              self.$router.replace("/CompanyManagement");
+            })
+            .catch(function (error) {
+              commonUtils.Log("company/createCompany:"+error);
+              self.$message.error("新建公司失败");
+            });
+          this.$message({
+            type: 'success',
+            message: '保存成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消保存'
+          });
+        });
+        // var self=this;
+        // self.form.businessStartTime=self.businessTerm[0];
+        // self.form.businessDeadline=self.businessTerm[1];
+        // self.form.liscensePath='dfs';
+        // self.form.createEmp='';
+        // self.form.modifyEmp='';
+      //   self.$http.post("company/createCompany",self.form)
+      //     .then(result => {
+      //       self.$router.replace("/CompanyManagement");
+      //     })
+      //     .catch(function (error) {
+      //
+      //     })
+       },
       cancel(){//关闭新建公司页面，返回公司管理列表页面
         this.$router.replace('/CompanyManagement')
       },
@@ -351,7 +399,22 @@
       },
       getFileList(file, fileList){
         this.unUploadFile=fileList;
-      }
+      },
+      dealWithTime (data) {
+        let formatDateTime;
+        let Y = data.getFullYear();
+        let M = data.getMonth() + 1;
+        let D = data.getDate();
+        let H = data.getHours();
+        let Min = data.getMinutes();
+        let S = data.getSeconds();
+        let W = data.getDay();
+        H = H < 10 ? ('0' + H) : H;
+        Min = Min < 10 ? ('0' + Min) : Min;
+        S = S < 10 ? ('0' + S) : S;
+        formatDateTime = Y + '年' + M + '月' + D + '日 ' + H + ':' + Min + ':' + S;
+        return formatDateTime;
+      },
     },
   }
 
