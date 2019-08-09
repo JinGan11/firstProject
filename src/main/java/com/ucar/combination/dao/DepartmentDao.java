@@ -86,6 +86,15 @@ public interface DepartmentDao {
      */
     DepartmentEditDto selectDepartmentForEdit(Long id);
 
+    /**
+     * description: 修改部门
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/9 19:04
+     * @params
+     * @return
+     */
+    void updateDepartment(Department department);
+
     /*
      * description:
      * @author jing.luo01@ucarinc.com

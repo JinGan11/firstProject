@@ -127,7 +127,31 @@
         WHERE
             T.id=#{id}
     </select>
-
+    <update id="updateDepartment" parameterType="com.ucar.combination.model.Department">
+        UPDATE t_department T
+        SET
+            T.department_no=#{departmentNo},
+            T.workplace=#{workplace},
+            T.department_name=#{departmentName},
+            T.staff_id=#{staffId},
+            T.staff_name=#{staffName},
+            T.city_id=#{cityId},
+            T.address=#{address},
+            T.telephone=#{telephone},
+            T.email=#{email},
+            T.landline=#{landline},
+            T.level=#{level},
+            T.upper_department_no=#{upperDepartmentNo},
+            T.support_business=#{supportBusiness},
+            T.department_type=#{departmentType},
+            T.status=#{status},
+            T.modify_emp=#{modifyEmp},
+            T.modify_time=now(),
+            T.remark=#{remark},
+            T.longitude=#{longitude},
+            T.latitude=#{latitude}
+        WHERE T.id=#{id}
+    </update>
 
     <select id="searchDepartment" resultType="com.ucar.combination.model.dto.SearchDepartmentDto">
         SELECT

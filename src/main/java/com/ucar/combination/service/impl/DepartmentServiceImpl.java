@@ -83,6 +83,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
 
+    public Boolean updateDepartment(Department department){
+        departmentDao.updateDepartment(department);
+        return true;
+    }
+
     /*
      * description: 访问DAO层得到DEPARTMENT数据库的信息
      * @author jing.luo01@ucarinc.com

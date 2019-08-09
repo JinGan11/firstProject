@@ -149,6 +149,15 @@ public class DepartmentController {
         return new Result().put("departmentEdit",departmentEdit);
     }
 
+    @ResponseBody
+    @RequestMapping("/updateDepartment.do_")
+    public String updateDepartment(@RequestBody Department department,HttpSession session){
+        Long accountId = (Long) session.getAttribute("accountId");
+        department.setModifyEmp(accountId);
+        departmentService.updateDepartment(department);
+        return "success";
+    }
+
     /*
      * description:
      * @author jing.luo01@ucarinc.com

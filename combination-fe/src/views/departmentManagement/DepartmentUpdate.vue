@@ -245,7 +245,7 @@
         form: {
           id: '',
           departmentNo: '',
-          workplace: '',
+          workplace: 0,
           departmentName: '',
           staffId: '',
           staffName: '',
@@ -257,7 +257,7 @@
           level: '',
           upperDepartmentNo: '',
           supportBusiness: '',
-          departmentType: '',
+          departmentType: 1,
           status: 1,
           remark: '',
           createTime: '',
@@ -378,7 +378,7 @@
           var tmp = data.latitude;
           self.latitudeNum = tmp.substr(0,tmp.length-1);
           var tmp2 = tmp.substr(tmp.length-1,1);
-          if(tmp2=="E"||tmp2=="W"){
+          if(tmp2=="N"||tmp2=="S"){
             self.latitudeDirection=tmp2;
           }
         }
@@ -434,15 +434,13 @@
         // 前端校验输入
         if(!self.$options.methods.checkInput(self)) return;
 
-        alert("后台还没写");
+        self.$http.post("department/updateDepartment.do_",self.form)
+          .then(result => {
+            self.$router.replace("/departmentManagement/showDepartment");
+          })
+          .catch(function (error) {
 
-        // self.$http.post("department/addDepartment.do_",self.form)
-        //   .then(result => {
-        //     self.$router.replace("/departmentManagement/showDepartment");
-        //   })
-        //   .catch(function (error) {
-        //
-        //   })
+          })
       },
       // 添加业务线的分隔符
       addSubSign (data) {
@@ -502,8 +500,8 @@
         }
         // 邮箱
         if(_form.email!=""){
-          var pattern_email = /^\w+@[a-z0-9]+\.[a-z]{2,4}$/;
-          if(pattern_email.test(_form.email)){
+          var pattern_email = /^\w+@[a-z0-9]+\.[a-z]+$/i;
+          if(!pattern_email.test(_form.email)){
             alert("请输入正确的【邮箱】，或者不填写任何内容！");
             return false;
           }

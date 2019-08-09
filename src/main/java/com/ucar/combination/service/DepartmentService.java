@@ -86,6 +86,15 @@ public interface DepartmentService {
      */
     DepartmentEditDto selectDepartmentForEdit(Long id);
 
+    /**
+     * description: 修改部门信息
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/9 19:03
+     * @params
+     * @return
+     */
+    Boolean updateDepartment(Department department);
+
     ResultPage searchDepartment(QueryParam queryParam);
 
     /*

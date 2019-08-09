@@ -481,8 +481,8 @@
         }
         // 邮箱
         if(_form.email!=""){
-          var pattern_email = /^\w+@[a-z0-9]+\.[a-z]{2,4}$/;
-          if(pattern_email.test(_form.email)){
+          var pattern_email = /^\w+@[a-z0-9]+\.[a-z]+$/i;
+          if(!pattern_email.test(_form.email)){
             alert("请输入正确的【邮箱】，或者不填写任何内容！");
             return false;
           }
