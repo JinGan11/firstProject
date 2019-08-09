@@ -1,5 +1,7 @@
 package com.ucar.combination.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 /**
  * description:公司查询类
@@ -16,6 +18,7 @@ public class CompanyDto extends BaseBean {
     private Integer companyNature;
     private Integer companyMark;
     private Integer companyStatus;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT")
     private Date modifyTime;
     private Long modifyEmp;
 

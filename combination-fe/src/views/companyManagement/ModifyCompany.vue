@@ -6,7 +6,7 @@
         <span style="margin-left: 800px"><el-button type="primary" @click="save" style="width:70px">保存</el-button>
         <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
         </span>
-        <hr ><br>
+        <hr><br>
       </div>
       <div style="width:85%; margin-left: 70px">
         <el-form ref="form" :model="form" label-width="80px">
@@ -304,8 +304,9 @@
           self.form.modifyEmp=result.list.modifyEmp;
           self.form.companyType=String(self.form.companyType);
           self.form.companyStatus=String(self.form.companyStatus);
-          self.businessTerm[0]=result.list.company.businessStartTime;
-          self.businessTerm[1]=result.list.company.businessDeadline;
+          self.businessTerm=[result.list.company.businessStartTime,result.list.company.businessDeadline];
+          //self.businessTerm[0]=result.list.company.businessStartTime;
+          //self.businessTerm[1]=result.list.company.businessDeadline;
         }).catch(function (error) {
           commonUtils.Log("company/getCompanyById.do_:" + error);
           self.$message.error("获取数据错误");

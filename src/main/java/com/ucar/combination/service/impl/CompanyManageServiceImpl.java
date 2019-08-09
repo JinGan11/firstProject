@@ -54,6 +54,7 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      */
     @Override
     public void insertCompany(Company company){
+        System.out.println(company.getBusinessStartTime());
         companyManageDao.insertCompany(company);
     }
     /**

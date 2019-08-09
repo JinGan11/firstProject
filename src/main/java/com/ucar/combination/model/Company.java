@@ -19,18 +19,18 @@ public class Company extends BaseBean {
 	private String companyName;
 	private String creditCode;
 	private Integer companyType;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
 	private Date businessStartTime;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
 	private Date businessDeadline;
 	private String companyAddress;
 	private String businessScope;
 	private String legalPerson;
 	private Long registeredCapital;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
 	private Date establishTime;
 	private String registeredInstitution;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
 	private Date causeTime;
 	private String registeredStatus;
 	private String liscensePath;
@@ -42,8 +42,10 @@ public class Company extends BaseBean {
 	private Integer companyMark;
 	private Integer companyStatus;
 	private Long createEmp;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT")
 	private Date createTime;
 	private Long modifyEmp;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT")
 	private Date modifyTime;
 	private String remark;
 	private Integer status;
