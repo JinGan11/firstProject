@@ -7,6 +7,7 @@ import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.AccountManageDao;
 import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.model.Account;
+import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.model.RoleAccount;
 import com.ucar.combination.service.AccountManagerService;
 import com.ucar.combination.service.EmployeeManageService;
@@ -55,15 +56,10 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     }
 
     @Override
-    public Long insertAccount(Map<String, Object> map) {
-        map.replace("password",DigestUtils.md5DigestAsHex(((String)map.get("password")).getBytes()));
-        accountManageDao.insertAccount(map);
-        return accountManageDao.selectIdByNum((String)map.get("accountNum"));
-    }
-
-    @Override
-    public int updateStaff(Map<String, Object> map) {
-        return employeeManageDao.updateStaffAccount(map);
+    public Long insertAccount(AccountStaff accountStaff) {
+        accountStaff.setPassword(DigestUtils.md5DigestAsHex((accountStaff.getPassword()).getBytes()));
+        accountManageDao.insertAccount(accountStaff);
+        return accountManageDao.selectIdByNum(accountStaff.getAccountName());
     }
 
     //lzy
@@ -107,5 +103,29 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     @Override
     public int insertAccountHistory(Map<String, Object> map) {
         return accountManageDao.insertAccountHistory(map);
+    }
+
+    /*
+     * description: 修改账户信息
+     * @author peng.zhang11@ucarinc.com
+     * @date:  2019/8/9 11:25
+     * @params: accountStaff 要修改的信息
+     * @return:
+     */
+    @Override
+    public int modifyAccount(AccountStaff accountStaff) {
+        return accountManageDao.modifyAccount(accountStaff);
+    }
+
+    /*
+     * description: 修改员工的账户信息
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date： 2019/8/9 13:04
+     * @params accountStaff 要修改的信息
+     * @return
+     */
+    @Override
+    public int updateStaffAccount(AccountStaff accountStaff) {
+        return employeeManageDao.updateAccount(accountStaff);
     }
 }

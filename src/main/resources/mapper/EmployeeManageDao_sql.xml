@@ -3,13 +3,14 @@
 
 <mapper namespace="com.ucar.combination.dao.EmployeeManageDao">
 
-    <update id="updateStaffAccount">
+<!--修改员工的账户信息-->
+    <update id="updateAccount" parameterType="com.ucar.combination.model.AccountStaff">
         UPDATE t_staff
         SET account_id = #{accountId}
         ,modify_time = NOW()
         ,modify_emp = #{modifyEmp}
         <if test="secretEmail != null and secretEmail.trim() != ''">
-        ,staff_email = #{secretEmail}
+            ,staff_email = #{secretEmail}
         </if>
         WHERE id = #{staffId};
     </update>
@@ -36,7 +37,7 @@
         ,t_department t2,t_department t4
         where t1.department_id = t2.id and t2.upper_department_no=t4.department_no
         <if test="relAccount == 1">
-            AND (t1.account_id = '' or t1.account_id IS NULL)
+            AND (t1.account_id = '' or t1.account_id IS NULL or t1.account_id = 0)
         </if>
         <if test="satff_num != null and satff_num.trim() != ''">
             AND t1.staff_num =#{satff_num}

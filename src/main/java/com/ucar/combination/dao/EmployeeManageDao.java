@@ -1,5 +1,6 @@
 package com.ucar.combination.dao;
 
+import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.model.dto.StaffDto;
 
 import com.ucar.combination.model.Staff;
@@ -19,11 +20,13 @@ import java.util.Map;
 public interface EmployeeManageDao {
 
     /*
-     * description: 修改员工关联账户
+     * description: 修改员工的账户信息
      * @uthor： junqiang.zhang@ucarinc.com
-     * @Date： 2019/8/7
+     * @Date： 2019/8/9 13:04
+     * @params accountStaff 要修改的信息
+     * @return
      */
-    public int updateStaffAccount(Map<String, Object> map);
+    int updateAccount(AccountStaff accountStaff);
 
     /**
      * 员工管理列表

@@ -4,6 +4,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.Account;
+import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.model.Staff;
 
 import java.util.Map;
@@ -41,16 +42,7 @@ public interface AccountManagerService {
      * @PArams：账户信息
      * @Return：账户id
      */
-    public Long insertAccount(Map<String, Object> map);
-
-    /*
-     * description: 修改员工关联的账户
-     * @uthor： junqiang.zhang@ucarinc.com
-     * @Date： 2019/8/7
-     * @PArams：
-     * @Return：
-     */
-    public int updateStaff(Map<String, Object> map);
+    public Long insertAccount(AccountStaff accountStaff);
 
     ResultPage getRoleAccountList(QueryParam queryParam);
     /**
@@ -89,4 +81,22 @@ public interface AccountManagerService {
      * @return
      */
     int insertAccountHistory (Map<String, Object> map);
+
+    /*
+     * description: 修改账户信息
+     * @author peng.zhang11@ucarinc.com
+     * @date:  2019/8/9 11:25
+     * @params: accountStaff 要修改的信息
+     * @return:
+     */
+    int modifyAccount(AccountStaff accountStaff);
+
+    /*
+     * description: 修改员工的账户信息
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date： 2019/8/9 13:04
+     * @params accountStaff 要修改的信息
+     * @return
+     */
+    int updateStaffAccount(AccountStaff accountStaff);
 }

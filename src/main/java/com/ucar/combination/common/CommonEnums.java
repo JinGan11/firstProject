@@ -185,7 +185,7 @@ public abstract class CommonEnums {
 	public static enum AccountStatusEnum implements IEnum {
 		NORMAl(1, "正常"),
 		FRUZEN(2, "冻结"),
-		INVALID(0, "无效");
+		INVALID(3, "无效");
 		private final int i;
 		private final String n;
 

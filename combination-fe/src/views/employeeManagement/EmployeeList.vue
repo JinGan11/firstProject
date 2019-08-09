@@ -538,7 +538,6 @@
     },
     created() {
       var self = this;
-      self.fetchData();
       if(self.relAccount == 1) {
         self.form.isDimission = '0';
         self.buttonDisabled = true;
@@ -562,6 +561,8 @@
           commonUtils.Log("employee/querylist.do_:" + error);
           self.$message.error("获取数据错误");
         })
+      }else {
+        self.fetchData();
       }
       ;
     },

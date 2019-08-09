@@ -172,6 +172,8 @@
         statusList: [],
         modifyForm: {
           staffId: '',
+          oldStaffId: '',
+          accountId: '',
           accountNum: '',
           password: '******',
           staffNum: '',
@@ -184,6 +186,7 @@
           modifyTime: '',
           modifyEmpName: '',
           accountState: '',
+          tree:'',
           remark:'',
         },
         emailDisabled: true,
@@ -204,7 +207,7 @@
       self.fetchEnums();
     },
     methods: {
-      loadNode(node,resolve){
+      loadNode(node,resolve){//加载部门的树结构
         var self = this;
         self.$http.get('department/buildTree.do_', {
           params: null
@@ -214,7 +217,7 @@
 
         });
       },
-      handleClick(data, sel) {
+      handleClick(data, sel) {//部门树结构父节点关联子节点，子节点不关联父节点功能
         if (sel) {
           traverseTree(data).forEach((item) => {
             this.$refs.tree.setChecked(item, true)
@@ -237,21 +240,24 @@
           return arr;
         }
       },
-      fetchData(){
+      fetchData(){ //根据accountId查询界面要显示的数据
         const self = this;
         var id = localStorage.getItem("accountId");
+        self.modifyForm.accountId = id;
         var param = {
           id: id
         }
         self.$http.get('account/selectAccountById.do_',{
           params: param
         }).then((result) => {
+          self.modifyForm.staffId = result.account.staffId;
+          self.modifyForm.oldStaffId = self.modifyForm.staffId;
           self.modifyForm.accountNum = result.account.accountName;
           self.modifyForm.staffNum = result.account.staffNum;
           self.modifyForm.staffName = result.account.staffName;
           self.modifyForm.permissions = result.account.premissions;
           self.modifyForm.secretEmail = result.account.secretEmail;
-          if(self.modifyForm.secretEmail == ''){
+          if(self.modifyForm.secretEmail == '' || self.modifyForm.secretEmail == null){
             self.emailDisabled = false;
           }
           self.modifyForm.remark = result.account.remark;
@@ -265,7 +271,7 @@
           self.$message.error("获取数据错误")
         });
       },
-      fetchEnums(){
+      fetchEnums(){//权限和账号状态枚举
         const self = this;
         self.$http.get('account/enums.do_').then((result) => {
           self.permissionsList = result.permissionList;
@@ -275,34 +281,20 @@
           self.$message.error("获取数据错误")
         });
       },
-      save() {//保存新建账户信息
+      save() {//保存修改账户信息
         const self = this;
-        var tree = '';
         if(self.modifyForm.permissions == 5 && this.$refs.tree.getCheckedNodes().length == 0){
           self.$message.info("请选择部门");
         }else {
           if(self.modifyForm.permissions == 5){
             for(var i = 0; i < this.$refs.tree.getCheckedNodes().length; i++){
-              tree += this.$refs.tree.getCheckedNodes()[i].id+' ';
+              self.modifyForm.tree += this.$refs.tree.getCheckedNodes()[i].id+' ';
             }
           }
-          var param = {
-            accountNum: self.modifyForm.accountNum,
-            password: self.modifyForm.password,
-            staffNum: self.modifyForm.staffNum,
-            permissions: self.modifyForm.permissions,
-            staffId: self.modifyForm.staffId,
-            secretEmail: '',
-            remark: self.modifyForm.remark,
-            tree: tree
-          };
-          if (!self.emailDisabled) {
-            param.secretEmail = self.modifyForm.secretEmail;
-          }
-          self.$http.get('account/createAccount.do_', {
-            params: param
-          }).then((result) => {
-            self.$message.info("aaa");
+          self.$http.post('account/modifyAccount.do_',self.modifyForm)
+            .then((result) => {
+              self.$message.info("修改成功");
+              self.$router.replace("/accountManagement");
           }).catch(function (error) {
             commonUtils.Log("account/createAccount.do_:" + error);
             self.$message.error("插入数据错误")
@@ -322,7 +314,7 @@
         self.modifyForm.staffNum = staffData.staffNum;
         self.modifyForm.staffName = staffData.staffName;
         self.modifyForm.staffId = staffData.id;
-        if(staffData.staffEmail==''){
+        if(staffData.staffEmail == '' || staffData.staffEmail == null){
           this.modifyForm.secretEmail ='';
           self.emailDisabled = false;
         }else{

@@ -17,7 +17,7 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="登录账户">
-              <el-input  v-model="newForm.accountNum" autocomplete="off" clearable></el-input>
+              <el-input  v-model="newForm.accountName" autocomplete="off" clearable></el-input>
             </el-form-item>
             <div style="position: absolute; width: 0px">
               <el-form-item label="">
@@ -146,7 +146,7 @@
         permissionsList:[],
         newForm: {
           staffId: '',
-          accountNum: '',
+          accountName: '',
           password: '',
           staffNum: '',
           staffName: '',
@@ -154,6 +154,7 @@
           secretEmail: '',
           department: '',
           remark:'',
+          tree: '',
         },
         emailDisabled: false,
         rules: {
@@ -215,32 +216,17 @@
       },
       save() {//保存新建账户信息
         const self = this;
-        var tree = '';
         if(self.newForm.permissions == 5 && this.$refs.tree.getCheckedNodes().length == 0){
           self.$message.info("请选择部门");
         }else {
           if(self.newForm.permissions == 5){
             for(var i = 0; i < this.$refs.tree.getCheckedNodes().length; i++){
-              tree += this.$refs.tree.getCheckedNodes()[i].id+' ';
+              self.newForm.tree += this.$refs.tree.getCheckedNodes()[i].id+' ';
             }
           }
-          var param = {
-            accountNum: self.newForm.accountNum,
-            password: self.newForm.password,
-            staffNum: self.newForm.staffNum,
-            permissions: self.newForm.permissions,
-            staffId: self.newForm.staffId,
-            secretEmail: '',
-            remark: self.newForm.remark,
-            tree: tree
-          };
-          if (!self.emailDisabled) {
-            param.secretEmail = self.newForm.secretEmail;
-          }
-          self.$http.get('account/createAccount.do_', {
-            params: param
-          }).then((result) => {
-            self.$message.info("aaa");
+          self.$http.post('account/createAccount.do_',self.newForm).then((result) => {
+            self.$message.info("新建成功");
+            self.$router.replace("/accountManagement");
           }).catch(function (error) {
             commonUtils.Log("account/createAccount.do_:" + error);
             self.$message.error("插入数据错误")

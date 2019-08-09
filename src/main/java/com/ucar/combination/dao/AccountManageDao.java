@@ -1,6 +1,7 @@
 package com.ucar.combination.dao;
 
 import com.ucar.combination.model.Account;
+import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.model.RoleAccount;
 
 import java.util.List;
@@ -57,7 +58,7 @@ public interface AccountManageDao {
      * @PArams： map
      * @Return：
      */
-    int insertAccount(Map<String, Object> map);
+    int insertAccount(AccountStaff accountStaff);
 
     /*
      * description: 通过用户名查询用户的id
@@ -82,8 +83,16 @@ public interface AccountManageDao {
      * @author jing.luo01@ucarinc.com
      * @date   2019/8/8 10:36
      * @params id 账户ID
-
-     * @return Account账户
+     * @return
      */
     Account selectById(Long id);
+
+    /*
+     * description: 修改账户信息
+     * @author peng.zhang11@ucarinc.com
+     * @date:  2019/8/9 11:25
+     * @params: accountStaff 要修改的信息
+     * @return:
+    */
+    public int modifyAccount(AccountStaff accountStaff);
 }

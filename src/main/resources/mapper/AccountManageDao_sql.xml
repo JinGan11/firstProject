@@ -25,11 +25,13 @@
         <result column="account_state" property="accountState"/>
         <result column="account_remark" property="remark"/>
     </resultMap>
+    <!--账户列表-->
     <select id="selectAccountById" parameterType="String" resultMap="account">
         select t1.id,
                t1.account_name,
                t1.account_state,
                t1.permissions,
+               t2.id staff_id,
                t2.staff_num,
                t2.staff_name,
                t2.staff_email account_secret_email,
@@ -47,26 +49,30 @@
                            ON t1.modify_emp = t4.id
         WHERE t1.id = #{id}
     </select>
+
+    <!-- 通过账户id查询账户数据-->
     <select id="selectIdByNum" parameterType="String" resultType="Long">
         SELECT id FROM t_account
         WHERE account_name = #{accountNum}
     </select>
 
-    <insert id="insertAccount">
+    <insert id="insertAccount" parameterType="com.ucar.combination.model.AccountStaff">
         INSERT INTO t_account(
             account_name,
             account_password,
             staff_id,
             permissions,
+            account_secret_email,
             create_time,
             create_emp,
             modify_time,
             modify_emp
         )VALUES(
-                #{accountNum},
+                #{accountName},
                 #{password},
                 #{staffId},
                 #{permissions},
+                #{secretEmail},
                 NOW(),
                 #{createEmp},
                 NOW(),
@@ -115,7 +121,7 @@
         <if test="accountState != null and accountState.trim() != ''">
             and t1.account_state = #{accountState}
         </if>
-        ORDER BY id
+        ORDER BY modify_time DESC
     </select>
     <select id="selectById" parameterType="java.lang.Long" resultType="com.ucar.combination.model.Account">
         SELECT T.id,
@@ -207,6 +213,20 @@
             #{accountState}
         )
     </insert>
+
+    <!-- description: 根据id修改account信息
+ 	  @author junqiang.zhang@ucarinc.com
+ 	 -->
+    <update id="modifyAccount" parameterType="com.ucar.combination.model.AccountStaff"  >
+        UPDATE t_account
+        SET staff_id = #{staffId},
+            permissions = #{permissions},
+            account_secret_email = #{secretEmail},
+            modify_emp = #{modifyEmp},
+            modify_time = NOW(),
+            account_remark = #{remark}
+        where id = #{accountId};
+    </update>
 </mapper>
 
 

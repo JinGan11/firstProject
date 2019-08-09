@@ -5,6 +5,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Account;
+import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.service.AccountManagerService;
 import com.ucar.combination.service.RoleManagementService;
 import net.sf.json.JSONObject;
@@ -40,7 +41,7 @@ public class AccountManagerController {
     private RoleManagementService roleManagementService;
 
     /*
-     * description: 新建账户
+     * description: 根据账号id查询account信息
      * @uthor： junqiang.zhang@ucarinc.com
      * @Date：  2019/8/6
      * @PArams：
@@ -54,39 +55,27 @@ public class AccountManagerController {
         return new Result().ok().put("account",accountManagerService.selectAccountById(id));
     }
 
+    /*
+     * description: 新建账户
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date：  2019/8/6
+     * @PArams：
+     * @Return：
+     */
     @Transactional
     @ResponseBody
-    @RequestMapping("/createAccount.do_")
-    public Result createAccount(HttpServletRequest request, HttpSession session){
+    @RequestMapping(value = "/createAccount.do_", method = RequestMethod.POST)
+    public void createAccount(@RequestBody AccountStaff accountStaff, HttpSession session){
         try {
             Long user = (Long) session.getAttribute("accountId");
-            String accountNum = request.getParameter("accountNum");
-            String password = request.getParameter("password");
-            String staffId = request.getParameter("staffId");
-            String staffNum = request.getParameter("staffNum");
-            String permissions = request.getParameter("permissions");
-            String secretEmail = request.getParameter("secretEmail");
-            String remark = request.getParameter("remark");
-            String tree = request.getParameter("tree");
-            Map<String, Object> account = new HashMap<String, Object>();
-            account.put("accountNum", accountNum);
-            account.put("password", password);
-            account.put("permissions", permissions);
-            account.put("staffId", staffId);
-            account.put("remark", remark);
-            account.put("createEmp", user);
-            account.put("modifyEmp", user);
-            Long accountId = accountManagerService.insertAccount(account);
-            Map<String, Object> staff = new HashMap<String, Object>();
-            staff.put("accountId",accountId);
-            staff.put("staffId",staffId);
-            staff.put("secretEmail",secretEmail);
-            staff.put("modifyEmp",user);
-            accountManagerService.updateStaff(staff);
+            accountStaff.setCreateEmp(user);
+            accountStaff.setModifyEmp(user);
+            Long accountId = accountManagerService.insertAccount(accountStaff);
+            accountStaff.setAccountId(accountId);
+            accountManagerService.updateStaffAccount(accountStaff);
         }catch(Exception e) {
             throw  new RuntimeException("");
         }
-        return null;
     }
 
     /*
@@ -192,5 +181,31 @@ public class AccountManagerController {
         Integer status = 1;
         accountManagerService.updateStatus(Integer.parseInt(accountId),status);
         return null;
+    }
+
+    /*
+     * description: 修改账户信息
+     * @author peng.zhang11@ucarinc.com
+     * @date:  2019/8/9 11:00
+     * @params: accountStaff
+     * @return:
+     */
+    @Transactional
+    @ResponseBody
+    @RequestMapping(value = "/modifyAccount.do_",method = RequestMethod.POST)
+    public void modifyAccount(@RequestBody AccountStaff accountStaff,HttpSession session){
+        try {
+            accountStaff.setModifyEmp((Long) session.getAttribute("accountId"));
+            accountManagerService.modifyAccount(accountStaff);
+            accountManagerService.updateStaffAccount(accountStaff);
+            if(accountStaff.getOldStaffId() != accountStaff.getStaffId()){
+                accountStaff.setSecretEmail("");
+                accountStaff.setStaffId(accountStaff.getOldStaffId());
+                accountStaff.setAccountId(0L);
+                accountManagerService.updateStaffAccount(accountStaff);
+            }
+        }catch(Exception e) {
+            throw new RuntimeException("");
+        }
     }
 }
