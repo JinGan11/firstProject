@@ -534,6 +534,9 @@
                     //对取回来的数据进行处理
                     self.countySearchList = result.countySearchList;
 
+                    for(var i=0;i<self.countySearchList.length;i++){
+                        console.log(self.countySearchList[i].cityID);
+                    }
                     // console.log(self.citySearchList);
                     //
 
