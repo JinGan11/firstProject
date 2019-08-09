@@ -1,10 +1,7 @@
 package com.ucar.combination.dao;
 
 import com.ucar.combination.model.Department;
-import com.ucar.combination.model.dto.DepartmentDto;
-import com.ucar.combination.model.dto.DepartmentTreeDto;
-import com.ucar.combination.model.dto.DepartmentUpperDto;
-import com.ucar.combination.model.dto.SearchDepartmentDto;
+import com.ucar.combination.model.dto.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -79,6 +76,15 @@ public interface DepartmentDao {
      * @return
      */
     String selectSupportBusinessByNo(String departmentNo);
+
+    /**
+     * description: 根据id查department用于修改
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/9 10:58
+     * @params
+     * @return
+     */
+    DepartmentEditDto selectDepartmentForEdit(Long id);
 
     /*
      * description:

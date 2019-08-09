@@ -89,6 +89,45 @@
         WHERE department_no=#{departmentNo}
         LIMIT 1
     </select>
+    <select id="selectDepartmentForEdit" resultType="com.ucar.combination.model.dto.DepartmentEditDto">
+        SELECT
+            T.id,
+            T.department_no,
+            T.workplace,
+            T.department_name,
+            T.staff_id,
+            T.staff_name,
+            T.city_id,
+            T.address,
+            T.telephone,
+            T.email,
+            T.landline,
+            T.level,
+            T.upper_department_no,
+            T.support_business,
+            T.department_type,
+            T.status,
+            T.create_emp,
+            T.create_time,
+            T.modify_emp,
+            T.modify_time,
+            T.remark,
+            T.longitude,
+            T.latitude,
+            T2.city_name cityName,
+            T3.staff_name createName,
+            T4.staff_name modifyName,
+            T5.department_name upperDepartmentName
+        FROM
+            t_department T
+            LEFT JOIN t_b_city T2 ON T.city_id=T2.city_id
+            LEFT JOIN t_staff T3 ON T.create_emp=T3.account_id
+            LEFT JOIN t_staff T4 ON T.modify_emp=T4.account_id
+            LEFT JOIN t_department T5 ON T.upper_department_no=T5.department_no
+        WHERE
+            T.id=#{id}
+    </select>
+
 
     <select id="searchDepartment" resultType="com.ucar.combination.model.dto.SearchDepartmentDto">
         SELECT

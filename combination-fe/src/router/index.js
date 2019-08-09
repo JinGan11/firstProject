@@ -30,6 +30,7 @@ import DepartmentChangeUpper from "@/views/departmentManagement/DepartmentChange
 import ModifyCompany from'@/views/companyManagement/ModifyCompany';
 import modifyRoleApply from '@/views/roleManagement/modifyRoleApply';
 import RoleInf from "../views/roleManagement/RoleInf";
+import DepartmentUpdate from "@/views/departmentManagement/DepartmentUpdate";
 Vue.use(Router)
 
 export default new Router({
@@ -184,6 +185,11 @@ export default new Router({
     name: '角色信息',
     component: RoleInf,
     meta: {requireAuth: true}
+  },{
+    path: "/departmentManagement/updateDepartment",
+    name: '修改部门',
+    component: DepartmentUpdate,
+    meta:{requireAuth:true}
   }
   ]
 })

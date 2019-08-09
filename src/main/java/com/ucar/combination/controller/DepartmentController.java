@@ -6,10 +6,12 @@ import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Department;
 import com.ucar.combination.model.dto.DepartmentDto;
+import com.ucar.combination.model.dto.DepartmentEditDto;
 import com.ucar.combination.model.dto.DepartmentTreeDto;
 import com.ucar.combination.model.dto.DepartmentUpperDto;
 import com.ucar.combination.service.CompanyManageService;
 import com.ucar.combination.service.DepartmentService;
+import com.ucar.combination.service.RegionManageService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +40,8 @@ public class DepartmentController {
     DepartmentService departmentService;
     @Autowired
     CompanyManageService companyManageService;
+    @Autowired
+    RegionManageService regionManageService;
 
     /**
      * description: 构建树结构的部门
@@ -129,6 +133,20 @@ public class DepartmentController {
     public Boolean changeUpper(@RequestBody Department department) {
         departmentService.updateUpperDepartment(department.getId(), department.getUpperDepartmentNo());
         return true;
+    }
+
+    /**
+     * description: 查找单个部门详细信息
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/8 19:53
+     * @params 部门id
+     * @return 部门详情、及冗余信息
+     */
+    @ResponseBody
+    @RequestMapping("/selectDepartmentById.do_")
+    public Result selectDepartmentbyId(Long id){
+        DepartmentEditDto departmentEdit = departmentService.selectDepartmentForEdit(id);
+        return new Result().put("departmentEdit",departmentEdit);
     }
 
     /*

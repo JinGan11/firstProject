@@ -3,7 +3,7 @@
     <br>
     <div>
       <el-button type="primary" v-bind:disabled="operationBtnActive" @click="addDept">新建子部门</el-button>
-      <el-button type="primary">修改</el-button>
+      <el-button type="primary" @click="updateDept">修改</el-button>
       <el-button type="primary" @click="dialogVisible = true" v-bind:disabled="operationBtnActive">删除</el-button>
       <el-button type="primary" v-bind:disabled="operationBtnActive" @click="changeUpper">修改上级部门</el-button>
       <el-button type="primary">关联公司</el-button>
@@ -141,6 +141,10 @@
         window.localStorage.setItem("dept_no",this.$refs.tree.getCheckedNodes()[0].departmentNo);
         window.localStorage.setItem("dept_name",this.$refs.tree.getCheckedNodes()[0].departmentName);
         this.$router.replace('/departmentManagement/addDepartment');
+      },
+      updateDept() {
+        window.localStorage.setItem("dept_id",this.$refs.tree.getCheckedNodes()[0].id);
+        this.$router.replace('/departmentManagement/updateDepartment');
       }
     }
   };

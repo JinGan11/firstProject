@@ -64,7 +64,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="所在城市">
-            <el-input style="width:200px;" v-model="form.cityId" :disabled="false" maxlength="20"></el-input>
+            <el-input style="width:200px;" v-model="form.cityName" :disabled="false" maxlength="20"></el-input>
             <span style="color: red;">*</span>
             <a style="color: blue" @click="chooseCity">选择</a>
           </el-form-item>
@@ -129,7 +129,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="上级部门">
-            <el-input style="width:200px;" v-model="upperDepartmentName" :disabled="true" maxlength="40"></el-input>
+            <el-input style="width:200px;" v-model="form.upperDepartmentName" :disabled="true" maxlength="40"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -154,10 +154,10 @@
           <el-form-item label="部门类型">
             <el-select style="width: 200px;" v-model="form.departmentType">
               <el-option
-               v-for="item in departmentTypeOptions"
-               :key="item.value"
-               :label="item.label"
-               :value="item.value">
+                v-for="item in departmentTypeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
               </el-option>
             </el-select>
             <span style="color: red;">*</span>
@@ -179,12 +179,12 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="新建时间">
-            <el-input style="width:200px;" :disabled="true" v-model="nowTime"></el-input>
+            <el-input style="width:200px;" :disabled="true" v-model="form.createTime"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="新建人">
-            <el-input style="width:200px;" :disabled="true" v-model="createEmpName"></el-input>
+            <el-input style="width:200px;" :disabled="true" v-model="form.createName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -192,12 +192,12 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="修改时间">
-            <el-input style="width:200px;" :disabled="true" v-model="nowTime"></el-input>
+            <el-input style="width:200px;" :disabled="true" v-model="form.modifyTime"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="修改人">
-            <el-input style="width:200px;" :disabled="true" v-model="modifyEmpName"></el-input>
+            <el-input style="width:200px;" :disabled="true" v-model="form.modifyEmp"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -243,6 +243,7 @@
     data() {
       return {
         form: {
+          id: '',
           departmentNo: '',
           workplace: '',
           departmentName: '',
@@ -259,11 +260,15 @@
           departmentType: '',
           status: 1,
           remark: '',
+          createTime: '',
+          modifyTime: '',
           longitude: '',
-          latitude: ''
+          latitude: '',
+          upperDepartmentName: '',
+          cityName: '',
+          createName: '',
+          modifyName: ''
         },
-        upperDepartmentName: '',
-        cityName: '',
         supports: [],
         longitudeNum: '',
         longitudeDirection: 'E',
@@ -333,45 +338,72 @@
       }
     },
     mounted() {
-      this.form.upperDepartmentNo=window.localStorage.getItem("dept_no");
-      this.upperDepartmentName=window.localStorage.getItem("dept_name");
-      this.createEmpName=window.sessionStorage.getItem("loginUsername");
-      this.modifyEmpName=window.sessionStorage.getItem("loginUsername");
-
-      // 设置可选择的业务线
       var self = this;
-      var param = {
-        departmentNo: self.form.upperDepartmentNo
-      }
-      self.$http.get("department/getSupportBusiness.do_",{ params: param })
+      self.form.id=window.localStorage.getItem("dept_id");
+      // 获取当前部门的信息
+      var deptParam = {
+        id: self.form.id
+      };
+      self.$http.get("department/selectDepartmentById.do_",{ params: deptParam })
         .then(result => {
-          var sups = result.split("&");
-          for(var i=0;i<sups.length;i++){
-            if(sups[i] == "闪贷") { self.businessDisable.shandai=false; continue; }
-            if(sups[i] == "租车") { self.businessDisable.zuche=false; continue; }
-            if(sups[i] == "专车") { self.businessDisable.zhuanche=false; continue; }
-            if(sups[i] == "保险") { self.businessDisable.baoxian=false; continue; }
-            if(sups[i] == "买买车") { self.businessDisable.maimaiche=false; continue; }
-          }
+          self.$options.methods.fillData(self,result.departmentEdit); // 填充其他数据
         })
         .catch(function (error) {
 
         });
-      // 页面加载完显示当前时间
-      this.nowTime = this.dealWithTime(new Date());
-      // 定时器，定时修改显示的时间
-      let _this = this;
-      this.timer = setInterval(function () {
-        _this.nowTime = _this.dealWithTime(new Date())
-      }, 1000);
-    },
-    destroyed () {
-      // 结束时清除定时器
-      if (this.timer) {
-        clearInterval(this.timer);
-      }
     },
     methods: {
+      fillData(self,data){
+        self.form=data;
+        self.$options.methods.setSupportBusiness(self,data.upperDepartmentNo);
+        //设置已选业务线
+        var sups = data.supportBusiness.split("&");
+        for(var i=0;i<sups.length;i++){
+          if(sups[i] == "闪贷") { self.supports.push("闪贷"); continue; }
+          if(sups[i] == "租车") { self.supports.push("租车"); continue; }
+          if(sups[i] == "专车") { self.supports.push("专车"); continue; }
+          if(sups[i] == "保险") { self.supports.push("保险"); continue; }
+          if(sups[i] == "买买车") { self.supports.push("买买车"); continue; }
+        }
+        // 设置经纬度
+        if(data.longitude.trim()!=""){
+          var tmp = data.longitude;
+          self.longitudeNum = tmp.substr(0,tmp.length-1);
+          var tmp2 = tmp.substr(tmp.length-1,1);
+          if(tmp2=="E"||tmp2=="W"){
+            self.longitudeDirection=tmp2;
+          }
+        }
+        if(data.latitude.trim()!=""){
+          var tmp = data.latitude;
+          self.latitudeNum = tmp.substr(0,tmp.length-1);
+          var tmp2 = tmp.substr(tmp.length-1,1);
+          if(tmp2=="E"||tmp2=="W"){
+            self.latitudeDirection=tmp2;
+          }
+        }
+      },
+
+      // 设置可选择业务线
+      setSupportBusiness(self,dept_no){
+        var supParam = {
+          departmentNo: dept_no
+        };
+        self.$http.get("department/getSupportBusiness.do_",{ params: supParam })
+          .then(result => {
+            var sups = result.split("&");
+            for(var i=0;i<sups.length;i++){
+              if(sups[i] == "闪贷") { self.businessDisable.shandai=false; continue; }
+              if(sups[i] == "租车") { self.businessDisable.zuche=false; continue; }
+              if(sups[i] == "专车") { self.businessDisable.zhuanche=false; continue; }
+              if(sups[i] == "保险") { self.businessDisable.baoxian=false; continue; }
+              if(sups[i] == "买买车") { self.businessDisable.maimaiche=false; continue; }
+            }
+          })
+          .catch(function (error) {
+
+          });
+      },
       cancel () {
         this.$router.replace('/departmentManagement/showDepartment');
       },
@@ -381,6 +413,7 @@
       chooseCity() {
         alert("这个也没写");
       },
+      // 部门级别修改后显示内容变更
       levelChange() {
         if(this.form.level==5) this.haveWorkplace=true;
         else this.haveWorkplace=false;
@@ -401,29 +434,17 @@
         // 前端校验输入
         if(!self.$options.methods.checkInput(self)) return;
 
-        self.$http.post("department/addDepartment.do_",self.form)
-          .then(result => {
-            self.$router.replace("/departmentManagement/showDepartment");
-          })
-          .catch(function (error) {
+        alert("后台还没写");
 
-          })
+        // self.$http.post("department/addDepartment.do_",self.form)
+        //   .then(result => {
+        //     self.$router.replace("/departmentManagement/showDepartment");
+        //   })
+        //   .catch(function (error) {
+        //
+        //   })
       },
-      dealWithTime (data) {
-        let formatDateTime;
-        let Y = data.getFullYear();
-        let M = data.getMonth() + 1;
-        let D = data.getDate();
-        let H = data.getHours();
-        let Min = data.getMinutes();
-        let S = data.getSeconds();
-        let W = data.getDay();
-        H = H < 10 ? ('0' + H) : H;
-        Min = Min < 10 ? ('0' + Min) : Min;
-        S = S < 10 ? ('0' + S) : S;
-        formatDateTime = Y + '-' + M + '-' + D + '- ' + H + ':' + Min + ':' + S;
-        return formatDateTime;
-      },
+      // 添加业务线的分隔符
       addSubSign (data) {
         if(data.length<=0) return "";
         var result = data[0];

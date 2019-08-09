@@ -5,6 +5,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Department;
 import com.ucar.combination.model.dto.DepartmentDto;
+import com.ucar.combination.model.dto.DepartmentEditDto;
 import com.ucar.combination.model.dto.DepartmentTreeDto;
 import com.ucar.combination.model.dto.DepartmentUpperDto;
 
@@ -75,6 +76,15 @@ public interface DepartmentService {
      * @return
      */
     String selectSupportBusiness(String departmentNo);
+
+    /**
+     * description: 根据id查找部门详情，用于修改
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/9 11:20
+     * @params
+     * @return
+     */
+    DepartmentEditDto selectDepartmentForEdit(Long id);
 
     ResultPage searchDepartment(QueryParam queryParam);
 
