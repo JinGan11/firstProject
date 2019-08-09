@@ -13,6 +13,7 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="角色名称">
+              <span style="color: red;">*</span>
               <el-input style="width:200px;" v-model="form.roleName"></el-input>
             </el-form-item>
           </el-col>
@@ -20,6 +21,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="审批人账号">
+              <span style="color: red;">*</span>
               <el-input style="width:200px;" :disabled="true" v-model="form.accountNum"></el-input>
               <a style="color: #ffd408" @click="chooseAccount">选择</a>
             </el-form-item>
@@ -45,6 +47,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="支持业务线">
+              <span style="color: red;">*</span>
               <!--<template v-for="item in chks">
                 <input type="checkbox" name="hobby" :value="item.id"
                      :checked="form.loopsss.indexOf(item.id) > -1"/>{{item.name}}
@@ -61,7 +64,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="描述">
-              <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" v-model="form.description"></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="填写角色描述" v-model="form.description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -320,12 +323,13 @@
         this.selection = val;
       },
       save() {//保存修改角色信息
+        var self=this;
+        if(!self.$options.methods.checkInput(self)) return;
         this.$confirm('此操作将保存该文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          var self=this;
           self.form.businessLine=self.form.businessLine.join(',');
           self.$http.post("roleManage/updateByModify.do_", self.form)
             .then((result) => {
@@ -333,7 +337,8 @@
             })
             .catch(function (error) {
               commonUtils.Log("roleManage/updateByModify.do_:"+error);
-              self.$message.error("修改角色失败");
+              self.$message.error("角色名称唯一");
+              self.$router.replace("/roleManagement/roleManagement");
             });
           this.$message({
             type: 'success',
@@ -409,8 +414,19 @@
           commonUtils.Log("roleManage/getOneInf.do_:" + error);
           self.$message.error("获取数据错误");
         });
-      }
-    },
+      },
+      checkInput(val){
+        if (val.form.roleName==''){
+          alert("角色名称不能为空");
+          return false;
+        }
+        if (val.form.businessLine==''){
+          alert("支持业务线不能为空");
+          return false;
+        }
+        return true;
+      },
+  },
 
 
 

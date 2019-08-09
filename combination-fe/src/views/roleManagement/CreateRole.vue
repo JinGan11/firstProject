@@ -14,6 +14,7 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="角色名称">
+              <span style="color: red;">*</span>
               <el-input style="width:200px;" placeholder="请填入名称" v-model="form.roleName"></el-input>
             </el-form-item>
           </el-col>
@@ -21,6 +22,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="审批人账号">
+              <span style="color: red;">*</span>
               <el-input style="width:200px;" :disabled="true"  placeholder="选择回填信息账号" v-model="form.accountNum"></el-input>
               <a style="color: #ffd408" @click="chooseAccount">选择</a>
             </el-form-item>
@@ -46,6 +48,7 @@
         <el-row>
             <el-col :span="15">
               <el-form-item label="支持业务线">
+                <span style="color: red;">*</span>
                   <!--<template v-for="item in chks">
                     <input type="checkbox" name="form.hobby" :value="item.id"
                          :checked="form.loopsss.indexOf(item.id) > -1"/>{{item.name}}
@@ -76,7 +79,7 @@
           <el-row>
             <el-col :span="10">
               <el-form-item label="新建人">
-                <el-input style="width:200px;" :disabled="true" placeholder="当前操作账户" v-model="form.createEmp"></el-input>
+                <el-input style="width:200px;" :disabled="true" placeholder="当前操作账户" v-model="createEmp"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
@@ -88,7 +91,7 @@
           <el-row>
             <el-col :span="10">
               <el-form-item label="修改人">
-                <el-input style="width:200px;" :disabled="true" placeholder="当前操作账户" v-model="form.modifyEmp"></el-input>
+                <el-input style="width:200px;" :disabled="true" placeholder="当前操作账户" v-model="modifyEmp"></el-input>
               </el-form-item>
             </el-col>
               <el-col :span="10">
@@ -252,11 +255,11 @@
           staffName:'',
           departmentName:'',
           description:'',
-          createEmp:'',
           createTime:'',
-          modifyEmp:'',
           modifyTime:'',
         },
+        createEmp:'',
+        modifyEmp:'',
         accountForm: {//选择账户
           accountNo: null,
           staffNo: null,
@@ -286,8 +289,10 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
-
+      this.createEmp=window.sessionStorage.getItem("loginUsername");
+      this.modifyEmp=window.sessionStorage.getItem("loginUsername");
     },
+
     methods: {
       approvalInfo(val){
         this.form.accountNum = val.accountName;
@@ -305,12 +310,13 @@
         this.selection = val;
       },
       save() {//保存新建角色信息
+        var self = this;
+        if(!self.$options.methods.checkInput(self)) return;
         this.$confirm('此操作将保存该文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          var self=this;
           self.form.businessLine=self.form.businessLine.join(',');
           self.$http.post("roleManage/insertRole.do_", self.form)
             .then((result) => {
@@ -318,7 +324,8 @@
             })
             .catch(function (error) {
               commonUtils.Log("roleManage/insertRole:"+error);
-              self.$message.error("新建角色失败");
+              self.$message.error("角色名称唯一");
+              self.$router.replace("/roleManagement/roleManagement");
             });
           this.$message({
             type: 'success',
@@ -373,6 +380,21 @@
           commonUtils.Log("account/querylist.do_:"+error);
           self.$message.error("获取数据错误")
         });
+      },
+      checkInput(val){
+        if (val.form.roleName==''){
+          alert("角色名称不能为空");
+          return false;
+        }
+        if (val.form.accountNum==''){
+          alert("请选择审批人账号");
+          return false;
+        }
+        if (val.form.businessLine==''){
+          alert("支持业务线不能为空");
+          return false;
+        }
+        return true;
       },
     },
 

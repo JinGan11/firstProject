@@ -45,7 +45,7 @@
     <insert id="insertRole" parameterType="com.ucar.combination.model.dto.RoleDto">
         insert
         into t_role_info (role_name,business_line,role_status,approver_account_name,approver_staff_num,approver_staff_name,approver_department_name,description,create_emp,create_time,modify_emp,modify_time)
-        value (#{roleName},#{businessLine},1,#{accountNum},#{staffNum},#{staffName},#{departmentName},#{description},1,NOW(),1,NOW())
+        value (#{roleName},#{businessLine},1,#{accountNum},#{staffNum},#{staffName},#{departmentName},#{description},#{createEmp},NOW(),#{modifyEmp},NOW())
     </insert>
 
     <select id="getAccountRoleListById" parameterType="Long" resultType="com.ucar.combination.model.Role">

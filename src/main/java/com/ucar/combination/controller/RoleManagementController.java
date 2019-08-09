@@ -90,7 +90,10 @@ public class RoleManagementController {
 
 	@ResponseBody
 	@RequestMapping(value = "/insertRole.do_", method = RequestMethod.POST)
-	public void insertRole(@RequestBody RoleDto role) {
+	public void insertRole(@RequestBody RoleDto role,HttpSession session ) {
+		Long accountId = (Long) session.getAttribute("accountId");
+		role.setCreateEmp(accountId);
+		role.setModifyEmp(accountId);
 		roleManagementService.insertRole(role);
 		// System.out.println("insertRole:"+ JSON.toJSONString(role));
 	}
