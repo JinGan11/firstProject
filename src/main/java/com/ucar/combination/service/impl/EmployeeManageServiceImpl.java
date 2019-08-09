@@ -101,5 +101,16 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
     public int updateDimissionRecovery(String id) {
         return employeeManageDao.updateDimissionRecovery(id);
     }
+    /**
+     * description:修改员工信息
+     * @author shiya.li@ucarinc.com
+     * @date   2019/8/8 15：11
+     * @params
+     * @return
+     */
+    public void updateStaff(Staff staff){
+        employeeManageDao.updateStaff(staff);
+    }
+
 }
 

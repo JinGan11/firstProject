@@ -81,4 +81,13 @@ public interface EmployeeManageDao {
      * @return 更新的多少条数据
      */
     int updateDimissionRecovery(String id);
+    /**
+     * description:修改员工信息
+     * @author shiya.li@ucarinc.com
+     * @date   2019/8/8 15：11
+     * @params
+     * @return
+     */
+    void updateStaff(Staff staff);
+
 }

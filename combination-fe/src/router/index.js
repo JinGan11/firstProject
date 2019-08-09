@@ -11,8 +11,6 @@ import PwdReset from '@/views/personalAccountManagement/PwdReset'
 import AccountInfo from '@/views/personalAccountManagement/AccountInfo'
 import DepartmentSearch from '@/views/search/DepartmentSearch'
 import AccountManagement from '@/views/accountManagement/AccountList'
-import CreateEmployee from '@/views/employeeManagement/CreateEmployee'
-import ModifyEmployee from '@/views/employeeManagement/ModifyEmployee'
 import RoleManagement from '@/views/roleManagement/RoleManagement'
 import DepartmentManagementTest from '@/views/departmentManagement/DepartmentTest'
 import CompanyManagement from '@/views/companyManagement/CompanyList'
@@ -90,16 +88,6 @@ export default new Router({
     path:'/accountManagement',
     name:'账户查询',
     component:AccountManagement,
-    meta:{requireAuth:true}
-  },{
-    path:'/CreateEmployee',
-    name:'新建员工',
-    component:CreateEmployee,
-    meta:{requireAuth:true}
-  },{
-    path:'/modifyEmployee',
-    name:'修改员工信息',
-    component:ModifyEmployee,
     meta:{requireAuth:true}
   },{
     path:'/roleManagement/roleManagement',

@@ -107,4 +107,22 @@
     <update id="updateDimissionRecovery" parameterType="java.lang.String">
         UPDATE t_staff T set T.is_dimission=0 WHERE T.id=#{id};
     </update>
+    <update id="updateStaff" parameterType="com.ucar.combination.model.Staff">
+       update t_staff t1
+       set
+        t1.staff_num=#{staffNum},
+        t1.staff_name=#{staffName},
+        t1.staff_sex=#{staffSex},
+        t1.staff_telephone=#{staffTelephone},
+        t1.staff_email=#{staffEmail},
+        t1.department_id=#{departmentId},
+        t1.is_dimission=#{isDimission},
+        t1.create_time=#{createTime},
+        t1.create_emp=1,
+        t1.modify_time=NOW(),
+        t1.modify_emp=1,
+        t1.remark=#{remark}
+        where  t1.id=#{id}
+    </update>
+
 </mapper>

@@ -100,6 +100,9 @@
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏员工id"></el-table-column>
       <el-table-column prop="accountId" v-if="false" label="隐藏账户id"></el-table-column>
+      <el-table-column prop="createTime" v-if="false" label="隐藏创建时间"></el-table-column>
+      <el-table-column prop="createEmp" v-if="false" label="隐藏创建人"></el-table-column>
+      <el-table-column prop="remark" v-if="false" label="隐藏备注"></el-table-column>
       <el-table-column prop="staffNum" label="员工编号" width="150"></el-table-column>accountId
       <el-table-column prop="accountName" label="登陆账号" width="150"></el-table-column>
       <el-table-column prop="staffName" label="员工姓名" width="120"></el-table-column>
@@ -189,6 +192,211 @@
       </el-tree>
       <el-button @click="getCheckedNodes">点击弹出选中的部门的ID</el-button>
     </el-dialog>
+    <el-dialog :title='createTitle' :visible.sync="createDialogVisible" :close-on-click-modal="false" width="900px">
+      <el-form ref="form" :model="createForm" label-width="80px">
+        <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
+          <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">员工信息</div>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="员工编号:" label-width="150px">
+                <el-input style="width:200px;"  v-model="createForm.staffNum"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="员工姓名:" label-width="150px">
+                <el-input style="width:200px;" v-model="createForm.staffName"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="性别:" label-width="150px">
+                <el-input style="width:200px;" v-model="createForm.staffSex"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="员工手机号:" label-width="150px">
+                <el-input style="width:200px;" v-model="createForm.staffTelephone"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="员工邮箱:" label-width="150px">
+                <el-input style="width:200px;" v-model="createForm.staffEmail"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="归属部门:" label-width="150px">
+                <el-input style="width:200px;" v-model="createForm.departmentId"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="是否离职:" label-width="150px">
+                <el-input style="width:200px;" v-model="createForm.isDimission"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="登录账号:" label-width="150px">
+                <el-input style="width:200px;" :disabled="true" v-model="createForm.accountId"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+
+
+
+        <div>
+          <div style="font-family: Consolas; font-size:20px ; margin-left:50px;margin-bottom: 20px;padding-top: 20px">其他信息</div>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="新建时间:" label-width="150px">
+                <el-input style="width:200px;" :disabled="true" v-model="createForm.createTime"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="新建人:" label-width="150px">
+                <el-input style="width:200px;" :disabled="true" v-model="createForm.createEmp"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="修改时间:" label-width="150px">
+                <el-input style="width:200px;" :disabled="true" v-model="createForm.modifyTime"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="修改人:" label-width="150px">
+                <el-input style="width:200px;" :disabled="true" v-model="createForm.modifyEmp"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="备注:" label-width="150px">
+                <el-input style="width:200px;" v-model="createForm.remark"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+        <el-row>
+          <el-col style="text-align: center">
+            <el-form-item>
+              <el-button type="primary" style="width:100px" @click="saveEmployee" >保存</el-button>
+              &nbsp&nbsp&nbsp&nbsp&nbsp
+              <el-button type="primary" style="width:100px" @click="cancelEmployee">取消</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+      </el-form>
+    </el-dialog>
+    <el-dialog :title='modifyTitle' :visible.sync="modifyDialogVisible" :close-on-click-modal="false" width="900px">
+      <el-form ref="form" :model="modifyForm" label-width="80px">
+        <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
+          <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">员工信息</div>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="员工编号:" label-width="150px">
+                <el-input style="width:200px;"  v-model="modifyForm.staffNum"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="员工姓名:" label-width="150px">
+                <el-input style="width:200px;" v-model="modifyForm.staffName"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="性别:" label-width="150px">
+                <el-input style="width:200px;" v-model="modifyForm.staffSex"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="员工手机号:" label-width="150px">
+                <el-input style="width:200px;" v-model="modifyForm.staffTelephone"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="员工邮箱:" label-width="150px">
+                <el-input style="width:200px;" v-model="modifyForm.staffEmail"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="归属部门:" label-width="150px">
+                <el-input style="width:200px;" v-model="modifyForm.departmentId"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="是否离职:" label-width="150px">
+                <el-input style="width:200px;" v-model="modifyForm.isDimission"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="登录账号:" label-width="150px">
+                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.accountId"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+
+
+
+        <div>
+          <div style="font-family: Consolas; font-size:20px ; margin-left:50px;margin-bottom: 20px;padding-top: 20px">其他信息</div>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="新建时间:" label-width="150px">
+                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.createTime"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="新建人:" label-width="150px">
+                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.createEmp"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="修改时间:" label-width="150px">
+                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.modifyTime"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="修改人:" label-width="150px">
+                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.modifyEmp"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="备注:" label-width="150px">
+                <el-input style="width:200px;" v-model="modifyForm.remark"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+        <el-row>
+          <el-col style="text-align: center">
+            <el-form-item>
+              <el-button type="primary" style="width:100px" @click="saveUpdate" >保存</el-button>
+              &nbsp&nbsp&nbsp&nbsp&nbsp
+              <el-button type="primary" style="width:100px" @click="cancelUpdate">取消</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+      </el-form>
+    </el-dialog>
+
   </home>
 
 </template>
@@ -227,6 +435,29 @@
           departmentId: '',
           upperDepartmentNo: '',
         },
+        createForm:{
+          staffNum:'',
+          staffName:'',
+          staffSex:'',
+          staffTelephone:'',
+          staffEmail:'',
+          departmentId:'',
+          isDimission:'',
+          accountId:'',
+          remark:'',
+
+        },
+        modifyForm:{
+          staffNum:'',
+          staffName:'',
+          staffSex:'',
+          staffTelephone:'',
+          staffEmail:'',
+          createTime:'',
+          createEmp:'',
+          remark:'',
+        },
+
         tableData: [],
         selection: '',
         id: '',
@@ -243,6 +474,11 @@
         isDimissionEnum: {},
         title: '模板',
         excelTitle: '请选择需要导出的字段',
+        createTitle: '员工新建页面',
+        modifyTitle:'员工信息修改页面',
+        createDialogVisible:false,
+        modifyDialogVisible:false,
+
         dialogVisible: false,
         templateGroupName: '测试',
         description: '测试',
@@ -377,13 +613,54 @@
       add() {
         this.dialogVisible = true;
       },
-      createEmployee() {//点击新建按钮，跳转到新建页面
-        this.$router.replace('/CreateEmployee')
+      createEmployee() {//点击新建按钮，弹出新建窗口
+
+        this.createDialogVisible=true;
 
       },
+
       modifyEmployee() {//点击修改按钮，跳转到修改页面
-        this.$router.replace('/ModifyEmployee');
+
+        this.modifyDialogVisible=true;
       },
+      saveEmployee(){
+
+        const self=this;
+        self.$http.post("employee/insertStaff",self.createForm)
+          .then(result => {
+            this.createDialogVisible=false;
+            self.$message.success("新建用户成功");
+          })
+          .catch(function (error) {
+            commonUtils.Log("employee/insertStaff:"+error);
+            self.$message.error("新建用户失败");
+          })
+
+      },
+      cancelEmployee(){
+        this.createDialogVisible=false;
+      },
+      saveUpdate(){
+        console.log("=========")
+        const self=this;
+
+        self.$http.post("employee/updateStaff",self.modifyForm)
+          .then(result => {
+
+            this.modifyDialogVisible=false;
+            self.$message.success("修改成功");
+          })
+          .catch(function (error) {
+            commonUtils.Log("employee/updateStaff:"+error);
+            self.$message.error("修改用户信息失败");
+          })
+        console.log("6666")
+      },
+      cancelUpdate(){
+        this.modifyDialogVisible=false;
+      },
+
+
       deleteEmployee() {//逻辑删除员工，员工状态改为无效，账户状态改为无效
         this.$confirm('此操作将删除该员工, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -666,7 +943,25 @@
         window.localStorage.setItem("dept_id",this.$refs.tree.getCheckedNodes()[0].id);
         window.localStorage.setItem("dept_name",this.$refs.tree.getCheckedNodes()[0].departmentName);
         this.$router.replace('/departmentManagement/changeUpperDepartment');
+      },
+      approvalInfo(val){
+        this.disabled = false;
+        this.id = val.id;
+        this.accountId = val.accountId;
+        this.modifyForm.id=val.id;
+        this.modifyForm.accountId=val.accountId;
+        this.modifyForm.staffNum=val.staffNum;
+        this.modifyForm.staffName=val.staffName;
+        this.modifyForm.staffSex=val.staffSex;
+        this.modifyForm.staffEmail=val.staffEmail;
+        this.modifyForm.isDimission=val.isDimission;
+        this.modifyForm.staffTelephone=val.staffTelephone;
+        this.modifyForm.departmentId=val.departmentId;
+        this.modifyForm.createTime=val.createTime;
+        this.modifyForm.createEmp=val.createEmp;
+        this.modifyForm.remark=val.remark;
       }
+
     }
   }
 </script>

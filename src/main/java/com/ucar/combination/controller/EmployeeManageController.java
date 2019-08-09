@@ -158,4 +158,20 @@ public class EmployeeManageController {
         }
 
     }
+    /**
+     * description:在员工表更改员工信息
+     * @author shiya.li@ucarinc.com
+     * @date   2019/8/9 8:43
+     * @params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/updateStaff")
+    public  void updateStaff(@RequestBody Staff staff){
+        System.out.print("stuffId:"+staff.getStaffNum());
+
+        System.out.print("hello");
+        employeeManageService.updateStaff(staff);
+    }
+
 }

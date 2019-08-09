@@ -67,4 +67,13 @@ public interface EmployeeManageService {
      * @return 更新的数据
      */
     public int updateDimissionRecovery(String id);
+    /**
+     * description:修改员工信息
+     * @author shiya.li@ucarinc.com
+     * @date   2019/8/8 15：11
+     * @params
+     * @return
+     */
+    public void updateStaff(Staff staff);
+
 }
