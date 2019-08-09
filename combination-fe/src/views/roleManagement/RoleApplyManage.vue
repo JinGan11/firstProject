@@ -95,13 +95,12 @@
       <el-button type="primary" @click="deleteRoleApply" style="width:70px" :disabled="disabledDelete">删除</el-button>
       <el-button type="primary" @click="commitRoleApply" style="width:70px" :disabled="disabledDelete">提交审核</el-button>
       <el-button type="primary" style="width:100px" @click="out">导出</el-button>
-      <el-button type="primary" @click="" style="width:100px">条件查询</el-button>
     </div>
 
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" @change="buttonActive(scope.row)" :label="scope.row.roleApplyNum" ><span width="0px;"></span></el-radio>
+          <el-radio v-model="selection" @change="selectRow(scope.row)" :label="scope.row.roleApplyNum" ><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
@@ -326,9 +325,7 @@
       createRoleApply(){//新建角色申请
         this.$router.replace('/createRoleApply')
       },
-      modifyRoleApply(){//修改角色申请
-        this.$router.replace('/modifyRoleApply')
-      },
+
 
       out(){//点击导出按钮触发的函数
         this.dialogVisibleRole =true;
@@ -425,14 +422,6 @@
       },
 
 
-      buttonActive(row){//激活按钮
-        this.disabled = false;
-        if(row.applyStatus === 1){
-          this.disabledDelete=false;
-        }else{
-          this.disabledDelete=true;
-        }
-      },
       deleteRoleApply() {//删除角色信息
         this.$confirm('此操作将删除该角色申请, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -536,6 +525,36 @@
       clearDepartment(){//清除部门的值
         this.form.applyDepartmentName='';
       },
+
+
+
+
+
+      modifyRoleApply(){//修改角色申请
+        this.$router.replace('/modifyRoleApply')
+      },
+
+      selectRow(row){//选中某行
+        this.disabled = false;
+        if(row.applyStatus === 1){
+          this.disabledDelete=false;
+        }else{
+          this.disabledDelete=true;
+        }
+
+        sessionStorage.setItem('applyIdFromApply', row.id);
+        sessionStorage.setItem('roleNameFromApply', row.roleName);
+        sessionStorage.setItem('approverStaffNameFromApply', row.approverStaffName);
+        sessionStorage.setItem('businessLineFromApply', row.businessLine);
+        sessionStorage.setItem('businessLineFromApply', row.businessLine);
+        sessionStorage.setItem('applyTimeFromApply', row.applyTime);//申请人
+        sessionStorage.setItem('applyTimeFromApply', row.applyTime);//申请人
+        sessionStorage.setItem('modifyTimeFromApply', row.modifyTime);//修改时间
+        sessionStorage.setItem('modifyEmpFromApply', row.modifyEmp);//修改人
+
+
+      },
+
     }
 
   }

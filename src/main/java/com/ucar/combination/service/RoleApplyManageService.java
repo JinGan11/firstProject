@@ -2,6 +2,8 @@ package com.ucar.combination.service;
 
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.dto.AccountListByApplyIdDto;
+import com.ucar.combination.model.dto.CreateRoleApplyDto;
 import com.ucar.combination.model.dto.RoleApplyDto;
 
 import java.util.List;
@@ -47,5 +49,23 @@ public interface RoleApplyManageService {
     * @Date  17:40 2019/8/7
     */
     void commitRoleApply(String roleApplyNum);
+
+    /**
+    * @Description:
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  15:41 2019/8/8
+    */
+    void createRoleApply(CreateRoleApplyDto createRoleApplyDto);
+
+    /**
+    * @Description: 角色申请 修改页面的账户列表
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  11:08 2019/8/9
+    */
+    List<AccountListByApplyIdDto> showAccountListByApplyId(Long applyId);
 
 }

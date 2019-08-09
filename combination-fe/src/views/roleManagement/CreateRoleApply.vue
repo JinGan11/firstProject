@@ -6,7 +6,7 @@
           申请信息
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" size="mini" @click="">保存</el-button>
+          <el-button type="primary" size="mini" @click="saveRoleApply">保存</el-button>
         </el-col>
         <el-col :span="3">
           <el-button type="primary" size="mini" @click="">保存并提交</el-button>
@@ -95,13 +95,37 @@
       <el-form ref="form" :model="otherInfo" label-width="110px">
         <el-row>
           <el-col :span="10">
+            <el-form-item label="申请人登录账号">
+              <el-input style="width:300px;" v-model="otherInfo.applyAccountName" :disabled="true"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="申请人员工编号">
+              <el-input style="width:300px;" v-model="otherInfo.applyStaffNum" :disabled="true"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="申请人员工姓名">
+              <el-input style="width:300px;" v-model="otherInfo.applyStaffName" :disabled="true"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="申请人所属部门">
+              <el-input style="width:300px;" v-model="otherInfo.applyDepartmentName" :disabled="true"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
             <el-form-item label="申请时间">
               <el-input style="width:300px;" v-model="otherInfo.applyTime" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="申请人">
-              <el-input style="width:300px;" v-model="otherInfo.applyStaffName" :disabled="true"></el-input>
+            <el-form-item label="申请状态">
+              <el-input style="width:300px;" v-model="otherInfo.applyStatus" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -129,16 +153,8 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :span="10">
-            <el-form-item label="状态">
-              <el-input style="width:300px;" v-model="otherInfo.applyStatus" :disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
     </div>
-
 
 
 
@@ -337,6 +353,7 @@
         dialogCategory: '',//控制显示对应的具体弹窗
         multipleSelection: [],
         tableDataAccount:[],
+        accountList:[],
 
         formRoleInfo: {//申请信息
           roleApplyNum: '',
@@ -346,13 +363,16 @@
         },
 
         otherInfo: {//其他信息
+          applyAccountName:'',
+          applyStaffNum:'',
+          applyStaffName:'',
+          applyDepartmentName:'',
+          applyStatus: '',
           applyTime: '',
-          applyStaffName: '',
           modifyTime: '',
           modifyStaffName: '',
           approveTime: '',
           approverStaffName: '',
-          applyStatus: '',
         },
 
         formSelectRole: {
@@ -403,6 +423,8 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
+      this.otherInfo.applyStaffName=sessionStorage.getItem('loginUsername');
+      this.otherInfo.modifyStaffName=sessionStorage.getItem('loginUsername');
     },
     methods: {
       handleSizeChangeRole(val) {
@@ -526,6 +548,39 @@
       deleteSelect(index){ //移除添加的账户 删除行
         this.tableDataAccount.splice(index, 1)
       },
+
+
+      saveRoleApply(){
+        for(let i=0;i<this.tableDataAccount.length;i++){
+          this.accountList[i]=this.tableDataAccount[i].accountName;
+          alert(this.accountList[i])
+        }
+        alert(this.formRoleInfo.roleName);
+        var self=this;
+        var param={
+          roleName: self.formRoleInfo.roleName,
+          applyStatus: self.otherInfo.applyStatus,
+          applyAccountName:self.otherInfo.applyAccountName,
+          applyStaffNum: self.otherInfo.applyStaffNum,
+          applyStaffName:self.otherInfo.applyStaffName,
+          applyDepartmentName: self.otherInfo.applyDepartmentName,
+          applyTime:self.otherInfo.applyTime,
+          modifyStaffName:self.otherInfo.modifyStaffName,
+          modifyTime:self.otherInfo.modifyTime,
+          accountList:self.accountList
+        };
+
+
+        // alert(this.tableDataAccount[0].accountName);
+
+        self.$http.get("roleApply/createRoleApply.do_", {
+          params: param}).then(result => {
+            self.$router.replace("/roleManagement/apply");
+          }).catch(function (error) {
+            commonUtils.Log("/roleManagement/apply"+error);
+            self.$message.error("角色申请新建保存失败");
+          })
+      }
 
 
     }

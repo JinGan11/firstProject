@@ -339,6 +339,7 @@
             tableDataAccount:[],
             data:[],
             defaultProps:'',
+            applyId:'',
 
             formRoleInfo: {//申请信息
               roleApplyNum: '',
@@ -405,6 +406,19 @@
       },
       mounted() {
         commonUtils.Log("页面进来");
+        alert("修改角色申请页面进来");
+        this.applyId=sessionStorage.getItem('applyIdFromApply');
+        // alert(this.applyId);
+        console.log(this.applyId);
+        this.formRoleInfo.roleName=sessionStorage.getItem('roleNameFromApply');
+        this.formRoleInfo.approverStaffName=sessionStorage.getItem('approverStaffNameFromApply');
+        this.formRoleInfo.businessLine=sessionStorage.getItem('businessLineFromApply');
+        this.otherInfo.approverStaffName=sessionStorage.getItem('approverStaffNameFromApply');
+        this.otherInfo.applyTime=sessionStorage.getItem('applyTimeFromApply');
+        this.otherInfo.applyStaffName=sessionStorage.getItem('loginUsername');
+        this.otherInfo.modifyTime=sessionStorage.getItem('modifyTimeFromApply');
+        this.otherInfo.modifyStaffName=sessionStorage.getItem('modifyEmpFromApply');
+        this.showAccountListByApplyId();
       },
       methods: {
         handleSizeChangeRole(val) {
@@ -530,8 +544,25 @@
         },
 
 
+        showAccountListByApplyId(){ //修改页面进来 显示账户列表信息
+          var self=this;
+          var param={
+            applyId:self.applyId,
+          };
+          self.$http.get('roleApply/showAccountListByApplyId.do_', {
+            params: param
+          }).then((result) => {
+            alert(111111);
+            //请求成功回调
+            self.tableDataAccount = result.list;
+            alert(22222);
+          }).catch(function (error) {
+            //请求失败回调
+            commonUtils.Log("roleApply/showAccountListByApplyId.do_:"+error);
+            self.$message.error("获取数据错误");
+          });
+        }
       }
-
     }
 </script>
 

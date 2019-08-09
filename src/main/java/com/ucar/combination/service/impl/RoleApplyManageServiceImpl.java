@@ -5,6 +5,8 @@ import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.RoleApplyManageDao;
+import com.ucar.combination.model.dto.AccountListByApplyIdDto;
+import com.ucar.combination.model.dto.CreateRoleApplyDto;
 import com.ucar.combination.model.dto.RoleApplyDto;
 import com.ucar.combination.service.RoleApplyManageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +66,31 @@ public class RoleApplyManageServiceImpl implements RoleApplyManageService {
     @Override
     public void commitRoleApply(String roleApplyNum) {
         roleApplyManageDao.commitRoleApply(roleApplyNum);
+    }
 
+    /**
+    * @Description:  角色申请 新建
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  15:41 2019/8/8
+    */
+    @Override
+    public void createRoleApply(CreateRoleApplyDto createRoleApplyDto) {
+        roleApplyManageDao.createRoleApply(createRoleApplyDto);
+    }
+
+    /**
+    * @Description:  角色申请 修改页面  账户列表
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  11:17 2019/8/9
+    */
+    @Override
+    public List showAccountListByApplyId(Long applyId) {
+        List<AccountListByApplyIdDto> accountListByApplyIdDtos=roleApplyManageDao.showAccountListByApplyId(applyId);
+        return accountListByApplyIdDtos;
     }
 
 }

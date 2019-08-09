@@ -4,13 +4,18 @@ import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.dto.AccountListByApplyIdDto;
+import com.ucar.combination.model.dto.CreateRoleApplyDto;
 import com.ucar.combination.model.dto.RoleApplyDto;
 import com.ucar.combination.service.RoleApplyManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -102,4 +107,69 @@ public class RoleApplyManageController {
         String roleApplyNum = request.getParameter("selection");
         roleApplyManageService.commitRoleApply(roleApplyNum);
     }
+
+    /**
+    * @Description:  角色申请 新建 保存
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  16:02 2019/8/8
+    */
+//    @ResponseBody
+////    @RequestMapping(value = "/createRoleApply.do_",method = RequestMethod.POST)
+////    public void createRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto){
+////        System.out.println(createRoleApplyDto.getApplyAccountName());
+////        System.out.println(createRoleApplyDto.getRoleName());
+////        System.out.println("*********");
+////        roleApplyManageService.createRoleApply(createRoleApplyDto);
+////    }
+
+    @ResponseBody
+    @RequestMapping(value = "/createRoleApply.do_")
+    public void createRoleApply(HttpServletRequest request,CreateRoleApplyDto createRoleApplyDto){
+        String roleName=request.getParameter("roleName");
+//        String applyStatus=request.getParameter("applyStatus");
+//        String applyAccountName=request.getParameter("applyAccountName");
+//        String applyStaffNum=request.getParameter("applyStaffNum");
+        String applyStaffName=request.getParameter("applyStaffName");
+
+        String accountList[]=request.getParameterValues("accountList");
+        for(int i=0;i<accountList.length;i++){
+            System.out.println(accountList[i]);
+        }
+//        String applyDepartmentName=request.getParameter("applyDepartmentName");
+//        System.out.println(roleName);
+//        System.out.println(applyStaffName);
+//        String applyTime=request.getParameter("applyTime");
+//        String modifyStaffName=request.getParameter("modifyStaffName");
+//        String modifyTime=request.getParameter("modifyTime");
+        createRoleApplyDto.setRoleName(roleName);
+//        createRoleApplyDto.setApplyStatus(Integer.parseInt(applyStatus));
+//        createRoleApplyDto.setApplyAccountName(applyAccountName);
+//        createRoleApplyDto.setApplyStaffNum(applyStaffNum);
+        createRoleApplyDto.setApplyStaffName(applyStaffName);
+//        createRoleApplyDto.setApplyDepartmentName(applyDepartmentName);
+//        createRoleApplyDto.setApplyTime(applyTime);
+//        createRoleApplyDto.setModifyStaffName(int.parseInt(modifyStaffName));
+//        createRoleApplyDto.setApplyTime(modifyTime);
+        roleApplyManageService.createRoleApply(createRoleApplyDto);
+
+    }
+
+    /**
+    * @Description:  角色申请 修改页面 账户列表
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  11:27 2019/8/9
+    */
+    @ResponseBody
+    @RequestMapping("/showAccountListByApplyId.do_")
+    public Result showAccountListByApplyId(HttpServletRequest request){
+        String strid = request.getParameter("applyId");
+        Long applyId = Long.parseLong(strid);
+        List<AccountListByApplyIdDto> list=roleApplyManageService.showAccountListByApplyId(applyId);
+        return Result.ok().put("list",list);
+    }
+
 }
