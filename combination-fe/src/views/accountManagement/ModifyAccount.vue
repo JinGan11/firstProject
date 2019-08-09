@@ -98,36 +98,49 @@
       <hr style="width: 65%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
       <div style="width:85%; margin-left: 70px; float: left">
         <el-form :model="modifyForm" label-width="80px">
-          <el-low>
+          <el-row>
             <el-col :span="6">
               <el-form-item label="新建人">
-                <el-input style="width:200px;" v-model="modifyForm.creatEmpName"></el-input>
+                <el-input style="width:200px;" disabled="true" v-model="modifyForm.creatEmpName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="新建时间">
-                <el-input style="width:200px;" v-model="modifyForm.createTime"></el-input>
+                <el-input style="width:200px;" disabled="true" v-model="modifyForm.createTime"></el-input>
               </el-form-item>
             </el-col>
-          </el-low>
+          </el-row>
 
-          <el-low>
+          <el-row>
             <el-col :span="6">
               <el-form-item label="修改人">
-                <el-input style="width:200px;" v-model="modifyForm.modifyEmpName"></el-input>
+                <el-input style="width:200px;" disabled="true" v-model="modifyForm.modifyEmpName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="修改时间">
-                <el-input style="width:200px;" v-model="modifyForm.modifyTime"></el-input>
+                <el-input style="width:200px;" disabled="true" v-model="modifyForm.modifyTime"></el-input>
               </el-form-item>
             </el-col>
-          </el-low>
-
+          </el-row>
+          <el-row>
+            <el-col :span="6">
+              <el-form-item label="账号状态">
+                <el-select style="width:180px;" disabled="true" v-model="modifyForm.accountState" clearable placeholder="请选择" @change="pressionChange">
+                  <el-option
+                    v-for="item in statusList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
           <el-row>
             <el-col :span="6">
               <el-form-item label="备注">
-                <el-input style="width:200px;" v-model="modifyForm.remark"></el-input>
+                <el-input style="width: 600px" type="textarea" :rows="2" v-model="modifyForm.remark"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -145,7 +158,6 @@
   import commonUtils from '../../common/commonUtils'
   export default {
     data() {
-
       return {
         defaultProps: {
           label: 'departmentName',
@@ -157,6 +169,7 @@
         departmentVisible :false,
         relAccount: 1,
         permissionsList:[],
+        statusList: [],
         modifyForm: {
           staffId: '',
           accountNum: '',
@@ -188,6 +201,7 @@
     created() {
       const self = this;
       self.fetchData();
+      self.fetchEnums();
     },
     methods: {
       loadNode(node,resolve){
@@ -237,6 +251,9 @@
           self.modifyForm.staffName = result.account.staffName;
           self.modifyForm.permissions = result.account.premissions;
           self.modifyForm.secretEmail = result.account.secretEmail;
+          if(self.modifyForm.secretEmail == ''){
+            self.emailDisabled = false;
+          }
           self.modifyForm.remark = result.account.remark;
           self.modifyForm.creatEmpName = result.account.creatEmpName;
           self.modifyForm.createTime = result.account.createTime;
@@ -247,8 +264,12 @@
           commonUtils.Log("account/createAccount.do_:"+error);
           self.$message.error("获取数据错误")
         });
+      },
+      fetchEnums(){
+        const self = this;
         self.$http.get('account/enums.do_').then((result) => {
           self.permissionsList = result.permissionList;
+          self.statusList = result.accountStatusList;
         }).catch(function (error) {
           commonUtils.Log("account/premission.do_:"+error);
           self.$message.error("获取数据错误")
@@ -290,7 +311,6 @@
       },
       cancel(){//关闭新建账户页面，返回账户管理列表页面
         const self = this;
-        this.$refs.tree.getCheckedNodes();
         self.$router.replace('/AccountManagement');
       },
       changeDialogVisible() {//选择员工界面的开关
@@ -307,6 +327,7 @@
           self.emailDisabled = false;
         }else{
           this.modifyForm.secretEmail = staffData.staffEmail;
+          self.emailDisabled = true;
         }
       },
       pressionChange(){//当数据权限为手动选择是，选择部门框可见

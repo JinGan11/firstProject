@@ -155,7 +155,7 @@
           department: '',
           remark:'',
         },
-        emailDisabled: true,
+        emailDisabled: false,
         rules: {
           password: [
             {validator: validatePass, trigger: 'blur'}
@@ -172,7 +172,7 @@
     },
     created() {
       const self = this;
-      self.$http.get('account/premission.do_').then((result) => {
+      self.$http.get('account/enums.do_').then((result) => {
         self.permissionsList = result.permissionList;
       }).catch(function (error) {
         commonUtils.Log("account/premission.do_:"+error);
@@ -249,7 +249,6 @@
       },
       cancel(){//关闭新建账户页面，返回账户管理列表页面
         const self = this;
-        this.$refs.tree.getCheckedNodes();
         self.$router.replace('/AccountManagement');
       },
       changeDialogVisible() {//选择员工界面的开关
@@ -266,6 +265,7 @@
           self.emailDisabled = false;
         }else{
           this.newForm.secretEmail = staffData.staffEmail;
+          self.emailDisabled = true;
         }
       },
       pressionChange(){//当数据权限为手动选择是，选择部门框可见
