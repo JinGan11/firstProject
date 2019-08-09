@@ -26,7 +26,7 @@
       <el-button type="primary" @click="modifyRole(selection)" :disabled="isModify" style="width:100px">修改</el-button>
       <el-button type="primary" @click="deleteRole" :disabled="isModify" style="width:100px">删除</el-button>
       <el-button type="primary" @click="addAccount" :disabled="isModify" style="width:100px">添加账号</el-button>
-      <el-button type="primary" @click="roleAssignPermission" style="width:100px">分配权限</el-button>
+      <el-button type="primary" @click="roleAssignPermission" :disabled="isModify" style="width:100px">分配权限</el-button>
     </div>
 
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
@@ -110,6 +110,36 @@
                      :total="totalAccount">
       </el-pagination>
     </el-dialog>
+
+    <el-dialog :title="roleAssignPermissionTitle" :visible.sync="roleAssignPermissionFlag" :close-on-click-modal="false"
+               width="700px">
+      <div class="dialog-main">
+        <el-form>
+          <div style="height: 80px;display: flex;align-items: center;margin-left: 80%">
+            <el-button type="primary" style="margin-right: 10px" @click="preservePower">保存</el-button>
+            <el-button type="primary" @click="cencel">取消</el-button>
+          </div>
+          <el-row type="flex" justify="center" style="width: 100%;">
+            <el-col :span="11">
+              <el-scrollbar style="width: 400px">
+                <el-tree
+                  style="float: left;margin-left: 100px;height: 350px"
+                  ref="tree"
+                  :props="defaultProps"
+                  node-key="powerId"
+                  :load="loadNode"
+                  lazy="true"
+                  :default-expanded-keys="[1]"
+                  :default-checked-keys="selectedNodes"
+                  show-checkbox
+                  @check-change="handleCheckChange">
+                </el-tree>
+              </el-scrollbar>
+            </el-col>
+          </el-row>
+        </el-form>
+      </div>
+    </el-dialog>
   </home>
 </template>
 
@@ -156,6 +186,18 @@
         totalAccount:0,
         permissionsEnum:{},
         accountStatusEnum:{},
+
+        roleAssignPermissionFlag: false,
+        powerSelectedList: [],
+        selected: [],
+        defaultProps: {
+          label: 'powerName',
+          children: 'children',
+          id: 'powerId'
+        },
+        selectedNodes: [],
+        myRole: [],
+        roleAssignPermissionTitle: '角色权限分配',
       }
     },
     activated() {
@@ -246,13 +288,12 @@
         });
       },
       selectionActive(val) {
+        this.myRole.roleId = val.roleId;
+        this.myRole.roleName = val.roleName;
         this.isModify = false;
       },
       cellTrigger(val){//角色详情页
         this.$router.push({path: '/RoleInf', query: {roleID: val}});
-      },
-      roleAssignPermission() {
-        this.$router.replace("/roleManagement/RoleAssignPermission")
       },
       addAccount(){
         this.addAccountDialogVisible=true;
@@ -349,6 +390,61 @@
         let checkedCount = value.length;
         this.checkAll = checkedCount === this.roles.length;
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.roles.length;
+      },
+      roleAssignPermission() {
+        const self = this;
+        self.roleAssignPermissionTitle = self.myRole.roleName + "权限分配";
+        self.$nextTick(() => {
+          self.$refs.tree.setCheckedKeys([]);
+        });
+        self.roleAssignPermissionFlag = true;
+        self.getRolePower();
+      },
+      //获取角色的权限
+      getRolePower() {
+        const self = this;
+        var param = {
+          roleInfoId: self.myRole.roleId
+        }
+        self.$http.post('roleManage/getRolePower.do_', param).then((result) => {
+          self.selectedNodes = result.rolePowerList;
+          console.log(self.selectedNodes)
+        }).catch(function (error) {
+          commonUtils.Log("roleManage/getRolePower.do_" + error);
+          self.$message.error("获取数据错误")
+        });
+      },
+      //获取树数据
+      loadNode(node, resolve) {
+        var self = this;
+        self.$http.get('power/getPowerList', {
+          params: null
+        }).then((result) => {
+          resolve([result.powerTree]);
+        }).catch(function (error) {
+          commonUtils.Log("account/querylist.do_:"+error);
+          self.$message.error("获取数据错误")
+        });
+      },
+      handleCheckChange(data, checked, indeterminate) {
+      },
+      preservePower() {
+        const self = this;
+        var param = {
+          roleInfoId: self.myRole.roleId,
+          powerList: self.$refs.tree.getCheckedNodes()
+        };
+        self.$http.post("roleManage/assignPermission", param)
+          .then((result) => {
+            console.log("success!")
+          })
+          .catch(function (error) {
+
+          });
+        self.roleAssignPermissionFlag = false;
+      },
+      cencel() {
+        this.roleAssignPermissionFlag = false;
       },
     }
   }
