@@ -17,6 +17,7 @@
         select id, power_id
         from t_r_account_power
         where account_id = #{accountId}
+        order by power_id
     </select>
 
     <delete id="removeAccountPowerById" parameterType="com.ucar.combination.model.AccountPower">

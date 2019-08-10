@@ -48,6 +48,7 @@ public class LoginController {
         if (result.get("code").equals(200)) {
             result = powerService.getAccountAllPermission(list.get(0).getId());
             result.put("code", 200);
+            session.setAttribute("powerList", result.get("powerList"));
             session.setAttribute("accountName", loginUser.getAccountName());
             session.setAttribute("accountId", list.get(0).getId());
         }
@@ -67,6 +68,7 @@ public class LoginController {
         HttpSession session = request.getSession();
         session.removeAttribute("accountName");
         session.removeAttribute("accountId");
+        session.removeAttribute("powerList");
         return Result.ok();
     }
 }

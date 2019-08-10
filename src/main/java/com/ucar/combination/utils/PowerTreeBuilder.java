@@ -28,7 +28,7 @@ public class PowerTreeBuilder {
     // 找根节点
     private void findRoot() {
         for (PowerTree node : list) {
-            if (rootPowerId.equals(node.getSortId())) {
+            if (rootPowerId.equals(node.getPowerId())) {
                 rootNode = node;
                 break;
             }
@@ -39,8 +39,8 @@ public class PowerTreeBuilder {
     private PowerTree findChildren(PowerTree node) {
         List<PowerTree> tmpList = new ArrayList<>();
         for (PowerTree tmpNode : list) {
-            if (node.getSortId() != null && node.getSortId() != 0 && tmpNode.getSuperId() != null) {
-                if (node.getSortId().equals(tmpNode.getSuperId())) {
+            if (node.getPowerId() != null && tmpNode.getSuperId() != null) {
+                if (node.getPowerId().equals(tmpNode.getSuperId())) {
                     tmpList.add(findChildren(tmpNode));
                 }
             }

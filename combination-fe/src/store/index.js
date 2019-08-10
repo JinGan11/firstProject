@@ -6,7 +6,10 @@ var store = new Vuex.Store({
   state: {
     menuListState:[
       {name:'首页',path:'/index'}
-    ]
+    ],
+    menuList:[],
+    loginUsername: null,
+    powerList:[],
   },
   mutations: {
     menuListStateAdd(state,obj){
