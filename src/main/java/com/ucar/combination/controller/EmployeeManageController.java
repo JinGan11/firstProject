@@ -80,10 +80,10 @@ public class EmployeeManageController {
      */
     @ResponseBody
     @RequestMapping(value = "/insertStaff",method = RequestMethod.POST)
-    public  String insertStaff(@RequestBody Staff staff){
+    public  void insertStaff(@RequestBody Staff staff){
         employeeManageService.insertStaff(staff);
         System.out.println("insertStaff:"+ JSON.toJSONString(staff));
-        return "redirect:querylist.do_";
+
     }
     /**
      * description:在员工表更改员工状态为无效

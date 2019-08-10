@@ -1,9 +1,14 @@
 package com.ucar.combination.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
+import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.PowerDao;
 import com.ucar.combination.dao.RoleManagementDao;
 import com.ucar.combination.model.*;
+import com.ucar.combination.model.dto.RolePowerDto;
 import com.ucar.combination.service.PowerService;
 import com.ucar.combination.utils.PowerTreeBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @version 1.0
@@ -23,6 +29,7 @@ public class PowerServiceImpl implements PowerService {
 
     @Autowired
     PowerDao powerDao;
+
 
     @Autowired
     RoleManagementDao roleManagementDao;
@@ -274,4 +281,17 @@ public class PowerServiceImpl implements PowerService {
 //        }
         return powerList;
     }
+    /**
+     * description: 角色权限明细查询
+     * @author shiya.li@ucarinc.com
+     * @date   2019/8/10 17:08
+     * @params
+     * @return
+     */
+    public ResultPage queryRolePowerList(QueryParam queryParam) {
+        Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
+        List<RolePowerDto> list = powerDao.queryRolePowerList(queryParam);
+        return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
+    }
+
 }

@@ -1,14 +1,23 @@
 package com.ucar.combination.controller;
 
+import com.ucar.combination.common.CommonEnums;
+import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
+import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.*;
 import com.ucar.combination.service.PowerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.lang.reflect.Array;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @version 1.0
@@ -75,5 +84,28 @@ public class PowerController {
         Result result = powerService.modifySpecialPower(powerList,accountId);
         return result;
     }
+    /**
+     * description:用于接收数据返回前端列表
+     *
+     * @param request 前端请求
+     * @return com.ucar.combination.common.Result 返回数据
+     * @author gan.jin@ucarinc.com
+     * @date 2019/8/7 15:18
+     */
+
+    /*@ResponseBody
+    @RequestMapping("/queryRolePowerlist.do_")
+    public Result list(HttpServletRequest request) {
+        String page = request.getParameter("page");
+        String limit = request.getParameter("limit");
+        String roleName = request.getParameter("roleName");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("page", page);
+        params.put("limit", limit);
+        params.put("role_name", roleName);
+        ResultPage resultPage = powerService.queryRolePowerList(new QueryParam(params));
+
+        return Result.ok().put("page", resultPage).put("RoleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values())).put("roleList",roleList);
+    }*/
 
 }

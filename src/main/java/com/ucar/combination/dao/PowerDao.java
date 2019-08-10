@@ -4,6 +4,8 @@ import com.ucar.combination.model.AccountPower;
 import com.ucar.combination.model.Power;
 import com.ucar.combination.model.PowerTree;
 import com.ucar.combination.model.dto.AccountPowerDto;
+import com.ucar.combination.model.dto.RolePowerDto;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,4 +35,13 @@ public interface PowerDao {
      * @return
      */
     List<AccountPowerDto> getAccountPowerList(Map<String, Object> map);
+    /**
+     * description: 角色权限明细查询
+     * @author shiya.li@ucarinc.com
+     * @date   2019/8/10 17:08
+     * @params
+     * @return
+     */
+    List<RolePowerDto> queryRolePowerList(Map<String, Object> map);
+
 }

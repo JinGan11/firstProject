@@ -66,4 +66,22 @@
                 </if>
             </where>
     </select>
+    <select id ="queryRolePowerList" resultType="com.ucar.combination.model.dto.RolePowerDto">
+        SELECT
+          t1.id,
+          t1.role_name,
+          t1.business_line,
+          t1.role_status,
+          t1.approver_account_name,
+          t1.approver_staff_num,
+          t1.approver_staff_name,
+          t1.approver_department_name,
+        GROUP_CONCAT(t3.power_name separator '-')
+        from t_r_role_power t2 LEFT JOIN t_power t3 on t2.power_id=t3.power_id
+             join t_role_info t1 on t1.id=t2.role_info_id
+        GROUP BY t1.id
+        <where>
+            <if test="id!=null and id.trim()!=''"></if>
+        </where>
+    </select>
 </mapper>
