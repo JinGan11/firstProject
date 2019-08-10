@@ -78,9 +78,10 @@
       </template>
     </el-dialog>
 
-    <el-dialog title='添加账号' :visible.sync="addAccountDialogVisible" :close-on-click-modal="false" width="80%" :fullscreen="true">
+    <el-dialog title='添加账号' :visible.sync="addAccountDialogVisible" :close-on-click-modal="false" width="80%"
+               :fullscreen="true">
 
-      <el-table ref="multipleTable" :data="accountTableData" border @selection-change="handleAccountSelectionChange" >
+      <el-table ref="multipleTable" :data="accountTableData" border @selection-change="handleAccountSelectionChange">
         <el-table-column type="selection" width="50px"></el-table-column>
         <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
         <el-table-column prop="accountName" label="登陆账号" style="width:auto"></el-table-column>
@@ -132,6 +133,7 @@
                   :default-expanded-keys="[1]"
                   :default-checked-keys="selectedNodes"
                   show-checkbox
+                  :check-strictly="checkStrictly"
                   @check-change="handleCheckChange">
                 </el-tree>
               </el-scrollbar>
@@ -145,6 +147,7 @@
 
 <script>
   import commonUtils from '../../common/commonUtils'
+
   const rolesOptions = ['角色ID', '角色名称', '审批人账号', '审批人员编号', '审批人姓名', '审批人所属部门', '状态', '描述'];
   export default {
     data() {
@@ -170,23 +173,23 @@
         description: '',
         isModify: true,
 
-         exportDialogVisible: false,
-         checkAll: false,
+        exportDialogVisible: false,
+        checkAll: false,
         checkRoles: [],
-        roles:rolesOptions,
+        roles: rolesOptions,
         isIndeterminate: true,
-         filterVal: [],
-         list: [],
-         disabled: true,
-        roleDtoList:[],
-        addAccountDialogVisible:false,
-        accountTableData:[],
-        selectionAccount:[],
-        currentAccounytPage:1,
-        accountPageSize:10,
-        totalAccount:0,
-        permissionsEnum:{},
-        accountStatusEnum:{},
+        filterVal: [],
+        list: [],
+        disabled: true,
+        roleDtoList: [],
+        addAccountDialogVisible: false,
+        accountTableData: [],
+        selectionAccount: [],
+        currentAccounytPage: 1,
+        accountPageSize: 10,
+        totalAccount: 0,
+        permissionsEnum: {},
+        accountStatusEnum: {},
 
         roleAssignPermissionFlag: false,
         powerSelectedList: [],
@@ -199,6 +202,8 @@
         selectedNodes: [],
         myRole: [],
         roleAssignPermissionTitle: '角色权限分配',
+        powerTree: [],
+        checkStrictly: false,
       }
     },
     activated() {
@@ -246,7 +251,7 @@
           self.tableData = result.page.list;
           self.total = result.page.totalCount;
           self.RoleStatusEnum = result.RoleStatusEnum;
-          self.roleDtoList=result.roleList;
+          self.roleDtoList = result.roleList;
           //self.form.name="dsf";
         }).catch(function (error) {
           commonUtils.Log("roleManage/querylist.do_:" + error);
@@ -293,14 +298,14 @@
         this.myRole.roleName = val.roleName;
         this.isModify = false;
       },
-      cellTrigger(val){//角色详情页
+      cellTrigger(val) {//角色详情页
         this.$router.push({path: '/RoleInf', query: {roleID: val}});
       },
-      addAccount(){
-        this.addAccountDialogVisible=true;
+      addAccount() {
+        this.addAccountDialogVisible = true;
         this.fetchAccountData();
       },
-      fetchAccountData(){
+      fetchAccountData() {
         var self = this;
         var param = {
           page: self.currentAccounytPage,
@@ -314,7 +319,7 @@
           self.accountStatusEnum = result.accountStatusEnum;
           self.totalAccount = result.page.totalCount;
         }).catch(function (error) {
-          commonUtils.Log("account/querylist.do_:"+error);
+          commonUtils.Log("account/querylist.do_:" + error);
           self.$message.error("获取数据错误")
         });
       },
@@ -337,7 +342,7 @@
             // 上面的staffNum、accountId、staffName是tableData里对象的属性
             const list = this.roleDtoList;  //把data里的tableData存到list
             for (let i = 0; i < list.length; i++) {
-              list[i].roleStatus=this.RoleStatusEnum[list[i].roleStatus];
+              list[i].roleStatus = this.RoleStatusEnum[list[i].roleStatus];
             }
             const data = this.formatJson(filterVal, list);
             export_json_to_excel(tHeader, data, '员工管理列表excel');
@@ -404,12 +409,13 @@
       //获取角色的权限
       getRolePower() {
         const self = this;
+        self.checkStrictly = true;
         var param = {
           roleInfoId: self.myRole.roleId
         }
         self.$http.post('roleManage/getRolePower.do_', param).then((result) => {
           self.selectedNodes = result.rolePowerList;
-          console.log(self.selectedNodes)
+          self.checkStrictly = false;
         }).catch(function (error) {
           commonUtils.Log("roleManage/getRolePower.do_" + error);
           self.$message.error("获取数据错误")
@@ -423,9 +429,10 @@
         }).then((result) => {
           resolve([result.powerTree]);
         }).catch(function (error) {
-          commonUtils.Log("account/querylist.do_:"+error);
+          commonUtils.Log("account/querylist.do_:" + error);
           self.$message.error("获取数据错误")
         });
+
       },
       handleCheckChange(data, checked, indeterminate) {
       },
@@ -433,14 +440,13 @@
         const self = this;
         var param = {
           roleInfoId: self.myRole.roleId,
-          powerList: self.$refs.tree.getCheckedNodes()
+          powerList: self.$refs.tree.getCheckedNodes().concat(self.$refs.tree.getHalfCheckedNodes())
         };
         self.$http.post("roleManage/assignPermission", param)
           .then((result) => {
             console.log("success!")
           })
           .catch(function (error) {
-
           });
         self.roleAssignPermissionFlag = false;
       },

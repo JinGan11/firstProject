@@ -2,7 +2,6 @@ package com.ucar.combination.model;
 
 import com.ucar.combination.model.dto.BaseBean;
 
-import java.util.Date;
 
 /**
  * @program: combination

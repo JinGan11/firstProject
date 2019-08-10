@@ -166,6 +166,7 @@
                   lazy="true"
                   :default-expanded-keys="[1]"
                   :default-checked-keys="selectedNodes"
+                  :check-strictly="checkStrictly"
                   show-checkbox
                   @check-change="handleCheckChange">
                 </el-tree>
@@ -227,6 +228,7 @@
         selectedNodes:[],
         accountAssignPermissionFlag: false,
         accountAssignPermissionTitle: '账号权限分配',
+        checkStrictly: false,
       }
     },
     activated() {
@@ -318,6 +320,7 @@
       //初始化账户权限分配
       initAccountPermission() {
         const self = this;
+        self.checkStrictly = true;
         let param = {
           id: self.myAccount.id
         }
@@ -331,7 +334,7 @@
         });
         self.$http.post('power/getAccountPower.do_',param).then((result) => {
           self.selectedNodes = result.accountPower;
-          console.log(result)
+          self.checkStrictly = false;
         }).catch(function (error) {
           commonUtils.Log("power/getAccountPower.do_" + error);
           self.$message.error("获取数据错误")
@@ -411,7 +414,7 @@
         console.log(param1)
         var param2 = {
           id: self.myAccount.id,
-          powerList: self.$refs.tree.getCheckedNodes()
+          powerList: self.$refs.tree.getCheckedNodes().concat(self.$refs.tree.getHalfCheckedNodes())
         };
         self.$http.post("power/modifyAccountRole", param1)
           .then((result) => {
