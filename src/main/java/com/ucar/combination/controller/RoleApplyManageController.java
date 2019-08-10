@@ -73,7 +73,7 @@ public class RoleApplyManageController {
         }
         List<RoleApplyDto> roleDtoList = roleApplyManageService.getRoleList(new QueryParam(params));
         ResultPage resultPage = roleApplyManageService.queryList(new QueryParam(params));
-        return new Result().ok().put("page", resultPage).put("BusinessLineEnum", CommonEnums.toEnumMap(CommonEnums.BusinessLineEnum.values()))
+        return new Result().ok().put("page", resultPage)
                 .put("applyStatusEnum", CommonEnums.toEnumMap(CommonEnums.applyStatusEnum.values()))
                 .put("roleDtoList", roleDtoList);
     }
@@ -115,9 +115,10 @@ public class RoleApplyManageController {
     */
     @ResponseBody
     @RequestMapping(value = "/createRoleApply.do_",method = RequestMethod.POST)
-    public void createRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto){
-        System.out.println(createRoleApplyDto.getApplyStaffName());
-        System.out.println(createRoleApplyDto.getRoleName());
+    public void createRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto,HttpSession session){
+        Long accountId = (Long) session.getAttribute("accountId");
+        createRoleApplyDto.setModifyStaffName(accountId);
+        createRoleApplyDto.setApplyStatus(1);
         roleApplyManageService.createRoleApply(createRoleApplyDto);
     }
 

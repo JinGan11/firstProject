@@ -22,16 +22,7 @@ public class CreateRoleApplyDto {
     private String applyDepartmentName;//申请人部门名字
     private Integer applyStatus;//申请状态
     private Date applyTime;//申请时间
-
-    public String getModifyStaffName() {
-        return modifyStaffName;
-    }
-
-    public void setModifyStaffName(String modifyStaffName) {
-        this.modifyStaffName = modifyStaffName;
-    }
-
-    private String modifyStaffName;//修改人
+    private Long  modifyStaffName;//修改人
     private Date modifyTime;//修改时间
     private List<Object> accountIdList;
 
@@ -115,7 +106,13 @@ public class CreateRoleApplyDto {
         this.applyTime = applyTime;
     }
 
+    public Long getModifyStaffName() {
+        return modifyStaffName;
+    }
 
+    public void setModifyStaffName(Long modifyStaffName) {
+        this.modifyStaffName = modifyStaffName;
+    }
 
     public Date getModifyTime() {
         return modifyTime;

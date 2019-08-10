@@ -99,9 +99,9 @@
             #{applyStaffName},
             #{applyAccountName},
             #{applyDepartmentName},
-            #{applyTime},
+            now(),
             #{modifyStaffName},
-            #{modifyTime}
+            now()
         )
     </insert>
 

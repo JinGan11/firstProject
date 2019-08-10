@@ -14,7 +14,8 @@ public class RoleApplyDto {
     private Long roleId;
     private String roleName;
     private String approverStaffName;
-    private Integer businessLine;
+//    private Integer businessLine;
+    private String businessLine;
     private String applyAccountName;
     private String applyStaffNum;
     private String applyStaffName;
@@ -25,23 +26,7 @@ public class RoleApplyDto {
     private Date modifyTime;
     private String rejectReason;
 
-    public RoleApplyDto(Long id, String roleApplyNum, Long roleId, String roleName, String approverStaffName, Integer businessLine, String applyAccountName, String applyStaffNum, String applyStaffName, String applyDepartmentName, Date applyTime, Integer applyStatus, Long modifyEmp, Date modifyTime, String rejectReason) {
-        this.id = id;
-        this.roleApplyNum = roleApplyNum;
-        this.roleId = roleId;
-        this.roleName = roleName;
-        this.approverStaffName = approverStaffName;
-        this.businessLine = businessLine;
-        this.applyAccountName = applyAccountName;
-        this.applyStaffNum = applyStaffNum;
-        this.applyStaffName = applyStaffName;
-        this.applyDepartmentName = applyDepartmentName;
-        this.applyTime = applyTime;
-        this.applyStatus = applyStatus;
-        this.modifyEmp = modifyEmp;
-        this.modifyTime = modifyTime;
-        this.rejectReason = rejectReason;
-    }
+
 
     public Long getId() {
         return id;
@@ -83,11 +68,20 @@ public class RoleApplyDto {
         this.approverStaffName = approverStaffName;
     }
 
-    public Integer getBusinessLine() {
+//    public Integer getBusinessLine() {
+//        return businessLine;
+//    }
+//
+//    public void setBusinessLine(Integer businessLine) {
+//        this.businessLine = businessLine;
+//    }
+
+
+    public String getBusinessLine() {
         return businessLine;
     }
 
-    public void setBusinessLine(Integer businessLine) {
+    public void setBusinessLine(String businessLine) {
         this.businessLine = businessLine;
     }
 

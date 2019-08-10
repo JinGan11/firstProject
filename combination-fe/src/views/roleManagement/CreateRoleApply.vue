@@ -189,6 +189,7 @@
         <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
         <el-table-column prop="roleId" label="角色ID" width="150"></el-table-column>
         <el-table-column prop="roleName" label="角色名称"width="150"></el-table-column>
+        <el-table-column prop="businessLine"  label="支持业务线"></el-table-column>
         <el-table-column prop="accountNum" label="审批人账号" width="120"></el-table-column>
         <el-table-column prop="staffNum" label="审批人员工编号" ></el-table-column>
         <el-table-column prop="staffName" label="审批人姓名" width="200"></el-table-column>
@@ -525,6 +526,7 @@
         this.formRoleInfo.roleName=row.roleName;
         this.formRoleInfo.approverStaffName=row.staffName;
         this.otherInfo.approverStaffName=row.staffName;
+        this.formRoleInfo.businessLine=row.businessLine;
       },
       selectRole(){
         //确认选择按钮 选择角色
@@ -629,7 +631,8 @@
         self.forms.applyStaffName=self.otherInfo.applyStaffName,
         self.forms.applyDepartmentName=self.otherInfo.applyDepartmentName,
         self.forms.applyTime=self.otherInfo.applyTime,
-        self.forms.modifyStaffName=self.otherInfo.modifyStaffName,
+        // self.forms.modifyStaffName=self.otherInfo.modifyStaffName,
+        self.forms.modifyStaffName='',
         self.forms.modifyTime=self.otherInfo.modifyTime,
         self.forms.accountList=self.accountList,
 

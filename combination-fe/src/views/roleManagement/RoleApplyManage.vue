@@ -108,11 +108,12 @@
       <el-table-column prop="roleId" label="申请角色ID"width="150"></el-table-column>
       <el-table-column prop="roleName" label="申请角色名称"  width="150"></el-table-column>
       <el-table-column prop="approverStaffName" label="审批负责人" width="150"></el-table-column>
-      <el-table-column prop="businessLine" label="角色支持业务线" width="150" style="text-align: center">
-        <template slot-scope="scope">
-          {{BusinessLineEnum[scope.row.businessLine]}}
-        </template>
-      </el-table-column>
+      <el-table-column prop="businessLine" label="角色支持业务线" width="150"></el-table-column>
+<!--      <el-table-column prop="businessLine" label="角色支持业务线" width="150" style="text-align: center">-->
+<!--        <template slot-scope="scope">-->
+<!--          {{BusinessLineEnum[scope.row.businessLine]}}-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column prop="applyAccountName" label="申请人登录账号" width="150"></el-table-column>
       <el-table-column prop="applyStaffNum" label="申请人员工编号" width="150"></el-table-column>
       <el-table-column prop="applyStaffName" label="申请人员工姓名" width="150"></el-table-column>
@@ -313,7 +314,7 @@
           //请求成功回调
           self.tableData = result.page.list;
           self.total = result.page.totalCount;
-          self.BusinessLineEnum = result.BusinessLineEnum;
+          // self.BusinessLineEnum = result.BusinessLineEnum;
           self.ApplyStatusEnum = result.applyStatusEnum;
           self.roleDtoList=result.roleDtoList;
         }).catch(function (error) {
