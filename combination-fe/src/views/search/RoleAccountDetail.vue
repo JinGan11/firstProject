@@ -103,7 +103,6 @@
       <el-table-column prop="departmentName" label="所属部门" width="150"></el-table-column>
       <el-table-column prop="roleStatus" label="角色状态" width="150"></el-table-column>
       <el-table-column prop="accountState" label="账号状态" width="150"></el-table-column>
-      </el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
@@ -114,8 +113,6 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
-
-    </el-dialog>
     <el-dialog :title='excelTitle' :visible.sync="dialogVisible" :close-on-click-modal="false" width="600px">
       <template>
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>

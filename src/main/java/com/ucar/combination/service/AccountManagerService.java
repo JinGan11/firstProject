@@ -7,6 +7,7 @@ import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.model.Staff;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,7 +18,7 @@ import java.util.Map;
  * @Date: 2019/8/1
  **/
 public interface AccountManagerService {
-    /*
+    /**
      * description: 账户管理列表
      * @uthor： junqiang.zhang@ucarinc.com
      * @Date：
@@ -26,7 +27,7 @@ public interface AccountManagerService {
      */
     ResultPage queryList(QueryParam queryParam);
 
-    /*
+    /**
      * description: 通过账户id查询账户数据
      * @uthor： junqiang.zhang@ucarinc.com
      * @Date：  2019/8/8
@@ -35,7 +36,7 @@ public interface AccountManagerService {
      */
     public Account selectAccountById(String id);
 
-    /*
+    /**
      * description: 新建账户,并返回账户id
      * @uthor： junqiang.zhang@ucarinc.com
      * @Date：  2019/8/7
@@ -84,7 +85,7 @@ public interface AccountManagerService {
 
     /**
      * description: 修改账户信息
-     * @author peng.zhang11@ucarinc.com
+     * @author junqiang.zhang@ucarinc.com
      * @date:  2019/8/9 11:25
      * @params: accountStaff 要修改的信息
      * @return:
@@ -108,12 +109,41 @@ public interface AccountManagerService {
      */
     ResultPage getAccountPowerList(QueryParam queryParam);
 
-    /*
-     * description:
+    /**
+     * description: 手动选择数据权限新增
      * @uthor： junqiang.zhang@ucarinc.com
-     * @Date：
-     * @PArams：
+     * @Date：  2019/8/10 10:25
+     * @PArams：accountId 账户id tree部门权限
      * @Return：
      */
     void insertDepartmentPower(Long accountId,String tree);
+
+    /**
+     * description: 手动选择数据权限删除权限
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/10 10:55
+     * @params: accountId 账户id
+     * @return:
+     */
+    int deleteDepartmentPower(Long accountId);
+
+    /**
+     * description: 查询账户的部门权限
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/10 12:30
+     * @params: accountId 账户id
+     * @return: List 账户拥有的部门权限的部门id
+     */
+    List<String> selectDeparentPowerByAccountId(Long accountId);
+
+    /**
+     * description: 删除账户（账户状态改为无效）
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/10 14:30
+     * @params: accountId 账户id和修改人id
+     * @return:
+     */
+    int deleteAccountById(AccountStaff accountStaff);
+
+
 }

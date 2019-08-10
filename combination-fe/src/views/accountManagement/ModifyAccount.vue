@@ -17,7 +17,7 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label="登录账户">
-                <el-input  v-model="modifyForm.accountNum" disabled="true" autocomplete="off" ></el-input>
+                <el-input  v-model="modifyForm.accountNum" :disabled="true" autocomplete="off" ></el-input>
               </el-form-item>
               <div style="position: absolute; width: 0px">
                 <el-form-item label="">
@@ -32,7 +32,7 @@
                 </el-form-item>
               </div>
               <el-form-item label="密码" >
-                <el-input  type="password" v-model="modifyForm.password" disabled="true" ></el-input>
+                <el-input  type="password" v-model="modifyForm.password" :disabled="true" ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -41,14 +41,14 @@
             <el-col :span="8">
               <el-form-item label="关联员工编号">
                 <div style="float: left; width:100px" >
-                  <el-input style="width: 180px" v-model="modifyForm.staffNum" disabled="true"></el-input>
+                  <el-input style="width: 180px" v-model="modifyForm.staffNum" :disabled="true"></el-input>
                 </div>
                 <div style="float: right; width:100px"><el-button @click="changeDialogVisible">选择</el-button></div>
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="员工姓名">
-                <el-input v-model="modifyForm.staffName" disabled="true"></el-input>
+                <el-input v-model="modifyForm.staffName" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -101,12 +101,12 @@
           <el-row>
             <el-col :span="6">
               <el-form-item label="新建人">
-                <el-input style="width:200px;" disabled="true" v-model="modifyForm.creatEmpName"></el-input>
+                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.creatEmpName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="新建时间">
-                <el-input style="width:200px;" disabled="true" v-model="modifyForm.createTime"></el-input>
+                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.createTime"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -114,19 +114,19 @@
           <el-row>
             <el-col :span="6">
               <el-form-item label="修改人">
-                <el-input style="width:200px;" disabled="true" v-model="modifyForm.modifyEmpName"></el-input>
+                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.modifyEmpName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="修改时间">
-                <el-input style="width:200px;" disabled="true" v-model="modifyForm.modifyTime"></el-input>
+                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.modifyTime"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="6">
               <el-form-item label="账号状态">
-                <el-select style="width:180px;" disabled="true" v-model="modifyForm.accountState" clearable placeholder="请选择" @change="pressionChange">
+                <el-select style="width:180px;" :disabled="true" v-model="modifyForm.accountState" clearable placeholder="请选择" @change="pressionChange">
                   <el-option
                     v-for="item in statusList"
                     :key="item.value"
@@ -187,6 +187,7 @@
           modifyEmpName: '',
           accountState: '',
           tree:'',
+          trees: [],
           remark:'',
         },
         emailDisabled: true,
@@ -203,8 +204,10 @@
     },
     created() {
       const self = this;
+      self.modifyForm.accountId = localStorage.getItem("accountId");
       self.fetchData();
       self.fetchEnums();
+      self.fetchDeparentPower();
     },
     methods: {
       loadNode(node,resolve){//加载部门的树结构
@@ -213,6 +216,7 @@
           params: null
         }).then((result) => {
           resolve([result.departmentDto]);
+          this.$refs.tree.setCheckedKeys(self.modifyForm.trees);
         }).catch(function (error) {
 
         });
@@ -240,12 +244,32 @@
           return arr;
         }
       },
+      renderContent(h, { node, data, store }) {
+        // 这里编译器有红色波浪线不影响运行...
+        if(data.status != 1){
+          return (<span style="color:red">{node.label}</span>);
+        }else{
+          return (<span>{node.label}</span>);
+        }
+      },
+      fetchDeparentPower(){
+        const self = this;
+        var param = {
+          id: self.modifyForm.accountId
+        }
+        self.$http.get('account/selectDeparentPower.do_',{
+          params: param
+        }).then((result) => {
+          self.modifyForm.trees = result.trees;
+        }).catch(function (error) {
+          commonUtils.Log("account/selectDeparentPowerById.do_:"+error);
+          self.$message.error("获取数据错误")
+        });
+      },
       fetchData(){ //根据accountId查询界面要显示的数据
         const self = this;
-        var id = localStorage.getItem("accountId");
-        self.modifyForm.accountId = id;
         var param = {
-          id: id
+          id: self.modifyForm.accountId
         }
         self.$http.get('account/selectAccountById.do_',{
           params: param
@@ -256,6 +280,9 @@
           self.modifyForm.staffNum = result.account.staffNum;
           self.modifyForm.staffName = result.account.staffName;
           self.modifyForm.permissions = result.account.premissions;
+          if ( self.modifyForm.permissions == 5 ){
+            self.departmentVisible = true;
+          }
           self.modifyForm.secretEmail = result.account.secretEmail;
           if(self.modifyForm.secretEmail == '' || self.modifyForm.secretEmail == null){
             self.emailDisabled = false;
@@ -267,7 +294,7 @@
           self.modifyForm.modifyTime = result.account.modifyTime;
           self.modifyForm.accountState = result.account.accountState;
         }).catch(function (error) {
-          commonUtils.Log("account/createAccount.do_:"+error);
+          commonUtils.Log("account/selectAccountById.do_:"+error);
           self.$message.error("获取数据错误")
         });
       },
