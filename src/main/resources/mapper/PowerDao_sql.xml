@@ -61,7 +61,7 @@
                     AND T3.power_name=#{powerName}
                 </if>
                 <if test="status!=null and status.trim()!=''">
-                    AND T1.status=#{status}
+                    AND T.account_state=#{accountState}
                 </if>
             </where>
     </select>
