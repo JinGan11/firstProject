@@ -181,10 +181,6 @@
       if (log) {
         self.isLog = true;
       }
-      self.$http.get('sys/menu/list.do_').then((result) => {
-        self.data = result.menuList;
-      });
-      self.getBreadcrumb(true);
     },
     mounted() {
       utils.$on('loginSuccess', (loginFlag, username, powerList) => {
@@ -208,6 +204,10 @@
         window.sessionStorage.setItem("powerList", powerList);
         console.log(powerList);
         self.loginUserName = window.sessionStorage.getItem("loginUsername")
+        self.$http.get('sys/menu/list.do_').then((result) => {
+          self.data = result.menuList;
+        });
+        self.getBreadcrumb(true);
       },
       switchLog() {
         if (this.isLog) {

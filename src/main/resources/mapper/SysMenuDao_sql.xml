@@ -4,13 +4,14 @@
 <mapper namespace="com.ucar.combination.dao.SysMenuDao">
     <select id="getValidMenu" resultType="com.ucar.combination.model.dto.MenuItemDto">
         select
-          id id,
+          power_id id,
           url url,
           title title,
           icon icon,
-          super_id superId
-        from ucar_combination_menu
+          super_id
+        from t_power
         where status = 0
+        and url != ''
         order by sort_id
     </select>
 </mapper>

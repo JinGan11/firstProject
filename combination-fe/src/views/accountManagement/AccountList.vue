@@ -237,6 +237,16 @@
     mounted() {
       commonUtils.Log("页面进来");
     },
+    computed: {
+      leftButtonDisable()
+      {
+        return this.leftSelected.length === 0
+      },
+      rightButtonDisable()
+      {
+        return this.rightSelected.length === 0
+      }
+    },
     methods: {
       lock(){
         let accountId  = {
@@ -415,7 +425,6 @@
           id: self.myAccount.id,
           roleList : self.selected
         };
-        console.log(param1)
         var param2 = {
           id: self.myAccount.id,
           powerList: self.$refs.tree.getCheckedNodes().concat(self.$refs.tree.getHalfCheckedNodes())
