@@ -3,7 +3,7 @@
     <div>
       <div style="margin-bottom: 10px;margin-left: 70px">
         <span style="font-size: 20px">基本信息</span>
-        <span style="margin-left: 800px"><el-button type="primary" @click="save" style="width:70px">保存</el-button>
+        <span style="margin-left: 400px"><el-button type="primary" @click="save" style="width:70px">保存</el-button>
         <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
         </span>
        <hr ><br>
@@ -12,14 +12,16 @@
         <el-form ref="form" :model="form" label-width="80px">
           <el-row>
             <el-col :span="10">
-
               <el-form-item label="公司名称">
-                <el-input style="width:200px;" v-model="form.companyName"></el-input>
+                <el-input style="width:200px;" v-model="form.companyName" maxlength="60"></el-input>
+                <span style="color: red;">*</span>
               </el-form-item>
             </el-col>
+
             <el-col :span="10">
               <el-form-item label="统一社会信用代码">
-                <el-input style="width:200px;" v-model="form.creditCode"></el-input>
+                <el-input style="width:200px;" v-model="form.creditCode" maxlength="18"></el-input>
+                <span style="color: red;">*</span>
               </el-form-item>
             </el-col>
           </el-row>
@@ -54,24 +56,24 @@
           <el-row>
             <el-col :span="10">
               <el-form-item label="住所">
-                <el-input style="width:200px;" v-model="form.companyAddress"></el-input>
+                <el-input style="width:200px;" v-model="form.companyAddress" maxlength="100"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="经营范围">
-                <el-input style="width:200px;" v-model="form.businessScope"></el-input>
+                <el-input style="width:200px;" v-model="form.businessScope" maxlength="200"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
               <el-form-item label="法定代表人">
-                <el-input style="width:200px;" v-model="form.legalPerson"></el-input>
+                <el-input style="width:200px;" v-model="form.legalPerson" maxlength="60"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="注册资本">
-                <el-input style="width:200px;" v-model="form.registeredCapital"></el-input>
+                <el-input style="width:200px;" v-model="form.registeredCapital" maxlength="20"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -89,7 +91,7 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="登记机关">
-                <el-input style="width:200px;" v-model="form.registeredInstitution"></el-input>
+                <el-input style="width:200px;" v-model="form.registeredInstitution" maxlength="60"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -107,7 +109,7 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="登记状态">
-                <el-input style="width:200px;" v-model="form.registeredStatus"></el-input>
+                <el-input style="width:200px;" v-model="form.registeredStatus" maxlength="60"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -131,26 +133,26 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="注册地址">
-                <el-input style="width:200px;" v-model="form.registrationAddress"></el-input>
+                <el-input style="width:200px;" v-model="form.registrationAddress" maxlength="100"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
               <el-form-item label="开户银行">
-                <el-input style="width:200px;" v-model="form.bankName"></el-input>
+                <el-input style="width:200px;" v-model="form.bankName" maxlength="60"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="账号">
-                <el-input style="width:200px;" v-model="form.bankAccount"></el-input>
+                <el-input style="width:200px;" v-model="form.bankAccount" maxlength="20"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
               <el-form-item label="注册电话">
-                <el-input style="width:200px;" v-model="form.telephone"></el-input>
+                <el-input style="width:200px;" v-model="form.telephone" maxlength="12"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
@@ -287,7 +289,7 @@
           createTime:'',
           modifyTime:'',
           modifyEmp:'',
-          companyStatus:'',
+          companyStatus:'1',
           remark:'',
           liscensePath:'',
         },
@@ -335,12 +337,13 @@
     },
     methods: {
       save() {//保存新建公司信息
+        var self=this;
+        if(self.$options.methods.checkInput(self)==false) return;
         this.$confirm('此操作将保存该文件, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          var self=this;
           self.form.businessStartTime=self.businessTerm[0];
           self.form.businessDeadline=self.businessTerm[1];
           self.form.liscensePath='dfs';
@@ -415,7 +418,72 @@
         formatDateTime = Y + '年' + M + '月' + D + '日 ' + H + ':' + Min + ':' + S;
         return formatDateTime;
       },
-
+      // 校验输入
+      checkInput(self){
+        var _form = self.form;
+        // 公司名称
+        if(_form.companyName=="" || _form.companyName.length<2){
+          alert("【公司名称】不符合规范！至少输入2个字符！");
+          return false;
+        }
+        // 统一社会信用代码
+        var testCreditCode1 = /^[a-zA-z0-9]{15}$/;
+        var testCreditCode2 = /^[a-zA-z0-9]{18}$/;
+        if(!testCreditCode1.test(_form.creditCode) && !testCreditCode2.test(_form.creditCode)){
+          alert("【统一社会信用代码】不符合规范！请输入15或18位字符！");
+          return false;
+        }
+        // 注册资本
+        if(_form.registeredCapital!=""){
+          var testNum = /^[0-9]*$/;
+          if(!testNum.test(_form.registeredCapital)){
+            alert("【注册资本】只能填写数字！");
+            return false;
+          }
+        }
+        // 一些非必填的最少2字符的
+        if(_form.companyAddress!="" && _form.companyAddress.length<2){
+          alert("【住所】至少2个字符，非必填！");
+          return false;
+        }
+        if(_form.businessScope!="" && _form.businessScope.length<2){
+          alert("【经营范围】至少2个字符，非必填！");
+          return false;
+        }
+        if(_form.legalPerson!="" && _form.legalPerson.length<2){
+          alert("【法定代表人】至少2个字符，非必填！");
+          return false;
+        }
+        if(_form.registeredInstitution!="" && _form.registeredInstitution.length<2){
+          alert("【登记机关】至少2个字符，非必填！");
+          return false;
+        }
+        if(_form.registeredStatus!="" && _form.registeredStatus.length<2){
+          alert("【登记状态】至少2个字符，非必填！");
+          return false;
+        }
+        if(_form.registrationAddress!="" && _form.registrationAddress.length<2){
+          alert("【注册地址】至少2个字符，非必填！");
+          return false;
+        }
+        if(_form.registrationAddress!="" && _form.registrationAddress.length<2){
+          alert("【开户银行】至少2个字符，非必填！");
+          return false;
+        }
+        // 银行卡账号
+        var testBankAccount = /^[0-9]{7,20}$/;
+        if(_form.bankAccount!="" && !testBankAccount.test(_form.bankAccount)){
+          alert("【银行卡账号】只支持7-20位数字，非必填！");
+          return false;
+        }
+        // 注册电话
+        var testBankAccount = /^[0-9]{11,12}$/;
+        if(_form.telephone!="" && !testBankAccount.test(_form.telephone)){
+          alert("【注册电话】只支持11-12位数字，非必填！");
+          return false;
+        }
+        return true;
+      }
     },
   }
 
