@@ -100,7 +100,7 @@
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" @change="selectRow(scope.row)" :label="scope.row.roleApplyNum" ><span width="0px;"></span></el-radio>
+          <el-radio v-model="selection" @change="selectRow(scope.row)" :label="scope.row.id" ><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
@@ -544,9 +544,9 @@
         }
 
         sessionStorage.setItem('applyIdFromApply', row.id);
-        sessionStorage.setItem('roleNameFromApply', row.roleName);
-        sessionStorage.setItem('approverStaffNameFromApply', row.approverStaffName);
-        sessionStorage.setItem('businessLineFromApply', row.businessLine);
+        sessionStorage.setItem('applyNumFromApply',row.roleApplyNum);//角色申请编号
+        sessionStorage.setItem('roleNameFromApply', row.roleName);//角色名字
+        sessionStorage.setItem('approverStaffNameFromApply', row.approverStaffName);//审批人
         sessionStorage.setItem('businessLineFromApply', row.businessLine);
         sessionStorage.setItem('applyTimeFromApply', row.applyTime);//申请人
         sessionStorage.setItem('applyTimeFromApply', row.applyTime);//申请人

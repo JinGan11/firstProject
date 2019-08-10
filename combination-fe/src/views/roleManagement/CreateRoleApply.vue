@@ -66,15 +66,27 @@
         <el-table-column prop="staffNum" label="关联员工编号"  width="150"></el-table-column>
         <el-table-column prop="staffDepartmentName" label="关联员工所属部门" width="200"></el-table-column>
 <!--        <el-table-column prop="department" label="关联员工所属部门" width="200"></el-table-column>-->
+<!--        <el-table-column prop="applyOperation" label="申请操作" width="150" style="text-align: center">-->
+<!--          <el-select v-model="optionOfApply" clearable style="width:100px;" placeholder="请选择">-->
+<!--            <el-option-->
+<!--              v-for="item in options"-->
+<!--              :key="item.value"-->
+<!--              :label="item.label"-->
+<!--              :value="item.value">-->
+<!--            </el-option>-->
+<!--          </el-select>-->
+<!--        </el-table-column>-->
         <el-table-column prop="applyOperation" label="申请操作" width="150" style="text-align: center">
-          <el-select v-model="optionOfApply" clearable style="width:100px;" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
+          <template slot-scope="scope">
+            <el-select v-model="scope.row.applyOperation" clearable style="width:100px;" placeholder="请选择">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </template>
         </el-table-column>
         <el-table-column prop="operationOfDelete" label="操作" width="150">
           <template slot-scope="scope">
@@ -83,6 +95,7 @@
         </el-table-column>
       </el-table>
     </div>
+
     <div style="margin-left: 40px;margin-top:20px;margin-bottom:20px;border-bottom:1px solid gray;padding-bottom: 20px">
       <el-row :gutter="20">
         <el-col :span="5" style="color: #409EFF">
@@ -90,7 +103,6 @@
         </el-col>
       </el-row>
     </div>
-
     <div style="margin-top: 20px;margin-left: 40px;">
       <br>
       <el-form ref="form" :model="otherInfo" label-width="110px">
