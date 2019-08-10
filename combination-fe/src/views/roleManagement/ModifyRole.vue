@@ -4,7 +4,7 @@
       <p>角色信息</p>
     </div>
     <div style="width:85%; margin-left: 70px">
-      <el-form ref="form" :model="form" label-width="110px">
+      <el-form ref="form" :model="form" label-width="110px" :rules="rules">
         <el-row>
           <el-col :span="10">
             <el-form-item label="角色ID">
@@ -12,16 +12,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="角色名称">
-              <span style="color: red;">*</span>
-              <el-input style="width:200px;" v-model="form.roleName"></el-input>
+            <el-form-item label="角色名称" prop="roleName">
+              <el-input style="width:200px;" v-model="form.roleName" placeholder="请填入名称(1-30字符)" maxlength="30"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="10">
-            <el-form-item label="审批人账号">
-              <span style="color: red;">*</span>
+            <el-form-item label="审批人账号" prop="accountNum">
               <el-input style="width:200px;" :disabled="true" v-model="form.accountNum"></el-input>
               <a style="color: #ffd408" @click="chooseAccount">选择</a>
             </el-form-item>
@@ -46,8 +44,7 @@
         </el-row>
         <el-row>
           <el-col :span="10">
-            <el-form-item label="支持业务线">
-              <span style="color: red;">*</span>
+            <el-form-item label="支持业务线" prop="businessLine">
               <!--<template v-for="item in chks">
                 <input type="checkbox" name="hobby" :value="item.id"
                      :checked="form.loopsss.indexOf(item.id) > -1"/>{{item.name}}
@@ -64,7 +61,7 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="描述">
-              <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="填写角色描述" v-model="form.description"></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="填写角色描述"  maxlength="200" v-model="form.description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -90,12 +87,12 @@
             <el-row>
               <el-col :span="10">
                 <el-form-item label="修改人">
-                  <el-input style="width:200px;" :disabled="true" v-model="form.modifyEmp"></el-input>
+                  <el-input style="width:200px;" :disabled="true" v-model="modifyEmp"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
                 <el-form-item label="修改时间">
-                  <el-input style="width:200px;" :disabled="true" v-model="form.modifyTime"></el-input>
+                  <el-input style="width:200px;" :disabled="true" v-model="modifyTime"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -200,11 +197,11 @@
         <el-button type="primary" @click="selectionCancel" style="width:70px">取消</el-button>
 
       </div>
-      <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
+      <el-table ref="multipleTable" :data="tableData" border @current-change="handleSelectionChange" >
         <!--      <el-table-column type="selection" width="35"></el-table-column>-->
         <el-table-column label="选择" width="45">
           <template slot-scope="scope">
-            <el-radio v-model="selection" :label="scope.row.id" @change="approvalInfo(scope.row)"><span width="0px;"></span></el-radio>
+            <el-radio v-model="selection" :label="scope.row"><span width="0px;"></span></el-radio>
           </template>
         </el-table-column>
         <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
@@ -246,6 +243,11 @@
   export default {
     data() {
       return {
+        rules: {
+          roleName: [{required: true, message: '角色名不能为空', trigger: ['blur','change']}],
+          accountNum: [{required: true, message: '账户不能为空', trigger: ['blur','change']}],
+          businessLine: [{required: true, message: '支持业务线不能为空', trigger: ['blur','change']}]
+        },
         total: 0,
         currentPage: 1,
         pageSize: 10,
@@ -263,9 +265,9 @@
           description:'',
           createEmp:'',
           createTime:'',
-          modifyEmp:'',
-          modifyTime:'',
         },
+        modifyEmp:'',
+        modifyTime:'',
         RoleStatusEnum:{},
         options:[
           {
@@ -296,7 +298,7 @@
           status:null
         },
         tableData:[],
-        selection:'',
+        selection:[],
       }
     },
     activated() {
@@ -305,15 +307,30 @@
     mounted() {
       commonUtils.Log("页面进来");
       this.fetchData();
+      this.modifyEmp=window.sessionStorage.getItem("loginUsername");
+      this.modifyTime=this.format(new Date(), "yyyy-MM-dd HH:mm:ss");
     },
     methods: {
-      approvalInfo(val){
-        this.form.accountNum = val.accountName;
-        this.form.staffNum = val.staffNum;
-        this.form.staffName = val.staffName;
-        this.form.departmentName = val.department;
+      format(date, fmt) {//时间格式
+        let o = {
+          "M+": date.getMonth() + 1, //月份
+          "d+": date.getDate(), //日
+          "H+": date.getHours(), //小时
+          "m+": date.getMinutes(), //分
+          "s+": date.getSeconds(), //秒
+          "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+          "S": date.getMilliseconds() //毫秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (let k in o)
+          if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
       },
       selectionConfirm(){
+        this.form.accountNum =this.selection.accountName;
+        this.form.staffNum =this.selection.staffNum;
+        this.form.staffName = this.selection.staffName;
+        this.form.departmentName = this.selection.department;
         this.dialogVisibleAccount=false;
       },
       selectionCancel(){
@@ -355,9 +372,15 @@
         this.$router.replace('/roleManagement/roleManagement')
       },
       chooseAccount(){
+        this.accountForm.accountNo = null;
+        this.accountForm.staffNo = null;
+        this.accountForm.name = null;
+        this.accountForm.permissions = null;
+        this.accountForm.department = null;
+        this.accountForm.isRelStaff = null;
+        this.accountForm.status = null;
         this.dialogVisibleAccount=true;
         this.fetchAccountData();
-        this.$refs.multipleTable.clearSelection();
       },
       handleSizeChange(val) {
         this.pageSize = val;
@@ -417,7 +440,7 @@
       },
       checkInput(val){
         if (val.form.roleName==''){
-          alert("角色名称不能为空");
+          alert("角色名称不能为空(1-30字符)");
           return false;
         }
         if (val.form.businessLine==''){

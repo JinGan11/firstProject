@@ -5,7 +5,7 @@
       <p>角色信息</p>
     </div>
     <div style="width:85%; margin-left: 70px">
-      <el-form ref="form" :model="form" label-width="110px">
+      <el-form ref="form" :model="form" label-width="110px" :rules="rules">
         <el-row>
           <el-col :span="10">
             <el-form-item label="角色ID">
@@ -13,16 +13,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="角色名称">
-              <span style="color: red;">*</span>
-              <el-input style="width:200px;" placeholder="请填入名称" v-model="form.roleName"></el-input>
+            <el-form-item label="角色名称" prop="roleName">
+              <el-input style="width:200px;" placeholder="请填入名称(1-30个字符)" maxlength="30" v-model="form.roleName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="10">
-            <el-form-item label="审批人账号">
-              <span style="color: red;">*</span>
+            <el-form-item label="审批人账号" prop="accountNum">
               <el-input style="width:200px;" :disabled="true"  placeholder="选择回填信息账号" v-model="form.accountNum"></el-input>
               <a style="color: #ffd408" @click="chooseAccount">选择</a>
             </el-form-item>
@@ -46,25 +44,24 @@
           </el-col>
         </el-row>
         <el-row>
-            <el-col :span="15">
-              <el-form-item label="支持业务线">
-                <span style="color: red;">*</span>
-                  <!--<template v-for="item in chks">
-                    <input type="checkbox" name="form.hobby" :value="item.id"
-                         :checked="form.loopsss.indexOf(item.id) > -1"/>{{item.name}}
-                  </template>-->
-                <input type="checkbox" v-model="form.businessLine" value="买买车">买买车
-                <input type="checkbox" v-model="form.businessLine" value="租车">租车
-                <input type="checkbox" v-model="form.businessLine" value="闪贷">闪贷
-                <input type="checkbox" v-model="form.businessLine" value="专车">专车
-                <input type="checkbox" v-model="form.businessLine" value="保险">保险
-              </el-form-item>
-            </el-col>
+          <el-col :span="15">
+            <el-form-item label="支持业务线" prop="businessLine">
+              <!--<template v-for="item in chks">
+                <input type="checkbox" name="form.hobby" :value="item.id"
+                     :checked="form.loopsss.indexOf(item.id) > -1"/>{{item.name}}
+              </template>-->
+              <input type="checkbox" v-model="form.businessLine" value="买买车">买买车
+              <input type="checkbox" v-model="form.businessLine" value="租车">租车
+              <input type="checkbox" v-model="form.businessLine" value="闪贷">闪贷
+              <input type="checkbox" v-model="form.businessLine" value="专车">专车
+              <input type="checkbox" v-model="form.businessLine" value="保险">保险
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row>
           <el-col :span="10">
             <el-form-item label="描述">
-              <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" placeholder="填写角色描述" v-model="form.description"></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" maxlength="200" placeholder="填写角色描述（1-200字符）" v-model="form.description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -72,50 +69,50 @@
     </div>
 
     <div>
-    <p>其它信息</p>
-    <div>
-      <div style="width:85%; margin-left: 70px">
-        <el-form ref="form" :model="form" label-width="110px">
-          <el-row>
-            <el-col :span="10">
-              <el-form-item label="新建人">
-                <el-input style="width:200px;" :disabled="true" placeholder="当前操作账户" v-model="createEmp"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="新建时间">
-                <el-input style="width:200px;" :disabled="true" placeholder="当前时间" v-model="createTime"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="10">
-              <el-form-item label="修改人">
-                <el-input style="width:200px;" :disabled="true" placeholder="当前操作账户" v-model="modifyEmp"></el-input>
-              </el-form-item>
-            </el-col>
+      <p>其它信息</p>
+      <div>
+        <div style="width:85%; margin-left: 70px">
+          <el-form ref="form" :model="form" label-width="110px">
+            <el-row>
+              <el-col :span="10">
+                <el-form-item label="新建人">
+                  <el-input style="width:200px;" :disabled="true" placeholder="当前操作账户" v-model="createEmp"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <el-form-item label="新建时间">
+                  <el-input style="width:200px;" :disabled="true" placeholder="当前时间" v-model="createTime"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="10">
+                <el-form-item label="修改人">
+                  <el-input style="width:200px;" :disabled="true" placeholder="当前操作账户" v-model="modifyEmp"></el-input>
+                </el-form-item>
+              </el-col>
               <el-col :span="10">
                 <el-form-item label="修改时间">
                   <el-input style="width:200px;" :disabled="true" placeholder="当前操作时间" v-model="modifyTime"></el-input>
                 </el-form-item>
               </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="1">
-              <el-form-item label="状态">
-                <el-input placeholder="有效" style="width:200px;" :disabled="true" v-model="form.roleStatus"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
+            </el-row>
+            <el-row>
+              <el-col :span="1">
+                <el-form-item label="状态">
+                  <el-input placeholder="有效" style="width:200px;" :disabled="true" v-model="form.roleStatus"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div style="text-align: center">
+    <div style="text-align: center">
       <el-button type="primary" @click="save" style="width:70px">保存</el-button>
       <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
-  </div>
+    </div>
 
     <el-dialog :title='title' :visible.sync="dialogVisibleAccount"  :close-on-click-modal="false" width="80%">
       <div style="width: 95%;">
@@ -192,15 +189,15 @@
         </el-form>
       </div>
       <div style="margin-bottom: 10px">
-        <el-button type="primary" @click="selectionConfirm()" style="width:70px">确认选择</el-button>
+        <el-button type="primary" @click="selectionConfirm" style="width:70px">确认选择</el-button>
         <el-button type="primary" @click="selectionCancel" style="width:70px">取消</el-button>
 
       </div>
-      <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
+      <el-table ref="multipleTable" :data="tableData" border @current-change="handleSelectionChange" >
         <!--      <el-table-column type="selection" width="35"></el-table-column>-->
         <el-table-column label="选择" width="45">
           <template slot-scope="scope">
-            <el-radio v-model="selection" :label="scope.row.id" @change="approvalInfo(scope.row)"><span width="0px;"></span></el-radio>
+            <el-radio v-model="selection" :label="scope.row"><span width="0px;"></span></el-radio>
           </template>
         </el-table-column>
         <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
@@ -241,6 +238,11 @@
   export default {
     data() {
       return {
+        rules: {
+          roleName: [{required: true, message: '角色名不能为空', trigger: ['blur','change']}],
+          accountNum: [{required: true, message: '账户不能为空', trigger: ['blur','change']}],
+          businessLine: [{required: true, message: '支持业务线不能为空', trigger: ['blur','change']}]
+        },
         total: 0,
         currentPage: 1,
         pageSize: 10,
@@ -281,7 +283,7 @@
           status:null
         },
         tableData:[],
-        selection:'',
+        selection:[],
       }
     },
     activated() {
@@ -313,13 +315,11 @@
         return fmt;
       },
 
-      approvalInfo(val){//弹窗数据回填函数
-        this.form.accountNum = val.accountName;
-        this.form.staffNum = val.staffNum;
-        this.form.staffName = val.staffName;
-        this.form.departmentName = val.department;
-      },
       selectionConfirm(){
+        this.form.accountNum = this.selection.accountName;
+        this.form.staffNum = this.selection.staffNum;
+        this.form.staffName = this.selection.staffName;
+        this.form.departmentName = this.selection.department;
         this.dialogVisibleAccount=false;
       },
       selectionCancel(){
@@ -361,6 +361,13 @@
         this.$router.replace('/roleManagement/roleManagement')
       },
       chooseAccount(){
+        this.accountForm.accountNo = null;
+        this.accountForm.staffNo = null;
+        this.accountForm.name = null;
+        this.accountForm.permissions = null;
+        this.accountForm.department = null;
+        this.accountForm.isRelStaff = null;
+        this.accountForm.status = null;
         this.dialogVisibleAccount=true;
         this.fetchData();
       },
