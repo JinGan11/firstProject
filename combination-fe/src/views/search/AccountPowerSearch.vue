@@ -89,6 +89,7 @@
           status:'',
         },
         tableData:[],
+
         AccountStatusEnums:{},
         exportDialogVisible:false,
         checkAll: false,
