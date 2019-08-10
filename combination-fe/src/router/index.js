@@ -12,7 +12,6 @@ import AccountInfo from '@/views/personalAccountManagement/AccountInfo'
 import DepartmentSearch from '@/views/search/DepartmentSearch'
 import AccountManagement from '@/views/accountManagement/AccountList'
 import RoleManagement from '@/views/roleManagement/RoleManagement'
-import DepartmentManagementTest from '@/views/departmentManagement/DepartmentTest'
 import CompanyManagement from '@/views/companyManagement/CompanyList'
 import CreateAccount from '@/views/accountManagement/CreateAccount'
 import ModifyAccount from '@/views/accountManagement/modifyAccount'
@@ -95,11 +94,6 @@ export default new Router({
     path:'/roleManagement/roleManagement',
     name:'角色管理',
     component:RoleManagement,
-    meta:{requireAuth:true}
-  },{
-    path:'/departmentManagement/test',
-    name:'测试页面',
-    component:DepartmentManagementTest,
     meta:{requireAuth:true}
   },{
     path:'/companyManagement',

@@ -3,7 +3,7 @@
 
     <div style="float: right; position: relative; right: 200px; top: 0px">
       <div>
-        <el-button type="primary" @click="save">添加</el-button>
+        <el-button type="primary" @click="save">修改</el-button>
         <el-button type="primary" @click="cancel">取消</el-button>
       </div>
     </div>
@@ -64,9 +64,9 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="所在城市">
-            <el-input style="width:200px;" v-model="form.cityName" :disabled="false" maxlength="20"></el-input>
+            <el-input style="width:200px;" v-model="cityName" :disabled="true" maxlength="20"></el-input>
             <span style="color: red;">*</span>
-            <a style="color: blue" @click="chooseCity">选择</a>
+            <a style="color: blue" @click="chooseCityVisible = true">选择</a>
           </el-form-item>
         </el-col>
       </el-row>
@@ -229,11 +229,64 @@
 
     <br>
 
-    <el-button type="primary" @click="save" style="margin-left: 200px">添加</el-button>
+    <el-button type="primary" @click="save" style="margin-left: 200px">修改</el-button>
 
     <br>
     <br>
     <br>
+
+
+    <el-dialog title= "选择城市" :visible.sync="chooseCityVisible" :close-on-click-modal="false" width="600">
+      <el-form>
+        <el-row>
+          <el-col :span="8" >
+            <el-form-item label="省/直辖市"  label-width="130" >
+              <el-select v-model="chooseCityForm.provinceChosen"  placeholder="请选择" @focus="chooseProvince" @change="provinceChange">
+                <el-option
+                  v-for="province in provinceSearchList"
+                  :key="province.cityID"
+                  :label="province.regionName"
+                  :value="province.cityID"
+                  :disabled="province.disabled">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" >
+            <el-form-item label="城市"  label-width="130" >
+              <el-select v-model="chooseCityForm.cityChosen" :disabled="isCityDisable" placeholder="请选择" @focus="chooseCity" @change="cityChange">
+                <el-option
+                  v-for="city in citySearchList"
+                  :key="city.cityID"
+                  :label="city.regionName"
+                  :value="city.cityID"
+                  :disabled="city.disabled">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8" >
+            <el-form-item label="区县"  label-width="130" >
+              <el-select v-model="chooseCityForm.countyChosen" :disabled="isCountyDisable" placeholder="请选择" @focus="chooseCounty">
+                <el-option
+                  v-for="county in countySearchList"
+                  :key="county.cityID"
+                  :label="county.regionName"
+                  :value="county.cityID"
+                  :disabled="county.disabled">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="chooseCityVisible = false">取 消</el-button>
+        <el-button type="primary" @click="chooseCityDo">确 定</el-button>
+      </div>
+    </el-dialog>
+
+
 
   </home>
 </template>
@@ -334,7 +387,17 @@
         },{
           value: 'S',
           label: 'S'
-        }]
+        }],
+        //城市选择
+        //这边的cityName和form里面的cityName要注意区分，一个是后台读入，一个是前台选择
+        cityName: '',
+        chooseCityVisible:false,
+        provinceSearchList:[],
+        citySearchList:[],
+        countySearchList:[],
+        chooseCityForm:{ provinceChosen:'',cityChosen:'',countyChosen:'' },
+        isCityDisable:true,
+        isCountyDisable:true,
       }
     },
     mounted() {
@@ -355,6 +418,7 @@
     methods: {
       fillData(self,data){
         self.form=data;
+        self.cityName=data.cityName;
         self.$options.methods.setSupportBusiness(self,data.upperDepartmentNo);
         //设置已选业务线
         var sups = data.supportBusiness.split("&");
@@ -409,9 +473,6 @@
       },
       choosePerson () {
         alert("没写呢，别急");
-      },
-      chooseCity() {
-        alert("这个也没写");
       },
       // 部门级别修改后显示内容变更
       levelChange() {
@@ -517,6 +578,118 @@
           return false;
         }
         return true;
+      },
+      // 城市选择
+      chooseProvince() {
+        var self=this;
+        var param={
+          page:1,
+          limit:10,
+          regionCode:'',
+          regionName:'',
+          regionStatus: ''
+        };
+        self.$http.get('/regionManage/provinceSearch',{
+          params:param
+        }).then((result)=>{
+          //对取回来的数据进行处理
+          self.provinceSearchList=result.provinceSearchList;
+          // console.log(self.provinceSearchList);
+        }).catch(function (error) {
+          commonUtils.Log("/regionManage/provinceSearch:" + error);
+          self.$message.error("获取数据错误");
+        });
+      },
+      provinceChange(){
+        this.chooseCityForm.cityChosen='';
+        this.chooseCityForm.countyChosen='';
+        this.citySearchList=[];
+        this.countySearchList=[];
+        this.isCityDisable=false;
+        this.isCountyDisable=true;
+      },
+      chooseCity() {
+        var self=this;
+        var param={
+          page:1,
+          limit:10,
+          upperRegionID:self.chooseCityForm.provinceChosen,
+        };
+        self.$http.get('/regionManage/citySearch',{
+          params:param
+        }).then((result)=>{
+          //对取回来的数据进行处理
+          self.citySearchList=result.citySearchList;
+        }).catch(function (error) {
+          commonUtils.Log("/regionManage/citySearch:" + error);
+          self.$message.error("获取数据错误");
+        });
+      },
+      cityChange(){
+        this.chooseCityForm.countyChosen='';
+        this.countySearchList=[];
+        this.isCountyDisable=false;
+      },
+      chooseCounty() {
+        var self = this;
+        var param = {
+          page: 1,
+          limit: 10,
+          regionCode: '',
+          regionName: '',
+          upperRegion: '',
+          upperRegionID:self.chooseCityForm.cityChosen,
+          regionStatus: ''
+        };
+        self.$http.get('/regionManage/countySearch', {
+          params: param
+        }).then((result) => {
+          //对取回来的数据进行处理
+          self.countySearchList = result.countySearchList;
+          for(var i=0;i<self.countySearchList.length;i++){
+            console.log(self.countySearchList[i].cityID);
+          }
+        }).catch(function (error) {
+          commonUtils.Log("/regionManage/countySearch:" + error);
+          self.$message.error("获取数据错误");
+        });
+      },
+      chooseCityDo2(){
+        alert(this.countySearchList[2].regionName);
+      },
+      chooseCityDo() {
+        var self = this;
+        if(self.chooseCityForm.countyChosen != ""){
+          for(var i=0;i<self.countySearchList.length;i++){
+            if(self.countySearchList[i].cityID == self.chooseCityForm.countyChosen){
+              self.cityName=self.countySearchList[i].regionName;
+              self.form.cityId=self.chooseCityForm.countyChosen;
+              self.chooseCityVisible=false;
+              return;
+            }
+          }
+        }
+        if(self.chooseCityForm.cityChosen != ""){
+          for(var i=0;i<self.citySearchList.length;i++){
+            if(self.citySearchList[i].cityID == self.chooseCityForm.cityChosen){
+              self.cityName=self.citySearchList[i].regionName;
+              self.form.cityId=self.chooseCityForm.cityChosen;
+              self.chooseCityVisible=false;
+              return;
+            }
+          }
+        }
+        if(self.chooseCityForm.provinceChosen != ""){
+          for(var i=0;i<self.provinceSearchList.length;i++){
+            if(self.provinceSearchList[i].cityID == self.chooseCityForm.provinceChosen){
+              self.cityName=self.provinceSearchList[i].regionName;
+              self.form.cityId=self.chooseCityForm.provinceChosen;
+              self.chooseCityVisible=false;
+              return;
+            }
+          }
+        }
+        alert("请至少选择一个城市！");
       }
     }
   }
