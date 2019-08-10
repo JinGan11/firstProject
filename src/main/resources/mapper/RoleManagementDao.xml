@@ -15,7 +15,7 @@
         from t_role_info t1
         where 1=1
         <if test="role_name != null and role_name.trim() != ''">
-            AND t1.role_name like comcat('%',#{roleName},'%')
+            AND t1.role_name like concat('%',#{role_name},'%')
         </if>
         ORDER BY t1.create_time desc
     </select>
