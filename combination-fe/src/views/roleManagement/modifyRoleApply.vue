@@ -12,7 +12,7 @@
           <el-button type="primary" size="mini" @click="">保存并提交</el-button>
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" size="mini" @click="">取消</el-button>
+          <el-button type="primary" size="mini" @click="cancelRoleApply">取消</el-button>
         </el-col>
       </el-row>
     </div>
@@ -60,7 +60,7 @@
     <div style="margin-left: 40px;">
       <el-table ref="multipleTable" :data="tableDataAccount" border>
         <el-table-column type="selection" width="35"></el-table-column>
-        <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
+        <el-table-column prop="accountId" v-if="false" label="隐藏id"></el-table-column>
         <el-table-column prop="accountName" label="申请账号" width="150"></el-table-column>
         <el-table-column prop="staffName" label="关联员工姓名"width="150"></el-table-column>
         <el-table-column prop="staffNum" label="关联员工编号"  width="150"></el-table-column>
@@ -360,6 +360,7 @@
           data: [],
           defaultProps: '',
           applyId: '',
+          roleId:'',
 
           formRoleInfo: {//申请信息
             roleApplyNum: '',
@@ -446,6 +447,9 @@
         this.showAccountListByApplyId();
         this.queryLoginInRoleApply();
 
+        sessionStorage.setItem('roleIdFromSelectRole', this.roleId);
+        // var roleId=sessionStorage.getItem(roleIdFromSelectRole);
+
       },
       methods: {
         handleSizeChangeRole(val) {
@@ -507,6 +511,9 @@
           //取消按钮
           this.dialogVisibleRole = false;
         },
+        cancelRoleApply(){//取消 退回角色申请列表
+          this.$router.replace('/roleManagement/apply')
+        },
 
 
         addAccountForApply() {
@@ -554,7 +561,7 @@
         selectAccountConfirm() {
           this.tableDataAccount = this.multipleSelection;
           for (let i = 0; i < this.multipleSelection.length; i++) {
-            this.tableDataAccount[i].id = this.multipleSelection[i].id;
+            this.tableDataAccount[i].accountId = this.multipleSelection[i].id;
             this.tableDataAccount[i].accountName = this.multipleSelection[i].accountName;
             this.tableDataAccount[i].staffName = this.multipleSelection[i].staffName;
             this.tableDataAccount[i].staffNum = this.multipleSelection[i].staffNum;

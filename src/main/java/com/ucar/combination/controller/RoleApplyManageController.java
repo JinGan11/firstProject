@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * description:角色申请管理
@@ -113,46 +111,28 @@ public class RoleApplyManageController {
     * @Return
     * @Date  16:02 2019/8/8
     */
+//    @ResponseBody
+//    @RequestMapping(value = "/createRoleApply.do_",method = RequestMethod.POST)
+//    public void createRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto,HttpSession session){
+//        Long accountId = (Long) session.getAttribute("accountId");
+//        createRoleApplyDto.setModifyStaffName(accountId);
+//        createRoleApplyDto.setApplyStatus(1);
+//        roleApplyManageService.createRoleApply(createRoleApplyDto);
+//    }
+
+
+    //测试用的代码
     @ResponseBody
     @RequestMapping(value = "/createRoleApply.do_",method = RequestMethod.POST)
     public void createRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto,HttpSession session){
-        Long accountId = (Long) session.getAttribute("accountId");
-        createRoleApplyDto.setModifyStaffName(accountId);
-        createRoleApplyDto.setApplyStatus(1);
+        System.out.println("1111111111111111111");
+        System.out.println(createRoleApplyDto.getRoleId());
+        System.out.println(createRoleApplyDto.getRoleName());
+        System.out.println(createRoleApplyDto.getAccountIdList());
+
         roleApplyManageService.createRoleApply(createRoleApplyDto);
     }
 
-//    @ResponseBody
-//    @RequestMapping(value = "/createRoleApply.do_")
-//    public void createRoleApply(HttpServletRequest request,CreateRoleApplyDto createRoleApplyDto){
-//        String roleName=request.getParameter("roleName");
-////        String applyStatus=request.getParameter("applyStatus");
-////        String applyAccountName=request.getParameter("applyAccountName");
-////        String applyStaffNum=request.getParameter("applyStaffNum");
-//        String applyStaffName=request.getParameter("applyStaffName");
-//
-//        Object[] accountIdList=request.getParameterValues("accountList");
-//        for(int i=0;i<accountIdList.length;i++){
-//            System.out.println(accountIdList[i]);
-//        }
-////        String applyDepartmentName=request.getParameter("applyDepartmentName");
-////        System.out.println(roleName);
-////        System.out.println(applyStaffName);
-////        String applyTime=request.getParameter("applyTime");
-////        String modifyStaffName=request.getParameter("modifyStaffName");
-////        String modifyTime=request.getParameter("modifyTime");
-//        createRoleApplyDto.setRoleName(roleName);
-////        createRoleApplyDto.setApplyStatus(Integer.parseInt(applyStatus));
-////        createRoleApplyDto.setApplyAccountName(applyAccountName);
-////        createRoleApplyDto.setApplyStaffNum(applyStaffNum);
-//        createRoleApplyDto.setApplyStaffName(applyStaffName);
-////        createRoleApplyDto.setApplyDepartmentName(applyDepartmentName);
-////        createRoleApplyDto.setApplyTime(applyTime);
-////        createRoleApplyDto.setModifyStaffName(int.parseInt(modifyStaffName));
-////        createRoleApplyDto.setApplyTime(modifyTime);
-//        roleApplyManageService.createRoleApply(createRoleApplyDto);
-//
-//    }
 
     /**
     * @Description:  角色申请 修改页面 账户列表
@@ -171,7 +151,7 @@ public class RoleApplyManageController {
     }
 
     /**
-    * @Description:
+    * @Description: 查询登录信息
     * @Author: min.zhang08@ucarinc.com
     * @Params
     * @Return
@@ -185,14 +165,4 @@ public class RoleApplyManageController {
         return Result.ok().put("page",loginInfoInRoleApplyDto);
     }
 
-
-
-//
-//    public Result getOneInf(HttpServletRequest request) {
-//        String strid = request.getParameter("roleID");
-//        int id = Integer.parseInt(strid);
-//        RoleDto roleDto = roleManagementService.getOneInf(id);
-//        //System.out.println("ASDFA");
-//        return Result.ok().put("page", roleDto).put("RoleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values()));
-//    }
 }

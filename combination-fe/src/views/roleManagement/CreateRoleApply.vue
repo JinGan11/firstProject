@@ -12,7 +12,7 @@
           <el-button type="primary" size="mini" @click="">保存并提交</el-button>
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" size="mini" @click="">取消</el-button>
+          <el-button type="primary" size="mini" @click="cancelRoleApply">取消</el-button>
         </el-col>
       </el-row>
     </div>
@@ -60,7 +60,8 @@
     <div style="margin-left: 40px;">
       <el-table ref="multipleTable" :data="tableDataAccount" border>
         <el-table-column type="selection" width="35"></el-table-column>
-        <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
+<!--        <el-table-column prop="accountId" v-if="false" label="隐藏账号id"></el-table-column>-->
+        <el-table-column prop="accountId"  label="隐藏账号id"></el-table-column>
         <el-table-column prop="accountName" label="申请账号" width="150"></el-table-column>
         <el-table-column prop="staffName" label="关联员工姓名"width="150"></el-table-column>
         <el-table-column prop="staffNum" label="关联员工编号"  width="150"></el-table-column>
@@ -444,7 +445,8 @@
             applyTime:"",
             modifyStaffName:"",
             modifyTime:"",
-            accountList:[],
+            accountIdList:[],
+            tableDataAccount:[],
         },
       }
     },
@@ -589,95 +591,54 @@
         //取消按钮
         this.dialogVisibleAccount=false;
       },
+      cancelRoleApply(){//取消 退回角色申请列表
+        this.$router.replace('/roleManagement/apply')
+      },
       handleSelectAccount(val){
         this.multipleSelection = val;
       },
-      selectAccountConfirm(){
-        // sessionStorage.setItem('accountLength', this.tableDataAccount.length);
-        // this.accountLength=sessionStorage.getItem('accountLength');
-        // alert(this.accountLength);
 
+      selectAccountConfirm(){//点击添加按钮，将选择的账户 回显
         this.tableDataAccount=this.multipleSelection;
-        // alert(this.tableDataAccount.length);
+        alert(this.tableDataAccount.length);
         for(let i=0;i<this.multipleSelection.length;i++){
-          this.tableDataAccount[i].id=this.multipleSelection[i].id;
+          this.tableDataAccount[i].accountId=this.multipleSelection[i].id;
           this.tableDataAccount[i].accountName=this.multipleSelection[i].accountName;
           this.tableDataAccount[i].staffName=this.multipleSelection[i].staffName;
           this.tableDataAccount[i].staffNum=this.multipleSelection[i].staffNum;
           this.tableDataAccount[i].staffDepartmentName=this.multipleSelection[i].department;
         }
-
-        // for(let i=0;i<this.multipleSelection.length;i++){
-        //   this.tableDataAccount.id.push(this.multipleSelection[i].id);
-        //   this.tableDataAccount.accountName.push(this.multipleSelection[i].accountName);
-        //   this.tableDataAccount.staffName.push(this.multipleSelection[i].staffName);
-        //   this.tableDataAccount.staffNum.push(this.multipleSelection[i].staffNum);
-        //   this.tableDataAccount.staffDepartmentName.push(this.multipleSelection[i].department);
-        // }
-        //alert(this.multipleSelection.accountName);
-        // this.tableDataAccount.push(this.multipleSelection);
         this.dialogVisibleAccount=false;
-
-
       },
 
       deleteSelect(index){ //移除添加的账户 删除行
         this.tableDataAccount.splice(index, 1)
       },
 
-
       saveRoleApply(){//保存角色申请
         for(let i=0;i<this.tableDataAccount.length;i++){
           console.log(this.tableDataAccount[i].accountName)
-          this.accountIdList.push(this.tableDataAccount[i].accountName);
+          this.accountIdList.push(this.tableDataAccount[i].accountId);
           alert(this.accountIdList[i])
         }
-        // this.accountList.push(this.tableDataAccount.accountName);
-          var self=this;
-        self.forms.roleApplyNum=self.formRoleInfo.roleApplyNum,
-        self.forms.roleId=self.roleId,
-        self.forms.roleName=self.formRoleInfo.roleName,
-        self.forms.applyStatus=self.otherInfo.applyStatus,
-        self.forms.applyAccountName=self.otherInfo.applyAccountName,
-        self.forms.applyStaffNum=self.otherInfo.applyStaffNum,
-        self.forms.applyStaffName=self.otherInfo.applyStaffName,
-        self.forms.applyDepartmentName=self.otherInfo.applyDepartmentName,
-        self.forms.applyTime=self.otherInfo.applyTime,
-        // self.forms.modifyStaffName=self.otherInfo.modifyStaffName,
-        self.forms.modifyStaffName='',
-        self.forms.modifyTime=self.otherInfo.modifyTime,
-        self.forms.accountList=self.accountList,
+        alert(this.roleId);
+        var self=this;
+        self.forms.roleApplyNum=self.formRoleInfo.roleApplyNum;
+        self.forms.roleId=self.roleId;
+        self.forms.roleName=self.formRoleInfo.roleName;
+        self.forms.applyStatus=self.otherInfo.applyStatus;
+        self.forms.applyAccountName=self.otherInfo.applyAccountName;
+        self.forms.applyStaffNum=self.otherInfo.applyStaffNum;
+        self.forms.applyStaffName=self.otherInfo.applyStaffName;
+        self.forms.applyDepartmentName=self.otherInfo.applyDepartmentName;
+        self.forms.applyTime=self.otherInfo.applyTime;
+        self.forms.modifyStaffName='';
+        self.forms.modifyTime=self.otherInfo.modifyTime;
+        self.forms.accountIdList=self.accountIdList;
+        self.forms.tableDataAccount=self.tableDataAccount;
 
-          // roleId:self.roleId,
-            // roleName: self.formRoleInfo.roleName,
-            // applyStatus: self.otherInfo.applyStatus,
-            // applyAccountName:self.otherInfo.applyAccountName,
-            // applyStaffNum: self.otherInfo.applyStaffNum,
-            // applyStaffName:self.otherInfo.applyStaffName,
-            // applyDepartmentName: self.otherInfo.applyDepartmentName,
-            // applyTime:self.otherInfo.applyTime,
-            // modifyStaffName:self.otherInfo.modifyStaffName,
-            // modifyTime:self.otherInfo.modifyTime,
-            // accountList:self.accountList
-        // var param={
-        //   roleApplyNum:self.formRoleInfo.roleApplyNum,
-        //   roleId:self.roleId,
-        //   roleName: self.formRoleInfo.roleName,
-        //   applyStatus: self.otherInfo.applyStatus,
-        //   applyAccountName:self.otherInfo.applyAccountName,
-        //   applyStaffNum: self.otherInfo.applyStaffNum,
-        //   applyStaffName:self.otherInfo.applyStaffName,
-        //   applyDepartmentName: self.otherInfo.applyDepartmentName,
-        //   applyTime:self.otherInfo.applyTime,
-        //   modifyStaffName:self.otherInfo.modifyStaffName,
-        //   modifyTime:self.otherInfo.modifyTime,
-        //   accountList:self.accountList
-        // };
-
-
-        // alert(this.tableDataAccount[0].accountName);
-
-
+        alert(self.forms.accountIdList);
+        alert('大哥啊');
         self.$http.post("roleApply/createRoleApply.do_",self.forms)
           .then(result => {
             alert("新建成功");
@@ -687,7 +648,6 @@
             self.$message.error("角色申请新建保存失败");
           })
       }
-
 
     }
 

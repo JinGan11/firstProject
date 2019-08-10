@@ -1,12 +1,13 @@
 package com.ucar.combination.model.dto;
 
 import com.ucar.combination.model.Account;
+import sun.util.resources.ga.LocaleNames_ga;
 
 import java.util.Date;
 import java.util.List;
 
 /**
- * description:
+ * description: 角色申请 新建  对应的实体类
  *
  * @author min.zhang08@ucarinc.com
  * @date: Create in 15:03 now
@@ -24,7 +25,9 @@ public class CreateRoleApplyDto {
     private Date applyTime;//申请时间
     private Long  modifyStaffName;//修改人
     private Date modifyTime;//修改时间
-    private List<Object> accountIdList;
+//    private List<Long> accountIdList;//账号ID
+
+    private Long accountIdList[];//账号id 前台账号列表里获取的ID
 
     public Long getId() {
         return id;
@@ -122,11 +125,11 @@ public class CreateRoleApplyDto {
         this.modifyTime = modifyTime;
     }
 
-    public List<Object> getAccountIdList() {
+    public Long[] getAccountIdList() {
         return accountIdList;
     }
 
-    public void setAccountIdList(List<Object> accountIdList) {
+    public void setAccountIdList(Long[] accountIdList) {
         this.accountIdList = accountIdList;
     }
 }
