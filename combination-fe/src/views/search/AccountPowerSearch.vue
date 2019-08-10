@@ -35,7 +35,11 @@
       <el-table-column prop="staffNum" label="员工编号" width="140"></el-table-column>
       <el-table-column prop="staffName" label="员工姓名" width="140"></el-table-column>
       <el-table-column prop="departmentName" label="员工所属部门" width="140"></el-table-column>
-      <el-table-column prop="status" label="账号状态" width="140"></el-table-column>
+      <el-table-column prop="accountState" label="账号状态" width="140">
+        <template slot-scope="scope">
+          {{AccountStatusEnums[scope.row.accountState]}}
+        </template>
+      </el-table-column>
       <el-table-column prop="powerName" label="权限名称" width="140"></el-table-column>
     </el-table>
     <el-pagination background
@@ -58,6 +62,7 @@
         total:0,
         pageSize:10,
         currentPage:1,
+        selection:'',
         accountForm:{
           accountName:'',
           staffId:'',
@@ -68,6 +73,7 @@
           status:'',
         },
         tableData:{},
+        AccountStatusEnums:{},
       }
     },
     methods: {
@@ -78,24 +84,34 @@
       },
       handleCurrentChange(val){
         this.currentPage=val;
-        this.Search(val,this.currentPage)
+        this.Search(val,this.pageSize);
       },
       Search() {
         var self = this;
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
-          accountName:this.accountForm.accountName
+          accountName:this.accountForm.accountName,
+          staffNum:this.accountForm.staffNum,
+          staffName:this.accountForm.staffName,
+          departmentName:this.accountForm.departmentName,
+          powerName:this.accountForm.powerName,
+          status:this.accountForm.status,
         };
         self.$http.get('/roleAccount/getAccountPowerList.do_', {
           params: param
         }).then((result) => {
           if (result.status=="success"){
             self.tableData=result.page.list;
+            self.total=result.page.totalCount;
+            this.AccountStatusEnums=result.AccountStatusEnums;
           }else {
             alert("查询失败");
           }
         })
+      },
+      handleSelectionChange(val){
+        this.selection=val;
       },
     }
   }

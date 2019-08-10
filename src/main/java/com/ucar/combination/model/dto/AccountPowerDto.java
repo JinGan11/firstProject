@@ -13,7 +13,7 @@ public class AccountPowerDto {
 	private String staffName;
 	private String departmentName;
 	private String powerName;
-	private Integer status;
+	private Integer accountState;
 
 	public String getAccountName() {
 		return accountName;
@@ -63,11 +63,11 @@ public class AccountPowerDto {
 		this.powerName = powerName;
 	}
 
-	public Integer getStatus() {
-		return status;
+	public Integer getAccountState() {
+		return accountState;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setAccountState(Integer accountState) {
+		this.accountState = accountState;
 	}
 }

@@ -71,12 +71,22 @@ public class SerachController {
 		String page=request.getParameter("page");
 		String limit=request.getParameter("limit");
 		String accountName=request.getParameter("accountName");
+		String staffNum=request.getParameter("staffNum");
+		String staffName=request.getParameter("staffName");
+		String departmentName=request.getParameter("departmentName");
+		String powerName=request.getParameter("powerName");
+		String accountState=request.getParameter("accountState");
 		param.put("page", page);
 		param.put("limit", limit);
 		param.put("accountName", accountName);
-		if (accountName!=null&&!accountName.equals("")){
-			ResultPage resultPage = accountManagerService.getAccountPowerList(new QueryParam(param));
-			return Result.ok().put("page",resultPage).put("status","success");
+		param.put("staffNum",staffNum);
+		param.put("staffName",staffName);
+		param.put("departmentName",departmentName);
+		param.put("powerName",powerName);
+		param.put("accountState",accountState);
+		ResultPage resultPage = accountManagerService.getAccountPowerList(new QueryParam(param));
+		if (resultPage.getList()!=null){
+			return Result.ok().put("page",resultPage).put("status","success").put("AccountStatusEnums",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()));
 		}else {
 			return Result.ok().put("status","error");
 		}
