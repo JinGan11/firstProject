@@ -190,7 +190,7 @@ public class AccountManagerController {
 
     /*
      * description: 修改账户信息
-     * @author peng.zhang11@ucarinc.com
+     * @author junqiang.zhang@ucarinc.com
      * @date:  2019/8/9 11:00
      * @params: accountStaff
      * @return:
@@ -201,9 +201,16 @@ public class AccountManagerController {
     public void modifyAccount(@RequestBody AccountStaff accountStaff,HttpSession session){
         try {
             accountStaff.setModifyEmp((Long) session.getAttribute("accountId"));
+            if(accountStaff.getStaffId() == null){
+                accountStaff.setStaffId(0L);
+            }
             accountManagerService.modifyAccount(accountStaff);
             accountManagerService.updateStaffAccount(accountStaff);
-            if(accountStaff.getOldStaffId() != accountStaff.getStaffId()){
+            accountManagerService.deleteDepartmentPower(accountStaff.getAccountId());
+            if(accountStaff.getPermissions() == 5){
+                accountManagerService.insertDepartmentPower(accountStaff.getAccountId(),accountStaff.getTree());
+            }
+            if(accountStaff.getOldStaffId() != accountStaff.getStaffId() && accountStaff.getOldStaffId() != null){
                 accountStaff.setSecretEmail("");
                 accountStaff.setStaffId(accountStaff.getOldStaffId());
                 accountStaff.setAccountId(0L);
@@ -212,5 +219,38 @@ public class AccountManagerController {
         }catch(Exception e) {
             throw new RuntimeException("");
         }
+    }
+    /**
+     * description: 查询账户的部门权限
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/10 12:30
+     * @params: accountId 账户id
+     * @return: List 账户拥有的部门权限的部门id
+     */
+    @ResponseBody
+    @RequestMapping(value = "/selectDeparentPower.do_")
+    public Result selectDeparentPower(HttpServletRequest request){
+        Long accountId = Long.parseLong(request.getParameter("id"));
+        List<String> trees = accountManagerService.selectDeparentPowerByAccountId(accountId);
+        Long[] dapartmentId = new Long[trees.size()];
+        int i = 0;
+        for(String tree : trees){
+            dapartmentId[i] = Long.parseLong(tree);
+            i++;
+        }
+        return Result.ok().put("trees",dapartmentId);
+    }
+    /**
+     * description: 删除账户
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/10 14:30
+     * @params: accountStaff 账户id
+     * @return:
+     */
+    @ResponseBody
+    @RequestMapping(value = "deleAccount.do_",method = RequestMethod.POST)
+    public void deleAccount(@RequestBody AccountStaff accountStaff,HttpSession session){
+        accountStaff.setModifyEmp((Long) session.getAttribute("accountId"));
+        accountManagerService.deleteAccountById(accountStaff);
     }
 }

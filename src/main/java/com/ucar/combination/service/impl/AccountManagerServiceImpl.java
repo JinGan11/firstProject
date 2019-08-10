@@ -115,7 +115,7 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         return accountManageDao.insertAccountHistory(map);
     }
 
-    /*
+    /**
      * description: 修改账户信息
      * @author peng.zhang11@ucarinc.com
      * @date:  2019/8/9 11:25
@@ -127,7 +127,7 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         return accountManageDao.modifyAccount(accountStaff);
     }
 
-    /*
+    /**
      * description: 修改员工的账户信息
      * @uthor： junqiang.zhang@ucarinc.com
      * @Date： 2019/8/9 13:04
@@ -156,6 +156,13 @@ public class AccountManagerServiceImpl implements AccountManagerService {
 
     }
 
+    /**
+     * description: 手动选择数据权限新增
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date：  2019/8/10 10:25
+     * @PArams：accountId账户id tree部门权限
+     * @Return：
+     */
     @Override
     public void insertDepartmentPower(Long accountId, String tree) {
         DepartmentPower departmentPower = new DepartmentPower();
@@ -164,5 +171,41 @@ public class AccountManagerServiceImpl implements AccountManagerService {
             departmentPower.setDepartmentId(Long.parseLong(departmentId));
             accountManageDao.insertDepartmentPower(departmentPower);
         }
+    }
+
+    /**
+     * description: 手动选择数据权限删除权限
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/10 10:55
+     * @params: accountId 账户id
+     * @return:
+     */
+    @Override
+    public int deleteDepartmentPower(Long accountId) {
+        return accountManageDao.deleteDepartmentPower(accountId);
+    }
+
+    /**
+     * description: 查询账户的部门权限
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/10 12:30
+     * @params: accountId 账户id
+     * @return: List 账户拥有的部门权限的部门id
+     */
+    @Override
+    public List<String> selectDeparentPowerByAccountId(Long accountId) {
+        return accountManageDao.selectDeparentPowerByAccountId(accountId);
+    }
+
+    /**
+     * description: 删除账户（账户状态改为无效）
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/10 14:30
+     * @params: accountStaff 账户id和修改人id
+     * @return:
+     */
+    @Override
+    public int deleteAccountById(AccountStaff accountStaff) {
+        return accountManageDao.deleteAccountById(accountStaff);
     }
 }

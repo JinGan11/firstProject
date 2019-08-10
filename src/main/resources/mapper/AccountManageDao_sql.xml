@@ -245,6 +245,29 @@
                 #{departmentId}
                )
     </insert>
+    <!-- description: 手动选择数据权限删除权限
+ 	  @author junqiang.zhang@ucarinc.com-->
+    <delete id="deleteDepartmentPower" parameterType="Long">
+        DELETE from t_r_department_power
+        WHERE account_id = #{accountId}
+    </delete>
+     <!-- * description: 查询账户的部门权限
+     * @author junqiang.zhang@ucarinc.com-->
+    <select id="selectDeparentPowerByAccountId" parameterType="Long" resultType="String">
+        SELECT department_id
+        FROM t_r_department_power
+        WHERE account_id = #{accountId}
+    </select>
+    <!-- * description: 查询账户的部门权限
+     * @author junqiang.zhang@ucarinc.com-->
+    <update id="deleteAccountById" parameterType="com.ucar.combination.model.AccountStaff">
+        UPDATE t_account
+        SET account_state = 3,
+            modify_emp = #{modifyEmp},
+            modify_time = NOW()
+        WHERE id = #{accountId}
+    </update>
+
 </mapper>
 
 

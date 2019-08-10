@@ -78,10 +78,10 @@
       <el-button type="primary" @click="creatAccount" style="width:70px">新建</el-button>
       <el-button type="primary" :disabled="deleteDisabled" @click="modifyAccount" style="width:70px">修改</el-button>
       <el-button type="primary" :disabled="deleteDisabled" @click="deleteAccount" style="width:70px">删除</el-button>
-      <el-button type="primary" :disabled="disabled" @click="lock" style="width:70px">冻结</el-button>
-      <el-button type="primary" :disabled="disabled" @click="unlock" style="width:70px">解冻</el-button>
-      <el-button type="primary" :disabled="disabled" @click="" style="width:80px">密码重置</el-button>
-      <el-button type="primary" :disabled="disabled" @click="assignPermission" style="width:80px">分配权限</el-button>
+      <el-button type="primary" :disabled="deleteDisabled" @click="lock" style="width:70px">冻结</el-button>
+      <el-button type="primary" :disabled="deleteDisabled" @click="unlock" style="width:70px">解冻</el-button>
+      <el-button type="primary" :disabled="deleteDisabled" @click="" style="width:80px">密码重置</el-button>
+      <el-button type="primary" :disabled="deleteDisabled" @click="assignPermission" style="width:80px">分配权限</el-button>
       <el-button type="primary" :disabled="disabled" @click="" style="width:80px">历史记录</el-button>
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
@@ -212,6 +212,7 @@
         tableData: [],
         selection: [],
         disabled: true,
+        deleteDisabled: true,
         myAccount:[],
         roleList: [],
         roleSelectedList: [],
@@ -313,10 +314,27 @@
       },
       deleteAccount(){
         const self = this;
+        var param = {
+          accountId: localStorage.getItem("accountId")
+        };
+        self.$http.post('account/deleAccount.do_',param)
+          .then((result)=>{
+            self.$message.info("删除成功");
+            self.$router.go(0);
+
+          }).catch(function (error) {
+          commonUtils.Log("account/deleAccount.do_:"+error);
+          self.$message.error("删除失败")
+        });
       },
       approvalInfo(val){
         const self = this;
-        self.disable = false;
+        self.disabled = false;
+        if(val.accountState != 3){
+          self.deleteDisabled = false;
+        }else{
+          self.deleteDisabled = true;
+        }
         self.myAccount.id = val.id;
         self.myAccount.accountName = val.accountName;
         localStorage.setItem("accountId",val.id);

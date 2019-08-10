@@ -16,7 +16,7 @@ import java.util.Map;
  * @Date: 2019/7/31 17:42
  **/
 public interface AccountManageDao {
-    /*
+    /**
      * description: 账户列表
      * @uthor： junqiang.zhang@ucarinc.com
      * @Date：  2019-8-1
@@ -33,7 +33,7 @@ public interface AccountManageDao {
      */
     void updateStatus(int id, int status);
 
-    /*
+    /**
      * description: 通过账户id查询账户数据
      * @uthor： junqiang.zhang@ucarinc.com
      * @Date：  2019/8/8
@@ -52,7 +52,7 @@ public interface AccountManageDao {
      * @return
      */
     int insertAccountHistory (Map<String, Object> map);
-    /*
+    /**
      * description: 新建账户
      * @uthor： junqiang.zhang@ucarinc.com
      * @Date：  2019-8-6
@@ -61,7 +61,7 @@ public interface AccountManageDao {
      */
     int insertAccount(AccountStaff accountStaff);
 
-    /*
+    /**
      * description: 通过用户名查询用户的id
      * @uthor： junqiang.zhang@ucarinc.com
      * @Date：  2019-8-7
@@ -88,21 +88,47 @@ public interface AccountManageDao {
      */
     Account selectById(Long id);
 
-    /*
+    /**
      * description: 修改账户信息
-     * @author peng.zhang11@ucarinc.com
+     * @author junqiang.zhang@ucarinc.com
      * @date:  2019/8/9 11:25
      * @params: accountStaff 要修改的信息
      * @return:
     */
     int modifyAccount(AccountStaff accountStaff);
 
-    /*
-     * description: 修改账户信息
-     * @author peng.zhang11@ucarinc.com
-     * @date:  2019/8/9 11:25
-     * @params: accountStaff 要修改的信息
+    /**
+     * description: 手动选择数据权限新增
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/10 10:25
+     * @params: departmentPower 账户id和新增的部门权限
      * @return:
      */
      int insertDepartmentPower(DepartmentPower departmentPower);
+    /**
+     * description: 手动选择数据权限删除权限
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/10 10:55
+     * @params: accountId 账户id
+     * @return:
+     */
+     int deleteDepartmentPower(Long accountId);
+    /**
+     * description: 查询账户的部门权限
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/10 12:30
+     * @params: accountId 账户id
+     * @return: List 账户拥有的部门权限的部门id
+     */
+    List<String> selectDeparentPowerByAccountId(Long accountId);
+
+    /**
+     * description: 删除账户（账户状态改为无效）
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/10 14:30
+     * @params: accountId 账户id
+     * @return:
+     */
+    int deleteAccountById(AccountStaff accountStaff);
+
 }
