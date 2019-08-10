@@ -10,8 +10,22 @@ import 'element-ui/lib/theme-chalk/index.css';
 import Http from './common/http'
 import qs from "qs";
 import msg from './common/msg'
-import DialogDrag from '../static/DialogDrag'
+// import DialogDrag from '../static/DialogDrag'
 import utils from './common/util'
+// import Vuex from 'vuex'
+// import VueRouter from 'vue-router'
+
+// import routes from './router/testindex'
+// import { makeRoute } from './router/testindex'
+//
+// Vue.use(VueRouter)
+
+// const router = new VueRouter({
+//   routes
+// })
+
+// Vue.use(Vuex);
+
 Date.prototype.Format = function (fmt) { //日期格式化
   var o = {
     "M+": this.getMonth() + 1, //月份
@@ -69,9 +83,12 @@ new Vue({
 });
 //路由守卫
 router.beforeEach((to, from, next) => {
+  // let allRoutes = store.getters.allRoutes;
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
     console.log(to.fullPath);
-    if(window.sessionStorage.getItem("loginUsername")!=null){ //判断本地是否存在access_token
+    if(window.sessionStorage.getItem("loginUsername")!=null ){ //判断本地是否存在access_token
+      // let routesObj = makeRoute(store.getters.allRoutes);
+      // router.addRoutes(routesObj);
       next();
     }else {
       utils.$emit("loginSuccess",false);

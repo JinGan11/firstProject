@@ -6,6 +6,7 @@ import com.ucar.combination.service.SysMenuService;
 import com.ucar.combination.utils.TreeBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * @date: 2019-07-25
  **/
 @Controller
+@CrossOrigin
 @RequestMapping("/sys/menu")
 public class SysMenuController {
 

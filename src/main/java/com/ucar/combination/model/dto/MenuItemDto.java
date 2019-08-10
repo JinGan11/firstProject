@@ -11,6 +11,9 @@ public class MenuItemDto {
 
     private Long id;
     private String url;
+    private String component;
+    private String name;
+    private String path;
     private String title;
     private String icon;
     private Long superId;
