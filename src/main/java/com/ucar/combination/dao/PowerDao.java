@@ -3,8 +3,10 @@ package com.ucar.combination.dao;
 import com.ucar.combination.model.AccountPower;
 import com.ucar.combination.model.Power;
 import com.ucar.combination.model.PowerTree;
+import com.ucar.combination.model.dto.AccountPowerDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PowerDao {
 
@@ -22,5 +24,12 @@ public interface PowerDao {
     void insertAccountPower(AccountPower accountPower);
 
     void removeAccountPowerById(AccountPower accountPower);
-
+    /**
+     * description: 账户权限明细查询
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/9 15:11
+     * @params
+     * @return
+     */
+    List<AccountPowerDto> getAccountPowerList(Map<String, Object> map);
 }

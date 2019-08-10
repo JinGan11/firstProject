@@ -6,9 +6,11 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.AccountManageDao;
 import com.ucar.combination.dao.EmployeeManageDao;
+import com.ucar.combination.dao.PowerDao;
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.model.RoleAccount;
+import com.ucar.combination.model.dto.AccountPowerDto;
 import com.ucar.combination.service.AccountManagerService;
 import com.ucar.combination.service.EmployeeManageService;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,8 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     private AccountManageDao accountManageDao;
     @Resource
     private EmployeeManageDao employeeManageDao;
+    @Resource
+    private PowerDao powerDao;
 
     @Override
     public ResultPage queryList(QueryParam queryParam) {
@@ -46,13 +50,14 @@ public class AccountManagerServiceImpl implements AccountManagerService {
 
     /**
      * description:由账户id将账户状态设置为无效
-     * @author shiya.li@ucarinc.com
-     * @date   2019/8/6 17：32
-     * @params id 账户id
+     *
      * @return 无
+     * @author shiya.li@ucarinc.com
+     * @date 2019/8/6 17：32
+     * @params id 账户id
      */
-    public void updateStatus(int id,int status){
-        accountManageDao.updateStatus(id,status);
+    public void updateStatus(int id, int status) {
+        accountManageDao.updateStatus(id, status);
     }
 
     @Override
@@ -65,17 +70,18 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     //lzy
     @Override
     public ResultPage getRoleAccountList(QueryParam queryParam) {
-        Page<?> page = PageHelper.startPage(1,10);
+        Page<?> page = PageHelper.startPage(1, 10);
         List<RoleAccount> list = accountManageDao.getRoleAccountList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
 
     /**
      * description: 员工账号状态
-     * @author jing.luo01@ucarinc.com
-     * @date   2019/8/8 9:57
-     * @params ID员工ID
+     *
      * @return 状态
+     * @author jing.luo01@ucarinc.com
+     * @date 2019/8/8 9:57
+     * @params ID员工ID
      */
     @Override
     public int updateState(String id) {
@@ -84,21 +90,24 @@ public class AccountManagerServiceImpl implements AccountManagerService {
 
     /**
      * description: 账户查找
-     * @author jing.luo01@ucarinc.com
-     * @date   2019/8/8 10:34
-     * @params 账户ID
+     *
      * @return ACCOUNT
+     * @author jing.luo01@ucarinc.com
+     * @date 2019/8/8 10:34
+     * @params 账户ID
      */
     @Override
     public Account selectById(Long id) {
         return accountManageDao.selectById(id);
     }
+
     /**
      * description:插入历史记录
-     * @author jing.luo01@ucarinc.com
-     * @date   2019/8/8 10:43
-     * @params 一个MAP存储着所有信息
+     *
      * @return
+     * @author jing.luo01@ucarinc.com
+     * @date 2019/8/8 10:43
+     * @params 一个MAP存储着所有信息
      */
     @Override
     public int insertAccountHistory(Map<String, Object> map) {
@@ -127,5 +136,22 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     @Override
     public int updateStaffAccount(AccountStaff accountStaff) {
         return employeeManageDao.updateAccount(accountStaff);
+    }
+
+    /**
+     * description: 账户权限明细查询
+     *
+     * @return
+     * @author jing.luo01@ucarinc.com
+     * @date 2019/8/9 15:10
+     * @params queryParam 描述
+     */
+    @Override
+    public ResultPage getAccountPowerList(QueryParam queryParam) {
+        //return
+        Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
+        List<AccountPowerDto> list = powerDao.getAccountPowerList(queryParam);
+        return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
+
     }
 }

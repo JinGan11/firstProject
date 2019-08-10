@@ -7,6 +7,7 @@ import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.service.AccountManagerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -18,37 +19,67 @@ import java.util.Map;
 @RequestMapping("/roleAccount")
 public class SerachController {
 
-    @Resource
-    private AccountManagerService accountManagerService;
+	@Resource
+	private AccountManagerService accountManagerService;
 
-    @ResponseBody
-    @RequestMapping("/getRoleAccountList.do")
-    public Result getRoleAccountList(HttpServletRequest request){
-        String roleName = request.getParameter("roleName");
-        String businessLine = request.getParameter("businessLine");
-        String accountName = request.getParameter("accountName");
-        String staffNum = request.getParameter("staffNum");
-        String staffName = request.getParameter("staffName");
-        String roleStatus = request.getParameter("roleStatus");
-        String accountState = request.getParameter("accountState");
-        String departmentName = request.getParameter("departmentName");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("roleName", roleName);
-        params.put("businessLine", businessLine);
-        params.put("accountName", accountName);
-        params.put("staffNum", staffNum);
-        params.put("staffName", staffName);
-        params.put("roleStatus", roleStatus);
-        params.put("departmentId", departmentName);
-        params.put("accountState", accountState);
-        params.put("page", 1);
-        params.put("limit", 10);
-        ResultPage resultPage = accountManagerService.getRoleAccountList(new QueryParam(params));
-        return new Result().ok().put("page", resultPage)
-                .put("permissionList", CommonEnums.toJsonList(CommonEnums.Permission.values()))
-                .put("permissionEnum",CommonEnums.toEnumMap(CommonEnums.Permission.values()))
-                .put("accountStatusEnum",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()))
-                .put("accountStatusList",CommonEnums.toJsonList(CommonEnums.AccountStatusEnum.values()));
-    }
+	@ResponseBody
+	@RequestMapping("/getRoleAccountList.do")
+	public Result getRoleAccountList(HttpServletRequest request) {
+		String roleName = request.getParameter("roleName");
+		String businessLine = request.getParameter("businessLine");
+		String accountName = request.getParameter("accountName");
+		String staffNum = request.getParameter("staffNum");
+		String staffName = request.getParameter("staffName");
+		String roleStatus = request.getParameter("roleStatus");
+		String accountState = request.getParameter("accountState");
+		String departmentName = request.getParameter("departmentName");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("roleName", roleName);
+		params.put("businessLine", businessLine);
+		params.put("accountName", accountName);
+		params.put("staffNum", staffNum);
+		params.put("staffName", staffName);
+		params.put("roleStatus", roleStatus);
+		params.put("departmentId", departmentName);
+		params.put("accountState", accountState);
+		params.put("page", 1);
+		params.put("limit", 10);
+		ResultPage resultPage = accountManagerService.getRoleAccountList(new QueryParam(params));
+		return new Result().ok().put("page", resultPage)
+				.put("permissionList", CommonEnums.toJsonList(CommonEnums.Permission.values()))
+				.put("permissionEnum", CommonEnums.toEnumMap(CommonEnums.Permission.values()))
+				.put("accountStatusEnum", CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()))
+				.put("accountStatusList", CommonEnums.toJsonList(CommonEnums.AccountStatusEnum.values()));
+	}
 
+	/**
+	 * description: 查询账号权限明细
+	 *
+	 * @return
+	 * @author jing.luo01@ucarinc.com
+	 * @date 2019/8/9 15:07
+	 * @params request HTTPSERVLET方法
+	 * @param: accountName 账户名
+	 * @param: page 第几页
+	 * @param: limit 多少行
+	 */
+	@ResponseBody
+	@RequestMapping("/getAccountPowerList.do_")
+	public Result getAccountPowerList(HttpServletRequest request) {
+		Map<String, Object> param = new HashMap<>();
+		//String a=request.getParameter("accountName");@RequestParam String accountName, @RequestParam String page, @RequestParam String limit
+		String page=request.getParameter("page");
+		String limit=request.getParameter("limit");
+		String accountName=request.getParameter("accountName");
+		param.put("page", page);
+		param.put("limit", limit);
+		param.put("accountName", accountName);
+		if (accountName!=null&&!accountName.equals("")){
+			ResultPage resultPage = accountManagerService.getAccountPowerList(new QueryParam(param));
+			return Result.ok().put("page",resultPage).put("status","success");
+		}else {
+			return Result.ok().put("status","error");
+		}
+
+	}
 }

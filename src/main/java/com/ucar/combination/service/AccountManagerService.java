@@ -82,7 +82,7 @@ public interface AccountManagerService {
      */
     int insertAccountHistory (Map<String, Object> map);
 
-    /*
+    /**
      * description: 修改账户信息
      * @author peng.zhang11@ucarinc.com
      * @date:  2019/8/9 11:25
@@ -91,7 +91,7 @@ public interface AccountManagerService {
      */
     int modifyAccount(AccountStaff accountStaff);
 
-    /*
+    /**
      * description: 修改员工的账户信息
      * @uthor： junqiang.zhang@ucarinc.com
      * @Date： 2019/8/9 13:04
@@ -99,4 +99,12 @@ public interface AccountManagerService {
      * @return
      */
     int updateStaffAccount(AccountStaff accountStaff);
+    /**
+     * description: 账户权限明细
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/9 15:08
+     * @params
+     * @return
+     */
+    ResultPage getAccountPowerList(QueryParam queryParam);
 }
