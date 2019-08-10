@@ -1,9 +1,7 @@
 package com.ucar.combination.common;
 
-import com.ucar.combination.model.Company;
 import net.sf.json.JSONObject;
 
-import javax.management.relation.RoleStatus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -771,5 +769,57 @@ public abstract class CommonEnums {
 			list.add(js);
 		}
 		return list;
+	}
+
+	/**
+	* @Description:  角色申请 新建  添加移除 枚举类
+	* @Author: min.zhang08@ucarinc.com
+	* @Params
+	* @Return
+	* @Date  19:36 2019/8/10
+	*/
+	public static enum applyOperationEnum implements IEnum{
+
+		ADD(1, "添加"),
+		REMOVE(0, "移除");
+
+		private final int i;
+		private final String n;
+
+		applyOperationEnum(int i, String n) {
+			this.i = i;
+			this.n = n;
+		}
+
+
+		@Override
+		public int getI() {
+			return i;
+		}
+
+		@Override
+		public String getN() {
+			return n;
+		}
+
+		public static applyOperationEnum valueOf(Integer i) {
+			if (i == null) {
+				return null;
+			}
+			for (applyOperationEnum item : values()) {
+				if (item.getI() == i) {
+					return item;
+				}
+			}
+			return null;
+		}
+
+		public static String i2n(Integer i, String def) {
+			IEnum e = valueOf(i);
+			if (e == null) {
+				return def;
+			}
+			return e.getN();
+		}
 	}
 }

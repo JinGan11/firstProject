@@ -28,6 +28,20 @@ public class CreateRoleApplyDto {
 //    private List<Long> accountIdList;//账号ID
 
     private Long accountIdList[];//账号id 前台账号列表里获取的ID
+    private Integer applyOperationList[];//  账号列表 对应的申请操作
+
+
+
+
+    public Integer[] getApplyOperationList() {
+        return applyOperationList;
+    }
+
+    public void setApplyOperationList(Integer[] applyOperationList) {
+        this.applyOperationList = applyOperationList;
+    }
+
+
 
     public Long getId() {
         return id;

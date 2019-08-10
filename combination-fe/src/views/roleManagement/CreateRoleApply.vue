@@ -371,6 +371,7 @@
         accountIdList:[],
         accountLength:'',
         roleId:'',
+        applyOperationList:[],
 
         formRoleInfo: {//申请信息
           roleApplyNum: '',
@@ -446,7 +447,8 @@
             modifyStaffName:"",
             modifyTime:"",
             accountIdList:[],
-            tableDataAccount:[],
+            // tableDataAccount:[],
+            applyOperationList:[],
         },
       }
     },
@@ -616,11 +618,19 @@
       },
 
       saveRoleApply(){//保存角色申请
-        for(let i=0;i<this.tableDataAccount.length;i++){
+        for(let i=0;i<this.tableDataAccount.length;i++){//账号ID
           console.log(this.tableDataAccount[i].accountName)
           this.accountIdList.push(this.tableDataAccount[i].accountId);
-          alert(this.accountIdList[i])
+          // alert(this.accountIdList[i])
         }
+        alert('开始输出申请操作');
+
+        for(let i=0;i<this.tableDataAccount.length;i++){
+          this.applyOperationList.push(this.tableDataAccount[i].applyOperation)
+          alert(this.applyOperationList[i]);
+        }
+
+
         alert(this.roleId);
         var self=this;
         self.forms.roleApplyNum=self.formRoleInfo.roleApplyNum;
@@ -635,10 +645,11 @@
         self.forms.modifyStaffName='';
         self.forms.modifyTime=self.otherInfo.modifyTime;
         self.forms.accountIdList=self.accountIdList;
-        self.forms.tableDataAccount=self.tableDataAccount;
+        // self.forms.tableDataAccount=self.tableDataAccount;
+        self.forms.applyOperationList=self.applyOperationList;
 
-        alert(self.forms.accountIdList);
-        alert('大哥啊');
+        // alert(self.forms.accountIdList);
+        // alert('大哥啊');
         self.$http.post("roleApply/createRoleApply.do_",self.forms)
           .then(result => {
             alert("新建成功");

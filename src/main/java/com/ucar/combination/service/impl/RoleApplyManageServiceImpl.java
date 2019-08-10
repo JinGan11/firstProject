@@ -5,10 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.RoleApplyManageDao;
-import com.ucar.combination.model.dto.AccountListByApplyIdDto;
-import com.ucar.combination.model.dto.CreateRoleApplyDto;
-import com.ucar.combination.model.dto.LoginInfoInRoleApplyDto;
-import com.ucar.combination.model.dto.RoleApplyDto;
+import com.ucar.combination.model.dto.*;
 import com.ucar.combination.service.RoleApplyManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -94,10 +91,32 @@ public class RoleApplyManageServiceImpl implements RoleApplyManageService {
         return accountListByApplyIdDtos;
     }
 
+    /**
+    * @Description:  查询当前登录账号的 具体信息
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  18:19 2019/8/10
+    */
     @Override
     public LoginInfoInRoleApplyDto queryLoginInRoleApply(String applyAccountName) {
         LoginInfoInRoleApplyDto loginInfoInRoleApplyDto = roleApplyManageDao.queryLoginInRoleApply(applyAccountName);
         return loginInfoInRoleApplyDto;
     }
+
+    /**
+     * @Description:  角色申请 新建 为角色添加账户
+     * @Author: min.zhang08@ucarinc.com
+     * @Params
+     * @Return
+     * @Date  18:18 2019/8/10
+     */
+    @Override
+    public void createApplyRoleAccount(ApplyRoleAccountDto applyRoleAccountDto) {
+        roleApplyManageDao.createApplyRoleAccount(applyRoleAccountDto);
+    }
+
+
+
 
 }

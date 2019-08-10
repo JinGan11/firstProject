@@ -2,10 +2,7 @@ package com.ucar.combination.service;
 
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
-import com.ucar.combination.model.dto.AccountListByApplyIdDto;
-import com.ucar.combination.model.dto.CreateRoleApplyDto;
-import com.ucar.combination.model.dto.LoginInfoInRoleApplyDto;
-import com.ucar.combination.model.dto.RoleApplyDto;
+import com.ucar.combination.model.dto.*;
 
 import java.util.List;
 
@@ -77,5 +74,15 @@ public interface RoleApplyManageService {
     * @Date  20:35 2019/8/9
     */
     LoginInfoInRoleApplyDto queryLoginInRoleApply(String applyAccountName);
+
+
+    /**
+    * @Description:  角色申请 新建 为角色添加账户
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  18:17 2019/8/10
+    */
+    void createApplyRoleAccount(ApplyRoleAccountDto applyRoleAccountDto);
 
 }

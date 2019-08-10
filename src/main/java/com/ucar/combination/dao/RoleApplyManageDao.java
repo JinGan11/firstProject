@@ -63,4 +63,13 @@ public interface RoleApplyManageDao {
     */
 
     LoginInfoInRoleApplyDto queryLoginInRoleApply(String applyAccountName);
+
+    /**
+    * @Description:  角色申请 新建  为角色添加账户
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  18:12 2019/8/10
+    */
+    void createApplyRoleAccount(ApplyRoleAccountDto applyRoleAccountDto);
 }

@@ -4,6 +4,7 @@ import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.RoleApply;
 import com.ucar.combination.model.dto.*;
 import com.ucar.combination.service.RoleApplyManageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -126,11 +127,27 @@ public class RoleApplyManageController {
     @RequestMapping(value = "/createRoleApply.do_",method = RequestMethod.POST)
     public void createRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto,HttpSession session){
         System.out.println("1111111111111111111");
-        System.out.println(createRoleApplyDto.getRoleId());
-        System.out.println(createRoleApplyDto.getRoleName());
-        System.out.println(createRoleApplyDto.getAccountIdList());
 
+        //插入账号
+        for(int i=0;i<createRoleApplyDto.getAccountIdList().length;i++){
+            ApplyRoleAccountDto applyRoleAccountDto=new ApplyRoleAccountDto();
+            applyRoleAccountDto.setApplyId(1L);
+            applyRoleAccountDto.setRoleId(createRoleApplyDto.getRoleId());
+            applyRoleAccountDto.setAccountId(createRoleApplyDto.getAccountIdList()[i]);
+            applyRoleAccountDto.setApplyOperation(createRoleApplyDto.getApplyOperationList()[i]);
+            applyRoleAccountDto.setCreateEmp((Long) session.getAttribute("accountId"));
+            applyRoleAccountDto.setModifyEmp((Long) session.getAttribute("accountId"));
+            roleApplyManageService.createApplyRoleAccount(applyRoleAccountDto);
+        }
+
+        // 新建角色申请
+        Long accountId = (Long) session.getAttribute("accountId");
+        createRoleApplyDto.setModifyStaffName(accountId);
+        createRoleApplyDto.setApplyStatus(1);
         roleApplyManageService.createRoleApply(createRoleApplyDto);
+
+        System.out.println("222222222222");
+
     }
 
 
@@ -143,12 +160,13 @@ public class RoleApplyManageController {
     */
     @ResponseBody
     @RequestMapping("/showAccountListByApplyId.do_")
-    public Result showAccountListByApplyId(HttpServletRequest request){
+    public Result showAccountListByApplyId(HttpServletRequest request) {
         String strid = request.getParameter("applyId");
         Long applyId = Long.parseLong(strid);
-        List<AccountListByApplyIdDto> list=roleApplyManageService.showAccountListByApplyId(applyId);
-        return Result.ok().put("list",list);
+        List<AccountListByApplyIdDto> list = roleApplyManageService.showAccountListByApplyId(applyId);
+        return Result.ok().put("list", list);
     }
+
 
     /**
     * @Description: 查询登录信息
