@@ -10,6 +10,7 @@
         super_id,
         sort_id
         FROM t_power
+        WHERE status = 0
         ORDER BY power_id
     </select>
 

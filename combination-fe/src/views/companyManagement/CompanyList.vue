@@ -474,16 +474,17 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
+      this.judgmentAuthority();
     },
     methods: {
       judgmentAuthority() {
         const self = this;
         let permission = self.$store.state.powerList;
         permission.forEach(item=>{
-          if (item === 40) {
+          if (item === 46) {
             self.companyButtonPermission.createPermission = false
           }
-          if (item === 41) {
+          if (item === 47) {
             self.companyButtonPermission.modifyPermission = false
           }
         });
