@@ -19,7 +19,6 @@
       </el-form-item>
       <el-form-item label="部门级别">
         <el-input v-model="formInline.level">
-          {{}}
         </el-input>
       </el-form-item>
       <el-form-item label="上级部门">
@@ -40,7 +39,7 @@
       <br>
       <el-form-item size="100px">
         <el-button type="primary" @click="Search">查询</el-button>
-        <el-button @click="" :disabled="depSearchBtnPermission.exportPermission">导出</el-button>
+        <el-button @click="exportDepartment">导出</el-button>
       </el-form-item>
     </el-form>
     <el-table ref="multipleTable" :data="tableData" border @selection-change='handleSelectionChange'>
@@ -263,9 +262,23 @@
         </div>
       </el-form>
     </el-dialog>
+    <el-dialog title='excelTitle' :visible.sync="exportDialogVisible" :close-on-click-modal="false" width="600px">
+      <template>
+        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+        <div style="margin: 15px 0;"></div>
+        <el-checkbox-group v-model="checkdepartment" @change="handlecheckRolesChange">
+          <el-checkbox v-for="city in department" :label="city" :key="city">{{city}}</el-checkbox>
+        </el-checkbox-group>
+      </template>
+      <template slot="footer">
+        <el-button type="primary" @click="exportExcel">确定导出</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </template>
+    </el-dialog>
   </home>
 </template>
 <script>
+  const departmentOptions = ['部门编号', '办公点标识', '部门名称', '负责人ID', '负责人姓名', '手机号','部门级别', '上级部门', '支持业务线', '部门类型', '状态', '所在城市','关联公司名称'];
   export default {
     data() {
       return {
@@ -323,25 +336,19 @@
         CompanyMarkEnum: {},
         CompanyNatureEnum: {},
         DepartmentStatusEnum: {},
-
-        depSearchBtnPermission: {
-          exportPermission: true
-        },
+        AccountStatusEnums:{},
+        exportDialogVisible:false,
+        checkAll: false,
+        checkdepartment: [],
+        department: departmentOptions,
+        isIndeterminate: true,
+        filterVal: [],
+        list: [],
+        disabled: true,
+        departmentList: [],
       }
     },
-    created() {
-      this.judgmentAuthority();
-    },
     methods: {
-      judgmentAuthority() {
-        const self = this;
-        let permission = self.$store.state.powerList;
-        permission.forEach(item=>{
-          if (item === 51) {
-            self.depSearchBtnPermission.exportPermission = false
-          }
-        });
-      },
       ChooseOnDetail() {
         // alert(this.row.tableData[0].departmentNo);
         var param = {
@@ -397,6 +404,7 @@
           self.StatusEnum = result.StatusEnum;
           self.total = result.page.totalCount;
           self.LevelEnum = result.LevelEnum;
+          self.departmentList=self.tableData;
           console.log(self.tableData);
         }).catch(function (error) {
           console.log('department/searchDepartment.do_' + error);
@@ -420,6 +428,89 @@
       handleCurrentChangeCompany(val) {
         this.currentPageCompany = val;
         //this.Search(val, this.pageSizeCompany);
+      },
+      exportExcel() {
+        if (this.checkdepartment.length === 0) {
+          this.$message({
+            showClose: false,
+            message: '请选择需要导出的字段',
+            type: 'error'
+          });
+        } else {
+          require.ensure([], () => {
+            const {export_json_to_excel} = require('../../excel/Export2Excel');
+            const tHeader = this.checkdepartment;
+            // 上面设置Excel的表格第一行的标题
+
+            const filterVal = this.exportField(this.checkdepartment);
+            // 上面的staffNum、accountId、staffName是tableData里对象的属性
+            const list = this.departmentList;  //把data里的tableData存到list
+            for (let i = 0; i < list.length; i++) {
+              list[i].accountState = this.AccountStatusEnums[list[i].accountState];
+            }
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '员工管理列表excel');
+            this.$message({
+              showClose: true,
+              message: '文件导出成功',
+              type: 'success'
+            });
+            this.exportDialogVisible = false;
+            this.checkdepartment = [];
+            this.filterVal = [];
+          })
+        }
+      },
+      exportDepartment() {
+        this.exportDialogVisible = true;
+      },
+      cancel() {
+        this.exportDialogVisible = false;
+      },
+      //将每列与数据对应
+      exportField(val) {
+        for (let i = 0; i < val.length; i++) {
+          if (this.checkdepartment[i] === '部门编号') {
+            this.filterVal.push('departmentNo')
+          } else if (this.checkdepartment[i] === '办公点标识') {
+            this.filterVal.push('workplace')
+          } else if (this.checkdepartment[i] === '部门名称') {
+            this.filterVal.push('departmentName')
+          } else if (this.checkdepartment[i] === '负责人ID') {
+            this.filterVal.push('staffId')
+          } else if (this.checkdepartment[i] === '负责人姓名') {
+            this.filterVal.push('staffName')
+          } else if (this.checkdepartment[i] === '手机号') {
+            this.filterVal.push('telephone')
+          }else if (this.checkdepartment[i] === '部门级别') {
+            this.filterVal.push('level')
+          } else if (this.checkdepartment[i] === '上级部门') {
+            this.filterVal.push('upperDepartmentNo')
+          } else if (this.checkdepartment[i] === '支持业务线') {
+            this.filterVal.push('supportBusiness')
+          } else if (this.checkdepartment[i] === '部门类型') {
+            this.filterVal.push('departmentType')
+          } else if (this.checkdepartment[i] === '状态') {
+            this.filterVal.push('status')
+          } else if (this.checkdepartment[i] === '所在城市') {
+            this.filterVal.push('cityName')
+          } else if (this.checkdepartment[i] === '关联公司名称') {
+            this.filterVal.push('companyName')
+          }
+        }
+        return this.filterVal;
+      },
+      formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
+      },
+      handleCheckAllChange(val) {
+        this.checkdepartment = val ? departmentOptions : [];
+        this.isIndeterminate = false;
+      },
+      handlecheckRolesChange(value) {
+        let checkedCount = value.length;
+        this.checkAll = checkedCount === this.department.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.department.length;
       },
     },
   }
