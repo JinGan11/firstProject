@@ -4,10 +4,11 @@ import com.ucar.combination.model.AccountPower;
 import com.ucar.combination.model.Power;
 import com.ucar.combination.model.PowerTree;
 import com.ucar.combination.model.dto.AccountPowerDto;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
-
+@Repository
 public interface PowerDao {
 
     /**

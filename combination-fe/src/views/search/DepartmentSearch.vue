@@ -278,7 +278,7 @@
   </home>
 </template>
 <script>
-  const departmentOptions = ['部门编号', '办公点标识', '部门名称', '负责人ID', '负责人姓名', '手机号','部门级别', '上级部门', '支持业务线', '部门类型', '状态', '所在城市','关联公司名称'];
+  const departmentOptions = ['部门编号', '办公点标识', '部门名称', '负责人ID', '负责人姓名', '手机号', '部门级别', '上级部门', '支持业务线', '部门类型', '状态', '所在城市', '关联公司名称'];
   export default {
     data() {
       return {
@@ -336,8 +336,8 @@
         CompanyMarkEnum: {},
         CompanyNatureEnum: {},
         DepartmentStatusEnum: {},
-        AccountStatusEnums:{},
-        exportDialogVisible:false,
+        AccountStatusEnums: {},
+        exportDialogVisible: false,
         checkAll: false,
         checkdepartment: [],
         department: departmentOptions,
@@ -370,7 +370,7 @@
           //枚举类型转换
           this.formDetail.departmentType = resultss.DepartmentTypeEnum[this.formDetail.departmentType];
           this.formDetail.level = resultss.LevelEnum[this.formDetail.level];
-          this.formDetail.status=resultss.DepartmentStatusEnum[this.formDetail.status];
+          this.formDetail.status = resultss.DepartmentStatusEnum[this.formDetail.status];
           console.log(this.tableCity);
         }).catch(function (error) {
           console.log('department/selectDepartment.do_' + error);
@@ -404,7 +404,7 @@
           self.StatusEnum = result.StatusEnum;
           self.total = result.page.totalCount;
           self.LevelEnum = result.LevelEnum;
-          self.departmentList=self.tableData;
+          self.departmentList = self.tableData;
           console.log(self.tableData);
         }).catch(function (error) {
           console.log('department/searchDepartment.do_' + error);
@@ -446,7 +446,9 @@
             // 上面的staffNum、accountId、staffName是tableData里对象的属性
             const list = this.departmentList;  //把data里的tableData存到list
             for (let i = 0; i < list.length; i++) {
-              list[i].accountState = this.AccountStatusEnums[list[i].accountState];
+              list[i].departmentType = this.DepartmentTypeEnum[list[i].departmentType];
+              list[i].status = this.StatusEnum[list[i].status];
+
             }
             const data = this.formatJson(filterVal, list);
             export_json_to_excel(tHeader, data, '员工管理列表excel');
@@ -482,7 +484,7 @@
             this.filterVal.push('staffName')
           } else if (this.checkdepartment[i] === '手机号') {
             this.filterVal.push('telephone')
-          }else if (this.checkdepartment[i] === '部门级别') {
+          } else if (this.checkdepartment[i] === '部门级别') {
             this.filterVal.push('level')
           } else if (this.checkdepartment[i] === '上级部门') {
             this.filterVal.push('upperDepartmentNo')

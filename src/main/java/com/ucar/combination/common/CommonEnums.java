@@ -633,7 +633,7 @@ public abstract class CommonEnums {
 	}
 	public static enum DepartmentStatus implements IEnum{
 		EFFECTIVE(1, "有效"),
-		INVALID(2, "无效");
+		INVALID(0, "无效");
 		private final int i;
 		private final String n;
 
