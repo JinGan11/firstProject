@@ -181,6 +181,16 @@
       if (log) {
         self.isLog = true;
       }
+      // 在页面加载时读取sessionStorage里的状态信息
+      if (sessionStorage.getItem('store')) {
+        self.$store.replaceState(Object.assign({}, self.$store.state, JSON.parse(sessionStorage.getItem('store'))))
+        self.data = self.$store.state.menuList;
+        self.loginUserName = self.$store.state.loginUserName;
+      }
+      // 在页面刷新时将vuex里的信息保存到sessionStorage里
+      window.addEventListener('beforeunload', () => {
+        sessionStorage.setItem('store', JSON.stringify(self.$store.state))
+      })
     },
     mounted() {
       utils.$on('loginSuccess', (loginFlag, username, powerList) => {
@@ -200,12 +210,13 @@
       loginSuccess(isSuccess, username, powerList) {
         const self = this;
         self.loginIn = isSuccess;
-        window.sessionStorage.setItem("loginUsername", username);
-        window.sessionStorage.setItem("powerList", powerList);
-        console.log(powerList);
-        self.loginUserName = window.sessionStorage.getItem("loginUsername")
+        self.$store.state.loginUserName = username;
+        self.$store.state.powerList = powerList;
+        self.loginUserName = username;
+        window.sessionStorage.setItem("loginUsername",username);
         self.$http.get('sys/menu/list.do_').then((result) => {
           self.data = result.menuList;
+          self.$store.state.menuList = result.menuList;
         });
         self.getBreadcrumb(true);
       },
