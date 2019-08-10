@@ -40,7 +40,7 @@
       <br>
       <el-form-item size="100px">
         <el-button type="primary" @click="Search">查询</el-button>
-        <el-button @click="">导出</el-button>
+        <el-button @click="" :disabled="depSearchBtnPermission.exportPermission">导出</el-button>
       </el-form-item>
     </el-form>
     <el-table ref="multipleTable" :data="tableData" border @selection-change='handleSelectionChange'>
@@ -323,9 +323,25 @@
         CompanyMarkEnum: {},
         CompanyNatureEnum: {},
         DepartmentStatusEnum: {},
+
+        depSearchBtnPermission: {
+          exportPermission: true
+        },
       }
     },
+    created() {
+      this.judgmentAuthority();
+    },
     methods: {
+      judgmentAuthority() {
+        const self = this;
+        let permission = self.$store.state.powerList;
+        permission.forEach(item=>{
+          if (item === 51) {
+            self.depSearchBtnPermission.exportPermission = false
+          }
+        });
+      },
       ChooseOnDetail() {
         // alert(this.row.tableData[0].departmentNo);
         var param = {

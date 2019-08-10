@@ -70,7 +70,7 @@
             <el-form-item>
               <div v-if="!buttonDisabled">
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
-                <el-button type="primary" style="width:100px" @click="add">导出</el-button>
+                <el-button type="primary" :disabled="empButtonPermission.exportPermission" style="width:100px" @click="add">导出</el-button>
               </div>
               <div v-else>
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
@@ -81,12 +81,12 @@
       </el-form>
     </div>
     <div style="margin-bottom: 10px" v-if="!buttonDisabled">
-      <el-button type="primary" @click="createEmployee" style="width:70px">新建</el-button>
-      <el-button type="primary" @click="modifyEmployee" :disabled="disabled" style="width:70px">修改</el-button>
-      <el-button type="primary" @click="deleteEmployee" :disabled="disabled" style="width:70px">删除</el-button>
-      <el-button type="primary" @click="quitEmployee" :disabled="disabled" style="width:70px">离职</el-button>
-      <el-button type="primary" @click="recovery" :disabled="disabled" style="width:70px">恢复</el-button>
-      <el-button type="primary" @click="distributionDepartment" :disabled="disabled" style="width:80px">分配部门</el-button>
+      <el-button type="primary" @click="createEmployee" :disabled="empButtonPermission.createPermission" style="width:70px">新建</el-button>
+      <el-button type="primary" @click="modifyEmployee" :disabled="disabled || empButtonPermission.modifyPermission" style="width:70px">修改</el-button>
+      <el-button type="primary" @click="deleteEmployee" :disabled="disabled || empButtonPermission.deletePermission" style="width:70px">删除</el-button>
+      <el-button type="primary" @click="quitEmployee" :disabled="disabled || empButtonPermission.quitPermission" style="width:70px">离职</el-button>
+      <el-button type="primary" @click="recovery" :disabled="disabled || empButtonPermission.recoveryPermission" style="width:70px">恢复</el-button>
+      <el-button type="primary" @click="distributionDepartment" :disabled="disabled || empButtonPermission.assignDepPermission" style="width:80px">分配部门</el-button>
     </div>
     <div style="margin-bottom: 10px" v-else>
       <el-button type="primary" @click="confirmChoice" style="width:70px">确认选择</el-button>
@@ -520,6 +520,16 @@
           status: 'status'
         },
         operationBtnActive: true,
+
+        empButtonPermission: {
+          createPermission: true,
+          modifyPermission: true,
+          deletePermission: true,
+          quitPermission: true,
+          recoveryPermission: true,
+          assignDepPermission: true,
+          exportPermission: true
+        }
       }
     },
     filters: {
@@ -538,6 +548,7 @@
     },
     created() {
       var self = this;
+      self.judgmentAuthority();
       if(self.relAccount == 1) {
         self.form.isDimission = '0';
         self.buttonDisabled = true;
@@ -567,6 +578,33 @@
       ;
     },
     methods: {
+      judgmentAuthority() {
+        const self = this;
+        let permission = self.$store.state.powerList;
+        permission.forEach(item=>{
+          if (item === 15) {
+            self.empButtonPermission.createPermission = false
+          }
+          if (item === 16) {
+            self.empButtonPermission.modifyPermission = false
+          }
+          if (item === 17) {
+            self.empButtonPermission.deletePermission = false
+          }
+          if (item === 18) {
+            self.empButtonPermission.quitPermission = false
+          }
+          if (item === 19) {
+            self.empButtonPermission.recoveryPermission = false
+          }
+          if (item === 20) {
+            self.empButtonPermission.assignDepPermission = false
+          }
+          if (item === 66) {
+            self.empButtonPermission.exportPermission = false
+          }
+        });
+      },
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;

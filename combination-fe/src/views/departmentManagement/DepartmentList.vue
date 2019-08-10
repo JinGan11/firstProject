@@ -2,11 +2,11 @@
   <home style="margin-left: 20px">
     <br>
     <div>
-      <el-button type="primary" v-bind:disabled="operationBtnActive" @click="addDept">新建子部门</el-button>
-      <el-button type="primary" @click="updateDept">修改</el-button>
-      <el-button type="primary" @click="dialogVisible = true" v-bind:disabled="operationBtnActive">删除</el-button>
-      <el-button type="primary" v-bind:disabled="operationBtnActive" @click="changeUpper">修改上级部门</el-button>
-      <el-button type="primary">关联公司</el-button>
+      <el-button type="primary" v-bind:disabled="operationBtnActive || depButtonPermission.createPermission" @click="addDept">新建子部门</el-button>
+      <el-button type="primary" :disabled="depButtonPermission.modifyPermission" @click="updateDept">修改</el-button>
+      <el-button type="primary" @click="dialogVisible = true" v-bind:disabled="operationBtnActive || depButtonPermission.deletePermission">删除</el-button>
+      <el-button type="primary" v-bind:disabled="operationBtnActive || depButtonPermission.modifyUpDepPermission" @click="changeUpper">修改上级部门</el-button>
+      <el-button type="primary" :disabled="depButtonPermission.relCompanyPermission">关联公司</el-button>
     </div>
     <br>
     <div>
@@ -56,9 +56,41 @@
         },
         dialogVisible: false,
         operationBtnActive: true,
+
+        depButtonPermission: {
+          createPermission: true,
+          modifyPermission: true,
+          deletePermission: true,
+          modifyUpDepPermission: true,
+          relCompanyPermission: true,
+        }
       };
     },
+    created() {
+      this.judgmentAuthority();
+    },
     methods: {
+      judgmentAuthority() {
+        const self = this;
+        let permission = self.$store.state.powerList;
+        permission.forEach(item=>{
+          if (item === 10) {
+            self.depButtonPermission.createPermission = false
+          }
+          if (item === 11) {
+            self.depButtonPermission.modifyPermission = false
+          }
+          if (item === 12) {
+            self.depButtonPermission.deletePermission = false
+          }
+          if (item === 13) {
+            self.depButtonPermission.modifyUpDepPermission = false
+          }
+          if (item === 14) {
+            self.depButtonPermission.relCompanyPermission = false
+          }
+        });
+      },
       loadNode(node,resolve){
         var self = this;
         self.$http.get('department/buildTree.do_', {

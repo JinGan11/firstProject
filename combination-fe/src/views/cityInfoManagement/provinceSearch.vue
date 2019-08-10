@@ -63,17 +63,17 @@
           </el-col>
           <el-col :span="3" >
             <el-form-item>
-              <el-button type="primary" style="width: 100px" @click="exportVisible = true"  size="medium">导出</el-button>
+              <el-button type="primary" style="width: 100px" @click="exportVisible = true" :disabled="provinceBtnPermission.exportPermission" size="medium">导出</el-button>
             </el-form-item>
           </el-col>
           <el-col :span="3" >
             <el-form-item>
-              <el-button type="primary" style="width: 100px" @click="createFormVisible = true"  size="medium">新建</el-button>
+              <el-button type="primary" style="width: 100px" @click="createFormVisible = true" :disabled="provinceBtnPermission.createPermission" size="medium">新建</el-button>
             </el-form-item>
           </el-col>
           <el-col :span="3" >
             <el-form-item>
-              <el-button type="primary" style="width: 100px"  size="medium">修改</el-button>
+              <el-button type="primary" style="width: 100px" :disabled="provinceBtnPermission.modifyPermission" size="medium">修改</el-button>
             </el-form-item>
           </el-col>
           <el-col :span="3" >
@@ -225,8 +225,11 @@
           state1:'',
           provinceSuggest:[],
 
-
-
+        provinceBtnPermission: {
+          createPermission: false,
+          modifyPermission: false,
+          exportPermission: false
+        }
 
       }
     },
@@ -234,11 +237,27 @@
       commonUtils.Log("页面激活");
     },
     mounted() {
+      this.judgmentAuthority();
       commonUtils.Log("页面进来");
       this.fetchData();
         this.provinceSuggest=this.provinceSearchList;
     },
     methods: {
+      judgmentAuthority() {
+        const self = this;
+        let permission = self.$store.state.powerList;
+        permission.forEach(item=>{
+          if (item === 67) {
+            self.provinceBtnPermission.createPermission = false
+          }
+          if (item === 68) {
+            self.provinceBtnPermission.modifyPermission = false
+          }
+          if (item === 62) {
+            self.provinceBtnPermission.exportPermission = false
+          }
+        });
+      },
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;

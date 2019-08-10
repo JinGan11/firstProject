@@ -27,7 +27,7 @@
       <br>
       <el-form-item size="100px">
         <el-button type="primary" @click="Search">查询</el-button>
-        <el-button @click="exportRole">导出</el-button>
+        <el-button @click="exportRole" :disabled="btnPermission.exportPermission">导出</el-button>
       </el-form-item>
     </el-form>
     <el-table ref="multipleTable" :data="tableData" border @selection-change='handleSelectionChange'>
@@ -100,9 +100,25 @@
         list: [],
         disabled: true,
         accountPowerList: [],
+
+        btnPermission: {
+          exportPermission: true
+        },
       }
     },
+    created() {
+      this.judgmentAuthority();
+    },
     methods: {
+      judgmentAuthority() {
+        const self = this;
+        let permission = self.$store.state.powerList;
+        permission.forEach(item=>{
+          if (item === 69) {
+            self.btnPermission.exportPermission = false
+          }
+        });
+      },
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;

@@ -73,7 +73,7 @@
             <el-form-item>
               <div v-if="!buttonDisabled">
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
-                <el-button type="primary" style="width:100px" @click="exportExcel">导出</el-button>
+                <el-button type="primary" style="width:100px" :disabled="depSearchBtnPermission.exportPermission" @click="exportExcel">导出</el-button>
               </div>
               <div v-else>
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
@@ -170,6 +170,10 @@
         },
         tableData: [],
         selection: '',
+
+        roleADetailBtnPermission: {
+          exportPermission: true
+        }
         // id: '',
         // staffName: '',
         // accountId: '',
@@ -234,6 +238,7 @@
     // },
     created(){
       var self = this;
+      self.judgmentAuthority();
       if(self.relAccount) {
         self.form.isDimission = '在职';
         self.buttonDisabled = true;
@@ -259,6 +264,15 @@
       };
     },
     methods: {
+      judgmentAuthority() {
+        const self = this;
+        let permission = self.$store.state.powerList;
+        permission.forEach(item=>{
+          if (item === 55) {
+            self.depSearchBtnPermission.exportPermission = false
+          }
+        });
+      },
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;

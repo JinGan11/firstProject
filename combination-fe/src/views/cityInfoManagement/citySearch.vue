@@ -39,7 +39,7 @@
           </el-col>
           <el-col :span="6" >
             <el-form-item>
-              <el-button type="primary" style="width: 100px" @click="exportVisible = true" size="medium">导出</el-button>
+              <el-button type="primary" style="width: 100px" @click="exportVisible = true" :disabled="cityBtnPermission.exportPermission" size="medium">导出</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -131,16 +131,29 @@
           regionProps: regionPropsEnums,
           filterVal: [],
 
+        cityBtnPermission: {
+          exportPermission: true,
+        },
       }
     },
     activated() {
       commonUtils.Log("页面激活");
     },
     mounted() {
+      this.judgmentAuthority();
       commonUtils.Log("页面进来");
         this.fetchData();
     },
     methods: {
+      judgmentAuthority() {
+        const self = this;
+        let permission = self.$store.state.powerList;
+        permission.forEach(item=>{
+          if (item === 63) {
+            self.cityBtnPermission.exportPermission = false
+          }
+        });
+      },
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;

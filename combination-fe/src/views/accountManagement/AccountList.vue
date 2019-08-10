@@ -75,14 +75,14 @@
       </el-form>
     </div>
     <div style="margin-bottom: 10px">
-      <el-button type="primary" @click="creatAccount" style="width:70px">新建</el-button>
-      <el-button type="primary" :disabled="deleteDisabled" @click="modifyAccount" style="width:70px">修改</el-button>
-      <el-button type="primary" :disabled="deleteDisabled" @click="deleteAccount" style="width:70px">删除</el-button>
-      <el-button type="primary" :disabled="deleteDisabled" @click="lock" style="width:70px">冻结</el-button>
-      <el-button type="primary" :disabled="deleteDisabled" @click="unlock" style="width:70px">解冻</el-button>
-      <el-button type="primary" :disabled="deleteDisabled" @click="" style="width:80px">密码重置</el-button>
-      <el-button type="primary" :disabled="deleteDisabled" @click="assignPermission" style="width:80px">分配权限</el-button>
-      <el-button type="primary" :disabled="disabled" @click="" style="width:80px">历史记录</el-button>
+      <el-button type="primary" :disabled="AccountButtonPermission.createPermission" @click="creatAccount" style="width:70px">新建</el-button>
+      <el-button type="primary" :disabled="deleteDisabled || AccountButtonPermission.modifyPermission" @click="modifyAccount" style="width:70px">修改</el-button>
+      <el-button type="primary" :disabled="deleteDisabled || AccountButtonPermission.deletePermission" @click="deleteAccount" style="width:70px">删除</el-button>
+      <el-button type="primary" :disabled="deleteDisabled || AccountButtonPermission.frozenPermission" @click="lock" style="width:70px">冻结</el-button>
+      <el-button type="primary" :disabled="deleteDisabled || AccountButtonPermission.thawPermission" @click="unlock" style="width:70px">解冻</el-button>
+      <el-button type="primary" :disabled="deleteDisabled || AccountButtonPermission.resetPermission" @click="" style="width:80px">密码重置</el-button>
+      <el-button type="primary" :disabled="deleteDisabled || AccountButtonPermission.assignAccountPermission" @click="assignPermission" style="width:80px">分配权限</el-button>
+      <el-button type="primary" :disabled="deleteDisabled || AccountButtonPermission.historyPermission" @click="" style="width:80px">历史记录</el-button>
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
 <!--      <el-table-column type="selection" width="35"></el-table-column>-->
@@ -230,6 +230,17 @@
         accountAssignPermissionFlag: false,
         accountAssignPermissionTitle: '账号权限分配',
         checkStrictly: false,
+
+        AccountButtonPermission: {
+          createPermission: true,
+          modifyPermission: true,
+          deletePermission: true,
+          frozenPermission: true,
+          thawPermission: true,
+          resetPermission: true,
+          assignAccountPermission: true,
+          historyPermission: true
+        }
       }
     },
     activated() {
@@ -249,6 +260,36 @@
       }
     },
     methods: {
+      judgmentAuthority() {
+        const self = this;
+        let permission = self.$store.state.powerList;
+        permission.forEach(item=>{
+          if (item === 21) {
+            self.AccountButtonPermission.createPermission = false
+          }
+          if (item === 22) {
+            self.AccountButtonPermission.modifyPermission = false
+          }
+          if (item === 23) {
+            self.AccountButtonPermission.deletePermission = false
+          }
+          if (item === 24) {
+            self.AccountButtonPermission.frozenPermission = false
+          }
+          if (item === 25) {
+            self.AccountButtonPermission.thawPermission = false
+          }
+          if (item === 26) {
+            self.AccountButtonPermission.resetPermission = false
+          }
+          if (item === 27) {
+            self.AccountButtonPermission.assignAccountPermission = false
+          }
+          if (item === 28) {
+            self.AccountButtonPermission.historyPermission = false
+          }
+        });
+      },
       lock(){
         let accountId  = {
           id:this.selection
@@ -470,6 +511,7 @@
     },
     created() {
       const self = this;
+      self.judgmentAuthority();
       self.$http.get('account/querylist.do_').then((result) => {
         self.tableData = result.page.list;
         self.form.permissionsList = result.permissionList;

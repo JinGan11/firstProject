@@ -22,11 +22,11 @@
       </el-form>
     </div>
     <div style="margin-bottom: 10px">
-      <el-button type="primary" @click="createRole" style="width:100px">新建</el-button>
-      <el-button type="primary" @click="modifyRole(selection)" :disabled="isModify" style="width:100px">修改</el-button>
-      <el-button type="primary" @click="deleteRole" :disabled="isModify" style="width:100px">删除</el-button>
-      <el-button type="primary" @click="addAccount" :disabled="isModify" style="width:100px">添加账号</el-button>
-      <el-button type="primary" @click="roleAssignPermission" :disabled="isModify" style="width:100px">分配权限</el-button>
+      <el-button type="primary" @click="createRole" :disabled="buttonPermission.createPermission" style="width:100px">新建</el-button>
+      <el-button type="primary" @click="modifyRole(selection)" :disabled="isModify || buttonPermission.modifyPermission" style="width:100px">修改</el-button>
+      <el-button type="primary" @click="deleteRole" :disabled="isModify || buttonPermission.deletePermission" style="width:100px">删除</el-button>
+      <el-button type="primary" @click="addAccount" :disabled="isModify || buttonPermission.addAccountPermission" style="width:100px">添加账号</el-button>
+      <el-button type="primary" @click="roleAssignPermission" :disabled="isModify || buttonPermission.assignPermission" style="width:100px">分配权限</el-button>
     </div>
 
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
@@ -204,16 +204,48 @@
         roleAssignPermissionTitle: '角色权限分配',
         powerTree: [],
         checkStrictly: false,
+
+        buttonPermission: {
+          createPermission: true,
+          modifyPermission: true,
+          deletePermission: true,
+          addAccountPermission: true,
+          assignPermission: true
+        }
       }
     },
     activated() {
       commonUtils.Log("页面激活");
+    },
+    created() {
+      this.judgmentAuthority();
     },
     mounted() {
       commonUtils.Log("页面进来");
       this.fetchData();
     },
     methods: {
+      judgmentAuthority() {
+        const self = this;
+        let permission = self.$store.state.powerList;
+        permission.forEach(item=>{
+          if (item === 33) {
+            self.buttonPermission.createPermission = false
+          }
+          if (item === 34) {
+            self.buttonPermission.modifyPermission = false
+          }
+          if (item === 35) {
+            self.buttonPermission.deletePermission = false
+          }
+          if (item === 36) {
+            self.buttonPermission.addAccountPermission = false
+          }
+          if (item === 37) {
+            self.buttonPermission.assignPermission = false
+          }
+        });
+      },
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;
