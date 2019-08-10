@@ -2,6 +2,7 @@ package com.ucar.combination.dao;
 
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AccountStaff;
+import com.ucar.combination.model.DepartmentPower;
 import com.ucar.combination.model.RoleAccount;
 
 import java.util.List;
@@ -94,5 +95,14 @@ public interface AccountManageDao {
      * @params: accountStaff 要修改的信息
      * @return:
     */
-    public int modifyAccount(AccountStaff accountStaff);
+    int modifyAccount(AccountStaff accountStaff);
+
+    /*
+     * description: 修改账户信息
+     * @author peng.zhang11@ucarinc.com
+     * @date:  2019/8/9 11:25
+     * @params: accountStaff 要修改的信息
+     * @return:
+     */
+     int insertDepartmentPower(DepartmentPower departmentPower);
 }

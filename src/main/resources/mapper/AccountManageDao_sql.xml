@@ -60,7 +60,9 @@
         INSERT INTO t_account(
             account_name,
             account_password,
-            staff_id,
+            <if test="staffId != null and staffId.trim() != ''">
+                staff_id,
+            </if>
             permissions,
             account_secret_email,
             create_time,
@@ -70,7 +72,9 @@
         )VALUES(
                 #{accountName},
                 #{password},
-                #{staffId},
+                <if test="staffId != null and staffId.trim() != ''">
+                    #{staffId},
+                </if>
                 #{permissions},
                 #{secretEmail},
                 NOW(),
@@ -227,6 +231,20 @@
             account_remark = #{remark}
         where id = #{accountId};
     </update>
+
+    <!-- description: 手动选择数据权限新增
+ 	  @author junqiang.zhang@ucarinc.com
+ 	 -->
+    <insert id="insertDepartmentPower" parameterType="com.ucar.combination.model.DepartmentPower">
+        INSERT INTO  t_r_department_power(
+            account_id,
+            department_id
+        )
+        VALUES (
+                #{accountId},
+                #{departmentId}
+               )
+    </insert>
 </mapper>
 
 

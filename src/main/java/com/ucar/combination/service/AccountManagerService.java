@@ -2,7 +2,7 @@ package com.ucar.combination.service;
 
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
-import com.ucar.combination.model.Account;
+import com.ucar.combination.model.*;
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.model.Staff;
@@ -107,4 +107,13 @@ public interface AccountManagerService {
      * @return
      */
     ResultPage getAccountPowerList(QueryParam queryParam);
+
+    /*
+     * description:
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date：
+     * @PArams：
+     * @Return：
+     */
+    void insertDepartmentPower(Long accountId,String tree);
 }

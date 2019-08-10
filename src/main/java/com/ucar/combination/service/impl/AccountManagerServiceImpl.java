@@ -9,6 +9,7 @@ import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.dao.PowerDao;
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AccountStaff;
+import com.ucar.combination.model.DepartmentPower;
 import com.ucar.combination.model.RoleAccount;
 import com.ucar.combination.model.dto.AccountPowerDto;
 import com.ucar.combination.service.AccountManagerService;
@@ -153,5 +154,15 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         List<AccountPowerDto> list = powerDao.getAccountPowerList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
 
+    }
+
+    @Override
+    public void insertDepartmentPower(Long accountId, String tree) {
+        DepartmentPower departmentPower = new DepartmentPower();
+        departmentPower.setAccountId(accountId);
+        for(String departmentId:tree.split(" ")){
+            departmentPower.setDepartmentId(Long.parseLong(departmentId));
+            accountManageDao.insertDepartmentPower(departmentPower);
+        }
     }
 }

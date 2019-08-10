@@ -71,8 +71,13 @@ public class AccountManagerController {
             accountStaff.setCreateEmp(user);
             accountStaff.setModifyEmp(user);
             Long accountId = accountManagerService.insertAccount(accountStaff);
-            accountStaff.setAccountId(accountId);
-            accountManagerService.updateStaffAccount(accountStaff);
+            if(accountStaff.getPermissions() == 5){
+                accountManagerService.insertDepartmentPower(accountId,accountStaff.getTree());
+            }
+            if(accountStaff.getStaffId()!= null && accountStaff.getStaffId()!= 0) {
+                accountStaff.setAccountId(accountId);
+                accountManagerService.updateStaffAccount(accountStaff);
+            }
         }catch(Exception e) {
             throw  new RuntimeException("");
         }
