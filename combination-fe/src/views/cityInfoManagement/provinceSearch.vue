@@ -226,9 +226,9 @@
           provinceSuggest:[],
 
         provinceBtnPermission: {
-          createPermission: false,
-          modifyPermission: false,
-          exportPermission: false
+          createPermission: true,
+          modifyPermission: true,
+          exportPermission: true
         }
 
       }

@@ -73,7 +73,7 @@
             <el-form-item>
               <div v-if="!buttonDisabled">
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
-                <el-button type="primary" style="width:100px" :disabled="depSearchBtnPermission.exportPermission" @click="exportExcel">导出</el-button>
+                <el-button type="primary" style="width:100px" :disabled="roleADetailBtnPermission.exportPermission" @click="exportExcel">导出</el-button>
               </div>
               <div v-else>
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
@@ -269,7 +269,7 @@
         let permission = self.$store.state.powerList;
         permission.forEach(item=>{
           if (item === 55) {
-            self.depSearchBtnPermission.exportPermission = false
+            self.roleADetailBtnPermission.exportPermission = false
           }
         });
       },
