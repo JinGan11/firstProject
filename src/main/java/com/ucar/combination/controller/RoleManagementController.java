@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -163,6 +164,13 @@ public class RoleManagementController {
 		return roleManagementService.getRolePower(rolePower);
 	}
 
+    /**
+     * description:
+     * @author qingyu.lan@ucarinc.com
+     * @date 2019/8/12 13:17
+     * @param request
+     * @return
+     */
 	@ResponseBody
 	@RequestMapping("/getRoleAccountList.do_")
 	public Result getRoleAccountList(HttpServletRequest request){
@@ -179,4 +187,24 @@ public class RoleManagementController {
 		return new Result().ok().put("page", resultPage).put("permissionEnum",CommonEnums.toEnumMap(CommonEnums.Permission.values()))
 				.put("accountStatusEnum",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()));
 	}
+
+    /**
+     * description:删除角色关联账号
+     * @author qingyu.lan@ucarinc.com
+     * @date 2019/8/12 13:17
+     * @param request
+     * @return
+     */
+	@ResponseBody
+    @RequestMapping("/removeRoleAccount.do_")
+	public Result removeAddAccount(HttpServletRequest request){
+        String roleId = request.getParameter("roleId");
+        String ids = request.getParameter("accountIds");
+        String[] accountIds = ids.split(",");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("roleId", roleId);
+        params.put("accountIds", accountIds);
+        roleManagementService.removeRoleAccount(params);
+	    return new Result().ok().put("msg", "成功删除");
+    }
 }

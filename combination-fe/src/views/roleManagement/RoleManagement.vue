@@ -78,14 +78,15 @@
       </template>
     </el-dialog>
 
-    <el-dialog title='添加账号' :visible.sync="addAccountDialogVisible" :close-on-click-modal="false" width="80%">
-      <div>
+    <el-dialog title='添加账号' :visible.sync="addAccountDialogVisible" :close-on-click-modal="false" width="80%" >
+      <div class="dialog-main" style="overflow: auto">
+      <div >
         登陆账号：
         <el-input style="width:200px;" placeholder="登陆账号" v-model="loginAccount"></el-input>
         <el-button type="primary" @click="fetchAccountData" style="width:100px">查询</el-button>
       </div>
       <div style="margin-top: 20px;margin-bottom: 20px">
-        <el-button type="primary" @click="" style="width:100px">移除</el-button>
+        <el-button type="primary" @click="removeRoleAccount" :disabled="isRemoveRoleAccount" style="width:100px">移除</el-button>
         <el-button type="primary" @click="" style="width:100px">添加</el-button>
       </div>
       <el-table ref="multipleTable" :data="accountTableData" border @selection-change="handleAccountSelectionChange">
@@ -117,11 +118,12 @@
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="totalAccount">
       </el-pagination>
+      </div>
     </el-dialog>
 
     <el-dialog :title="roleAssignPermissionTitle" :visible.sync="roleAssignPermissionFlag" :close-on-click-modal="false"
                width="700px">
-      <div class="dialog-main">
+      <div class="dialog-main" >
         <el-form>
           <div style="height: 80px;display: flex;align-items: center;margin-left: 80%">
             <el-button type="primary" style="margin-right: 10px" @click="preservePower">保存</el-button>
@@ -219,7 +221,9 @@
           deletePermission: true,
           addAccountPermission: true,
           assignPermission: true
-        }
+        },
+        list:[],
+        isRemoveRoleAccount:true
       }
     },
     activated() {
@@ -276,7 +280,16 @@
         this.fetchAccountData(val, this.accountPageSize);
       },
       handleAccountSelectionChange(val) {
+        if(val.length != 0){
+          this.isRemoveRoleAccount = false;
+        }else{
+          this.isRemoveRoleAccount = true;
+        }
         this.selectionAccount = val;
+        this.list=[];
+        for (let i = 0; i <this.selectionAccount.length ; i++) {
+          this.list.push(val[i].id)
+        }
       },
       fetchData() { //获取数据
         var self = this;
@@ -501,11 +514,43 @@
       cencel() {
         this.roleAssignPermissionFlag = false;
       },
+      removeRoleAccount(){
+        this.$confirm('确定将下列账号从'+this.myRole.roleName+'角色中移除么？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          var self = this;
+          var param = {
+            roleId:self.myRole.roleId,
+            accountIds:self.list.toString()
+          };
+          self.$http.get('roleManage/removeRoleAccount.do_', {
+            params: param
+          }).then((result) => {
+            if(result.msg==='成功删除'){
+              self.$message.success("成功删除");
+              self.fetchAccountData();
+            }else{
+              self.$message.error("删除失败");
+            }
+          }).catch(function (error) {
+            commonUtils.Log("roleManage/removeRoleAccount.do_" + error);
+            self.$message.error("删除失败");
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
+        });
+      }
     }
   }
 </script>
 
 <style scoped>
-
-
+  .el-dialog__body{
+    height:80%;
+  }
 </style>

@@ -263,4 +263,9 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         List<Map<String,Object>> list = roleManagementDao.getRoleAccountList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
+
+    @Override
+    public void removeRoleAccount(Map<String, Object> map){
+        roleManagementDao.removeRoleAccount(map);
+    }
 }
