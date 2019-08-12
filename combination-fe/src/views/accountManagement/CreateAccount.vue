@@ -2,22 +2,22 @@
   <home>
   <div>
     <div>
-      <div style="width: 50%; float:left">
+      <div style="width: 60%; float:left">
         <h2 style="color: #409EFF">|账户信息</h2>
       </div>
-      <div style="width: 50%; float: right; margin-top: 20px">
+      <div style="width: 40%; float: right; margin-top: 20px">
         <el-button type="primary" @click="save" style="width:70px">保存</el-button>
         <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
       </div>
     </div>
-    <hr style="width: 65%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
-    <div style="width:85%; margin-left: 70px; float: left">
-      <el-form  :model="newForm" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="100px"
+    <hr style="width: 70%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
+    <div style="width:85%; margin-left: 30px; float: left">
+      <el-form  :model="newForm" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="120px"
                  class="demo-ruleForm">
         <el-row>
-          <el-col :span="8">
-            <el-form-item label="登录账户">
-              <el-input  v-model="newForm.accountName" autocomplete="off" clearable></el-input>
+          <el-col :span="9">
+            <el-form-item label="登录账户" prop="accountName">
+              <el-input  style="width:300px "v-model="newForm.accountName" autocomplete="off" clearable></el-input>
             </el-form-item>
             <div style="position: absolute; width: 0px">
               <el-form-item label="">
@@ -25,39 +25,38 @@
               </el-form-item>
             </div>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="15">
             <div style="position: absolute; width: 0px">
             <el-form-item label="">
               <el-input  type="password"  autocomplete="off" ></el-input>
             </el-form-item>
             </div>
             <el-form-item label="密码" prop="password">
-              <el-input  type="password" v-model="newForm.password" autocomplete="off" clearable></el-input>
+              <el-input style="width:300px " type="password" v-model="newForm.password" autocomplete="off" clearable></el-input>
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row>
-          <el-col :span="8">
+          <el-col :span="7">
             <el-form-item label="关联员工编号">
               <el-input style="width: 180px" v-model="newForm.staffNum" disabled="true"></el-input>
-            <div style="float: right; width:100px"><el-button @click="changeDialogVisible">选择</el-button></div>
             </el-form-item>
           </el-col>
           <el-col :span="2">
             <el-button type="text" @click="changeDialogVisible">选择</el-button>
-            <el-button type="text" @click="">清空</el-button>
+            <el-button type="text" @click="clearStaffInf">清空</el-button>
           </el-col>
           <el-col :span="8">
             <el-form-item label="员工姓名">
-              <el-input v-model="newForm.staffName" disabled="true"></el-input>
+              <el-input style="width: 300px" v-model="newForm.staffName" disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="6">
-            <el-form-item label="数据权限类型">
-              <el-select style="width:180px;" v-model="newForm.permissions" clearable placeholder="请选择" @change="pressionChange">
+          <el-col :span="9">
+            <el-form-item label="数据权限类型" prop="permissions">
+              <el-select style="width:300px;" v-model="newForm.permissions" clearable placeholder="请选择" @change="pressionChange">
                 <el-option
                   v-for="item in permissionsList"
                   :key="item.value"
@@ -68,15 +67,15 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="密保邮箱">
-              <el-input style="width:200px;" v-model="newForm.secretEmail" clearable :disabled="emailDisabled"></el-input>
+            <el-form-item label="密保邮箱" prop="secretEmail">
+              <el-input style="width:300px;" v-model="newForm.secretEmail" clearable :disabled="emailDisabled"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row v-if="departmentVisible">
           <el-row v-if="departmentVisible">
             <el-col :span="6">
-              <el-form-item label="手动选择部门">
+              <el-form-item label="手动选择部门" prop="permissions">
                 <el-tree
                   ref="tree"
                   :props="defaultProps"
@@ -99,44 +98,44 @@
         <h2 style="color: #409EFF">|其他信息</h2>
       </div>
     </div>
-    <hr style="width: 65%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
-    <div style="width:85%; margin-left: 70px; float: left">
-      <el-form :model="newForm" label-width="80px">
+    <hr style="width: 70%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
+    <div style="width:85%; margin-left: 30px; float: left">
+      <el-form :model="newForm" label-width="120px">
         <el-row>
-          <el-col :span="6">
+          <el-col :span="9">
             <el-form-item label="新建人">
-              <el-input style="width:200px;" :disabled="true"></el-input>
+              <el-input style="width:300px;" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="新建时间">
-              <el-input style="width:200px;" :disabled="true"></el-input>
+              <el-input style="width:300px;" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="6">
+          <el-col :span="9">
             <el-form-item label="修改人">
-              <el-input style="width:200px;" :disabled="true"></el-input>
+              <el-input style="width:300px;" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="8">
             <el-form-item label="修改时间">
-              <el-input style="width:200px;" :disabled="true"></el-input>
+              <el-input style="width:300px;" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="6">
             <el-form-item label="账号状态">
-              <el-select style="width:180px;" :disabled="true" clearable placeholder="正常" ></el-select>
+              <el-select style="width:700px;" :disabled="true" clearable placeholder="正常" ></el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="6">
             <el-form-item label="备注">
-              <el-input style="width: 600px" type="textarea" :rows="2" v-model="newForm.remark"></el-input>
+              <el-input style="width: 700px" type="textarea" :rows="2" v-model="newForm.remark"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -154,14 +153,6 @@
    import commonUtils from '../../common/commonUtils'
   export default {
     data() {
-      var validatePass = (rule, value, callback) => {
-
-         if (!(/((^(?=.*[a-z])(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]$)|(^(?=.*\d)(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]$)|(^(?=.*\d)(?=.*[a-z])(?=.*\W)[\da-zA-Z\W]$)|(^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[\da-zA-Z\W]$))/.test(value))) {
-           callback(new Error('至少包含数字、大写字母、小写字母、特殊字符中的三种类型'));
-         } else {
-           callback();
-         }
-      };
       return {
         defaultProps: {
           label: 'departmentName',
@@ -190,9 +181,20 @@
           password: [
             { required: true, message: '请输入密码', trigger: 'blur' },
             { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' },
-            {pattern:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]+$/,message:'只能输入大小写字母和数组'},
-            // {validator: validatePass, trigger: 'blur'}
-          ]
+            {pattern:/((^(?=.*[a-z])(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]+$)|(^(?=.*\d)(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]+$)|(^(?=.*\d)(?=.*[a-z])(?=.*\W)[\da-zA-Z\W]+$)|(^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[\da-zA-Z\W]+$))/,
+              message:'密码不合法，密码必须包含大小写字母，数字和特殊字符如(@#$%),且至少包含其中三种', trigger: 'blur'}
+          ],
+          accountName: [
+            { required: true, message: '请输入登入账号', trigger: 'blur' },
+            { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' },
+            { pattern:/^(.*[\da-zA-Z@._]+$)/,message: '支持\'@._\字母和数字，请勿输入其他字符', trigger: 'blur' }
+          ],
+          permissions:[
+            { required: true, message: '请选择数据类型'}
+          ],
+          secretEmail:[
+            { required: true, message: '请输入密保邮箱' }
+          ],
         },
       }
     },
@@ -248,22 +250,29 @@
       },
       save() {//保存新建账户信息
         const self = this;
-        if(self.newForm.permissions == 5 && this.$refs.tree.getCheckedNodes().length == 0){
-          self.$message.info("请选择部门");
-        }else {
-          if(self.newForm.permissions == 5){
-            for(var i = 0; i < this.$refs.tree.getCheckedNodes().length; i++){
-              self.newForm.tree += this.$refs.tree.getCheckedNodes()[i].id+' ';
+        self.$refs["ruleForm"].validate(function(valid) {
+          if (valid) {
+            if (self.newForm.permissions == 5 && self.$refs.tree.getCheckedNodes().length == 0) {
+              self.$message.info("请选择部门");
+            } else {
+              if (self.newForm.permissions == 5) {
+                for (var i = 0; i < self.$refs.tree.getCheckedNodes().length; i++) {
+                  self.newForm.tree += self.$refs.tree.getCheckedNodes()[i].id + ' ';
+                }
+              }
+              self.$http.post('account/createAccount.do_', self.newForm).then((result) => {
+                self.$message.info("新建成功");
+                self.$router.replace("/accountManagement");
+              }).catch(function (error) {
+                commonUtils.Log("account/createAccount.do_:" + error);
+                self.$message.error("插入数据错误")
+              });
             }
+          }else{
+            console.log('error submit!!');
+            return false;
           }
-          self.$http.post('account/createAccount.do_',self.newForm).then((result) => {
-            self.$message.info("新建成功");
-            self.$router.replace("/accountManagement");
-          }).catch(function (error) {
-            commonUtils.Log("account/createAccount.do_:" + error);
-            self.$message.error("插入数据错误")
-          });
-        }
+        })
       },
       cancel(){//关闭新建账户页面，返回账户管理列表页面
         const self = this;
@@ -271,7 +280,14 @@
       },
       changeDialogVisible() {//选择员工界面的开关
         const self = this;
-        self.dialogEmployee = !this.dialogEmployee;
+        self.dialogEmployee = !self.dialogEmployee;
+      },
+      clearStaffInf(){//清除选择关联的员工
+        const self = this;
+        self.newForm.staffName = '';
+        self.newForm.staffNum = '';
+        self.newForm.secretEmail = '';
+        self.emailDisabled = false;
       },
       chooseStaff(staffData){//关联员工
         const self = this;

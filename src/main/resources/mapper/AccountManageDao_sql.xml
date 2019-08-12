@@ -66,7 +66,8 @@
             create_time,
             create_emp,
             modify_time,
-            modify_emp
+            modify_emp,
+            account_remark
         )VALUES(
                 #{accountName},
                 #{password},
@@ -76,7 +77,8 @@
                 NOW(),
                 #{createEmp},
                 NOW(),
-                #{modifyEmp}
+                #{modifyEmp},
+                #{remark}
         )
     </insert>
     <select id="queryList" resultMap="account">
