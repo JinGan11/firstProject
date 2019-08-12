@@ -90,7 +90,7 @@ router.beforeEach((to, from, next) => {
       // let routesObj = makeRoute(store.getters.allRoutes);
       // router.addRoutes(routesObj);
       next();
-    }else {
+    } else {
       utils.$emit("loginSuccess",false);
       alert("登录信息不存在，请重新登录！");
       next({

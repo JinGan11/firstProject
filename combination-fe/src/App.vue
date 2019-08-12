@@ -363,6 +363,7 @@
                     type: 'warning'
                   }).then(() => {
                     utils.$emit("clearLoginSession");
+                    self.resetPasswordFlag = false;
                     self.$router.replace("/")
                   })
                 } else if (result.code === 300) {
