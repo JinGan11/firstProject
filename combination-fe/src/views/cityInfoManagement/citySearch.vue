@@ -2,25 +2,47 @@
   <home>
     <div style="width:85%; margin-left: 70px">
       <el-form ref="form" :model="form" label-width="70px">
-        <el-row>
+        <el-row class="demo-autocomplete">
           <el-col :span="6">
-            <el-form-item label="国际代码：" label-width="130">
-              <el-input style="width: 200px;" v-model="form.regionCode"></el-input>
-            </el-form-item>
+            <div class="sub-title">国际代码：</div>
+            <el-autocomplete
+              class="inline-input"
+              v-model="form.regionCode"
+              valueKey="regionCode"
+              value="regionCode"
+              :fetch-suggestions="querySearchRegionCode"
+              placeholder="请输入国际代码"
+              @select="handleSelect"
+            ></el-autocomplete>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="城市名称：" label-width="130">
-              <el-input style="width: 200px;" v-model="form.regionName"></el-input>
-            </el-form-item>
+            <div class="sub-title">城市名字</div>
+            <el-autocomplete
+              class="inline-input"
+              v-model="form.regionName"
+              valueKey="regionName"
+              value="regionName"
+              :fetch-suggestions="querySearchRegionName"
+              placeholder="请输入城市"
+              @select="handleSelect"
+            ></el-autocomplete>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="省/直辖市名称：" label-width="130">
-              <el-input style="width: 200px;" v-model="form.upperRegion"></el-input>
-            </el-form-item>
+            <div class="sub-title">所属省市</div>
+            <el-autocomplete
+              class="inline-input"
+              v-model="form.upperRegion"
+              valueKey="upperRegion"
+              value="upperRegion"
+              :fetch-suggestions="querySearchUpperRegion"
+              placeholder="请输入省市"
+              @select="handleSelect"
+            ></el-autocomplete>
           </el-col>
+
           <el-col :span="6">
             <el-form-item label="状态：">
-              <el-select v-model="form.regionStatus" clearable style="width:200px;" placeholder="请选择">
+              <el-select v-model="form.regionStatus" clearable style="width:100px;" placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -30,6 +52,7 @@
               </el-select>
             </el-form-item>
           </el-col>
+
         </el-row>
         <el-row>
           <el-col :span="6" :offset="6">
@@ -51,7 +74,11 @@
       <el-table-column prop="regionName" label="城市名称"  width="200px"></el-table-column>
       <el-table-column prop="regionPinyin" label="名字拼音"  width="200px"></el-table-column>
       <el-table-column prop="upperRegion" label="所属省份"  width="200px"></el-table-column>
-      <el-table-column prop="regionStatus" label="状态"  width="200px"></el-table-column>
+      <el-table-column prop="regionStatus" label="状态"  width="200px">
+        <template slot-scope="scope">
+          {{RegionStatus[scope.row.regionStatus]}}
+        </template>
+      </el-table-column>
       <el-table-column prop="mEmp" label="修改人"  width="200px"></el-table-column>
       <el-table-column prop="mTime" label="修改时间"  width="200px"></el-table-column>
     </el-table>
@@ -101,6 +128,7 @@
 
         tableData:[],
         citySearchList:[],
+          citySuggest:[],
 
         regionCode:'' ,
         regionName:'',
@@ -134,15 +162,20 @@
         cityBtnPermission: {
           exportPermission: true,
         },
+
+          flags:'1',
       }
     },
     activated() {
       commonUtils.Log("页面激活");
     },
     mounted() {
+
       this.judgmentAuthority();
       commonUtils.Log("页面进来");
-        this.fetchData();
+      this.fetchData();
+
+
     },
     methods: {
       judgmentAuthority() {
@@ -167,7 +200,7 @@
         this.selection = val;
       },
       //根据查询条件获取数据
-      fetchData() {
+      async fetchData() {
         var self=this;
         var param={
           page:self.currentPage,
@@ -185,13 +218,16 @@
           self.total = result.page.totalCount;
             self.citySearchList=result.citySearchList;
             self.RegionStatus=result.RegionStatus;
-          //
+            //
+            if(self.flags=='1'){
+                self.citySuggest=self.citySearchList;
+                self.flags='0';
+            }
 
         }).catch(function (error) {
           commonUtils.Log("/regionManage/citySearch:" + error);
           self.$message.error("获取数据错误");
         });
-
       },
         cancel() {
             this.exportVisible = false;
@@ -263,6 +299,71 @@
                 }
             }
             return this.filterVal;
+        },
+
+        //带建议的输入：省份名字、国际代码、城市名字
+        querySearchRegionName(queryString, cb) {
+            var citySuggests = this.citySuggest;
+            // console.log(this.citySuggest);
+            var results = queryString ? citySuggests.filter(this.createFilterRegionName(queryString)) : citySuggests;
+
+            // 调用 callback 返回建议列表的数据
+            cb(results);
+        },
+        createFilterRegionName(queryString) {
+            return (city) => {
+                return (city.regionName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+                );
+            };
+        },
+        querySearchRegionCode(queryString, cb) {
+            var citySuggests = this.citySuggest;
+            // console.log(this.citySuggest);
+            var results = queryString ? citySuggests.filter(this.createFilterRegionCode(queryString)) : citySuggests;
+
+            // 调用 callback 返回建议列表的数据
+            cb(results);
+        },
+        createFilterRegionCode(queryString) {
+            return (city) => {
+                return (
+                    city.regionCode.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+                );
+            };
+        },
+
+
+
+        querySearchUpperRegion(queryString, cb) {
+            var citySuggests = this.citySuggest;
+            //以为取回来的数据中，省份的会出现重复，所以在这里去重复
+            var obj = {};//用于标记字符串
+            var upperRegions = [];//去掉重复后的数组
+            for (let i = 0, len = citySuggests.length; i < len; i++) {
+                var s = citySuggests[i].upperRegion;
+                if (obj[s]) continue;//如果字符串已经存在就跳过
+                else {
+                    obj[s] = s;//加入标记对象中
+                    var upperRegion={upperRegion:s};
+                    upperRegions.push(upperRegion);//结果放入新数组中
+                }
+            }
+            var results = queryString ? upperRegions.filter(this.createFilterUpperRegion(queryString)) : upperRegions;
+
+            // 调用 callback 返回建议列表的数据
+            cb(results);
+        },
+        createFilterUpperRegion(queryString) {
+            return (city) => {
+                return (
+                    city.upperRegion.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+                );
+            };
+        },
+
+
+        handleSelect(item) {
+            console.log(item);
         },
 
     }

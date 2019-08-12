@@ -6,40 +6,29 @@
 
 
         <el-row class="demo-autocomplete">
+          <el-col :span="8">
+            <div class="sub-title">国际代码：</div>
+            <el-autocomplete
+              class="inline-input"
+              v-model="form.regionCode"
+              valueKey="regionCode"
+              value="regionCode"
+              :fetch-suggestions="querySearchRegionCode"
+              placeholder="请输入国际代码"
+              @select="handleSelectRegionCode"
+            ></el-autocomplete>
+          </el-col>
           <el-col :span="12">
             <div class="sub-title">省/直辖市</div>
             <el-autocomplete
               class="inline-input"
-              v-model="state1"
+              v-model="form.regionName"
               valueKey="regionName"
               value="regionName"
               :fetch-suggestions="querySearch"
-              placeholder="请输入内容"
+              placeholder="请输入省市"
               @select="handleSelect"
             ></el-autocomplete>
-          </el-col>
-        </el-row>
-
-
-
-        <!--搜索输入栏-->
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="国际代码：" label-width="100">
-              <el-input style="width: 200px;" v-model="form.regionCode"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="省/直辖市名称：" label-width="130">
-              <el-input
-                style="width: 200px;"
-                v-model="form.regionName"
-                placeholder="请输入城市名称">
-<!--                @keyup.native="btKeyUp"-->
-<!--                @keydown.native="btKeyDown"-->
-
-              </el-input>
-            </el-form-item>
           </el-col>
           <el-col :span="4">
             <el-form-item label="状态：">
@@ -53,8 +42,8 @@
               </el-select>
             </el-form-item>
           </el-col>
+
         </el-row>
-        <!--按钮-->
         <el-row>
           <el-col :span="3" :offset="3">
             <el-form-item>
@@ -82,6 +71,8 @@
             </el-form-item>
           </el-col>
         </el-row>
+
+
       </el-form>
     </div>
     <!--查询结果表格-->
@@ -240,7 +231,7 @@
       this.judgmentAuthority();
       commonUtils.Log("页面进来");
       this.fetchData();
-        this.provinceSuggest=this.provinceSearchList;
+        // this.provinceSuggest=this.provinceSearchList;
     },
     methods: {
       judgmentAuthority() {
@@ -289,6 +280,10 @@
           self.provinceSearchList=result.provinceSearchList;
           self.RegionStatus=result.RegionStatus;
           //
+            if(self.flags=='1'){
+                self.provinceSuggest=self.provinceSearchList;
+                self.flags='0';
+            }
 
         }).catch(function (error) {
           commonUtils.Log("/regionManage/provinceSearch:" + error);
@@ -404,7 +399,7 @@
           });
       },
 
-      //带建议的输入
+      //带建议的输入：省份名字
         querySearch(queryString, cb) {
             var provinceSuggests = this.provinceSearchList;
             var results = queryString ? provinceSuggests.filter(this.createFilter(queryString)) : provinceSuggests;
@@ -420,7 +415,27 @@
 
         handleSelect(item) {
             console.log(item);
+        },
+
+
+        //带建议的输入：国际代码
+        querySearchRegionCode(queryString, cb) {
+            var provinceSuggests = this.provinceSearchList;
+            var results = queryString ? provinceSuggests.filter(this.createFilterRegionCode(queryString)) : provinceSuggests;
+            // 调用 callback 返回建议列表的数据
+            cb(results);
+        },
+        createFilterRegionCode(queryString) {
+            return (province) => {
+                return (province.regionCode.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+            };
+        },
+
+        handleSelectRegionCode(item) {
+            console.log(item);
         }
+
+
 
     }
   }

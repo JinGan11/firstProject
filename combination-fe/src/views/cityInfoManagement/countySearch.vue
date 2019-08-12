@@ -2,27 +2,58 @@
   <home>
     <div style="width:85%; margin-left: 70px">
       <el-form ref="form" :model="form" label-width="70px">
-        <el-row>
-          <el-col :span="5">
-            <el-form-item label="国际代码：" label-width="100">
-              <el-input style="width: 130px;" v-model="form.regionCode"></el-input>
-            </el-form-item>
+        <el-row class="demo-autocomplete">
+          <el-col :span="4">
+            <div class="sub-title">国际代码：</div>
+            <el-autocomplete
+              class="inline-input"
+              v-model="form.regionCode"
+              valueKey="regionCode"
+              value="regionCode"
+              :fetch-suggestions="querySearchRegionCode"
+              placeholder="请输入国际代码"
+              @select="handleSelect"
+            ></el-autocomplete>
           </el-col>
-          <el-col :span="5">
-            <el-form-item label="区/县名称：" label-width="100">
-              <el-input style="width: 130px;" v-model="form.regionName"></el-input>
-            </el-form-item>
+          <el-col :span="4">
+            <div class="sub-title">区县名字</div>
+            <el-autocomplete
+              class="inline-input"
+              v-model="form.regionName"
+              valueKey="regionName"
+              value="regionName"
+              :fetch-suggestions="querySearchRegionName"
+              placeholder="请输入区县"
+              @select="handleSelect"
+            ></el-autocomplete>
           </el-col>
-          <el-col :span="5">
-            <el-form-item label="城市名称：" label-width="100">
-              <el-input style="width: 130px;" v-model="form.upperRegion"></el-input>
-            </el-form-item>
+          <el-col :span="4">
+            <div class="sub-title">所属城市</div>
+            <el-autocomplete
+              class="inline-input"
+              v-model="form.upperRegion"
+              valueKey="upperRegion"
+              value="upperRegion"
+              :fetch-suggestions="querySearchUpperRegion"
+              placeholder="请输入城市"
+              @select="handleSelect"
+            ></el-autocomplete>
           </el-col>
-          <el-col :span="5">
-            <el-form-item label="省/直辖市名称：" label-width="100">
-              <el-input style="width: 130px;" v-model="form.upperRegionTwice"></el-input>
-            </el-form-item>
+          <el-col :span="4">
+            <div class="sub-title">所属省市</div>
+            <el-autocomplete
+              class="inline-input"
+              v-model="form.upperRegionTwice"
+              valueKey="upperRegionTwice"
+              value="upperRegionTwice"
+              :fetch-suggestions="querySearchUpperRegionTwice"
+              placeholder="请输入省市"
+              @select="handleSelect"
+            ></el-autocomplete>
           </el-col>
+
+
+
           <el-col :span="4">
             <el-form-item label="状态：">
               <el-select v-model="form.regionStatus" clearable style="width:100px;" placeholder="请选择">
@@ -35,6 +66,7 @@
               </el-select>
             </el-form-item>
           </el-col>
+
         </el-row>
         <el-row>
           <el-col :span="6" :offset="6">
@@ -60,7 +92,11 @@
 
       <el-table-column prop="upperRegionTwice" label="所属省/直辖市"  width="200px"></el-table-column>
 
-      <el-table-column prop="regionStatus" label="状态"  width="100px"></el-table-column>
+      <el-table-column prop="regionStatus" label="状态"  width="100px">
+        <template slot-scope="scope">
+          {{RegionStatus[scope.row.regionStatus]}}
+        </template>
+      </el-table-column>
       <el-table-column prop="mEmp" label="修改人"  width="150px"></el-table-column>
       <el-table-column prop="mTime" label="修改时间"  width="150px"></el-table-column>
     </el-table>
@@ -111,6 +147,7 @@
 
         tableData:[],
         countySearchList:[],
+          countySuggest:[],
 
         regionCode:'' ,
         regionName:'',
@@ -142,7 +179,9 @@
 
         countyBtnPermission: {
           exportPermission: true
-        }
+        },
+
+        flags:'1'
       }
     },
       activated() {
@@ -152,6 +191,7 @@
         this.judgmentAuthority();
           commonUtils.Log("页面进来");
           this.fetchData();
+
       },
       methods: {
         judgmentAuthority() {
@@ -195,7 +235,10 @@
                   self.total = result.page.totalCount;
                   self.countySearchList = result.countySearchList;
                   self.RegionStatus=result.RegionStatus;
-                  //
+                  if(self.flags=='1'){
+                      self.countySuggest=self.countySearchList;
+                      self.flags='0';
+                  }
 
               }).catch(function (error) {
                   commonUtils.Log("/regionManage/countySearch:" + error);
@@ -279,6 +322,101 @@
               }
               return this.filterVal;
           },
+
+          //带建议的输入：国际代码
+          querySearchRegionCode(queryString, cb) {
+              var countySuggests = this.countySuggest;
+              var results = queryString ? countySuggests.filter(this.createFilterRegionCode(queryString)) : countySuggests;
+
+              // 调用 callback 返回建议列表的数据
+              cb(results);
+          },
+          createFilterRegionCode(queryString) {
+              return (county) => {
+                  return (county.regionCode.toLowerCase().indexOf(queryString.toLowerCase()) === 0,
+                      county.regionName.toLowerCase().indexOf(queryString.toLowerCase()) === 0,
+                      county.upperRegion.toLowerCase().indexOf(queryString.toLowerCase()) === 0,
+                      county.upperRegionTwice.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+                  );
+              };
+          },
+
+          handleSelect(item) {
+              console.log(item);
+          },
+
+          //带建议的输入：区县
+          querySearchRegionName(queryString, cb) {
+              var countySuggests = this.countySuggest;
+              var results = queryString ? countySuggests.filter(this.createFilterRegionName(queryString)) : countySuggests;
+
+              // 调用 callback 返回建议列表的数据
+              cb(results);
+          },
+          createFilterRegionName(queryString) {
+              return (county) => {
+                  return (
+                      county.regionName.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+                  );
+              };
+          },
+
+          //带建议的输入：城市
+          querySearchUpperRegion(queryString, cb) {
+              var countySuggests = this.countySuggest;
+
+
+              var obj = {};//用于标记字符串
+              var upperRegions = [];//去掉重复后的数组
+              for (let i = 0, len = countySuggests.length; i < len; i++) {
+                  var s = countySuggests[i].upperRegion;
+                  if (obj[s]) continue;//如果字符串已经存在就跳过
+                  else {
+                      obj[s] = s;//加入标记对象中
+                      var upperRegion={upperRegion:s};
+                      upperRegions.push(upperRegion);//结果放入新数组中
+                  }
+              }
+
+              var results = queryString ? upperRegions.filter(this.createFilterUpperRegion(queryString)) : upperRegions;
+
+              // 调用 callback 返回建议列表的数据
+              cb(results);
+          },
+          createFilterUpperRegion(queryString) {
+              return (county) => {
+                  return (
+                      county.upperRegion.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+                  );
+              };
+          },
+
+          //带建议的输入：省市
+          querySearchUpperRegionTwice(queryString, cb) {
+              var countySuggests = this.countySuggest;
+              var obj = {};//用于标记字符串
+              var upperRegionTwices = [];//去掉重复后的数组
+              for (let i = 0, len = countySuggests.length; i < len; i++) {
+                  var s = countySuggests[i].upperRegionTwice;
+                  if (obj[s]) continue;//如果字符串已经存在就跳过
+                  else {
+                      obj[s] = s;//加入标记对象中
+                      var upperRegionTwice={upperRegionTwice:s};
+                      upperRegionTwices.push(upperRegionTwice);//结果放入新数组中
+                  }
+              }
+              var results = queryString ? upperRegionTwices.filter(this.createFilterUpperRegionTwice(queryString)) : upperRegionTwices;
+              // 调用 callback 返回建议列表的数据
+              cb(results);
+          },
+          createFilterUpperRegionTwice(queryString) {
+              return (county) => {
+                  return (
+                      county.upperRegionTwice.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+                  );
+              };
+          },
+
       }
 
   }
