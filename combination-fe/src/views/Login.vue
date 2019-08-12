@@ -56,6 +56,40 @@
                   utils.$emit("loginSuccess",true,self.loginForm.username, result.powerList);
                   self.$router.replace("/index");
                   // self.visible = true
+                } else if (result.code === 506){
+                  self.$confirm('首次登陆系统，请先修改密码', '提示', {
+                    showCancelButton:false,
+                    showClose:false,
+                    confirmButtonText: '确定',
+                    cancelButtonText: '',
+                    type: 'warning'
+                  }).then(() => {
+                    utils.$emit("loginSuccess",true,self.loginForm.username, result.powerList);
+                    utils.$emit("isFirstLogin");
+                    self.$router.replace("/index");
+                  }).catch(() => {
+                    self.$message({
+                      type: 'info',
+                      message: '取消'
+                    });
+                  });
+                } else if (result.code === 507){
+                  self.$confirm('已超过60天，请重置密码', '提示', {
+                    showCancelButton:false,
+                    showClose:false,
+                    confirmButtonText: '确定',
+                    cancelButtonText: '',
+                    type: 'warning'
+                  }).then(() => {
+                    utils.$emit("loginSuccess",true,self.loginForm.username, result.powerList);
+                    utils.$emit("isFirstLogin");
+                    self.$router.replace("/index");
+                  }).catch(() => {
+                    self.$message({
+                      type: 'info',
+                      message: '取消'
+                    });
+                  });
                 } else {
                   self.$alert("账号或者密码错误", '消息提醒', {
                     confirmButtonText: '确定',

@@ -1,5 +1,6 @@
 package com.ucar.combination.dao;
 
+import com.ucar.combination.model.Account;
 import com.ucar.combination.model.HisPassword;
 import com.ucar.combination.model.UpdateUserPwd;
 import com.ucar.combination.model.User;
@@ -52,5 +53,14 @@ public interface UserDao {
      * @return 无
      */
     void insertHisPwd(User user);
+
+    /**
+     * description: 获取所有账号密码快到期（7天）信息
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/12 11:21
+     * @params
+     * @return
+     */
+    List<Account> getAllAccountListByModifyTime();
 
 }

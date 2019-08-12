@@ -3,21 +3,6 @@
 
 <mapper namespace="com.ucar.combination.dao.UserDao">
 
-    <!--<resultMap id="baseUserResultMap" type="com.ucar.combination.model.User">
-        <id column="ID" property="" jdbcType="BIGINT" />
-        <result column="ACCOUNT_NAME" property="accountName" jdbcType="VARCHAR" />
-        <result column="ACCOUNT_PASSWORD" property="accountPassword" jdbcType="VARCHAR" />
-        <result column="STAFF_ID" property="staffId" jdbcType="BIGINT" />
-        <result column="PERMISSIONS" property="permissions" jdbcType="TINYINT" />
-        <result column="ACCOUNT_SECRET_EMAIL" property="accountSecretEmail" jdbcType="TINYINT" />
-        <result column="CREATE_TIME" property="createTime" jdbcType="DATETIME" />
-        <result column="CREATE_EMP" property="createEmp" jdbcType="BIGINT" />
-        <result column="MODIFY_TIME" property="modifyTime" jdbcType="DATETIME" />
-        <result column="MODIFY_EMP" property="modifyEmp" jdbcType="BIGINT" />
-        <result column="ACCOUNT_STATE" property="accountState" jdbcType="TINYINT" />
-        <result column="ACCOUNT_REMARK" property="accountRemark" jdbcType="VARCHAR" />
-    </resultMap>-->
-
     <select id="qryAccountByAccountName" parameterType="String" resultType="com.ucar.combination.model.User">
         SELECT
         id, account_name, account_password, staff_id, permissions, account_secret_email, create_time, create_emp,
@@ -51,5 +36,14 @@
         insert into t_history_password(account_id,history_password, create_time, create_emp, modify_time, modify_emp)
         value(#{id}, #{accountPassword}, NOW(), #{staffId}, NOW(), #{staffId})
     </insert>
+
+    <select id="getAllAccountListByModifyTime" resultType="com.ucar.combination.model.Account">
+        select
+        account_name,
+        account_secret_email
+        from t_account
+        where 53 = DATEDIFF(NOW(),modify_time)
+        and account_state != 3
+    </select>
 
 </mapper>

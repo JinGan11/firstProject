@@ -4,10 +4,7 @@ import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ReturnResult;
 import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.dao.UserDao;
-import com.ucar.combination.model.HisPassword;
-import com.ucar.combination.model.Staff;
-import com.ucar.combination.model.User;
-import com.ucar.combination.model.UpdateUserPwd;
+import com.ucar.combination.model.*;
 import com.ucar.combination.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -161,5 +158,28 @@ public class UserServiceImpl implements UserService {
                     .put("isDimission", isDimission);
         }
         return result;
+    }
+
+    @Override
+    public Result isFirstLogin(User user) {
+        List<HisPassword> list = userDao.qryHistoryPwdById(user);
+        if (list.size() == 0 || list == null) {
+            return Result.ok().put("msg", "首次登陆系统，请先修改密码")
+                    .put("code", 506);
+        }
+        return Result.ok();
+    }
+
+    /**
+     * description: 获取所有账号密码快到期（提前7天）信息
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/12 11:22
+     * @params
+     * @return
+     */
+    @Override
+    public Result getAllAccountListByModifyTime() {
+        List<Account> accountList = userDao.getAllAccountListByModifyTime();
+        return Result.ok().put("accountList", accountList);
     }
 }

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,11 +36,12 @@ public class LoginController {
 
     /**
      * description: 用户登陆方法
+     *
+     * @return Result结果集
      * @author peng.zhang11@ucarinc.com
-     * @date   2019/7/30 16:10
+     * @date 2019/7/30 16:10
      * @params loginUser 用户登陆信息
      * @param: session session信息
-     * @return Result结果集
      */
     @RequestMapping("/login.do_")
     public Result login(@RequestBody(required = false) User loginUser, HttpServletRequest request) {
@@ -46,8 +49,29 @@ public class LoginController {
         Result result = userService.login(loginUser);
         List<User> list = (List<User>) result.get("list");
         if (result.get("code").equals(200)) {
+            loginUser.setId(list.get(0).getId());
+            Result resultFirst = userService.isFirstLogin(loginUser);
+            //判断时间是否到60天
+            Calendar dateOne = Calendar.getInstance();
+            Calendar dateTwo = Calendar.getInstance();
+            //设置为当前系统时间
+            dateOne.setTime(new Date());
+            // 获取数据库中的时间
+            dateTwo.setTime(list.get(0).getModifyTime());
+            long timeOne = dateOne.getTimeInMillis();
+            long timeTwo = dateTwo.getTimeInMillis();
+            //转化day
+            long day = (timeOne - timeTwo) / (1000 * 60 * 60 * 24);
+            //判断账户锁定时间是否大于30分钟
             result = powerService.getAccountAllPermission(list.get(0).getId());
-            result.put("code", 200);
+            if (resultFirst.get("code").equals(506)) {
+                result.put("code", 506);
+            } else {
+                result.put("code", 200);
+            }
+            if (day >= 60) {
+                result.put("code", 507);
+            }
             session.setAttribute("powerList", result.get("powerList"));
             session.setAttribute("accountName", loginUser.getAccountName());
             session.setAttribute("accountId", list.get(0).getId());
@@ -57,11 +81,12 @@ public class LoginController {
 
     /**
      * description: 退出登陆
+     *
+     * @return
      * @author peng.zhang11@ucarinc.com
-     * @date   2019/8/8 11:34
+     * @date 2019/8/8 11:34
      * @params loginUser 描述
      * @param: request 描述
-     * @return
      */
     @RequestMapping("/logout.do_")
     public Result logout(HttpServletRequest request) {

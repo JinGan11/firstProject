@@ -10,6 +10,7 @@ var store = new Vuex.Store({
     menuList:[],
     loginUsername: null,
     powerList:[],
+    isFirstLogin: false,
   },
   mutations: {
     menuListStateAdd(state,obj){

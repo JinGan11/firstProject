@@ -31,14 +31,14 @@
                   </el-dropdown-menu>
                 </el-dropdown>
                 <!--<el-dropdown @command="handleCommand">-->
-                  <!--<span class="el-dropdown-link" style="font-size: 22px">-->
-                    <!--{{loginUserName}}<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-                  <!--</span>-->
-                  <!--<el-dropdown-menu slot="dropdown">-->
-                    <!--<el-dropdown-item style="font-size: 18px" command="getUserInfo">个人信息</el-dropdown-item>-->
-                    <!--<el-dropdown-item style="font-size: 18px" command="resetPassword">修改密码</el-dropdown-item>-->
-                    <!--<el-dropdown-item style="font-size: 18px" command="logout">注销登陆</el-dropdown-item>-->
-                  <!--</el-dropdown-menu>-->
+                <!--<span class="el-dropdown-link" style="font-size: 22px">-->
+                <!--{{loginUserName}}<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+                <!--</span>-->
+                <!--<el-dropdown-menu slot="dropdown">-->
+                <!--<el-dropdown-item style="font-size: 18px" command="getUserInfo">个人信息</el-dropdown-item>-->
+                <!--<el-dropdown-item style="font-size: 18px" command="resetPassword">修改密码</el-dropdown-item>-->
+                <!--<el-dropdown-item style="font-size: 18px" command="logout">注销登陆</el-dropdown-item>-->
+                <!--</el-dropdown-menu>-->
                 <!--</el-dropdown>-->
               </el-col>
             </el-row>
@@ -72,7 +72,7 @@
               <el-input v-model="StaffInfo.staffName" readonly="true" placeholder="无"></el-input>
             </el-form-item>
             <el-form-item label="性别">
-              <el-input v-model="sex" readonly="true" placeholder="无" ></el-input>
+              <el-input v-model="sex" readonly="true" placeholder="无"></el-input>
             </el-form-item>
             <el-form-item label="员工手机">
               <el-input v-model="StaffInfo.staffTelephone" readonly="true" placeholder="无"></el-input>
@@ -89,11 +89,11 @@
           </el-form>
         </div>
       </el-dialog>
-      <el-dialog title="基本信息查看" :visible.sync="resetPasswordFlag" :close-on-click-modal="false" width="700px">
+      <el-dialog title="密码重置" :visible.sync="resetPasswordFlag" :close-on-click-modal="false" width="700px">
         <div class="dialog-main">
           <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="100px"
-                   class="demo-ruleForm" >
-            <el-form-item label="旧密码">
+                   class="demo-ruleForm">
+            <el-form-item label="旧密码" prop="oldPass">
               <el-input type="password" v-model="ruleForm.oldPass" autocomplete="off" style="width: 70%"></el-input>
             </el-form-item>
             <el-form-item label="新密码" prop="newPass">
@@ -125,11 +125,23 @@
 
   export default {
     data() {
+      let validateOldPass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else if (!(/((^(?=.*[a-z])(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]{8,16}$)|(^(?=.*\d)(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]{8,16}$)|(^(?=.*\d)(?=.*[a-z])(?=.*\W)[\da-zA-Z\W]{8,16}$)|(^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[\da-zA-Z\W]{8,16}$))/.test(value))) {
+          callback(new Error('旧密码不符合密码命名规则'));
+        } else {
+          if (this.ruleForm.newPass !== '') {
+            this.$refs.ruleForm.validateField('checkPass');
+          }
+          callback();
+        }
+      };
       let validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
         } else if (!(/((^(?=.*[a-z])(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]{8,16}$)|(^(?=.*\d)(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]{8,16}$)|(^(?=.*\d)(?=.*[a-z])(?=.*\W)[\da-zA-Z\W]{8,16}$)|(^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[\da-zA-Z\W]{8,16}$))/.test(value))) {
-          callback(new Error('请输入8-16位字符，至少包含数字、大写字母、小写字母、特殊字符中的三种类型'));
+          callback(new Error('新密码不符合密码命名规则'));
         } else {
           if (this.ruleForm.newPass !== '') {
             this.$refs.ruleForm.validateField('checkPass');
@@ -141,7 +153,7 @@
         if (value === '') {
           callback(new Error('请再次输入密码'));
         } else if (value !== this.ruleForm.newPass) {
-          callback(new Error('两次输入密码不一致!'));
+          callback(new Error('确认密码与新密码不一致，请重新定义'));
         } else {
           callback();
         }
@@ -165,6 +177,9 @@
           checkPass: '',
         },
         rules: {
+          oldPass: [
+            {validator: validateOldPass, trigger: 'blur'}
+          ],
           newPass: [
             {validator: validatePass, trigger: 'blur'}
           ],
@@ -193,6 +208,9 @@
       })
     },
     mounted() {
+      utils.$on('isFirstLogin', () => {
+        this.resetPasswordFlag = true;
+      });
       utils.$on('loginSuccess', (loginFlag, username, powerList) => {
         this.loginSuccess(loginFlag, username, powerList);
       });
@@ -213,7 +231,7 @@
         self.$store.state.loginUserName = username;
         self.$store.state.powerList = powerList;
         self.loginUserName = username;
-        window.sessionStorage.setItem("loginUsername",username);
+        window.sessionStorage.setItem("loginUsername", username);
         self.$http.get('sys/menu/list.do_').then((result) => {
           self.data = result.menuList;
           self.$store.state.menuList = result.menuList;
@@ -293,7 +311,7 @@
               message: '取消'
             });
           });
-        } else if(cmd == "getUserInfo") {
+        } else if (cmd == "getUserInfo") {
           var param = {
             accountName: window.sessionStorage.getItem("loginUsername")
           }
@@ -323,11 +341,12 @@
         const self = this;
         self.loginIn = false;
         window.sessionStorage.removeItem("loginUsername");
+        self.$store.state.loginUserName = null;
         self.loginUserName = window.sessionStorage.getItem("loginUsername");
       },
       submitForm(formName) {
         const self = this;
-        self.$refs["ruleForm"].validate(function(valid) {
+        self.$refs["ruleForm"].validate(function (valid) {
           if (valid) {
             var param = {
               accountName: window.sessionStorage.getItem("loginUsername"),
@@ -338,11 +357,12 @@
               .then((result) => {
                 if (result.code === 200) {
                   self.$confirm('密码修改成功，请重新登录', '提示', {
+                    showCancelButton:false,
+                    showClose:false,
                     confirmButtonText: '确定',
                     type: 'warning'
                   }).then(() => {
                     utils.$emit("clearLoginSession");
-                    App.methods.clearLoginSession();
                     self.$router.replace("/")
                   })
                 } else if (result.code === 300) {
@@ -359,7 +379,7 @@
                 commonUtils.Log("user/updatePwd:" + error);
                 self.$message.error("修改密码错误");
               });
-          }else {
+          } else {
             console.log('error submit!!');
             return false;
           }

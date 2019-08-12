@@ -49,11 +49,30 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
   main:
     allow-bean-definition-overriding: true
+
+  application:
+    name: spirng-boot-mail
+# 配置邮件发送
+  mail:
+    host: smtp.qq.com
+    username: 2207843123@qq.com
+    password: ntnaonsghyuadieb
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 mybatis:
   typeAliasesPackage: com.ucar.combination.model
   mapperLocations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case=true:
+mail:
+  fromMail:
+    addr: 2207843123@qq.com
 jpa:
   data: MYSQL
   show-sql: true
