@@ -342,6 +342,7 @@
           self.form.accountStatusEnum = result.accountStatusEnum;
           self.form.accountStatusList = result.accountStatusList;
           self.total = result.page.totalCount;
+          self.selection = 0;
         }).catch(function (error) {
           commonUtils.Log("account/querylist.do_:"+error);
           self.$message.error("获取数据错误")
@@ -361,7 +362,7 @@
         self.$http.post('account/deleAccount.do_',param)
           .then((result)=>{
             self.$message.info("删除成功");
-            self.$router.go(0);
+            self.fetchData();
 
           }).catch(function (error) {
           commonUtils.Log("account/deleAccount.do_:"+error);

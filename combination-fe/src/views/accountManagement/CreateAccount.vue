@@ -40,11 +40,13 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="关联员工编号">
-              <div style="float: left; width:100px" >
-                <el-input style="width: 180px" v-model="newForm.staffNum" disabled="true"></el-input>
-              </div>
-              <div style="float: right; width:100px"><el-button @click="changeDialogVisible">选择</el-button></div>
+              <el-input style="width: 180px" v-model="newForm.staffNum" disabled="true"></el-input>
+            <div style="float: right; width:100px"><el-button @click="changeDialogVisible">选择</el-button></div>
             </el-form-item>
+          </el-col>
+          <el-col :span="2">
+            <el-button type="text" @click="changeDialogVisible">选择</el-button>
+            <el-button type="text" @click="">清空</el-button>
           </el-col>
           <el-col :span="8">
             <el-form-item label="员工姓名">
@@ -102,8 +104,39 @@
       <el-form :model="newForm" label-width="80px">
         <el-row>
           <el-col :span="6">
+            <el-form-item label="新建人">
+              <el-input style="width:200px;" :disabled="true"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="新建时间">
+              <el-input style="width:200px;" :disabled="true"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6">
+            <el-form-item label="修改人">
+              <el-input style="width:200px;" :disabled="true"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="修改时间">
+              <el-input style="width:200px;" :disabled="true"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6">
+            <el-form-item label="账号状态">
+              <el-select style="width:180px;" :disabled="true" clearable placeholder="正常" ></el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6">
             <el-form-item label="备注">
-              <el-input style="width:200px;" v-model="newForm.remark"></el-input>
+              <el-input style="width: 600px" type="textarea" :rows="2" v-model="newForm.remark"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -122,16 +155,12 @@
   export default {
     data() {
       var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else if (!(/((^(?=.*[a-z])(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]{8,16}$)|(^(?=.*\d)(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]{8,16}$)|(^(?=.*\d)(?=.*[a-z])(?=.*\W)[\da-zA-Z\W]{8,16}$)|(^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[\da-zA-Z\W]{8,16}$))/.test(value))) {
-          callback(new Error('请输入8-16位字符，至少包含数字、大写字母、小写字母、特殊字符中的三种类型'));
-        } else {
-          if (this.ruleForm.checkPass !== '') {
-            this.$refs.ruleForm.validateField('checkPass');
-          }
-          callback();
-        }
+
+         if (!(/((^(?=.*[a-z])(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]$)|(^(?=.*\d)(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]$)|(^(?=.*\d)(?=.*[a-z])(?=.*\W)[\da-zA-Z\W]$)|(^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[\da-zA-Z\W]$))/.test(value))) {
+           callback(new Error('至少包含数字、大写字母、小写字母、特殊字符中的三种类型'));
+         } else {
+           callback();
+         }
       };
       return {
         defaultProps: {
@@ -159,7 +188,10 @@
         emailDisabled: false,
         rules: {
           password: [
-            {validator: validatePass, trigger: 'blur'}
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' },
+            {pattern:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]+$/,message:'只能输入大小写字母和数组'},
+            // {validator: validatePass, trigger: 'blur'}
           ]
         },
       }
