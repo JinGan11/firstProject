@@ -42,31 +42,32 @@
         t1.company_mark,
         t1.status companyStatus,
         t2.account_name modifyName,
-        t1.modify_time
-        FROM t_company t1 ,t_account t2
+        t1.modify_time modifyTime
+        FROM t_company t1,t_account t2
         <where>
+            t1.modify_emp=t2.id
         <if test="companyName != null and companyName.trim() != ''">
-            AND company_name =#{companyName}
+            AND t1.company_name =#{companyName}
         </if>
         <if test="creditCode != null and creditCode.trim() != ''">
-            AND credit_code =#{creditCode}
+            AND t1.credit_code =#{creditCode}
         </if>
         <if test="companyType != null and companyType.trim() != ''">
-            AND company_type =#{companyType}
+            AND t1.company_type =#{companyType}
         </if>
         <if test="companyNature != null and companyNature.trim() != ''">
-            AND company_nature =#{companyNature}
+            AND t1.company_nature =#{companyNature}
         </if>
         <if test="companyStatus != null and companyStatus.trim() != ''">
-            AND status =#{companyStatus}
+            AND t1.status =#{companyStatus}
         </if>
         <if test="startTime != null and startTime.trim() != ''">
-            AND modify_time&gt;#{startTime}
+            AND t1.modify_time&gt;#{startTime}
         </if>
         <if test="endTime !=null and endTime.trim()!=''">
-            AND modify_time&lt;#{endTime}
+            AND t1.modify_time&lt;#{endTime}
         </if>
-            and t1.modify_emp=t2.id
+
         </where>
         ORDER BY id DESC
     </select>
@@ -292,20 +293,26 @@
             company_id,
             create_time,
             modify_time,
-            status
+            status,
+            create_emp,
+            modify_emp
         )
         values(
             #{departmentId},
             #{companyId},
             now(),
             now(),
-            1
+            1,
+            #{createEmp},
+            #{modifyEmp}
         )
     </insert>
     <update id="updateRelation" parameterType="java.util.Map">
         update t_r_department_company t1
         set
-        t1.status = #{status}
+        t1.status = #{status},
+        t1.modify_emp=#{modifyEmp},
+        t1.modify_time=now()
         <where>
         <if test="departmentId != null and departmentId.trim() != ''">
             AND t1.department_id =#{departmentId}
@@ -321,13 +328,14 @@
         count(*)
         from t_r_department_company t1
         <where>
+            t1.status=2
             <if test="departmentId != null and departmentId.trim() != ''">
                 AND t1.department_id =#{departmentId}
             </if>
             <if test="companyId != null and companyId.trim() != ''">
                 AND t1.company_id =#{companyId}
             </if>
-            and t1.status=2
+
         </where>
     </select>
 </mapper>

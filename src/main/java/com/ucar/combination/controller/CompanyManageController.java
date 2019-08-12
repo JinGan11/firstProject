@@ -185,6 +185,7 @@ public class CompanyManageController {
         params.put("departmentId", departmentId);
         params.put("newRelationList", newRelationList);
         params.put("oldRelationList", oldRelationList);
+        params.put("accountId", accountId);
 
         companyManageService.saveRelations(params);
         return "success";

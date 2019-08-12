@@ -544,7 +544,7 @@
           for(let i=0;i<self.tableRelationData.length;i++){
             self.relationCompany.push(self.tableRelationData[i].id);
           }
-          alert(self.relationCompany[0]);
+          //alert(self.relationCompany[0]);
           //self.relationCompany.push(result.page.list);//数据库中数据
           self.companyChangesList=result.page.list;
           // for(let i=0;i<self.relationCompany.size();i++){
@@ -651,7 +651,7 @@
         this.selection=[];
       },
       removeCompanyBtn(){//移除公司
-        alert(this.relationSelection.length);
+        //alert(this.relationSelection.length);
           for(let i=0;i<this.relationSelection.length;i++){
             for(let j=0;j<this.companyChangesList.length;j++){
               if(this.relationSelection[i].id==this.companyChangesList[j].id){

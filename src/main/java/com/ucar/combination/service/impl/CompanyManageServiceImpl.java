@@ -116,6 +116,7 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
         List oldRelationCompany=(List<Long>)queryParam.get("oldRelationList");
         List newRelationCompany= (List<Long>) queryParam.get("newRelationList");
         String departmentId=(String)queryParam.get("departmentId");
+        long accountId=(long)queryParam.get("accountId");
         //添加、不变
         for(int i=0;i<newRelationCompany.size();i++){
             int flag=0;
@@ -131,10 +132,15 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
                 map.put("departmentId",departmentId);
                 Integer count ;
                 count = companyManageDao.getRelationCount(map);
-                if(count == null){
+                if(count == 0){
+                    System.out.println("添加：");
+                    map.put("createEmp",accountId);
+                    map.put("modifyEmp",accountId);
                     companyManageDao.addRelationCompany(map);;
                 }else{
+                    System.out.println("更新：");
                     map.put("status",1);
+                    map.put("modifyEmp",accountId);
                     companyManageDao.updateRelation(map);
 
                 }
@@ -153,6 +159,7 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
                 relMap.put("departmentId",departmentId);
                 relMap.put("companyId",oldRelationCompany.get(j));
                 relMap.put("status",2);
+                relMap.put("modifyEmp",accountId);
                 companyManageDao.updateRelation(relMap);
             }
         }
