@@ -2,22 +2,22 @@
   <home>
     <div>
       <div>
-        <div style="width: 50%; float:left">
-          <h2 style="color: #409EFF">|账户信息1</h2>
+        <div style="width: 60%; float:left">
+          <h2 style="color: #409EFF">|账户信息</h2>
         </div>
-        <div style="width: 50%; float: right; margin-top: 20px">
+        <div style="width: 40%; float: right; margin-top: 20px">
           <el-button type="primary" @click="save" style="width:70px">保存</el-button>
           <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
         </div>
       </div>
-      <hr style="width: 65%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
-      <div style="width:85%; margin-left: 70px; float: left">
-        <el-form  :model="modifyForm" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="100px"
+      <hr style="width: 70%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
+      <div style="width:85%; margin-left: 30px; float: left">
+        <el-form  :model="modifyForm" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="120px"
                   class="demo-ruleForm">
           <el-row>
-            <el-col :span="8">
+            <el-col :span="9">
               <el-form-item label="登录账户">
-                <el-input  v-model="modifyForm.accountNum" :disabled="true" autocomplete="off" ></el-input>
+                <el-input  style="width:300px " v-model="modifyForm.accountNum" :disabled="true" autocomplete="off" ></el-input>
               </el-form-item>
               <div style="position: absolute; width: 0px">
                 <el-form-item label="">
@@ -25,37 +25,38 @@
                 </el-form-item>
               </div>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="15">
               <div style="position: absolute; width: 0px">
                 <el-form-item label="">
                   <el-input  type="password"  autocomplete="off" ></el-input>
                 </el-form-item>
               </div>
               <el-form-item label="密码" >
-                <el-input  type="password" v-model="modifyForm.password" :disabled="true" ></el-input>
+                <el-input  style="width:300px " type="password" v-model="modifyForm.password" :disabled="true" ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-row>
-            <el-col :span="8">
+            <el-col :span="7">
               <el-form-item label="关联员工编号">
-                <div style="float: left; width:100px" >
-                  <el-input style="width: 180px" v-model="modifyForm.staffNum" :disabled="true"></el-input>
-                </div>
-                <div style="float: right; width:100px"><el-button @click="changeDialogVisible">选择</el-button></div>
+                <el-input style="width: 180px" v-model="modifyForm.staffNum" :disabled="true"></el-input>
               </el-form-item>
+            </el-col>
+            <el-col :span="2">
+              <el-button type="text" @click="changeDialogVisible">选择</el-button>
+              <el-button type="text" @click="clearStaffInf">清空</el-button>
             </el-col>
             <el-col :span="8">
               <el-form-item label="员工姓名">
-                <el-input v-model="modifyForm.staffName" :disabled="true"></el-input>
+                <el-input style="width: 300px" v-model="modifyForm.staffName" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="6">
-              <el-form-item label="数据权限类型">
-                <el-select style="width:180px;" v-model="modifyForm.permissions" clearable placeholder="请选择" @change="pressionChange">
+            <el-col :span="9">
+              <el-form-item label="数据权限类型" prop="permissions">
+                <el-select style="width:300px;" v-model="modifyForm.permissions" clearable placeholder="请选择" @change="pressionChange">
                   <el-option
                     v-for="item in permissionsList"
                     :key="item.value"
@@ -66,15 +67,16 @@
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label="密保邮箱">
-                <el-input style="width:200px;" v-model="modifyForm.secretEmail" clearable :disabled="emailDisabled"></el-input>
+              <el-form-item label="密保邮箱" prop="secretEmail">
+                <el-input style="width:300px;" v-model="modifyForm.secretEmail" clearable :disabled="emailDisabled"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row v-if="departmentVisible">
-            <el-col :span="6">
-              <el-form-item label="手动选择部门">
+            <el-col :span="9">
+              <el-form-item label="手动选择部门" prop="permissions">
                 <el-tree
+                  style="width:300px;"
                   ref="tree"
                   :props="defaultProps"
                   node-key="id"
@@ -95,38 +97,38 @@
           <h2 style="color: #409EFF">|其他信息</h2>
         </div>
       </div>
-      <hr style="width: 65%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
-      <div style="width:85%; margin-left: 70px; float: left">
-        <el-form :model="modifyForm" label-width="80px">
+      <hr style="width: 70%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
+      <div style="width:85%; margin-left: 30px; float: left">
+        <el-form :model="modifyForm" label-width="120px">
           <el-row>
-            <el-col :span="6">
+            <el-col :span="9">
               <el-form-item label="新建人">
-                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.creatEmpName"></el-input>
+                <el-input style="width:300px;" :disabled="true" v-model="modifyForm.creatEmpName"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="8">
               <el-form-item label="新建时间">
-                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.createTime"></el-input>
+                <el-input style="width:300px;" :disabled="true" v-model="modifyForm.createTime"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
 
           <el-row>
-            <el-col :span="6">
+            <el-col :span="9">
               <el-form-item label="修改人">
-                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.modifyEmpName"></el-input>
+                <el-input style="width:300px;" :disabled="true" v-model="modifyForm.modifyEmpName"></el-input>
               </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="8">
               <el-form-item label="修改时间">
-                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.modifyTime"></el-input>
+                <el-input style="width:300px;" :disabled="true" v-model="modifyForm.modifyTime"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="6">
+            <el-col :span="9">
               <el-form-item label="账号状态">
-                <el-select style="width:180px;" :disabled="true" v-model="modifyForm.accountState" clearable placeholder="请选择" @change="pressionChange">
+                <el-select style="width:700px;" :disabled="true" v-model="modifyForm.accountState" clearable placeholder="请选择" @change="pressionChange">
                   <el-option
                     v-for="item in statusList"
                     :key="item.value"
@@ -140,7 +142,7 @@
           <el-row>
             <el-col :span="6">
               <el-form-item label="备注">
-                <el-input style="width: 600px" type="textarea" :rows="2" v-model="modifyForm.remark"></el-input>
+                <el-input style="width: 700px" type="textarea" :rows="2" v-model="modifyForm.remark"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -192,6 +194,13 @@
         },
         emailDisabled: true,
         rules: {
+          permissions:[
+            { required: true, message: '请选择数据类型'}
+          ],
+          secretEmail:[
+            { required: true, message: '请输入密保邮箱' },
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          ],
         },
       }
     },
@@ -310,23 +319,30 @@
       },
       save() {//保存修改账户信息
         const self = this;
-        if(self.modifyForm.permissions == 5 && this.$refs.tree.getCheckedNodes().length == 0){
-          self.$message.info("请选择部门");
-        }else {
-          if(self.modifyForm.permissions == 5){
-            for(var i = 0; i < this.$refs.tree.getCheckedNodes().length; i++){
-              self.modifyForm.tree += this.$refs.tree.getCheckedNodes()[i].id+' ';
+        self.$refs["ruleForm"].validate(function(valid) {
+          if (valid) {
+            if (self.modifyForm.permissions == 5 && this.$refs.tree.getCheckedNodes().length == 0) {
+              self.$message.info("请选择部门");
+            } else {
+              if (self.modifyForm.permissions == 5) {
+                for (var i = 0; i < this.$refs.tree.getCheckedNodes().length; i++) {
+                  self.modifyForm.tree += this.$refs.tree.getCheckedNodes()[i].id + ' ';
+                }
+              }
+              self.$http.post('account/modifyAccount.do_', self.modifyForm)
+                .then((result) => {
+                  self.$message.info("修改成功");
+                  self.$router.replace("/accountManagement");
+                }).catch(function (error) {
+                commonUtils.Log("account/createAccount.do_:" + error);
+                self.$message.error("插入数据错误")
+              });
             }
+          }else {
+            console.log('error submit!!');
+            return false;
           }
-          self.$http.post('account/modifyAccount.do_',self.modifyForm)
-            .then((result) => {
-              self.$message.info("修改成功");
-              self.$router.replace("/accountManagement");
-          }).catch(function (error) {
-            commonUtils.Log("account/createAccount.do_:" + error);
-            self.$message.error("插入数据错误")
-          });
-        }
+        })
       },
       cancel(){//关闭新建账户页面，返回账户管理列表页面
         const self = this;

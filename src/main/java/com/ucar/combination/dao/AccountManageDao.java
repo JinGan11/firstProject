@@ -51,7 +51,7 @@ public interface AccountManageDao {
      * @param map
      * @return
      */
-    int insertAccountHistory (Map<String, Object> map);
+    int insertAccountHistory (AccountStaff accountStaff);
     /**
      * description: 新建账户
      * @uthor： junqiang.zhang@ucarinc.com

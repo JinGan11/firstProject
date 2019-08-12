@@ -33,6 +33,8 @@ public class Account {
     private int premissions;
     //密保邮箱
     private String secretEmail;
+    //员工邮箱
+    private String staffEmail;
     //创建时间
     private Date createTime;
     //创建人id
@@ -47,9 +49,9 @@ public class Account {
     private String modifyEmpName;
     //账号状态
     private  int accountState;
-
-    private String remark;
     //备注
+    private String remark;
+
 
     public Long getId() {
         return id;
@@ -201,5 +203,13 @@ public class Account {
 
     public void setIsRelStaff(int isRelStaff) {
         this.isRelStaff = isRelStaff;
+    }
+
+    public String getStaffEmail() {
+        return staffEmail;
+    }
+
+    public void setStaffEmail(String staffEmail) {
+        this.staffEmail = staffEmail;
     }
 }

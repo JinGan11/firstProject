@@ -81,7 +81,7 @@ public interface AccountManagerService {
 
      * @return
      */
-    int insertAccountHistory (Map<String, Object> map);
+    int insertAccountHistory (AccountStaff accountStaff);
 
     /**
      * description: 修改账户信息

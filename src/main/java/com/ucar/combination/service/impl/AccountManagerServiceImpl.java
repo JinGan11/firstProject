@@ -65,6 +65,8 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     public Long insertAccount(AccountStaff accountStaff) {
         accountStaff.setPassword(DigestUtils.md5DigestAsHex((accountStaff.getPassword()).getBytes()));
         accountManageDao.insertAccount(accountStaff);
+        accountStaff.setOperationType("新增");
+        insertAccountHistory(accountStaff);
         return accountManageDao.selectIdByNum(accountStaff.getAccountName());
     }
 
@@ -111,13 +113,13 @@ public class AccountManagerServiceImpl implements AccountManagerService {
      * @params 一个MAP存储着所有信息
      */
     @Override
-    public int insertAccountHistory(Map<String, Object> map) {
-        return accountManageDao.insertAccountHistory(map);
+    public int insertAccountHistory(AccountStaff accountStaff) {
+        return accountManageDao.insertAccountHistory(accountStaff);
     }
 
     /**
      * description: 修改账户信息
-     * @author peng.zhang11@ucarinc.com
+     * @author junqiang.zhang@ucarinc.com
      * @date:  2019/8/9 11:25
      * @params: accountStaff 要修改的信息
      * @return:

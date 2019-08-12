@@ -17,7 +17,7 @@
         <el-row>
           <el-col :span="9">
             <el-form-item label="登录账户" prop="accountName">
-              <el-input  style="width:300px "v-model="newForm.accountName" autocomplete="off" clearable></el-input>
+              <el-input  style="width:300px " v-model="newForm.accountName" autocomplete="off" clearable></el-input>
             </el-form-item>
             <div style="position: absolute; width: 0px">
               <el-form-item label="">
@@ -77,6 +77,7 @@
             <el-col :span="6">
               <el-form-item label="手动选择部门" prop="permissions">
                 <el-tree
+                  style="width:300px;"
                   ref="tree"
                   :props="defaultProps"
                   node-key="id"
@@ -193,7 +194,8 @@
             { required: true, message: '请选择数据类型'}
           ],
           secretEmail:[
-            { required: true, message: '请输入密保邮箱' }
+            { required: true, message: '请输入密保邮箱' },
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
           ],
         },
       }

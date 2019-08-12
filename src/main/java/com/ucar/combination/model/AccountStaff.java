@@ -12,10 +12,14 @@ import com.ucar.combination.model.dto.BaseBean;
 public class AccountStaff extends BaseBean {
     Long accountId;
     Long staffId;
+    String staffName;
+    String staffNum;
     Long oldStaffId;
     String accountName;
     String password;
+    String operationType;
     int permissions;
+    int accountState;
     String secretEmail;
     String remark;
     String tree;
@@ -90,5 +94,37 @@ public class AccountStaff extends BaseBean {
 
     public void setTree(String tree) {
         this.tree = tree;
+    }
+
+    public String getOperationType() {
+        return operationType;
+    }
+
+    public void setOperationType(String operationType) {
+        this.operationType = operationType;
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
+    }
+
+    public String getStaffNum() {
+        return staffNum;
+    }
+
+    public void setStaffNum(String staffNum) {
+        this.staffNum = staffNum;
+    }
+
+    public int getAccountState() {
+        return accountState;
+    }
+
+    public void setAccountState(int accountState) {
+        this.accountState = accountState;
     }
 }

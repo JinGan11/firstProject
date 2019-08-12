@@ -7,6 +7,7 @@ import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 
 import com.ucar.combination.model.Account;
+import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.model.Staff;
 import com.ucar.combination.service.AccountManagerService;
 import com.ucar.combination.service.EmployeeManageService;
@@ -119,19 +120,18 @@ public class EmployeeManageController {
         Integer status1=employeeManageService.updateDimission(id);
         Integer status2=accountManagerService.updateState(id);
         Staff staff=employeeManageService.selectById(id);
+        AccountStaff accountStaff = new AccountStaff();
+        accountStaff.setAccountId(staff.getAccountId());
+        accountStaff.setStaffName(staff.getStaffName());
+        accountStaff.setStaffNum(staff.getStaffNum());
         Account account=accountManagerService.selectById(staff.getAccountId());
-        Map<String,Object> param=new HashMap<>();
-        param.put("accountId",staff.getAccountId());
-        param.put("staffNum",staff.getStaffNum());
-        param.put("staffName",staff.getStaffName());
         if (account!=null){
-            param.put("permissions",account.getPremissions());
-        }else {
-            param.put("permissions",null);
+            accountStaff.setPermissions(account.getPremissions());
+            accountStaff.setAccountState(account.getaccountState());
         }
-        param.put("historyOperationType","8");
-        param.put("createEmp",request.getSession().getAttribute("accountId"));
-        Integer status3=accountManagerService.insertAccountHistory(param);
+        accountStaff.setOperationType("离职");
+        accountStaff.setCreateEmp((Long)(request.getSession().getAttribute("accountId")));
+        Integer status3=accountManagerService.insertAccountHistory(accountStaff);
         if (status1==0&status2==0&status3==0){
             return Result.ok().put("status","success");
         }else {

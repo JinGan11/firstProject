@@ -10,6 +10,7 @@
         <result column="staff_id" property="staffId"/>
         <result column="staff_name" property="staffName"/>
         <result column="permissions" property="premissions"/>
+        <result column="staff_email" property="staffEmail"/>
         <result column="account_secret_email" property="secretEmail"/>
         <result column="create_emp" property="creatEmpId"/>
         <result column="staff_num" property="staffNum"/>
@@ -34,7 +35,8 @@
                t2.id staff_id,
                t2.staff_num,
                t2.staff_name,
-               t2.staff_email account_secret_email,
+               t1.account_secret_email,
+               t2.staff_email,
                t1.create_time,
                t3.account_name creat_emp_name,
                t1.modify_time,
@@ -193,7 +195,7 @@
         UPDATE t_account T set T.account_state=0 WHERE T.id=#{id};
     </update>
 
-    <insert id="insertAccountHistory" parameterType="map">
+    <insert id="insertAccountHistory" parameterType="com.ucar.combination.model.AccountStaff">
         insert into t_account_history(
             account_id,
             staff_num,
@@ -209,7 +211,7 @@
             #{staffNum},
             #{staffName},
             #{permissions},
-            #{historyOperationType},
+            #{operationType},
             #{createEmp},
             now(),
             #{accountState}
@@ -256,7 +258,7 @@
         FROM t_r_department_power
         WHERE account_id = #{accountId}
     </select>
-    <!-- * description: 查询账户的部门权限
+    <!-- * description: 删除账户（状态改为无效）
      * @author junqiang.zhang@ucarinc.com-->
     <update id="deleteAccountById" parameterType="com.ucar.combination.model.AccountStaff">
         UPDATE t_account
