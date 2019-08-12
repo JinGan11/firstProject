@@ -25,7 +25,7 @@
       <el-button type="primary" @click="createRole" :disabled="buttonPermission.createPermission" style="width:100px">新建</el-button>
       <el-button type="primary" @click="modifyRole(selection)" :disabled="isModify || buttonPermission.modifyPermission" style="width:100px">修改</el-button>
       <el-button type="primary" @click="deleteRole" :disabled="isModify || buttonPermission.deletePermission" style="width:100px">删除</el-button>
-      <el-button type="primary" @click="addAccount" :disabled="isModify || buttonPermission.addAccountPermission" style="width:100px">添加账号</el-button>
+      <el-button type="primary" @click="addAccount" :disabled="isAddCount || buttonPermission.addAccountPermission" style="width:100px">添加账号</el-button>
       <el-button type="primary" @click="roleAssignPermission" :disabled="isModify || buttonPermission.assignPermission" style="width:100px">分配权限</el-button>
     </div>
 
@@ -78,9 +78,16 @@
       </template>
     </el-dialog>
 
-    <el-dialog title='添加账号' :visible.sync="addAccountDialogVisible" :close-on-click-modal="false" width="80%"
-               :fullscreen="true">
-
+    <el-dialog title='添加账号' :visible.sync="addAccountDialogVisible" :close-on-click-modal="false" width="80%">
+      <div>
+        登陆账号：
+        <el-input style="width:200px;" placeholder="登陆账号" v-model="loginAccount"></el-input>
+        <el-button type="primary" @click="fetchAccountData" style="width:100px">查询</el-button>
+      </div>
+      <div style="margin-top: 20px;margin-bottom: 20px">
+        <el-button type="primary" @click="" style="width:100px">移除</el-button>
+        <el-button type="primary" @click="" style="width:100px">添加</el-button>
+      </div>
       <el-table ref="multipleTable" :data="accountTableData" border @selection-change="handleAccountSelectionChange">
         <el-table-column type="selection" width="50px"></el-table-column>
         <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
@@ -172,7 +179,8 @@
         roleStatus: '',
         description: '',
         isModify: true,
-
+        isAddCount:true,
+        loginAccount:'',
         exportDialogVisible: false,
         checkAll: false,
         checkRoles: [],
@@ -276,6 +284,7 @@
           page: self.currentPage,
           limit: self.pageSize,
           roleName: self.form.name,
+          roleId:''
         };
         self.$http.get("roleManage/querylist.do_", {
           params: param
@@ -329,6 +338,11 @@
         this.myRole.roleId = val.roleId;
         this.myRole.roleName = val.roleName;
         this.isModify = false;
+        if(val.roleStatus === 1){
+          this.isAddCount = false;
+        }else if(val.roleStatus === 0){
+          this.isAddCount = true;
+        }
       },
       cellTrigger(val) {//角色详情页
         this.$router.push({path: '/RoleInf', query: {roleID: val}});
@@ -342,8 +356,10 @@
         var param = {
           page: self.currentAccounytPage,
           limit: self.accountPageSize,
+          roleId:self.selection,
+          accountName:self.loginAccount
         };
-        self.$http.get('account/querylist.do_', {
+        self.$http.get('roleManage/getRoleAccountList.do_', {
           params: param
         }).then((result) => {
           self.accountTableData = result.page.list;
@@ -351,7 +367,7 @@
           self.accountStatusEnum = result.accountStatusEnum;
           self.totalAccount = result.page.totalCount;
         }).catch(function (error) {
-          commonUtils.Log("account/querylist.do_:" + error);
+          commonUtils.Log("roleManage/getRoleAccountList.do_:" + error);
           self.$message.error("获取数据错误")
         });
       },

@@ -145,7 +145,7 @@ public class RoleManagementServiceImpl implements RoleManagementService {
 
     @Override
     public void updateByModify(RoleDto role) {
-       roleManagementDao.updateByModify(role);
+        roleManagementDao.updateByModify(role);
     }
 
     /**
@@ -249,5 +249,18 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     @Override
     public List<Role> queryroleList() {
         return roleManagementDao.queryroleList();
+    }
+
+    /**
+     * description: 获取角色账户信息
+     * @author qingyu.lan@ucarinc.com
+     * @date   2019/8/12 11:06
+     * @return
+     */
+    @Override
+    public ResultPage getRoleAccountList(QueryParam queryParam){
+        Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
+        List<Map<String,Object>> list = roleManagementDao.getRoleAccountList(queryParam);
+        return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
 }

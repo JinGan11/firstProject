@@ -11,6 +11,7 @@ import com.ucar.combination.model.RolePower;
 import com.ucar.combination.model.dto.RoleDto;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: 角色管理
@@ -34,4 +35,12 @@ public interface RoleManagementService {
     void updateByModify(RoleDto role);
     List<RolePower> getRolePowerList(Long roleInfoId);
     List<Role> queryroleList();
+
+    /**
+     * description: 获取角色账户信息
+     * @author qingyu.lan@ucarinc.com
+     * @date   2019/8/12 11:06
+     * @return
+     */
+    ResultPage getRoleAccountList(QueryParam queryParam);
 }

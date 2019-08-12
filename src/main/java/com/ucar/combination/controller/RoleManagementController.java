@@ -162,4 +162,21 @@ public class RoleManagementController {
 	public Result getRolePower(@RequestBody RolePower rolePower, HttpSession session) {
 		return roleManagementService.getRolePower(rolePower);
 	}
+
+	@ResponseBody
+	@RequestMapping("/getRoleAccountList.do_")
+	public Result getRoleAccountList(HttpServletRequest request){
+		String roleId = request.getParameter("roleId");
+		String accountId = request.getParameter("accountName");
+		String page = request.getParameter("page");
+		String limit = request.getParameter("limit");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("page", page);
+		params.put("limit", limit);
+		params.put("roleId", roleId);
+		params.put("accountName", accountId);
+		ResultPage resultPage = roleManagementService.getRoleAccountList(new QueryParam(params));
+		return new Result().ok().put("page", resultPage).put("permissionEnum",CommonEnums.toEnumMap(CommonEnums.Permission.values()))
+				.put("accountStatusEnum",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()));
+	}
 }
