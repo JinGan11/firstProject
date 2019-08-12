@@ -2,6 +2,7 @@ package com.ucar.combination.dao;
 
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.Company;
+import com.ucar.combination.model.dto.CompanyDto;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -71,5 +72,10 @@ public interface CompanyManageDao<mcmt> {
      * @return：
      */
     Integer creditCodeValidate(@Param("creditCode")String creditCode);
+    List<CompanyDto> queryRelationList(Map<String, Object> map);
+    List<CompanyDto>relationCompanyList(Map<String, Object> map);
+    void addRelationCompany(Map<String,Object>map);
+    void updateRelation(Map<String,Object>map);
+    Integer getRelationCount(Map<String,Object>map);
 
 }

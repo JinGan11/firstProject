@@ -1,18 +1,60 @@
 <template>
   <home>
-    <!--    <div class="block">-->
-    <!--      <span class="demonstration">选择日期</span>-->
-    <!--      <el-date-picker-->
-    <!--        v-model="birthdayName"-->
-    <!--        type="datetimerange"-->
-    <!--        range-separator="至"-->
-    <!--        start-placeholder="开始日期"-->
-    <!--        end-placeholder="结束日期">-->
-    <!--      </el-date-picker>-->
-
-    <!--    </div>-->
-
+    <div>
+      <div style="margin-bottom: 10px;margin-left: 70px">
+        <el-button type="primary" @click="addCompanyBtn" style="width:70px">添加</el-button>
+        <el-button type="primary" @click="removeCompanyBtn" style="width:70px">移除</el-button>
+        <el-button type="primary" @click="saveBtn" style="width:70px">保存</el-button>
+        <el-button type="primary" @click="backBtn" style="width:70px">取消</el-button>
+        <hr ><br>
+      </div>
+      <el-table ref="multipleTable" :data="tableRelationData" border @selection-change="handleRelationChange" >
+        <el-table-column label="选择" width="45">
+          <el-table-column type="selection" width="35"></el-table-column>
+        </el-table-column>
+        <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
+        <el-table-column prop="id" label="编号" width="150">
+          <template slot-scope="scope">
+            <el-button type="text" @click="companyIdBtn(scope.row.id)">{{scope.row.id}}</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column prop="companyName" label="公司名称"width="150"></el-table-column>
+        <el-table-column prop="creditCode" label="统一社会信用代码" width="120"></el-table-column>
+        <el-table-column prop="companyType" label="类型" width="150" style="text-align: center">
+          <template slot-scope="scope">
+            {{CompanyTypeEnum[scope.row.companyType]}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="companyNature" label="公司性质" width="100" style="text-align: center">
+          <template slot-scope="scope">
+            {{CompanyNatureEnum[scope.row.companyNature]}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="companyMark" label="总公司标志" width="100" style="text-align: center">
+          <template slot-scope="scope">
+            {{CompanyMarkEnum[scope.row.companyMark]}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="companyStatus" label="状态" width="50" style="text-align: center">
+          <template slot-scope="scope">
+            {{CompanyStatusEnum[scope.row.companyStatus]}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="modifyTime" label="修改时间" width="140"></el-table-column>
+        <el-table-column prop="modifyName" label="修改人" width="120"></el-table-column>
+      </el-table>
+      <el-pagination background
+                     @size-change="handleSizeChangeRel"
+                     @current-change="handleCurrentChangeRel"
+                     :current-page="currentPageRel"
+                     :page-sizes="[10, 50, 100, 200]"
+                     :page-size="pageSizeRel"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="totalRel">
+      </el-pagination>
+    </div>
     <div style="width:95%; margin-left: 10px">
+    <el-dialog :title="title" :visible.sync="companyFlag" :close-on-click-modal="false" width="90%">
       <el-form ref="form" :model="form" label-width="100px">
         <el-row>
           <el-col :span="6">
@@ -55,7 +97,7 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="状态" >
-              <el-select v-model="form.companyStatus" clearable  style="width:200px;" placeholder="请选择">
+              <el-select v-model="form.companyStatus" clearable :disabled="true" style="width:200px;" placeholder="请选择">
                 <el-option
                   v-for="item in options3"
                   :key="item.value"
@@ -87,18 +129,15 @@
           </el-col>
         </el-row>
       </el-form>
-    </div>
 
     <div style="margin-bottom: 10px">
-      <el-button type="primary" @click="createCompany" :disabled="companyButtonPermission.createPermission" style="width:70px">新建</el-button>
-      <el-button type="primary" @click="modifyCompany(selection)" :disabled="disabled || companyButtonPermission.modifyPermission" style="width:70px">修改</el-button>
+      <el-button type="primary" @click="confirmBtn(selection)" style="width:70px">确认选择</el-button>
+      <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
     </div>
 
-    <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
+    <el-table ref="multipleTable2" :data="tableData" border @selection-change="handleSelectionChange" >
       <el-table-column label="选择" width="45">
-        <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.id" @change="changeButton"><span width="0px;"></span></el-radio>
-        </template>
+        <el-table-column type="selection" width="35"></el-table-column>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
       <el-table-column prop="id" label="编号" width="150">
@@ -123,8 +162,8 @@
           {{CompanyMarkEnum[scope.row.companyMark]}}
         </template>
       </el-table-column>
-      <el-table-column prop="companyStatus" label="状态" width="50" style="text-align: center">
-        <template slot-scope="scope">
+      <el-table-column prop="companyStatus"  label="状态" width="50" style="text-align: center">
+        <template slot-scope="scope" >
           {{CompanyStatusEnum[scope.row.companyStatus]}}
         </template>
       </el-table-column>
@@ -141,11 +180,13 @@
                    :total="total">
     </el-pagination>
 
-    <el-dialog :title="title" :visible.sync="companyFlag" :close-on-click-modal="false" width="900px">
+    </el-dialog>
+    </div>
+    <el-dialog :title="title" :visible.sync="companyContentFlag" :close-on-click-modal="false" width="900px">
       <div class="dialog-main">
-          <br>
-          <span style="font-size: 20px">基本信息</span>
-          <hr><br>
+        <br>
+        <span style="font-size: 20px">基本信息</span>
+        <hr><br>
         <el-form :inline="true" :model="companyForm" class="demo-form-inline" :disabled="true" label-width="100px">
           <el-row>
             <el-col :span="10">
@@ -160,31 +201,31 @@
             </el-col>
           </el-row>
           <el-row>
-          <el-col :span="10">
-            <el-form-item label="类型">
-              <el-select v-model="companyForm.companyType" clearable  style="width:200px;" placeholder="请选择">
-                <el-option
-                  v-for="item in options1"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label="营业期限" >
-              <el-date-picker
-                v-model="businessTerm"
-                type="daterange"
-                format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期">
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
+            <el-col :span="10">
+              <el-form-item label="类型">
+                <el-select v-model="companyForm.companyType" clearable  style="width:200px;" placeholder="请选择">
+                  <el-option
+                    v-for="item in options1"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="营业期限" >
+                <el-date-picker
+                  v-model="businessTerm"
+                  type="daterange"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期">
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
@@ -361,18 +402,27 @@
         <el-button type="primary" @click="checkCompanyInfoBtn">确定</el-button>
       </template>
     </el-dialog>
+
   </home>
 </template>
-
-
 <script>
   import commonUtils from '../../common/commonUtils'
   export default {
     data() {
       return {
-        disabled:true,
-        startTime:'',
-        endTime:'',
+        dep:[],
+
+        newRelationList:[],
+        oldRelationList:[],
+        tableRelationData:[],
+        relationSelection:[],
+        totalRel: 0,
+        currentPageRel: 1,
+        pageSizeRel: 10,
+        companyChangesList:[],
+        relationCompany:[],
+        title:"公司",
+        companyFlag:false,
         total: 0,
         currentPage: 1,
         pageSize: 10,
@@ -381,33 +431,10 @@
           creditCode: '',
           companyType: '',
           companyNature: '',
-          companyStatus: '',
+          companyStatus: "1",
           birthdayName:[],
         },
-
-        companyButtonPermission: {
-          createPermission: true,
-          modifyPermission: true,
-        },
-
-        tableData: [],
-        selection:'',
-        id: '',
-        companyName: '',
-        creditCode: '',
-        companyType: '',
-        CompanyTypeEnum:{},
-        companyNature: '',
-        CompanyNatureEnum:{},
-        companyMark: '',
-        CompanyMarkEnum:{},
-        companyStatus: '',
-        CompanyStatusEnum:{},
-        modifyTime: '',
-        modifyEmp: '',
-
-        title: '公司详情',
-        companyFlag:false,
+        companyContentFlag:false,
         businessTerm:[],
         companyForm:{
           businessStartTime:'',
@@ -437,6 +464,22 @@
           remark:'',
           liscensePath:'',
         },
+        tableData: [],
+        companyList:[],
+        selection:[],
+        id: '',
+        companyName: '',
+        creditCode: '',
+        companyType: '',
+        CompanyTypeEnum:{},
+        companyNature: '',
+        CompanyNatureEnum:{},
+        companyMark: '',
+        CompanyMarkEnum:{},
+        companyStatus: '',
+        CompanyStatusEnum:{},
+        modifyTime: '',
+        modifyEmp: '',
         options1: [{
           value: '',
           label: '全部'
@@ -473,20 +516,56 @@
       commonUtils.Log("页面激活");
     },
     mounted() {
+      this.fetchDataRel();//加载关联公司信息
       commonUtils.Log("页面进来");
-      this.judgmentAuthority();
     },
     methods: {
-      judgmentAuthority() {
-        const self = this;
-        let permission = self.$store.state.powerList;
-        permission.forEach(item=>{
-          if (item === 46) {
-            self.companyButtonPermission.createPermission = false
+      handleSizeChangeRel(val) {
+        this.pageSizeRel = val;
+        this.currentPageRel = 1;
+        this.fetchDataRel(1, val);
+      },
+      handleCurrentChangeRel(val) {
+        this.currentPageRel = val;
+        this.fetchDataRel(val, this.pageSizeRel);
+      },
+      fetchDataRel(){//获取相关公司信息
+        var self = this;
+        //window.localStorage.setItem("departmentId",1);
+        var param = {
+          page: self.currentPageRel,
+          limit: self.pageSizeRel,
+          departmentId:window.localStorage.getItem("departmentRelId"),
+        };
+        self.$http.get('company/querylistRel.do_', {
+          params: param
+        }).then((result) => {
+          self.tableRelationData = result.page.list;
+          for(let i=0;i<self.tableRelationData.length;i++){
+            self.relationCompany.push(self.tableRelationData[i].id);
           }
-          if (item === 47) {
-            self.companyButtonPermission.modifyPermission = false
-          }
+          alert(self.relationCompany[0]);
+          //self.relationCompany.push(result.page.list);//数据库中数据
+          self.companyChangesList=result.page.list;
+          // for(let i=0;i<self.relationCompany.size();i++){
+          //   self.companyChangesList[i].id=self.relationCompany[i].id;
+          //   self.companyChangesList[i].companyName=self.relationCompany[i].companyName;
+          //   self.companyChangesList[i].creditCode=self.relationCompany[i].creditCode;
+          //   self.companyChangesList[i].companyType=self.relationCompany[i].companyType;
+          //   self.companyChangesList[i].companyNature=self.relationCompany[i].companyNature;
+          //   self.companyChangesList[i].companyMark=self.relationCompany[i].companyMark;
+          //   self.companyChangesList[i].companyStatus=self.relationCompany[i].companyStatus;
+          //   self.companyChangesList[i].modifyTime=self.relationCompany[i].modifyTime;
+          //   self.companyChangesList[i].modifyEmp=self.relationCompany[i].modifyEmp;
+          // };
+          self.totalRel = result.page.totalCount;
+          self.CompanyTypeEnum = result.CompanyTypeEnum;
+          self.CompanyNatureEnum = result.CompanyNatureEnum;
+          self.CompanyMarkEnum = result.CompanyMarkEnum;
+          self.CompanyStatusEnum = result.CompanyStatusEnum;
+        }).catch(function (error) {
+          commonUtils.Log("company/querylistRel.do_:"+error);
+          self.$message.error("获取数据错误");
         });
       },
       handleSizeChange(val) {
@@ -498,15 +577,13 @@
         this.currentPage = val;
         this.fetchData(val, this.pageSize);
       },
-      handleSelectionChange(val) {
-        this.disabled = false;
-        this.selection = val;
-      },
-      fetchData() { //获取数据
+      fetchData() { //获取数据，不相关但是有效的数据包括关联公司表中status为无效
         var self = this;
+        //window.localStorage.setItem("departmentId",1);
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
+          departmentId:window.localStorage.getItem("departmentRelId"),
           companyName:self.form.companyName,
           creditCode:self.form.creditCode,
           companyType:self.form.companyType,
@@ -515,10 +592,11 @@
           startTime:self.form.birthdayName[0],
           endTime:self.form.birthdayName[1],
         };
-        self.$http.get('company/querylist.do_', {
+        self.$http.get('company/queryRelationList.do_', {
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
+          //判断是0还是Null
           self.total = result.page.totalCount;
           self.CompanyTypeEnum = result.CompanyTypeEnum;
           self.CompanyNatureEnum = result.CompanyNatureEnum;
@@ -526,26 +604,112 @@
           self.CompanyStatusEnum = result.CompanyStatusEnum;
           commonUtils.Log(self.tableData);
         }).catch(function (error) {
-          commonUtils.Log("company/querylist.do_:"+error);
+          commonUtils.Log("company/queryRelationList.do_:"+error);
           self.$message.error("获取数据错误");
         });
       },
-      createCompany(){//点击新建按钮，跳转到新建公司页面
+      confirmBtn(){//确认选择
+        //this.companyList.concat(this.selection);
+        //alert(this.companyList[1].id);
+        // for(let i=0;i<this.selection.length;i++){
+        //   alert(this.selection[i]);
+        // }
+        for(let i=0;i<this.selection.length;i++){
+          let flag=0;
+          for(let j=0;j<this.companyChangesList.length;j++){
+            if(this.selection[i].id==this.companyChangesList[j].id){
+              flag=1;
+            }
+          }
+          if(flag==0){
+            this.companyChangesList.push(this.selection[i]);
+          }
+        }
 
-        this.$router.replace('/CreateCompany')
+        // for(let i=0;i<this.selection.length;i++){
+        //   this.selection.pop();
+        // }
+        //this.companyChangesList=this.selection;
+        this.tableRelationData=this.companyChangesList;
+        this.companyFlag=false;
+        //this.$refs[multipleTable].resetFields();
       },
-      modifyCompany(val) {//点击修改按钮，跳转到修改公司页面
-        window.localStorage.setItem('companyId',val);
-        //alert(window.localStorage.getItem('companyId'));
-        this.$router.replace('/ModifyCompany')
+
+      cancel(){//返回关联公司页面
+        this.companyFlag=false;
       },
-      changeButton(){
-        this.disabled=false;
+      handleSelectionChange(val){
+        this.selection = val;
+
+      },
+      handleRelationChange(val){
+        this.relationSelection=val;
+      },
+      addCompanyBtn(){//添加公司
+        this.companyFlag=true;
+        this.$refs.multipleTable2.clearSelection();
+        this.selection=[];
+      },
+      removeCompanyBtn(){//移除公司
+        alert(this.relationSelection.length);
+          for(let i=0;i<this.relationSelection.length;i++){
+            for(let j=0;j<this.companyChangesList.length;j++){
+              if(this.relationSelection[i].id==this.companyChangesList[j].id){
+                this.companyChangesList.splice(j,1);
+              }
+            }
+          }
+          //前端关联公司表动态变化
+          this.tableRelationData=this.companyChangesList;
+      },
+      saveBtn(){//保存按钮，传送新旧关联公司信息
+        var self = this;
+
+        // var li={
+        //    newRelationList: '',
+        //    oldRelationList: '',
+        //    departmentId:''
+        //  };
+        for(let i=0;i<this.companyChangesList.length;i++){
+          self.newRelationList.push(String(this.companyChangesList[i].id));
+        }
+        //li.newRelationList=newRelationList;
+
+
+        for(let i=0;i<this.relationCompany.length;i++){
+          self.oldRelationList.push(String(this.relationCompany[i]));
+        }
+        //li.put("oldRelationList",oldRelationList);
+        //li.oldRelationList=oldRelationList;
+        self.departmentId=window.localStorage.getItem("departmentRelId");
+        //li.put("departmentId",self.departmentId);
+        //li.departmentId=self.departmentId;
+        var param = {
+          departmentId:self.departmentId,
+          //dep:self.dep+'',
+          newRelationList:self.newRelationList+'',
+          oldRelationList:self.oldRelationList+'',
+          //newRelationList:newRelationList,
+          // newRelationList:newRelationList,
+          // oldRelationList:oldRelationList,
+        };
+        self.$http.get("company/saveRelation.do_", {
+          params: param
+        }).then((result) => {
+          this.$router.replace("/departmentManagement/showDepartment");
+        }).catch(function (error) {
+          commonUtils.Log("company/querylist.do_:"+error);
+          self.$message.error("获取数据错误");
+        });
+
+      },
+      backBtn(){
+        this.$router.replace("/departmentManagement/showDepartment");
       },
       companyIdBtn(val){//显示公司详情
         var self = this;
         var companyId=val;
-        self.companyFlag=true;
+        self.companyContentFlag=true;
         var param = {
           companyId: companyId,
         };
@@ -575,15 +739,6 @@
           self.$message.error("获取数据错误");
         });
       },
-      checkCompanyInfoBtn(){//关闭公司详情信息
-        this.companyFlag=false;
-      },
     },
-
   }
-
 </script>
-<style scoped>
-
-
-</style>

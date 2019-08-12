@@ -21,6 +21,15 @@ public class CompanyDto extends BaseBean {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT")
     private Date modifyTime;
     private Long modifyEmp;
+    private String modifyName;
+
+    public String getModifyName() {
+        return modifyName;
+    }
+
+    public void setModifyName(String modifyName) {
+        this.modifyName = modifyName;
+    }
 
     public Long getId() {
         return id;
@@ -88,12 +97,11 @@ public class CompanyDto extends BaseBean {
         this.modifyTime = modifyTime;
     }
 
-    @Override
+
     public Long getModifyEmp() {
         return modifyEmp;
     }
 
-    @Override
     public void setModifyEmp(Long modifyEmp) {
         this.modifyEmp = modifyEmp;
     }

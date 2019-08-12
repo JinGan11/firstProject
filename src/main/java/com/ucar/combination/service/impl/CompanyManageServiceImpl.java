@@ -101,6 +101,62 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
         }
         return validate.intValue();
     }
+    @Override
+    public ResultPage queryRelationList(QueryParam queryParam){
+        Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
+        List<Company> list = companyManageDao.queryRelationList(queryParam);
+        return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
+    }
+    public ResultPage relationCompanyList(QueryParam queryParam){
+        Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
+        List<Company> list = companyManageDao.relationCompanyList(queryParam);
+        return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
+    }
+    public void saveRelations(Map<String ,Object>queryParam){
+        List oldRelationCompany=(List<Long>)queryParam.get("oldRelationList");
+        List newRelationCompany= (List<Long>) queryParam.get("newRelationList");
+        String departmentId=(String)queryParam.get("departmentId");
+        //添加、不变
+        for(int i=0;i<newRelationCompany.size();i++){
+            int flag=0;
+            for(int j=0;j<oldRelationCompany.size();j++){
+                if(newRelationCompany.get(i).equals(oldRelationCompany.get(j))){
+                    flag=1;
+                }
+            }
+            //如果原有的关联公司没有新公司，则添加   1、原先没有记录 2、原先有记录，将status变为有效（1）
+            if(flag==0){
+                Map<String,Object>map=new HashMap<>();
+                map.put("companyId",newRelationCompany.get(i));
+                map.put("departmentId",departmentId);
+                Integer count ;
+                count = companyManageDao.getRelationCount(map);
+                if(count == null){
+                    companyManageDao.addRelationCompany(map);;
+                }else{
+                    map.put("status",1);
+                    companyManageDao.updateRelation(map);
 
+                }
+            }
+        }
+        //删除
+        for(int j=0;j<oldRelationCompany.size();j++){
+            int flag=0;
+            for (int i = 0; i < newRelationCompany.size(); i++) {
+                if(oldRelationCompany.get(j).equals(newRelationCompany.get(i))){
+                    flag=1;
+                }
+            }
+            if(flag==0){
+                Map<String,Object>relMap=new HashMap<>();
+                relMap.put("departmentId",departmentId);
+                relMap.put("companyId",oldRelationCompany.get(j));
+                relMap.put("status",2);
+                companyManageDao.updateRelation(relMap);
+            }
+        }
+
+    }
 }
 

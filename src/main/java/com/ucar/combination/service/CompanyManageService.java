@@ -59,4 +59,8 @@ public interface CompanyManageService {
      * @return：
      */
     int creditCodeValidate(String creditCode);
+    ResultPage queryRelationList(QueryParam queryParam);
+    ResultPage relationCompanyList(QueryParam queryParam);
+    void saveRelations(Map<String ,Object>queryParam);
+
 }

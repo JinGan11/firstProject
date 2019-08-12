@@ -34,16 +34,16 @@
 
     <select id="queryList" resultType="com.ucar.combination.model.dto.CompanyDto">
         SELECT
-        id,
-        company_name,
-        credit_code,
-        company_type,
-        company_nature,
-        company_mark,
-        status companyStatus,
-        modify_emp,
-        modify_time
-        FROM t_company
+        t1.id,
+        t1.company_name,
+        t1.credit_code,
+        t1.company_type,
+        t1.company_nature,
+        t1.company_mark,
+        t1.status companyStatus,
+        t2.account_name modifyName,
+        t1.modify_time
+        FROM t_company t1 ,t_account t2
         <where>
         <if test="companyName != null and companyName.trim() != ''">
             AND company_name =#{companyName}
@@ -66,7 +66,7 @@
         <if test="endTime !=null and endTime.trim()!=''">
             AND modify_time&lt;#{endTime}
         </if>
-
+            and t1.modify_emp=t2.id
         </where>
         ORDER BY id DESC
     </select>
@@ -227,4 +227,107 @@
          where credit_code=#{creditCode}
     </select>
 
+    <select id="queryRelationList" resultType="com.ucar.combination.model.dto.CompanyDto">
+    select
+        T.id,
+        T.company_name,
+        T.credit_code,
+        T.company_type,
+        T.company_nature,
+        T.company_mark,
+        T.status companyStatus,
+        t1.account_name modifyName,
+        T.modify_time
+    from t_company T,t_account t1
+        <where>
+            T.id not in ( select t2.company_id from t_r_department_company t2 where t2.department_id = #{departmentId} and t2.status=1 )
+
+            <if test="companyName != null and companyName.trim() != ''">
+                AND T.company_name =#{companyName}
+            </if>
+            <if test="creditCode != null and creditCode.trim() != ''">
+                AND T.credit_code =#{creditCode}
+            </if>
+            <if test="companyType != null and companyType.trim() != ''">
+                AND T.company_type =#{companyType}
+            </if>
+            <if test="companyNature != null and companyNature.trim() != ''">
+                AND T.company_nature =#{companyNature}
+            </if>
+            <if test="companyStatus != null and companyStatus.trim() != ''">
+                AND T.status =#{companyStatus}
+            </if>
+            <if test="startTime != null and startTime.trim() != ''">
+                AND T.modify_time&gt;#{startTime}
+            </if>
+            <if test="endTime !=null and endTime.trim()!=''">
+                AND T.modify_time&lt;#{endTime}
+            </if>
+                and T.modify_emp=t1.id
+
+        </where>
+
+    </select>
+
+    <select id="relationCompanyList" resultType="com.ucar.combination.model.dto.CompanyDto">
+    select
+        T.id,
+        T.company_name,
+        T.credit_code,
+        T.company_type,
+        T.company_nature,
+        T.company_mark,
+        T.status companyStatus,
+        t1.account_name modifyName,
+        T.modify_time
+    from t_company T,t_account t1
+    where T.id in (select t.company_id from t_r_department_company t where t.department_id = #{departmentId} AND t.status=1)
+          and T.modify_emp=t1.id
+    order by T.id desc
+    </select>
+
+    <insert id="addRelationCompany" parameterType="java.util.Map">
+        insert into t_r_department_company(
+            department_id,
+            company_id,
+            create_time,
+            modify_time,
+            status
+        )
+        values(
+            #{departmentId},
+            #{companyId},
+            now(),
+            now(),
+            1
+        )
+    </insert>
+    <update id="updateRelation" parameterType="java.util.Map">
+        update t_r_department_company t1
+        set
+        t1.status = #{status}
+        <where>
+        <if test="departmentId != null and departmentId.trim() != ''">
+            AND t1.department_id =#{departmentId}
+        </if>
+        <if test="companyId != null and companyId.trim() != ''">
+            AND t1.company_id =#{companyId}
+        </if>
+        </where>
+
+    </update>
+    <select id="getRelationCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select
+        count(*)
+        from t_r_department_company t1
+        <where>
+            <if test="departmentId != null and departmentId.trim() != ''">
+                AND t1.department_id =#{departmentId}
+            </if>
+            <if test="companyId != null and companyId.trim() != ''">
+                AND t1.company_id =#{companyId}
+            </if>
+            and t1.status=2
+        </where>
+    </select>
 </mapper>

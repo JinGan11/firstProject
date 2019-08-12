@@ -31,6 +31,7 @@ import modifyRoleApply from '@/views/roleManagement/modifyRoleApply';
 import RoleInf from "../views/roleManagement/RoleInf";
 import DepartmentUpdate from "@/views/departmentManagement/DepartmentUpdate";
 import AccountPowerSearch from "@/views/search/AccountPowerSearch";
+import RelationCompanyList from "@/views/companyManagement/RelationCompanyList";
 Vue.use(Router)
 
 export default new Router({
@@ -190,6 +191,12 @@ export default new Router({
     name:"账号权限明细查询",
     component:AccountPowerSearch,
     meta:{requireAuth:true}
+  },{
+    path: "/relationCompanyList",
+    name: '关联公司',
+    component: RelationCompanyList,
+    meta:{requireAuth:true}
   }
+
   ]
 })
