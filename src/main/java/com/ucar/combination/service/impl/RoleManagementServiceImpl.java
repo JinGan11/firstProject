@@ -268,4 +268,9 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     public void removeRoleAccount(Map<String, Object> map){
         roleManagementDao.removeRoleAccount(map);
     }
+
+    @Override
+    public void addRoleAccount(Map<String, Object> map){
+        roleManagementDao.addRoleAccount(map);
+    }
 }

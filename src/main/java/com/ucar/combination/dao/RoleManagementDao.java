@@ -114,4 +114,12 @@ public interface RoleManagementDao {
      * @param map
      */
     void removeRoleAccount(Map<String, Object> map);
+
+    /**
+     * description: 添加角色账户信息
+     * @author qingyu.lan@ucarinc.com
+     * @date   2019/8/12 13:06
+     * @param map
+     */
+    void addRoleAccount(Map<String, Object> map);
 }

@@ -87,7 +87,7 @@
       </div>
       <div style="margin-top: 20px;margin-bottom: 20px">
         <el-button type="primary" @click="removeRoleAccount" :disabled="isRemoveRoleAccount" style="width:100px">移除</el-button>
-        <el-button type="primary" @click="" style="width:100px">添加</el-button>
+        <el-button type="primary" @click="addRoleAccount" style="width:100px">添加</el-button>
       </div>
       <el-table ref="multipleTable" :data="accountTableData" border @selection-change="handleAccountSelectionChange">
         <el-table-column type="selection" width="50px"></el-table-column>
@@ -150,6 +150,116 @@
           </el-row>
         </el-form>
       </div>
+    </el-dialog>
+
+    <el-dialog :title="chooseAdd" :visible.sync="chooseAccountPage" :close-on-click-modal="false"
+               width="80%">
+      <div class="dialog-main" style="overflow: auto">
+      <div style="width: 95%">
+        <el-form ref="form" :model="form" label-width="100px">
+          <el-row>
+            <el-col :span="5">
+              <el-form-item label="登陆账号" >
+                <el-input style="width:140px;" v-model="form.accountNo" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="员工编号">
+                <el-input style="width:160px;" v-model="form.staffNo" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="员工姓名">
+                <el-input style="width:180px;" v-model="form.name" clearable></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="数据权限类型">
+                <el-select style="width:180px;" v-model="form.permissions" clearable placeholder="请选择">
+                  <el-option
+                    v-for="item in form.permissionsList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="11">
+              <el-form-item label="员工所属部门">
+                <el-input style="width:180px;" v-model="form.departmentId"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="是否关联员工">
+                <el-select style="width: 180px" v-model="form.isRelStaff" clearable placeholder="请选择">
+                  <el-option
+                    v-for="item in form.isRelStaffoptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item label="账号状态">
+                <el-select style="width:180px;" v-model="form.status" clearable placeholder="请选择">
+                  <el-option
+                    v-for="item in form.accountStatusList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+        <el-form ref="form" :model="form">
+          <el-row>
+            <el-col style="text-align: center">
+              <el-form-item>
+                <el-button type="primary" @click="" style="width:100px">查询</el-button>
+                <el-button type="primary" style="width:100px" @click="">确认选择</el-button>
+                <el-button type="primary" style="width:100px" @click="">取消</el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </div>
+      <el-table ref="multipleTable" :data="addAccountData" border @selection-change="handleAddSelectionChange" >
+        <el-table-column type="selection" width="50px"></el-table-column>
+        <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
+        <el-table-column prop="accountName" label="登陆账号" style="width:auto"></el-table-column>
+        <el-table-column prop="staffNum" label="员工编号" style="width:auto"></el-table-column>
+        <el-table-column prop="staffName" label="员工姓名" style="width:auto"></el-table-column>
+        <el-table-column prop="department" label="所属部门" style="width:auto"></el-table-column>
+        <el-table-column prop="premissions" label="数据权限类型" style="width:auto">
+          <template slot-scope="scope">
+            {{permissionsEnum[scope.row.premissions]}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="accountState" label="账号状态" style="width:auto">
+          <template slot-scope="scope">
+            {{accountStatusEnum[scope.row.accountState]}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="modifyTime" label="操作时间" style="width:auto"></el-table-column>
+        <el-table-column prop="modifyEmpName" label="操作人" style="width:auto"></el-table-column>
+      </el-table>
+      <el-pagination background
+                     @size-change="handleAddSizeChange"
+                     @current-change="handleAddCurrentChange"
+                     :current-page="currentAddPage"
+                     :page-sizes="[10, 50, 100, 200]"
+                     :page-size="pageAddSize"
+                     layout="total, sizes, prev, pager, next, jumper"
+                     :total="addTotal">
+      </el-pagination>
+    </div>
     </el-dialog>
   </home>
 </template>
@@ -223,7 +333,34 @@
           assignPermission: true
         },
         list:[],
-        isRemoveRoleAccount:true
+        isRemoveRoleAccount:true,
+        chooseAdd:'选择添加账户',
+        chooseAccountPage:false,
+        addAccountData: [],
+        currentAddPage: 1,
+        pageAddSize: 10,
+        addTotal: 0,
+        addSelection:[],
+        form: {
+          accountNo: '',
+          staffNo: '',
+          name: '',
+          permissionsList:[],
+          permissionsEnum:{},
+          accountStatusList:[],
+          accountStatusEnum:{},
+          permissions: '',
+          departmentId:'',
+          isRelStaffoptions:[{
+            value: '1',
+            label: '是'
+          },{
+            value: '0',
+            label: '否'
+          }],
+          isRelStaff: '',
+          status:''
+        },
       }
     },
     activated() {
@@ -290,6 +427,45 @@
         for (let i = 0; i <this.selectionAccount.length ; i++) {
           this.list.push(val[i].id)
         }
+      },
+      handleAddSizeChange(val) {
+        this.pageAddSize = val;
+        this.currentAddPage = 1;
+        this.fetchData(1, val);
+      },
+      handleAddCurrentChange(val) {
+        this.currentAddPage = val;
+        this.fetchAddData(val, this.pageAddSize);
+      },
+      handleAddSelectionChange(val) {
+        this.addSelection = val;
+      },
+      fetchAddData(){
+        var self = this;
+        var param = {
+          page: self.currentPage,
+          limit: self.pageSize,
+          accountName: self.form.accountNo,
+          staffNo: self.form.staffNo,
+          name:self.form.name,
+          permissions: self.form.permissions,
+          department: self.form.departmentId,
+          isRelStaff: self.form.isRelStaff,
+          status: self.form.status
+        };
+        self.$http.get('account/querylist.do_', {
+          params: param
+        }).then((result) => {
+          self.addAccountData = result.page.list;
+          self.form.permissionsList = result.permissionList;
+          self.form.permissionsEnum = result.permissionEnum;
+          self.form.accountStatusEnum = result.accountStatusEnum;
+          self.form.accountStatusList = result.accountStatusList;
+          self.addTotal = result.page.totalCount;
+        }).catch(function (error) {
+          commonUtils.Log("account/querylist.do_:"+error);
+          self.$message.error("获取数据错误")
+        });
       },
       fetchData() { //获取数据
         var self = this;
@@ -544,13 +720,14 @@
             message: '已取消删除'
           });
         });
+      },
+      addRoleAccount(){
+         this.chooseAccountPage = true;
+         this.fetchAddData();
       }
     }
   }
 </script>
 
 <style scoped>
-  .el-dialog__body{
-    height:80%;
-  }
 </style>

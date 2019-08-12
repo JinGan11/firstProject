@@ -207,4 +207,27 @@ public class RoleManagementController {
         roleManagementService.removeRoleAccount(params);
 	    return new Result().ok().put("msg", "成功删除");
     }
+
+	/**
+	 * description:添加角色关联账号
+	 * @author qingyu.lan@ucarinc.com
+	 * @date 2019/8/12 15:17
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/addRoleAccount.do_")
+    public Result addRoleAccount(HttpServletRequest request,HttpSession session) {
+		String roleId = request.getParameter("roleId");
+		String ids = request.getParameter("accountIds");
+		String[] accountIds = ids.split(",");
+		Long createId = (Long) session.getAttribute("accountId");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("roleId", roleId);
+		params.put("accountIds", accountIds);
+		params.put("createEmp", createId);
+		params.put("modifyEmp", createId);
+		roleManagementService.addRoleAccount(params);
+		return new Result().ok().put("msg", "成功添加");
+	}
 }
