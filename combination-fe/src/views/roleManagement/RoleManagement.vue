@@ -160,17 +160,17 @@
           <el-row>
             <el-col :span="5">
               <el-form-item label="登陆账号" >
-                <el-input style="width:140px;" v-model="form.accountNo" clearable></el-input>
+                <el-input style="width:140px;" v-model="form.accountNo" placeholder="登陆账号" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="员工编号">
-                <el-input style="width:160px;" v-model="form.staffNo" clearable></el-input>
+                <el-input style="width:160px;" v-model="form.staffNo" placeholder="员工编号" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="员工姓名">
-                <el-input style="width:180px;" v-model="form.name" clearable></el-input>
+                <el-input style="width:180px;" v-model="form.name" placeholder="员工姓名" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -189,7 +189,7 @@
           <el-row>
             <el-col :span="11">
               <el-form-item label="员工所属部门">
-                <el-input style="width:180px;" v-model="form.departmentId"></el-input>
+                <el-input style="width:180px;" v-model="form.departmentId" placeholder="员工所属部门"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -222,9 +222,9 @@
           <el-row>
             <el-col style="text-align: center">
               <el-form-item>
-                <el-button type="primary" @click="" style="width:100px">查询</el-button>
-                <el-button type="primary" style="width:100px" @click="">确认选择</el-button>
-                <el-button type="primary" style="width:100px" @click="">取消</el-button>
+                <el-button type="primary" @click="fetchAddData" style="width:100px">查询</el-button>
+                <el-button type="primary" style="width:100px" :disabled="isComfirmAdd" @click="comfirmAdd">确认选择</el-button>
+                <el-button type="primary" style="width:100px" @click="cancelAdd">取消</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -361,6 +361,8 @@
           isRelStaff: '',
           status:''
         },
+        selectAccountIds:[],
+        isComfirmAdd:true,
       }
     },
     activated() {
@@ -439,6 +441,15 @@
       },
       handleAddSelectionChange(val) {
         this.addSelection = val;
+        if(val.length != 0){
+          this.isComfirmAdd = false;
+        }else{
+          this.isComfirmAdd = true;
+        }
+        this.selectAccountIds=[];
+        for (let i = 0; i <this.addSelection.length ; i++) {
+          this.selectAccountIds.push(val[i].id)
+        }
       },
       fetchAddData(){
         var self = this;
@@ -473,7 +484,7 @@
           page: self.currentPage,
           limit: self.pageSize,
           roleName: self.form.name,
-          roleId:''
+          roleId:'',
         };
         self.$http.get("roleManage/querylist.do_", {
           params: param
@@ -722,8 +733,30 @@
         });
       },
       addRoleAccount(){
+        this.selectAccountIds=[];
          this.chooseAccountPage = true;
          this.fetchAddData();
+      },
+      comfirmAdd(){
+        var self = this;
+        var param = {
+          roleId:self.myRole.roleId,
+          accountIds:self.selectAccountIds.toString()
+        };
+        self.$http.get('roleManage/addRoleAccount.do_', {
+          params: param
+        }).then((result) => {
+          this.chooseAccountPage = false;
+          this.fetchAccountData();
+        }).catch(function (error) {
+          commonUtils.Log("roleManage/addRoleAccount.do_:" + error);
+          self.$message.error("获取数据错误")
+        });
+
+      },
+      cancelAdd(){
+        this.chooseAccountPage = false;
+        this.selectAccountIds=[];
       }
     }
   }

@@ -160,8 +160,9 @@
 
     <insert id="addRoleAccount">
     insert into t_r_account_role(account_id,role_id,create_emp,create_time,modify_emp,modify_time)
-        <foreach collection="accountIds" open="(" separator="," close=")" item="item">
-            value(#{item},#{roleId},#{createEmp},now(),#{modifyEmp},now())
+        values
+        <foreach collection="accountIds"  item="item" separator=",">
+            (#{item},#{roleId},#{createEmp},now(),#{modifyEmp},now())
         </foreach>
     </insert>
 </mapper>
