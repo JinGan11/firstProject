@@ -264,6 +264,12 @@
         WHERE id = #{accountId}
     </update>
 
+    <!-- * description: 查询数据（部门）权限类型
+     * @author kaitian.zheng@ucarinc.com -->
+    <select id="selectPermissionsById" resultType="Integer">
+        SELECT permissions FROM t_account WHERE id=#{id}
+    </select>
+
 </mapper>
 
 

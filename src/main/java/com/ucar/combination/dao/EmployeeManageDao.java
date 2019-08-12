@@ -93,4 +93,13 @@ public interface EmployeeManageDao {
      */
     void updateStaff(Staff staff);
 
+
+    /**
+     * description: 查看员工所属部门
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/12 9:06
+     * @params account_id（账号id）
+     * @return
+     */
+    Long selectDepartmentId(Long id);
 }

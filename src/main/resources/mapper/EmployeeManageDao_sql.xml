@@ -126,4 +126,8 @@
         where  t1.id=#{id}
     </update>
 
+    <select id="selectDepartmentId" resultType="Long">
+        SELECT department_id FROM t_staff WHERE account_id=#{id}
+    </select>
+
 </mapper>

@@ -4,7 +4,9 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.dao.AccountManageDao;
 import com.ucar.combination.dao.DepartmentDao;
+import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.model.Department;
 import com.ucar.combination.model.dto.*;
 import com.ucar.combination.service.DepartmentService;
@@ -14,6 +16,7 @@ import com.ucar.combination.utils.SupportBusinessUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +31,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
     private DepartmentDao departmentDao;
+    @Autowired(required = false)
+    private AccountManageDao accountManageDao;
+    @Autowired(required = false)
+    private EmployeeManageDao employeeManageDao;
 
     @Override
     public DepartmentTreeDto buildTree() {
@@ -67,6 +74,33 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentEditDto selectDepartmentForEdit(Long id) {
         return departmentDao.selectDepartmentForEdit(id);
+    }
+
+    @Override
+    public List<Long> selectDataPowerIds(Long accountId) {
+        // type:1-全部,2-递归,3-本部门,4-本人,5-手动选择
+        Integer powerType = accountManageDao.selectPermissionsById(accountId);
+        if(powerType==null) return null;
+        switch (powerType){
+            case 1: // 1-全部（不建议在数据权限为1-全部时使用，效率低）
+                return departmentDao.selectDepartmentIdAll();
+            case 2: // 2-递归
+                DepartmentTreeBuilder builder = new DepartmentTreeBuilder();
+                List<DepartmentTreeDto> list = departmentDao.queryDepartmentTreeAll();
+                builder.buildTree(list);
+                List<Long> ids2 = builder.getRecursionId(accountId);
+                return ids2;
+            case 3: //3-本部门
+                List<Long> ids3=new ArrayList<>();
+                ids3.add(employeeManageDao.selectDepartmentId(accountId));
+                return ids3;
+            case 4: // 4-本人（相当于没有权限，但是应该可以操作自己？）
+                return new ArrayList<Long>();
+            case 5: // 5-手动选择
+                return departmentDao.selectDataPowerChoosed(accountId);
+            default:
+                return null;
+        }
     }
 
     /*

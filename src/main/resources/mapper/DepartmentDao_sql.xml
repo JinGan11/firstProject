@@ -152,6 +152,16 @@
             T.latitude=#{latitude}
         WHERE T.id=#{id}
     </update>
+    <select id="selectDepartmentIdAll" resultType="Long">
+        select id from t_department ORDER BY id ASC
+    </select>
+    <select id="selectDataPowerChoosed" resultType="Long">
+        SELECT department_id
+        FROM t_r_department_power
+        WHERE account_id = #{accountId}
+        ORDER BY department_id ASC
+    </select>
+
 
     <select id="searchDepartment" resultType="com.ucar.combination.model.dto.SearchDepartmentDto">
         SELECT

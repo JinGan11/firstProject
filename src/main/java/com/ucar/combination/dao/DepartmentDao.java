@@ -95,6 +95,24 @@ public interface DepartmentDao {
      */
     void updateDepartment(Department department);
 
+    /**
+     * description: 获取可操作的部门的id，数据权限类型为5-手动选择时使用
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/10 16:47
+     * @params
+     * @return
+     */
+    List<Long> selectDataPowerChoosed(Long account_id);
+
+    /**
+     * description: 查找全部部门id
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/12 9:46
+     * @params
+     * @return
+     */
+    List<Long> selectDepartmentIdAll();
+
     /*
      * description:
      * @author jing.luo01@ucarinc.com

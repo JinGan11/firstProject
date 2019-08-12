@@ -131,4 +131,12 @@ public interface AccountManageDao {
      */
     int deleteAccountById(AccountStaff accountStaff);
 
+    /**
+     * description: 查询数据权限类型
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/10 17:07
+     * @params 用户的account_id
+     * @return
+     */
+    Integer selectPermissionsById(Long id);
 }

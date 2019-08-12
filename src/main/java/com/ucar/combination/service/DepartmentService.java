@@ -9,6 +9,8 @@ import com.ucar.combination.model.dto.DepartmentEditDto;
 import com.ucar.combination.model.dto.DepartmentTreeDto;
 import com.ucar.combination.model.dto.DepartmentUpperDto;
 
+import java.util.List;
+
 /**
  * description:部门管理
  *
@@ -94,6 +96,20 @@ public interface DepartmentService {
      * @return
      */
     Boolean updateDepartment(Department department);
+
+    /**
+     * description: 获取可操作的部门（建议权限为[全部]时不要调用，效率低）
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/10 16:31
+     * @params account_id
+     * @return 存放部门id的list
+     */
+    List<Long> selectDataPowerIds(Long accountId);
+
+
+
+
+
 
     ResultPage searchDepartment(QueryParam queryParam);
 
