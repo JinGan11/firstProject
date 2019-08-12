@@ -466,6 +466,11 @@
 
         self.$http.post("department/addDepartment.do_",self.form)
           .then(result => {
+            if(!result.result){
+              alert(result.msg);
+              return false;
+            }
+            alert("添加成功！");
             self.$router.replace("/departmentManagement/showDepartment");
           })
           .catch(function (error) {

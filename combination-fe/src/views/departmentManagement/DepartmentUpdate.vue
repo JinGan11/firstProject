@@ -330,7 +330,7 @@
         createEmpName: '',
         modifyEmpName: '',
         nowTime: '',
-        haveWorkplace: false,
+        haveWorkplace: true,
         businessDisable: {
           zuche: true,
           zhuanche: true,
@@ -446,6 +446,8 @@
             self.latitudeDirection=tmp2;
           }
         }
+        // 办公点
+        if(data.level!=5) self.haveWorkplace=false;
       },
 
       // 设置可选择业务线
@@ -497,6 +499,11 @@
 
         self.$http.post("department/updateDepartment.do_",self.form)
           .then(result => {
+            if(!result.result){
+              alert(result.msg);
+              return false;
+            }
+            alert("修改成功！");
             self.$router.replace("/departmentManagement/showDepartment");
           })
           .catch(function (error) {

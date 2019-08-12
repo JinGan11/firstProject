@@ -5,6 +5,7 @@ import com.ucar.combination.model.dto.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.jnlp.IntegrationService;
 import java.util.List;
 import java.util.Map;
 
@@ -112,6 +113,60 @@ public interface DepartmentDao {
      * @return
      */
     List<Long> selectDepartmentIdAll();
+
+    /**
+     * description: 校验部门编号
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/12 10:50
+     * @params
+     * @return
+     */
+    Integer checkDepartmentNo(Department department);
+
+    /**
+     * description: 校验办公点标识
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/12 11:10
+     * @params
+     * @return
+     */
+    Integer checkWorkplace(Department department);
+
+    /**
+     * description: 校验上级部门
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/12 14:30
+     * @params
+     * @return
+     */
+    Integer checkUpperDepartment(Department department);
+
+    /**
+     * description: 校验下级部门
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/12 14:42
+     * @params
+     * @return
+     */
+    Integer checkLowerDepartment(Department department);
+
+    /**
+     * description: 修改上级部门时校验办公点
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/12 15:34
+     * @params
+     * @return
+     */
+    Integer checkWorkplaceForUpper(Long id,String upperDepartmentNo);
+
+    /**
+     * description: 根据id查找级别
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/12 15:37
+     * @params
+     * @return
+     */
+    Integer selectLevel(Long id);
 
     /*
      * description:

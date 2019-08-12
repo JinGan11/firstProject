@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * description:部门管理
@@ -80,8 +82,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<Long> selectDataPowerIds(Long accountId) {
         // type:1-全部,2-递归,3-本部门,4-本人,5-手动选择
         Integer powerType = accountManageDao.selectPermissionsById(accountId);
-        if(powerType==null) return null;
-        switch (powerType){
+        if (powerType == null) return null;
+        switch (powerType) {
             case 1: // 1-全部（不建议在数据权限为1-全部时使用，效率低）
                 return departmentDao.selectDepartmentIdAll();
             case 2: // 2-递归
@@ -91,7 +93,7 @@ public class DepartmentServiceImpl implements DepartmentService {
                 List<Long> ids2 = builder.getRecursionId(accountId);
                 return ids2;
             case 3: //3-本部门
-                List<Long> ids3=new ArrayList<>();
+                List<Long> ids3 = new ArrayList<>();
                 ids3.add(employeeManageDao.selectDepartmentId(accountId));
                 return ids3;
             case 4: // 4-本人（相当于没有权限，但是应该可以操作自己？）
@@ -101,6 +103,51 @@ public class DepartmentServiceImpl implements DepartmentService {
             default:
                 return null;
         }
+    }
+
+    @Override
+    public Map<String, Object> checkInput(Department department) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("result", true);
+        if (departmentDao.checkDepartmentNo(department) > 0) {
+            map.put("result", false);
+            map.put("msg", "部门编号已存在！");
+        }
+        if (department.getLevel().equals(5)) {
+            if (department.getWorkplace().equals(0)) {
+                map.put("result", false);
+                String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
+                map.put("msg", tmp + "办公点标识不能设置为0！");
+            } else if (departmentDao.checkWorkplace(department) > 0) {
+                map.put("result", false);
+                String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
+                map.put("msg", tmp + "办公点标识已存在！");
+            }
+        }
+        if (departmentDao.checkUpperDepartment(department) < 1) {
+            map.put("result", false);
+            String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
+            map.put("msg", tmp + "上级部门状态为无效，无法将当前部门改为有效！");
+        }
+        if (department.getStatus().equals(0) && (departmentDao.checkLowerDepartment(department) > 0)) {
+            map.put("result", false);
+            String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
+            map.put("msg", tmp + "下级部门包含状态为有效的部门，无法将当前部门改为无效！");
+        }
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> checkWorkplaceForUpper(Long id, String upperDepartment) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("result", true);
+        if (departmentDao.selectLevel(id).equals(5)) {
+            if(departmentDao.checkWorkplaceForUpper(id,upperDepartment)>0){
+                map.put("result", false);
+                map.put("msg", "该上级部门中已有办公点标识与本部门相同的部门，请修改办公点标识后再进行修改！");
+            }
+        }
+        return map;
     }
 
     /*
@@ -117,7 +164,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
 
-    public Boolean updateDepartment(Department department){
+    public Boolean updateDepartment(Department department) {
         departmentDao.updateDepartment(department);
         return true;
     }

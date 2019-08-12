@@ -10,6 +10,7 @@ import com.ucar.combination.model.dto.DepartmentTreeDto;
 import com.ucar.combination.model.dto.DepartmentUpperDto;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * description:部门管理
@@ -72,43 +73,61 @@ public interface DepartmentService {
 
     /**
      * description: 获取支持的业务线
+     *
+     * @return
      * @author 郑开添（kaitian.zheng@ucarinc.com）
      * @date 2019/8/8 14:21
      * @params
-     * @return
      */
     String selectSupportBusiness(String departmentNo);
 
     /**
      * description: 根据id查找部门详情，用于修改
+     *
+     * @return
      * @author 郑开添（kaitian.zheng@ucarinc.com）
      * @date 2019/8/9 11:20
      * @params
-     * @return
      */
     DepartmentEditDto selectDepartmentForEdit(Long id);
 
     /**
      * description: 修改部门信息
+     *
+     * @return
      * @author 郑开添（kaitian.zheng@ucarinc.com）
      * @date 2019/8/9 19:03
      * @params
-     * @return
      */
     Boolean updateDepartment(Department department);
 
     /**
      * description: 获取可操作的部门（建议权限为[全部]时不要调用，效率低）
+     *
+     * @return 存放部门id的list
      * @author 郑开添（kaitian.zheng@ucarinc.com）
      * @date 2019/8/10 16:31
      * @params account_id
-     * @return 存放部门id的list
      */
     List<Long> selectDataPowerIds(Long accountId);
 
+    /*
+     * description: 校验
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/12 10:30
+     * @params
+     * @return result(true,false),msg(错误的时候返回错误信息)
+     */
+    Map<String, Object> checkInput(Department department);
 
-
-
+    /**
+     * description: 修改上级部门时判断是否工作点相同
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/12 15:25
+     * @params id，上级部门编号
+     * @return
+     */
+    Map<String, Object> checkWorkplaceForUpper(Long id, String upperDepartment);
 
 
     ResultPage searchDepartment(QueryParam queryParam);

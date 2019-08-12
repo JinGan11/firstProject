@@ -161,7 +161,37 @@
         WHERE account_id = #{accountId}
         ORDER BY department_id ASC
     </select>
-
+    <select id="checkDepartmentNo" parameterType="com.ucar.combination.model.Department" resultType="Integer">
+        SELECT count(*) FROM t_department
+        WHERE department_no=#{departmentNo}
+        <if test="id!=null and id!=0">
+            AND id!=#{id}
+        </if>
+    </select>
+    <select id="checkWorkplace" parameterType="com.ucar.combination.model.Department" resultType="Integer">
+        select count(*) from t_department
+        where workplace=#{workplace} and upper_department_no=#{upperDepartmentNo}
+        <if test="id!=null and id!=0">
+            and id!=#{id}
+        </if>
+    </select>
+    <select id="checkUpperDepartment" parameterType="com.ucar.combination.model.Department" resultType="Integer">
+        select count(*) from t_department
+        where department_no=#{upperDepartmentNo}
+        <if test="status==1">
+            and status=1
+        </if>
+    </select>
+    <select id="checkLowerDepartment" parameterType="com.ucar.combination.model.Department" resultType="Integer">
+        select count(*) from t_department
+        where upper_department_no=#{departmentNo} and status=1
+    </select>
+    <select id="checkWorkplaceForUpper" resultType="Integer">
+        select count(*) from t_department where upper_department_no=#{upperDepartmentNo} and workplace=(select workplace from t_department where id=#{id})
+    </select>
+    <select id="selectLevel" resultType="Integer">
+        select level from t_department where id=#{id}
+    </select>
 
     <select id="searchDepartment" resultType="com.ucar.combination.model.dto.SearchDepartmentDto">
         SELECT

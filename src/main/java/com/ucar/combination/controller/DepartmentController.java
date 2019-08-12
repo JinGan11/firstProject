@@ -1,5 +1,6 @@
 package com.ucar.combination.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
@@ -69,25 +70,27 @@ public class DepartmentController {
      */
     @ResponseBody
     @RequestMapping("/addDepartment.do_")
-    public String addDepartment(@RequestBody Department department, HttpSession session) {
+    public Map<String, Object> addDepartment(@RequestBody Department department, HttpSession session) {
         Long accountId = (Long) session.getAttribute("accountId");
         department.setCreateEmp(accountId);
         department.setModifyEmp(accountId);
-
-        departmentService.insertDepartment(department);
-        return "success";
+        Map<String, Object> map = departmentService.checkInput(department);
+        if ((Boolean) map.get("result"))
+            departmentService.insertDepartment(department);
+        return map;
     }
 
     /**
      * description: 根据部门编号查询支持的业务线
+     *
+     * @return
      * @author 郑开添（kaitian.zheng@ucarinc.com）
      * @date 2019/8/8 14:50
      * @params
-     * @return
      */
     @ResponseBody
     @RequestMapping("/getSupportBusiness.do_")
-    public String getSupport(String departmentNo){
+    public String getSupport(String departmentNo) {
         return departmentService.selectSupportBusiness(departmentNo);
     }
 
@@ -131,32 +134,46 @@ public class DepartmentController {
      */
     @ResponseBody
     @RequestMapping("/updateUpperDepartment.do_")
-    public Boolean changeUpper(@RequestBody Department department) {
-        departmentService.updateUpperDepartment(department.getId(), department.getUpperDepartmentNo());
-        return true;
+    public Map<String, Object> changeUpper(@RequestBody Department department) {
+        Map<String, Object> map = departmentService.checkWorkplaceForUpper(department.getId(), department.getUpperDepartmentNo());
+        if ((Boolean) map.get("result"))
+            departmentService.updateUpperDepartment(department.getId(), department.getUpperDepartmentNo());
+        return map;
     }
 
     /**
      * description: 查找单个部门详细信息
+     *
+     * @return 部门详情、及冗余信息
      * @author 郑开添（kaitian.zheng@ucarinc.com）
      * @date 2019/8/8 19:53
      * @params 部门id
-     * @return 部门详情、及冗余信息
      */
     @ResponseBody
     @RequestMapping("/selectDepartmentById.do_")
-    public Result selectDepartmentbyId(Long id){
+    public Result selectDepartmentbyId(Long id) {
         DepartmentEditDto departmentEdit = departmentService.selectDepartmentForEdit(id);
-        return new Result().put("departmentEdit",departmentEdit);
+        return new Result().put("departmentEdit", departmentEdit);
     }
 
+    /**
+     * description: 修改部门详细信息
+     *
+     * @return
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/12 15:00
+     * @params
+     */
     @ResponseBody
     @RequestMapping("/updateDepartment.do_")
-    public String updateDepartment(@RequestBody Department department,HttpSession session){
+    public Map<String, Object> updateDepartment(@RequestBody Department department, HttpSession session) {
         Long accountId = (Long) session.getAttribute("accountId");
         department.setModifyEmp(accountId);
-        departmentService.updateDepartment(department);
-        return "success";
+
+        Map<String, Object> map = departmentService.checkInput(department);
+        if ((Boolean) map.get("result"))
+            departmentService.updateDepartment(department);
+        return map;
     }
 
     /*
@@ -211,14 +228,15 @@ public class DepartmentController {
 
     /**
      * description: 用于测试，后续删除
+     *
+     * @return
      * @author 郑开添（kaitian.zheng@ucarinc.com）
      * @date 2019/8/12 10:17
      * @params
-     * @return
      */
     @ResponseBody
     @RequestMapping("/test")
-    public List<Long> test(Long id){
+    public List<Long> test(Long id) {
         System.out.println("访问地址：http://localhost:8081/combination/department/test?id=1");
         return departmentService.selectDataPowerIds(id);
     }

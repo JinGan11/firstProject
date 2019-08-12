@@ -99,10 +99,12 @@
         params.upperDepartmentNo=self.$refs.tree.getCheckedNodes()[0].departmentNo;
         self.$http.post("department/updateUpperDepartment.do_",params)
           .then(result => {
-            if(result==true){
-              alert("修改成功！");
-              self.$router.replace("/departmentManagement/showDepartment");
+            if(result.result==false){
+              alert(result.msg);
+              return false;
             }
+            alert("修改成功！");
+            self.$router.replace("/departmentManagement/showDepartment");
           })
           .catch(function (error) {
 
