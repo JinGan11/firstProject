@@ -33,7 +33,7 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="审批人姓名">
-              <el-input placeholder="审批人姓名" style="width:200px;" v-model="form.approverName"></el-input>
+              <el-input placeholder="审批人姓名" style="width:200px;" v-model="form.approverStaffName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -77,16 +77,27 @@
     <div style="margin-bottom: 10px" v-else>
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
-      <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
+      <!--<el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>-->
       <el-table-column prop="roleId" label="角色ID" width="120"></el-table-column>
       <el-table-column prop="roleName" label="角色名称" width="150"></el-table-column>
       <el-table-column prop="businessLine" label="支持业务线" width="150"></el-table-column>
-      <el-table-column prop="approverAccount" label="审批人账号" width="150"></el-table-column>
+      <el-table-column prop="approverAccountName" label="审批人账号s" width="150"></el-table-column>
       <el-table-column prop="approverStaffNum" label="审批人员工编号" width="150"></el-table-column>
-      <el-table-column prop="approverName" label="审批人姓名" width="150"></el-table-column>
+      <el-table-column prop="approverStaffName" label="审批人姓名" width="150"></el-table-column>
       <el-table-column prop="approverDepartmentName" label="审批人所属部门" width="150"></el-table-column>
-      <el-table-column prop="roleState" label="角色状态" width="150"></el-table-column>
-      <el-table-column prop="powerName" label="权限名称" width="150"></el-table-column>
+      <el-table-column prop="roleStatus" label="角色状态" width="150"></el-table-column>
+      <el-table-column prop="powerName" label="权限名称" width="150">
+        <template slot-scope="scope">
+          <el-popover
+            placement="bottom"
+            width="200"
+            trigger="click"
+            :content="scope.row.powerName">
+            <el-button slot="reference" type="text">{{scope.row.powerName|ellipsis}}</el-button>
+          </el-popover>
+
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
@@ -135,9 +146,9 @@
           businessLine:'',
           approverAccount:'',
           approverStaffNum:'',
-          approverName:'',
+          approverStaffName:'',
           approverDepartmentName:'',
-          roleState:'',
+          roleStatus:'',
           powerName:''
         },
         defaultProps: {
@@ -150,6 +161,15 @@
         dialogVisibleDepartment:false,
         buttonDisabled: false,
         titleDepartment:'选择部门',
+      }
+    },
+    filters: {
+      ellipsis(value) {
+        if (!value) return "";
+        if (value.length > 30) {
+          return value.slice(0, 30) + "...";
+        }
+        return value;
       }
     },
     activated() {
@@ -173,31 +193,28 @@
         this.selection = val;
       },
       fetchData() { //获取数据
-        /*var self = this;
+        var self = this;
         var param = {
-          //   page: self.currentPage,
-          //   limit: self.pageSize,
-          roleName: self.form.roleName,
+          page: self.currentPage,
+          limit: self.pageSize,
+          roleId:self.form.roleId,
+          roleName:self.form.roleName,
           businessLine:self.form.businessLine,
-          accountName:self.form.accountName,
-          staffNum: self.form.staffNum,
-          staffName:self.form.staffName,
+          approverAccount:self.form.approverAccount,
+          approverStaffNum:self.form.approverStaffNum,
+          approverStaffName:self.form.approverStaffName,
+          approverDepartmentName:self.form.approverDepartmentName,
           roleStatus:self.form.roleStatus,
-          accountState:self.form.accountState,
-          departmentName: self.form.departmentName,
-          //   isDimission: (self.form.isDimission === '2') ? '' : self.form.isDimission,
-          //   accountId: self.form.accountId,
+          powerName:self.form.powerName,
         };
-        self.$http.get('roleAccount/getRoleAccountList.do',{params: param}).then((result) => {
+        self.$http.post('power/queryRolePowerlist.do_', param)
+          .then((result) => {
           self.tableData = result.page.list;
           self.total = result.page.totalCount;
-          // self.SexEnum = result.SexEnum;
-          // self.isDimissionEnum = result.isDismissionEnum;
-          // self.staffDtoList = result.staffDtoList;
         }).catch(function (error) {
-          commonUtils.Log("employee/querylist.do_:" + error);
+          commonUtils.Log("queryRolePowerlist.do_:" + error);
           self.$message.error("获取数据错误");
-        });*/
+        });
       },
 
 

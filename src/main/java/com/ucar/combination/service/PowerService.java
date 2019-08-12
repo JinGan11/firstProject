@@ -25,4 +25,5 @@ public interface PowerService {
     Result getAccountAllPermission(Long accountId);
 
     ResultPage queryRolePowerList(QueryParam queryParam);
+    ResultPage queryRolePowerList(RolePowerDto rolePowerDto);
 }

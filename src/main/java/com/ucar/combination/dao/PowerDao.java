@@ -43,5 +43,6 @@ public interface PowerDao {
      * @return
      */
     List<RolePowerDto> queryRolePowerList(Map<String, Object> map);
+    List<RolePowerDto> queryRolePowerList(RolePowerDto rolePowerDto);
 
 }

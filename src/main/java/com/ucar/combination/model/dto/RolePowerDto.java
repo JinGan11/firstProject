@@ -7,21 +7,23 @@ package com.ucar.combination.model.dto;
  * @create: 2019-08-10 10:15
  */
 public class RolePowerDto {
-    private int roleId;
+    private Long roleId;
     private String roleName;
     private String businessLine;
-    private int roleStatus;
+    private Integer roleStatus;
     private String approverAccountName;
     private String approverStaffNum;
     private String approverStaffName;
     private String approverDepartmentName;
     private String powerName;
+    private Integer page;
+    private Integer limit;
 
-    public int getRoleId() {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 
@@ -41,11 +43,11 @@ public class RolePowerDto {
         this.businessLine = businessLine;
     }
 
-    public int getRoleStatus() {
+    public Integer getRoleStatus() {
         return roleStatus;
     }
 
-    public void setRoleStatus(int roleStatus) {
+    public void setRoleStatus(Integer roleStatus) {
         this.roleStatus = roleStatus;
     }
 
@@ -87,5 +89,21 @@ public class RolePowerDto {
 
     public void setPowerName(String powerName) {
         this.powerName = powerName;
+    }
+
+    public Integer getPage() {
+        return page;
+    }
+
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
     }
 }
