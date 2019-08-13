@@ -141,10 +141,11 @@
                    :total="total">
     </el-pagination>
 
-    <el-dialog :title="title" :visible.sync="companyFlag" :close-on-click-modal="false" width="1220px">
+    <el-dialog :title="title" :visible.sync="companyFlag" :close-on-click-modal="false" width="950px">
       <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
         <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">基本信息</div>
 <!--      <div class="dialog-main">-->
+        <hr><br>
         <el-form :inline="true" :model="companyForm" class="demo-form-inline" :disabled="true" label-width="100px">
           <el-row>
             <el-col :span="9">
@@ -158,21 +159,7 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
-            <el-col :span="10">
-              <el-form-item label="营业期限:" >
-                <el-date-picker
-                  v-model="companyForm.businessTerm"
-                  type="daterange"
-                  format="yyyy-MM-dd"
-                  value-format="yyyy-MM-dd"
-                  range-separator="至"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期">
-                </el-date-picker>
-              </el-form-item>
-            </el-col>
-          </el-row>
+
           <el-row>
             <el-col :span="9">
               <el-form-item label="住所:">
@@ -248,6 +235,21 @@
             </el-form-item>
           </el-col>
           </el-row>
+          <el-row>
+            <el-col>
+              <el-form-item label="营业期限:" >
+                <el-date-picker
+                  v-model="companyForm.businessTerm"
+                  type="daterange"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期">
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
+          </el-row>
           <div style="margin-bottom: 10px">
             <br>
             <span style="font-size: 20px">附件信息</span>
@@ -264,17 +266,18 @@
             <hr ><br>
           </div>
           <el-row>
-            <el-col :span="9">
+            <el-col :span="10">
+              <el-form-item label="注册地址:"  >
+                <el-input style="width:200px;" v-model="companyForm.registrationAddress"></el-input>
+              </el-form-item>
+
+            </el-col>
+            <el-col :span="13">
               <el-form-item label="公司性质:">
-                <el-radio-group v-model="companyForm.companyNature">
+                <el-radio-group v-model="companyForm.companyNature" >
                   <el-radio :label="1">一般纳税人</el-radio>
                   <el-radio :label="2">小规模纳税人</el-radio>
                 </el-radio-group>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="注册地址:" label-width="140px" >
-                <el-input style="width:200px;" v-model="companyForm.registrationAddress"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -300,7 +303,7 @@
               <el-form-item label="总公司标志:" label-width="140px">
                 <el-radio-group v-model="companyForm.companyMark">
                   <el-radio  :label="1">总公司</el-radio>
-                  <el-radio  :label="2">子公司</el-radio>
+                  <el-radio  :label="2" style="margin-left: 28px">子公司</el-radio>
                 </el-radio-group>
               </el-form-item>
             </el-col>
@@ -477,6 +480,7 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
+      this.fetchData();
       this.judgmentAuthority();
     },
     methods: {

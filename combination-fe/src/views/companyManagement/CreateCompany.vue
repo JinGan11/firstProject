@@ -16,9 +16,8 @@
                 <el-input style="width:200px;" v-model="form.companyName" maxlength="60"></el-input>
               </el-form-item>
             </el-col>
-
             <el-col :span="10">
-              <el-form-item label="统一社会信用代码:" prop="creditCode">
+              <el-form-item label="信用代码:" prop="creditCode">
                 <el-input style="width:200px;" v-model="form.creditCode" maxlength="18"></el-input>
               </el-form-item>
             </el-col>
