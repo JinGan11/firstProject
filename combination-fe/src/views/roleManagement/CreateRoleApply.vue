@@ -670,7 +670,7 @@
           return false;
         }
         for(let i=0;i<self.tableDataAccount.length;i++){
-            if(self.tableDataAccount[i].applyOperation!=1||self.tableDataAccount[i].applyOperation!=2){
+            if(self.tableDataAccount[i].applyOperation!=1&&self.tableDataAccount[i].applyOperation!=2){
               alert('账号申请操作不允许为空');
               return false;
             }

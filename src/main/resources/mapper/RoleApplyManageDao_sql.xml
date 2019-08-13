@@ -43,9 +43,9 @@
         <if test="applyStatus!=null and applyStatus!=''">
             AND t1.status=#{applyStatus}
         </if>
-        <!--        <if test="accountId!=null and accountId!=''">-->
-        <!--            AND t1.apply_account_id=#{accountId}-->
-        <!--        </if>-->
+        <if test="accountName!=null and accountName!=''">
+            AND t2.approver_account_name=#{accountName}
+        </if>
         <if test="applyTimeStart!=null and applyTimeStart!=''">
             AND t1.apply_time<![CDATA[ <= ]]> #{applyTimeStart}
         </if>

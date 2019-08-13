@@ -85,7 +85,7 @@
       </el-form>
     </div>
     <div style="margin-bottom: 10px; margin-top:20px; margin-left:40px">
-      <el-button type="primary" @click="approval" style="width:100px">审核</el-button>
+      <el-button type="primary" @click="approval" :disabled="isApproval" style="width:100px">审核</el-button>
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <el-table-column label="选择" width="45">
@@ -99,9 +99,9 @@
       <el-table-column prop="roleName" label="申请角色名称"  width="150"></el-table-column>
       <el-table-column prop="approverStaffName" label="审批负责人" width="150"></el-table-column>
       <el-table-column prop="businessLine" label="角色支持业务线" width="150" style="text-align: center">
-        <template slot-scope="scope">
-          {{BusinessLineEnum[scope.row.businessLine]}}
-        </template>
+        <!--<template slot-scope="scope">-->
+          <!--{{BusinessLineEnum[scope.row.businessLine]}}-->
+        <!--</template>-->
       </el-table-column>
       <el-table-column prop="applyAccountName" label="申请人登录账号" width="150"></el-table-column>
       <el-table-column prop="applyStaffNum" label="申请人员工编号" width="150"></el-table-column>
@@ -126,30 +126,30 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
-    <el-dialog :title='title' :visible.sync="dialogVisible" :close-on-click-modal="false" width="900px"> <el-form ref="form" :model="form" label-width="80px">
+    <el-dialog :title='title' :visible.sync="dialogVisible" :close-on-click-modal="false" width="65%"> <el-form ref="form" :model="form" label-width="80px">
       <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
         <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">申请信息</div>
         <el-row>
           <el-col :span="12">
             <el-form-item label="角色申请编号:" label-width="150px">
-              <el-input style="width:200px;" v-model="apply.role_apply_id"></el-input>
+              <el-input style="width:200px;" v-model="apply.role_apply_id" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="申请角色:" label-width="150px">
-              <el-input style="width:200px;" v-model="apply.role_id"></el-input>
+              <el-input style="width:200px;" v-model="apply.role_id" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="角色审批人:" label-width="150px">
-              <el-input style="width:200px;" v-model="apply.approver_emp"></el-input>
+              <el-input style="width:200px;" v-model="apply.approver_emp" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="角色支持业务线:" label-width="150px">
-              <el-input style="width:200px;" v-model="apply.business_line"></el-input>
+              <el-input style="width:200px;" v-model="apply.business_line" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -157,31 +157,19 @@
 
       <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 20px;padding-top: 20px">
         <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">申请账号明细</div>
-        <el-table
-          style="width: 85%;margin-left: 40px">
-          <el-table-column
-            prop="apply.apply_account_name"
-            label="申请账号"
-            width="180">
-          </el-table-column>
-          <el-table-column
-            prop="apply.apply_staff_name"
-            label="关联员工姓名"
-            width="150">
-          </el-table-column>
-          <el-table-column
-            prop="apply.apply_staff_num"
-            label="关联员工编号"
-            width="150">
-          </el-table-column>
-          <el-table-column
-            prop="apply.apply_department_name"
-            label="关联员工所属部门"
-            width="150">
-          </el-table-column>
-          <el-table-column
-            prop="apply.operate"
-            label="申请操作">
+        <el-table ref="multipleTable" :data="tableDataAccount" border>
+          <el-table-column prop="id"  v-if="false" label="隐藏账号id"></el-table-column>
+          <el-table-column prop="accountName" label="申请账号" width="150"></el-table-column>
+          <el-table-column prop="staffName" label="关联员工姓名"width="150"></el-table-column>
+          <el-table-column prop="staffNum" label="关联员工编号"  ></el-table-column>
+          <el-table-column prop="department" label="关联员工所属部门" width="200"></el-table-column>
+          <el-table-column prop="applyOperation" label="申请操作" width="150" style="text-align: center">
+            <template slot-scope="scope" v-if="scope.row.applyOperation ===0">
+              移除
+            </template>
+            <template slot-scope="scope" v-if="scope.row.applyOperation ===1">
+              添加
+            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -191,43 +179,43 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="申请时间:" label-width="150px">
-              <el-input style="width:200px;" v-model="apply.apply_time"></el-input>
+              <el-input style="width:200px;" v-model="apply.apply_time" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="申请人:" label-width="150px">
-              <el-input style="width:200px;" v-model="apply.apply_staff_name"></el-input>
+              <el-input style="width:200px;" v-model="apply.apply_staff_name" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="修改时间:" label-width="150px">
-              <el-input style="width:200px;" v-model="apply.modify_time"></el-input>
+              <el-input style="width:200px;" v-model="apply.modify_time" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="修改人:" label-width="150px">
-              <el-input style="width:200px;" v-model="apply.modify_emp"></el-input>
+              <el-input style="width:200px;" v-model="apply.modify_emp" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
             <el-form-item label="审批时间:" label-width="150px">
-              <el-input style="width:200px;" v-model="apply.approvalTime"></el-input>
+              <el-input style="width:200px;" v-model="apply.approvalTime" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="审批人:" label-width="150px">
-              <el-input style="width:200px;" v-model="apply.approver_emp"></el-input>
+              <el-input style="width:200px;" v-model="apply.approver_emp" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
             <el-form-item label="状态:" label-width="150px">
-              <el-input style="width:200px;" v-model="apply.statue"></el-input>
+              <el-input style="width:200px;" v-model="apply.statue" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -281,6 +269,15 @@
           approvalTime:'',
           statue:''
         },
+        tableDataAccount:[],
+        options: [{
+          value: 1,
+          label: '添加'
+        }, {
+          value: 2,
+          label: '移除'
+        }],
+
         tableData: [],
         selection: '',
         tableData: [],
@@ -305,6 +302,7 @@
         beginDateScope:'',
         dialogVisible:false,
         title:'角色申请审核',
+        isApproval:true
       }
     },
     activated() {
@@ -362,10 +360,31 @@
         this.dialogVisible=true;
       },
       approvalInfo(val){
+        if(this.selection !=''){
+          this.isApproval=false;
+        }else{
+          this.isApproval=true;
+        }
+        var param = {
+          applyId: this.selection,
+        };
+        this.$http.get('roleApply/showAccountListByApplyId.do_', {
+          params: param
+        }).then((result) => {
+
+          //请求成功回调
+          this.tableDataAccount = result.list;
+
+        }).catch(function (error) {
+          //请求失败回调
+          commonUtils.Log("roleApply/showAccountListByApplyId.do_:" + error);
+          this.$message.error("获取数据错误");
+        });
+
         this.apply.role_apply_id = val.roleApplyNum;
         this.apply.role_id = val.roleId;
         this.apply.approver_emp = val.approverStaffName;
-        this.apply.business_line = this.BusinessLineEnum[val.businessLine];
+        this.apply.business_line = val.businessLine;
         this.apply.apply_staff_num = val.applyStaffNum;
         this.apply.apply_department_name = val.applyDepartmentName;
         this.apply.apply_time = val.applyTime;

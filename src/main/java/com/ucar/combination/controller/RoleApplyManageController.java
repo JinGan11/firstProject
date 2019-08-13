@@ -67,8 +67,8 @@ public class RoleApplyManageController {
         params.put("modifyTimeEnd", modifyTimeEnd);
 
         if (request.getParameter("type").equals("角色审核")) {
-            Long accountId = (Long) session.getAttribute("accountId");
-            params.put("accountId", accountId);
+            String accountName = (String) session.getAttribute("accountName");
+            params.put("accountName", accountName);
         }
         List<RoleApplyDto> roleDtoList = roleApplyManageService.getRoleList(new QueryParam(params));
         ResultPage resultPage = roleApplyManageService.queryList(new QueryParam(params));
