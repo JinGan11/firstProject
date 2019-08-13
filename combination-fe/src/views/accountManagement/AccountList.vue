@@ -513,23 +513,12 @@
       },
       preservePower() {
         const self = this;
-        var param1 = {
+        var param = {
           id: self.myAccount.id,
-          roleList : self.selected
-        };
-        var param2 = {
-          id: self.myAccount.id,
+          roleList : self.selected,
           powerList: self.$refs.tree.getCheckedNodes().concat(self.$refs.tree.getHalfCheckedNodes())
         };
-        self.$http.post("power/modifyAccountRole", param1)
-          .then((result) => {
-            console.log("success!")
-          })
-          .catch(function (error) {
-
-          });
-        console.log(param2)
-        self.$http.post("power/modifySpecialPower", param2)
+        self.$http.post("power/modifyPermission", param)
           .then((result) => {
             console.log("success!")
           })

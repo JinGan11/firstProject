@@ -16,9 +16,11 @@ public interface PowerService {
 
     PowerTree buildPowerTree();
 
-    Result modifyAccountRole(RoleList roleList,Long accountId);
+    Result modifyAccountRole(PowerList powerList,Long accountId);
 
     Result modifySpecialPower(PowerList powerList,Long accountId);
+
+    Result modifyPermission(PowerList powerList,Long accountId);
 
     Result getAccountPower(Account account);
 

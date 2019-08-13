@@ -57,54 +57,58 @@ public class PowerServiceImpl implements PowerService {
      * @params roleList 角色列表
      */
     @Override
-    public Result modifyAccountRole(RoleList roleList, Long accountId) {
+    public Result modifyAccountRole(PowerList powerList, Long accountId) {
         //  1.先查询改账户已拥有的角色，如果roleList不在已拥有的角色中，则表示被移除需要调用删除语句删除角色
         //  2.再对比没有的角色，一条条插入账户中，
-        List<Role> list = roleManagementDao.getAccountRoleListById(roleList.getId());
+        List<Role> list = roleManagementDao.getAccountRoleListById(powerList.getId());
         AccountRole accountRole = new AccountRole();
+        // 移除所有角色
+        if (powerList.getRoleList().size() == 0) {
+            roleManagementDao.removeAllAccountRoleById(powerList.getId());
+        }
         // 如果该账户没有角色，则全部插入
         if (list == null || list.size() == 0) {
-            for (int i = 0; i < roleList.getRoleList().size(); i++) {
+            for (int i = 0; i < powerList.getRoleList().size(); i++) {
                 //插入该角色
-                accountRole.setAccountId(roleList.getId());
-                accountRole.setRoleId(roleList.getRoleList().get(i).getRoleId());
+                accountRole.setAccountId(powerList.getId());
+                accountRole.setRoleId(powerList.getRoleList().get(i).getRoleId());
                 accountRole.setModifyEmp(accountId);
                 roleManagementDao.insertAccountRole(accountRole);
             }
         } else {
             // 删除账户被移除的角色
             for (int i = 0; i < list.size(); i++) {
-                for (int j = 0; j < roleList.getRoleList().size(); j++) {
-                    if (list.get(i).getRoleId() == roleList.getRoleList().get(j).getRoleId()) {
+                for (int j = 0; j < powerList.getRoleList().size(); j++) {
+                    if (list.get(i).getRoleId() == powerList.getRoleList().get(j).getRoleId()) {
                         break;
                     }
-                    if (list.get(i).getRoleId() != roleList.getRoleList().get(j).getRoleId()
-                            && j == roleList.getRoleList().size() -1) {
+                    if (list.get(i).getRoleId() != powerList.getRoleList().get(j).getRoleId()
+                            && j == powerList.getRoleList().size() -1) {
                         //删除该角色
-                        accountRole.setAccountId(roleList.getId());
+                        accountRole.setAccountId(powerList.getId());
                         accountRole.setRoleId(list.get(i).getRoleId());
                         roleManagementDao.removeAccountRoleById(accountRole);
                     }
                 }
             }
             // 为账户插入新添加的角色
-            for (int i = 0; i < roleList.getRoleList().size(); i++) {
+            for (int i = 0; i < powerList.getRoleList().size(); i++) {
                 for (int j = 0; j < list.size(); j++) {
-                    if (roleList.getRoleList().get(i).getRoleId() == list.get(j).getRoleId()) {
+                    if (powerList.getRoleList().get(i).getRoleId() == list.get(j).getRoleId()) {
                         break;
                     }
-                    if (roleList.getRoleList().get(i).getRoleId() != list.get(j).getRoleId()
+                    if (powerList.getRoleList().get(i).getRoleId() != list.get(j).getRoleId()
                             && j == list.size() -1) {
                         //插入该角色
-                        accountRole.setAccountId(roleList.getId());
-                        accountRole.setRoleId(roleList.getRoleList().get(i).getRoleId());
+                        accountRole.setAccountId(powerList.getId());
+                        accountRole.setRoleId(powerList.getRoleList().get(i).getRoleId());
                         accountRole.setModifyEmp(accountId);
                         roleManagementDao.insertAccountRole(accountRole);
                     }
                 }
             }
         }
-        return null;
+        return Result.ok();
     }
 
     /**
@@ -127,7 +131,11 @@ public class PowerServiceImpl implements PowerService {
                 //插入该权限
                 accountPower.setAccountId(powerList.getId());
                 accountPower.setPowerId(powerList.getPowerList().get(i).getPowerId());
-                powerDao.insertAccountPower(accountPower);
+                try{
+                    powerDao.insertAccountPower(accountPower);
+                } catch (Exception e) {
+                    throw e;
+                }
             }
         } else {
             // 删除账户被移除的权限
@@ -141,7 +149,11 @@ public class PowerServiceImpl implements PowerService {
                         //删除该角色
                         accountPower.setAccountId(powerList.getId());
                         accountPower.setPowerId(list.get(i).getPowerId());
-                        powerDao.removeAccountPowerById(accountPower);
+                        try {
+                            powerDao.removeAccountPowerById(accountPower);
+                        } catch (Exception e) {
+                            throw e;
+                        }
                     }
                 }
             }
@@ -156,12 +168,24 @@ public class PowerServiceImpl implements PowerService {
                         //插入该权限
                         accountPower.setAccountId(powerList.getId());
                         accountPower.setPowerId(powerList.getPowerList().get(i).getPowerId());
-                        powerDao.insertAccountPower(accountPower);
+                        try {
+                            powerDao.insertAccountPower(accountPower);
+                        } catch (Exception e) {
+                            throw e;
+                        }
                     }
                 }
             }
         }
-        return null;
+        return Result.ok();
+    }
+
+    @Override
+    public Result modifyPermission(PowerList powerList, Long accountId) {
+        Result result = new Result();
+        modifyAccountRole(powerList,accountId);
+        modifySpecialPower(powerList,accountId);
+        return result.put("code",200);
     }
 
     /**

@@ -262,18 +262,19 @@ public class AccountManagerController {
     @RequestMapping("/resetPass")
     public Result resetPass(@RequestBody Account account, HttpSession session){
         Long OperateAccountId = (Long) session.getAttribute("accountId");
-        Account account1 = accountManagerService.selectById(account.getId());
+        Account account1 = accountManagerService.selectAccountById(String.valueOf(OperateAccountId));
         String content = "请点击下面的链接重置密码 http://localhost:8082/resetPass 如果无法点击，请复制至浏览器。";
         Result result = new Result();
         AccountStaff accountStaff = new AccountStaff();
-        if (account1.getAccountSecretEmail() != null) {
-            result = mailService.sendMail(account1.getAccountSecretEmail(),"重置密码",content);
+        if (account1.getSecretEmail() != null) {
+            result = mailService.sendMail(account1.getSecretEmail(),"重置密码",content);
             accountStaff.setAccountId(account1.getId());
-            accountStaff.setOperationType("2");
+            accountStaff.setOperationType("密码重置");
             accountStaff.setStaffId(account1.getStaffId());
             accountStaff.setAccountState(account1.getaccountState());
             accountStaff.setPermissions(account1.getPremissions());
             accountStaff.setStaffNum(account1.getStaffNum());
+            accountStaff.setStaffName(account1.getStaffName());
             accountStaff.setCreateEmp(OperateAccountId);
             accountManagerService.insertAccountHistory(accountStaff);
         } else {

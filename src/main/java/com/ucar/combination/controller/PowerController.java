@@ -6,6 +6,7 @@ import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.*;
 import com.ucar.combination.model.dto.RolePowerDto;
+import com.ucar.combination.service.AccountManagerService;
 import com.ucar.combination.service.PowerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,9 @@ public class PowerController {
     @Autowired
     PowerService powerService;
 
+    @Autowired
+    AccountManagerService accountManagerService;
+
     /**
      * description: 获取所有权限信息
      * @author peng.zhang11@ucarinc.com
@@ -57,33 +61,61 @@ public class PowerController {
         return powerService.getAccountPower(account);
     }
 
-    /**
-     * description: 为账号添加角色
-     * @author peng.zhang11@ucarinc.com
-     * @date   2019/8/5 22:40
-     * @params role 角色
-     * @return
-     */
-    @RequestMapping("/modifyAccountRole")
-    public Result modifyAccountRole(@RequestBody RoleList roleList, HttpSession session) {
-        Long accountId = (Long) session.getAttribute("accountId");
-        Result result = powerService.modifyAccountRole(roleList,accountId);
-        return result;
-    }
+//    /**
+//     * description: 为账号添加角色
+//     * @author peng.zhang11@ucarinc.com
+//     * @date   2019/8/5 22:40
+//     * @params role 角色
+//     * @return
+//     */
+//    @RequestMapping("/modifyAccountRole")
+//    public Result modifyAccountRole(@RequestBody RoleList roleList, HttpSession session) {
+//        Long accountId = (Long) session.getAttribute("accountId");
+//        Result result = powerService.modifyAccountRole(roleList,accountId);
+//        return result;
+//    }
+
+//    /**
+//     * description: 修改账户特殊权限
+//     * @author peng.zhang11@ucarinc.com
+//     * @date   2019/8/5 22:51
+//     * @params
+//     * @return
+//     */
+//    @RequestMapping("/modifySpecialPower")
+//    public Result modifySpecialPower(@RequestBody PowerList powerList, HttpSession session) {
+//        Long accountId = (Long) session.getAttribute("accountId");
+//        Result result = powerService.modifySpecialPower(powerList,accountId);
+//        return result;
+//    }
 
     /**
-     * description: 修改账户特殊权限
+     * description: 修改账户权限
      * @author peng.zhang11@ucarinc.com
      * @date   2019/8/5 22:51
      * @params
      * @return
      */
-    @RequestMapping("/modifySpecialPower")
-    public Result modifySpecialPower(@RequestBody PowerList powerList, HttpSession session) {
+    @RequestMapping("/modifyPermission")
+    public Result modifyPermission(@RequestBody PowerList powerList, HttpSession session) {
         Long accountId = (Long) session.getAttribute("accountId");
-        Result result = powerService.modifySpecialPower(powerList,accountId);
+        Result result = powerService.modifyPermission(powerList,accountId);
+        Account account = accountManagerService.selectAccountById(String.valueOf(accountId));
+        AccountStaff accountStaff = new AccountStaff();
+        if (account != null ) {
+            accountStaff.setAccountId(account.getId());
+            accountStaff.setOperationType("账号分配权限");
+            accountStaff.setStaffId(account.getStaffId());
+            accountStaff.setAccountState(account.getaccountState());
+            accountStaff.setPermissions(account.getPremissions());
+            accountStaff.setStaffNum(account.getStaffNum());
+            accountStaff.setStaffName(account.getStaffName());
+            accountStaff.setCreateEmp(accountId);
+            accountManagerService.insertAccountHistory(accountStaff);
+        }
         return result;
     }
+
     /**
      * description:用于接收数据返回前端列表
      *

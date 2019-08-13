@@ -11,6 +11,15 @@ import java.util.List;
 public class PowerList {
     private Long id;
     private List<Power> powerList;
+    private List<Role> roleList;
+
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
+    }
 
     public Long getId() {
         return id;

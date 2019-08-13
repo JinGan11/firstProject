@@ -79,6 +79,16 @@ public interface RoleManagementDao {
     void removeAccountRoleById(AccountRole accountRole);
 
     /**
+     * description: 移除账号的所有角色
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/13 10:24
+     * @params accountRole 描述
+
+     * @return
+     */
+    void removeAllAccountRoleById(Long accountId);
+
+    /**
      * description: 为账户添加新角色
      * @author peng.zhang11@ucarinc.com
      * @date   2019/8/6 16:24

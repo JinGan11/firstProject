@@ -78,6 +78,12 @@
         and role_id = #{roleId}
     </delete>
 
+    <delete id="removeAllAccountRoleById" parameterType="Long">
+        delete from t_r_account_role
+        where 1=1
+        and account_id = #{accountId}
+    </delete>
+
     <insert id="insertAccountRole" parameterType="com.ucar.combination.model.AccountRole">
         insert into t_r_account_role(account_id, role_id, create_emp, create_time, modify_emp, modify_time)
         value(#{accountId}, #{roleId}, #{modifyEmp}, now(), #{modifyEmp}, now())

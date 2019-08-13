@@ -4,10 +4,9 @@ import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
-import com.ucar.combination.model.AssignPermission;
-import com.ucar.combination.model.Role;
-import com.ucar.combination.model.RolePower;
+import com.ucar.combination.model.*;
 import com.ucar.combination.model.dto.RoleDto;
+import com.ucar.combination.service.AccountManagerService;
 import com.ucar.combination.service.impl.RoleManagementServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +37,9 @@ public class RoleManagementController {
 
 	@Autowired(required = false)
 	private RoleManagementServiceImpl roleManagementService;
+
+	@Autowired
+	private AccountManagerService accountManagerService;
 
 	/**
 	 * description:用于接收数据返回前端列表
@@ -169,6 +171,19 @@ public class RoleManagementController {
 	public Result assignPermission(@RequestBody AssignPermission assignPermission, HttpSession session) {
 		Long accountId = (Long) session.getAttribute("accountId");
 		Result result = roleManagementService.assignPermission(assignPermission, accountId);
+		Account account = accountManagerService.selectAccountById(String.valueOf(accountId));
+		AccountStaff accountStaff = new AccountStaff();
+		if (account != null ) {
+			accountStaff.setAccountId(account.getId());
+			accountStaff.setOperationType("角色分配权限");
+			accountStaff.setStaffId(account.getStaffId());
+			accountStaff.setAccountState(account.getaccountState());
+			accountStaff.setPermissions(account.getPremissions());
+			accountStaff.setStaffNum(account.getStaffNum());
+			accountStaff.setStaffName(account.getStaffName());
+			accountStaff.setCreateEmp(accountId);
+			accountManagerService.insertAccountHistory(accountStaff);
+		}
 		return result;
 	}
 
