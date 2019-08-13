@@ -45,7 +45,7 @@
 
         </el-row>
         <el-row>
-          <el-col :span="3" :offset="3">
+          <el-col :span="3" :offset="8">
             <el-form-item>
               <el-button type="primary" style="width: 100px" @click="fetchData" size="medium">查询</el-button>
             </el-form-item>
@@ -55,21 +55,16 @@
               <el-button type="primary" style="width: 100px" @click="exportVisible = true" :disabled="provinceBtnPermission.exportPermission" size="medium">导出</el-button>
             </el-form-item>
           </el-col>
-          <el-col :span="3" >
-            <el-form-item>
-              <el-button type="primary" style="width: 100px" @click="createFormVisible = true" :disabled="provinceBtnPermission.createPermission" size="medium">新建</el-button>
-            </el-form-item>
-          </el-col>
-          <el-col :span="3" >
-            <el-form-item>
-              <el-button type="primary" style="width: 100px" :disabled="provinceBtnPermission.modifyPermission" size="medium">修改</el-button>
-            </el-form-item>
-          </el-col>
-          <el-col :span="3" >
-            <el-form-item>
-              <el-button type="primary" style="width: 100px"   size="medium">查询</el-button>
-            </el-form-item>
-          </el-col>
+<!--          <el-col :span="3" >-->
+<!--            <el-form-item>-->
+<!--              <el-button type="primary" style="width: 100px" @click="createFormVisible = true" :disabled="provinceBtnPermission.createPermission" size="medium">新建</el-button>-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
+<!--          <el-col :span="3" >-->
+<!--            <el-form-item>-->
+<!--              <el-button type="primary" style="width: 100px" :disabled="provinceBtnPermission.modifyPermission" size="medium">修改</el-button>-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
         </el-row>
 
 
