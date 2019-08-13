@@ -28,12 +28,12 @@ axios.interceptors.request.eject(myInterceptor);
 
 // 添加响应拦截器
 axios.interceptors.response.use(function (response) {
-  //session失效状态 100
-  if (response.data === 100) {
-    router.push({path:'/'});
-  }
   if(response.headers && response.headers['content-type'] === 'application/octet-stream;charset=UTF-8'){
     downloadUrl(response.data);
+    //session失效状态 100
+    if (response.data === 100) {
+      router.push({path:'/'});
+    }
     return;
   }
   return response.data;

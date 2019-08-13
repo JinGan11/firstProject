@@ -201,7 +201,7 @@ export default new Router({
     path: "/resetPass",
     name: "重置密码",
     component: ResetPass,
-
+    meta:{requireAuth:false}
   }
 
   ]
