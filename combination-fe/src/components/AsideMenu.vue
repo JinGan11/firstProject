@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-aside width="auto" class="aside">
+    <el-aside width="auto" class="aside" >
       <el-menu :default-active="$route.path"
                router
                class="el-menu-vertical-demo"
