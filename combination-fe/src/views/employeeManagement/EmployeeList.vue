@@ -1,11 +1,11 @@
 <template>
   <home>
     <div style="width:85%; margin-left: 70px">
-      <el-form ref="form" :model="form" label-width="80px">
+      <el-form ref="form" :model="form"  label-width="80px">
         <el-row>
           <el-col :span="6">
             <el-form-item label="员工编号">
-              <el-input placeholder="员工编号" style="width:200px;" v-model="form.staffNum"></el-input>
+              <el-input placeholder="员工编号" prop="staffNum" style="width:200px;" v-model="form.staffNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -192,25 +192,25 @@
       </el-tree>
       <el-button @click="getCheckedNodes">点击弹出选中的部门的ID</el-button>
     </el-dialog>
-    <el-dialog :title='createTitle' :visible.sync="createDialogVisible" :close-on-click-modal="false" width="900px">
-      <el-form ref="form" :model="createForm" label-width="80px">
+    <el-dialog :title='createTitle' status-icon   :visible.sync="createDialogVisible" :close-on-click-modal="false" width="900px">
+      <el-form ref="createForm" :model="createForm"  :rules="rulesCreate" label-width="80px">
         <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
           <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">员工信息</div>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="员工编号:" label-width="150px">
+              <el-form-item label="员工编号:"prop="staffNum" label-width="150px">
                 <el-input style="width:200px;"  v-model="createForm.staffNum"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="员工姓名:" label-width="150px">
+              <el-form-item label="员工姓名:" prop="staffName" label-width="150px">
                 <el-input style="width:200px;" v-model="createForm.staffName"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="性别:" label-width="150px">
+              <el-form-item label="性别:" prop="staffSex" label-width="150px">
                 <template>
                   <el-radio v-model="createForm.staffSex" label="1">男</el-radio>
                   <el-radio v-model="createForm.staffSex" label="2">女</el-radio>
@@ -219,19 +219,19 @@
 
             </el-col>
             <el-col :span="12">
-              <el-form-item label="员工手机号:" label-width="150px">
+              <el-form-item label="员工手机号:" prop="staffTelephone" label-width="150px">
                 <el-input style="width:200px;" v-model="createForm.staffTelephone"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="员工邮箱:" label-width="150px">
+              <el-form-item label="员工邮箱:" prop="staffEmail" label-width="150px">
                 <el-input style="width:200px;" v-model="createForm.staffEmail"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="归属部门:" label-width="150px">
+              <el-form-item label="归属部门:" prop="departmentName" placeholder="请选择归属部门" label-width="150px">
                 <el-input style="width:80px;" :disabled="true"  v-model="createForm.departmentName"></el-input>
                 <el-button type="text" @click="selectDepartment">选择</el-button>
                 <el-button type="text" @click="clearDepartment">清空</el-button>
@@ -240,12 +240,12 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="是否离职:" label-width="150px">
+              <el-form-item label="是否离职:" prop="isDimission" label-width="150px">
                 <el-input style="width:200px;" placeholder="否" :disabled="true" v-model="createForm.isDimission"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="登录账号:" label-width="150px">
+              <el-form-item label="登录账号:" prop="accountId" label-width="150px">
                 <el-input style="width:200px;" :disabled="true" v-model="createForm.accountId"></el-input>
               </el-form-item>
             </el-col>
@@ -282,7 +282,7 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="备注:" label-width="150px">
+              <el-form-item label="备注:"prop="remark" label-width="150px">
                 <el-input style="width:200px;" v-model="createForm.remark"></el-input>
               </el-form-item>
             </el-col>
@@ -301,24 +301,24 @@
       </el-form>
     </el-dialog>
     <el-dialog :title='modifyTitle' :visible.sync="modifyDialogVisible" :close-on-click-modal="false" width="900px">
-      <el-form ref="form" :model="modifyForm" label-width="80px">
+      <el-form ref="form" :model="modifyForm" :rules="rulesModify" label-width="80px">
         <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
           <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">员工信息</div>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="员工编号:" label-width="150px">
+              <el-form-item label="员工编号:" prop="staffNum" label-width="150px">
                 <el-input style="width:200px;"  v-model="modifyForm.staffNum"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="员工姓名:" label-width="150px">
+              <el-form-item label="员工姓名:" prop="staffName" label-width="150px">
                 <el-input style="width:200px;" v-model="modifyForm.staffName"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-                <el-form-item label="性别:" label-width="150px">
+                <el-form-item label="性别:" prop="staffSex" label-width="150px">
                   <template>
                     <el-radio v-model="modifyForm.staffSex" label="1">男</el-radio>
                     <el-radio v-model="modifyForm.staffSex" label="2">女</el-radio>
@@ -326,14 +326,14 @@
                 </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="员工手机号:" label-width="150px">
+              <el-form-item label="员工手机号:" prop="staffTelephone" label-width="150px">
                 <el-input style="width:200px;" v-model="modifyForm.staffTelephone"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="员工邮箱:" label-width="150px">
+              <el-form-item label="员工邮箱:" prop="staffEmail" label-width="150px">
                 <el-input style="width:200px;" v-model="modifyForm.staffEmail"></el-input>
               </el-form-item>
             </el-col>
@@ -389,7 +389,7 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="备注:" label-width="150px">
+              <el-form-item label="备注:" prop="remark" label-width="150px">
                 <el-input style="width:200px;" v-model="modifyForm.remark"></el-input>
               </el-form-item>
             </el-col>
@@ -461,6 +461,17 @@
       relAccount: 0
     },
     data() {
+      var checkphone = (rule, value, callback) => {
+        // let phoneReg = /(^1[3|4|5|6|7|8|9]\d{9}$)|(^09\d{8}$)/;
+        if (value == "") {
+          callback(new Error("请输入手机号"));
+        } else if (!this.isCellPhone(value)) {//引入methods中封装的检查手机格式的方法
+          callback(new Error("请输入正确的手机号!"));
+        } else {
+          callback();
+        }
+      };
+
       return {
         total: 0,
         currentPage: 1,
@@ -484,6 +495,7 @@
           departmentId: '',
           upperDepartmentNo: '',
         },
+
         createForm:{
           staffNum:'',
           staffName:'',
@@ -495,7 +507,17 @@
           isDimission:'0',
           accountId:'',
           remark:'',
-
+        },
+        rulesCreate:{
+          staffNum: [{ required: true, message: '请输入员工编号', trigger: 'blur' },
+              { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }],
+          staffName:[{ required: true, message: '请输入员工姓名', trigger: 'blur' },
+            { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }],
+          staffSex:[{required: true}],
+          staffTelephone:[{ required: true, validator: checkphone, trigger: "blur" }],
+          staffEmail:[{ required: true, message: '请输入邮箱地址' },
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
+          remark:[{required:true}]
         },
         modifyForm:{
           staffNum:'',
@@ -508,6 +530,17 @@
           createTime:'',
           createEmp:'',
           remark:'',
+        },
+        rulesModify:{
+          staffNum: [{ required: true, message: '请输入员工编号', trigger: 'blur' },
+            { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }],
+          staffName:[{ required: true, message: '请输入员工姓名', trigger: 'blur' },
+            { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }],
+          staffSex:[{required: true}],
+          staffTelephone:[{ required: true, validator: checkphone, trigger: "blur" }],
+          staffEmail:[{ required: true, message: '请输入邮箱地址' },
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
+          remark:[{required:true}]
         },
 
         tableData: [],
@@ -726,6 +759,9 @@
       saveEmployee(){
 
         const self=this;
+        self.$refs["createForm"].validate(function (valid) {
+          //if(self.$options.methods.checkInput(self)==false) return;
+          if (valid) {
         self.$http.post("employee/insertStaff",self.createForm)
           .then(result => {
             this.createDialogVisible=false;
@@ -734,7 +770,12 @@
           .catch(function (error) {
             commonUtils.Log("employee/insertStaff:"+error);
             self.$message.error("新建用户失败");
-          })
+          })} else {
+            console.log('error submit!!');
+            return false;
+          }
+
+        })
 
       },
       cancelEmployee(){
@@ -743,7 +784,9 @@
       saveUpdate(){
         console.log("=========")
         const self=this;
-
+        self.$refs["createForm"].validate(function (valid) {
+          //if(self.$options.methods.checkInput(self)==false) return;
+          if (valid) {
         self.$http.post("employee/updateStaff",self.modifyForm)
           .then(result => {
 
@@ -753,8 +796,13 @@
           .catch(function (error) {
             commonUtils.Log("employee/updateStaff:"+error);
             self.$message.error("修改用户信息失败");
-          })
-        console.log("6666")
+          })} else {
+            console.log('error submit!!');
+            return false;
+          }
+
+        })
+
       },
       cancelUpdate(){
         this.modifyDialogVisible=false;
@@ -1125,6 +1173,15 @@
         this.modifyForm.departmentId=this.$refs.tree.getCheckedNodes()[0].id;
         this.dialogVisibleDepartmentModify=false;
       },
+      //检查手机号
+      isCellPhone(val) {
+        if (!/^1(3|4|5|6|7|8)\d{9}$/.test(val)) {
+          return false;
+        } else {
+          return true;
+        }
+      },
+
 
     }
   }
