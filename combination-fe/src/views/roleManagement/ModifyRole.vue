@@ -350,13 +350,14 @@
         const self = this;
         self.$refs[formName].validate((valid) => {
           if (valid) {
+            var roleid = this.$route.query.roleID;
             var param = {
               roleName: self.form.roleName,
             };
             self.$http.get("roleManage/judgeExist.do_", {
               params: param
             }).then((result) => {
-              if (result.page.roleStatus === 0 || result.page.roleStatus === 1) {
+              if ((result.page.roleStatus === 0 || result.page.roleStatus === 1)&&(result.page.roleId !== roleid)) {
                 alert("角色名称已存在");
               } else {
                 self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
