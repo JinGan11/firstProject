@@ -1,5 +1,8 @@
 package com.ucar.combination.model.dto;
 
+
+import java.util.Date;
+
 /**
  * @program: combination
  * @description: 账户权限数据传输BEAN
@@ -14,6 +17,60 @@ public class AccountPowerDto {
 	private String departmentName;
 	private String powerName;
 	private Integer accountState;
+	private Long createEmp;
+	private Date createTime;
+	private Long modifyEmp;
+	private Date modifyTime;
+	private String remark;
+	private String email;
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Long getCreateEmp() {
+		return createEmp;
+	}
+
+	public void setCreateEmp(Long createEmp) {
+		this.createEmp = createEmp;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Long getModifyEmp() {
+		return modifyEmp;
+	}
+
+	public void setModifyEmp(Long modifyEmp) {
+		this.modifyEmp = modifyEmp;
+	}
+
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
 
 	public String getAccountName() {
 		return accountName;

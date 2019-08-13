@@ -40,7 +40,13 @@
           T1.staff_name,
           T4.department_name,
           T3.power_name,
-          T.account_state
+          T.account_state,
+          T.create_emp,
+          T.create_time,
+          T.modify_emp,
+          T.modify_time,
+          T.account_remark remark,
+          T.account_secret_email email
           from t_account T JOIN t_staff T1 ON T.staff_id=T1.id
             JOIN t_r_account_power T2 ON T.id=T2.account_id
             JOIN t_power T3 ON T2.power_id=T3.power_id

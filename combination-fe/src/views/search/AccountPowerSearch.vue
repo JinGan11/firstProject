@@ -34,7 +34,11 @@
       </el-form-item>
     </el-form>
     <el-table ref="multipleTable" :data="tableData" border @selection-change='handleSelectionChange'>
-      <el-table-column prop="accountName" label="登录账号" width="140"></el-table-column>
+      <el-table-column prop="accountName" label="登录账号" width="140">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="formDetails(scope.row)">{{scope.row.accountName}}</el-button>
+        </template>
+      </el-table-column>
       <el-table-column prop="staffNum" label="员工编号" width="140"></el-table-column>
       <el-table-column prop="staffName" label="员工姓名" width="140"></el-table-column>
       <el-table-column prop="departmentName" label="员工所属部门" width="140"></el-table-column>
@@ -44,6 +48,12 @@
         </template>
       </el-table-column>
       <el-table-column prop="powerName" label="权限名称" width="140"></el-table-column>
+      <el-table-column prop="createEmp" v-if="false"  ></el-table-column>
+      <el-table-column prop="createTime"  v-if="false"  ></el-table-column>
+      <el-table-column prop="modifyEmp"   v-if="false"  ></el-table-column>
+      <el-table-column prop="modifyTime"  v-if="false" ></el-table-column>
+      <el-table-column prop="remark" v-if="false" ></el-table-column>
+      <el-table-column prop="email" v-if="false"  ></el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
@@ -67,7 +77,42 @@
         <el-button @click="cancel">取 消</el-button>
       </template>
     </el-dialog>
-
+    <el-dialog title='详情页面' :visible.sync="detailDialogVisible" :close-on-click-modal="false" width="600px">
+      <el-form :inline="true" label-width="130px" :model="formDetail" class="demo-form-inline">
+        <el-row>
+          <el-form-item label="登录账号">
+            <el-input v-model="formDetail.accountName">
+            </el-input>
+          </el-form-item>
+          <el-row>
+            <el-form-item label="员工编号">
+              <el-input v-model="formDetail.staffNum">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="密保邮箱">
+              <el-input v-model="formDetail.email"></el-input>
+            </el-form-item>
+          </el-row>
+          <el-row>
+            <el-form-item label="新建人">
+              <el-input v-model="formDetail.createEmp"></el-input>
+            </el-form-item>
+            <el-form-item label="新建时间">
+              <el-input v-model="formDetail.createTime"></el-input>
+            </el-form-item>
+          </el-row>
+          <el-form-item label="修改人">
+            <el-input v-model="formDetail.modifyEmp"></el-input>
+          </el-form-item>
+          <el-form-item label="修改时间">
+            <el-input v-model="formDetail.modifyTime"></el-input>
+          </el-form-item>
+          <el-form-item label="备注">
+            <el-input v-model="formDetail.remark"></el-input>
+          </el-form-item>
+        </el-row>
+      </el-form>
+    </el-dialog>
   </home>
 </template>
 
@@ -91,9 +136,22 @@
           accountState:'',
           status:'',
         },
+        formDetail:{
+          accountName:'',
+          staffId:'',
+          staffNum:'',
+          staffName:'',
+          email:'',
+          createEmp:'',
+          createTime:'',
+          modifyEmp:'',
+          modifyTime:'',
+          remark:'',
+        },
         tableData:[],
         AccountStatusEnums:{},
         exportDialogVisible:false,
+        detailDialogVisible:false,
         checkAll: false,
         checkRoles: [],
         roles: rolesOptions,
@@ -211,6 +269,19 @@
         this.checkAll = checkedCount === this.roles.length;
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.roles.length;
       },
+      formDetails(val){
+        this.formDetail.accountName=val.accountName;
+        this.formDetail.staffId=val.staffId;
+        this.formDetail.staffNum=val.staffNum;
+        this.formDetail.modifyTime=val.modifyTime;
+        this.formDetail.modifyEmp=val.modifyEmp;
+        this.formDetail.createEmp=val.createEmp;
+        this.formDetail.createTime=val.createTime;
+        this.formDetail.remark=val.remark;
+        this.formDetail.email=val.email;
+
+        this.detailDialogVisible=true;
+      }
     },
     mounted() {
       this.Search();
