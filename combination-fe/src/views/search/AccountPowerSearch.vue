@@ -2,31 +2,34 @@
   <home>
     <el-form :inline="true" label-width="130px" :model="accountForm" class="demo-form-inline">
       <el-row>
-      <el-form-item label="登录账号">
-        <el-input v-model="accountForm.accountName">
-        </el-input>
-      </el-form-item>
-      <el-form-item label="员工编号">
-        <el-input v-model="accountForm.staffNum"></el-input>
-      </el-form-item>
-      <el-form-item label="员工姓名">
-        <el-input v-model="accountForm.staffName"></el-input>
-      </el-form-item>
+        <el-form-item label="登录账号">
+          <el-input v-model="accountForm.accountName">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="员工编号">
+          <el-input v-model="accountForm.staffNum"></el-input>
+        </el-form-item>
+        <el-form-item label="员工所属部门">
+          <el-input :readonly="true" v-model="accountForm.departmentName"></el-input>
+          <el-button type="text" @click="selectDepartment">选择</el-button>
+          <el-button type="text" @click="clearDepartment">清空</el-button>
+        </el-form-item>
+
       </el-row>
       <el-row>
-      <el-form-item label="员工所属部门">
-        <el-input v-model="accountForm.departmentName"></el-input>
-      </el-form-item>
-      <el-form-item label="账号状态">
-        <el-select v-model="accountForm.accountState" value="0">
-          <el-option label="无效" value="3"></el-option>
-          <el-option label="正常" value="1"></el-option>
-          <el-option label="冻结" value="2"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="权限名称">
-        <el-input v-model="accountForm.path"></el-input>
-      </el-form-item>
+        <el-form-item label="员工姓名">
+          <el-input v-model="accountForm.staffName"></el-input>
+        </el-form-item>
+        <el-form-item label="账号状态">
+          <el-select v-model="accountForm.accountState" value="0">
+            <el-option label="无效" value="3"></el-option>
+            <el-option label="正常" value="1"></el-option>
+            <el-option label="冻结" value="2"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="权限名称">
+          <el-input v-model="accountForm.path"></el-input>
+        </el-form-item>
       </el-row>
       <el-form-item size="100px">
         <el-button type="primary" @click="Search">查询</el-button>
@@ -52,19 +55,19 @@
           <el-popover
             placement="bottom"
             width="200"
-            trigger="click"
+            trigger="hover"
             :content="scope.row.path">
             <el-button slot="reference" type="text">{{scope.row.path|ellipsis}}</el-button>
           </el-popover>
 
         </template>
       </el-table-column>
-      <el-table-column prop="createEmp" v-if="false"  ></el-table-column>
-      <el-table-column prop="createTime"  v-if="false"  ></el-table-column>
-      <el-table-column prop="modifyEmp"   v-if="false"  ></el-table-column>
-      <el-table-column prop="modifyTime"  v-if="false" ></el-table-column>
-      <el-table-column prop="remark" v-if="false" ></el-table-column>
-      <el-table-column prop="email" v-if="false"  ></el-table-column>
+      <el-table-column prop="createEmp" v-if="false"></el-table-column>
+      <el-table-column prop="createTime" v-if="false"></el-table-column>
+      <el-table-column prop="modifyEmp" v-if="false"></el-table-column>
+      <el-table-column prop="modifyTime" v-if="false"></el-table-column>
+      <el-table-column prop="remark" v-if="false"></el-table-column>
+      <el-table-column prop="email" v-if="false"></el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
@@ -92,38 +95,59 @@
       <el-form :inline="true" label-width="130px" :model="formDetail" class="demo-form-inline">
         <el-row>
           <el-form-item label="登录账号">
-            <el-input v-model="formDetail.accountName">
+            <el-input :readonly="true" v-model="formDetail.accountName">
             </el-input>
           </el-form-item>
           <el-row>
             <el-form-item label="员工编号">
-              <el-input v-model="formDetail.staffNum">
+              <el-input :readonly="true" v-model="formDetail.staffNum">
               </el-input>
             </el-form-item>
             <el-form-item label="密保邮箱">
-              <el-input v-model="formDetail.email"></el-input>
+              <el-input :readonly="true" v-model="formDetail.email"></el-input>
             </el-form-item>
           </el-row>
           <el-row>
             <el-form-item label="新建人">
-              <el-input v-model="formDetail.createEmp"></el-input>
+              <el-input :readonly="true" v-model="formDetail.createEmp"></el-input>
             </el-form-item>
             <el-form-item label="新建时间">
-              <el-input v-model="formDetail.createTime"></el-input>
+              <el-input :readonly="true" v-model="formDetail.createTime"></el-input>
             </el-form-item>
           </el-row>
           <el-form-item label="修改人">
-            <el-input v-model="formDetail.modifyEmp"></el-input>
+            <el-input :readonly="true" v-model="formDetail.modifyEmp"></el-input>
           </el-form-item>
           <el-form-item label="修改时间">
-            <el-input v-model="formDetail.modifyTime"></el-input>
+            <el-input :readonly="true" v-model="formDetail.modifyTime"></el-input>
           </el-form-item>
           <el-form-item label="备注">
-            <el-input v-model="formDetail.remark"></el-input>
+            <el-input :readonly="true" v-model="formDetail.remark"></el-input>
           </el-form-item>
         </el-row>
       </el-form>
     </el-dialog>
+    <!--选择部门时弹出的窗口-->
+    <el-dialog :title='titleDepartment' :visible.sync="dialogVisibleDepartment"  :close-on-click-modal="false" width="50%">
+      <div>
+        <span>选择要操作的部门</span>
+        <br><br>
+        <el-tree
+          ref="tree"
+          :props="defaultProps"
+          node-key="id"
+          :load="loadNode"
+          lazy="true"
+          check-strictly
+          show-checkbox
+          :render-content="renderContent"
+          @check-change="handleClick">
+        </el-tree>
+        <br>
+        <el-button type="primary" @click="getCheckedDepartment">确定</el-button>
+      </div>
+    </el-dialog>
+
   </home>
 </template>
 
@@ -133,36 +157,44 @@
     name: "accountPowerSearch",
     data() {
       return {
-        total:0,
-        pageSize:10,
-        currentPage:1,
-        selection:'',
-        accountForm:{
-          accountName:'',
-          staffId:'',
-          staffNum:'',
-          staffName:'',
-          departmentName:'',
-          path:'',
-          accountState:'',
-          status:'',
+        total: 0,
+        pageSize: 10,
+        currentPage: 1,
+        selection: '',
+        accountForm: {
+          accountName: '',
+          staffId: '',
+          staffNum: '',
+          staffName: '',
+          departmentName: '',
+          path: '',
+          accountState: '',
+          status: '',
         },
-        formDetail:{
-          accountName:'',
-          staffId:'',
-          staffNum:'',
-          staffName:'',
-          email:'',
-          createEmp:'',
-          createTime:'',
-          modifyEmp:'',
-          modifyTime:'',
-          remark:'',
+        formDetail: {
+          accountName: '',
+          staffId: '',
+          staffNum: '',
+          staffName: '',
+          email: '',
+          createEmp: '',
+          createTime: '',
+          modifyEmp: '',
+          modifyTime: '',
+          remark: '',
         },
-        tableData:[],
-        AccountStatusEnums:{},
-        exportDialogVisible:false,
-        detailDialogVisible:false,
+        defaultProps: {
+          label: 'departmentName',
+          children: 'children',
+          id: 'id',
+          status: 'status'
+        },
+        tableData: [],
+        AccountStatusEnums: {},
+        titleDepartment:'选择部门',
+        exportDialogVisible: false,
+        detailDialogVisible: false,
+        dialogVisibleDepartment:false,
         checkAll: false,
         checkRoles: [],
         roles: rolesOptions,
@@ -179,37 +211,37 @@
         this.currentPage = 1;
         this.Search(1, val);
       },
-      handleCurrentChange(val){
-        this.currentPage=val;
-        this.Search(val,this.pageSize);
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        this.Search(val, this.pageSize);
       },
       Search() {
         var self = this;
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
-          accountName:this.accountForm.accountName,
-          staffNum:this.accountForm.staffNum,
-          staffName:this.accountForm.staffName,
-          departmentName:this.accountForm.departmentName,
-          path:this.accountForm.path,
-          accountState:this.accountForm.accountState,
+          accountName: this.accountForm.accountName,
+          staffNum: this.accountForm.staffNum,
+          staffName: this.accountForm.staffName,
+          departmentName: this.accountForm.departmentName,
+          path: this.accountForm.path,
+          accountState: this.accountForm.accountState,
         };
         self.$http.get('/roleAccount/getAccountPowerList.do_', {
           params: param
         }).then((result) => {
-          if (result.status=="success"){
-            self.tableData=result.page.list;
-            self.total=result.page.totalCount;
-            this.AccountStatusEnums=result.AccountStatusEnums;
-            this.accountPowerList=result.page.list;
-          }else {
+          if (result.status == "success") {
+            self.tableData = result.page.list;
+            self.total = result.page.totalCount;
+            this.AccountStatusEnums = result.AccountStatusEnums;
+            this.accountPowerList = result.page.list;
+          } else {
             alert("查询失败");
           }
         })
       },
-      handleSelectionChange(val){
-        this.selection=val;
+      handleSelectionChange(val) {
+        this.selection = val;
       },
       exportRole() {
         this.exportDialogVisible = true;
@@ -280,19 +312,70 @@
         this.checkAll = checkedCount === this.roles.length;
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.roles.length;
       },
-      formDetails(val){
-        this.formDetail.accountName=val.accountName;
-        this.formDetail.staffId=val.staffId;
-        this.formDetail.staffNum=val.staffNum;
-        this.formDetail.modifyTime=val.modifyTime;
-        this.formDetail.modifyEmp=val.modifyEmp;
-        this.formDetail.createEmp=val.createEmp;
-        this.formDetail.createTime=val.createTime;
-        this.formDetail.remark=val.remark;
-        this.formDetail.email=val.email;
+      formDetails(val) {
+        this.formDetail.accountName = val.accountName;
+        this.formDetail.staffId = val.staffId;
+        this.formDetail.staffNum = val.staffNum;
+        this.formDetail.modifyTime = val.modifyTime;
+        this.formDetail.modifyEmp = val.modifyEmp;
+        this.formDetail.createEmp = val.createEmp;
+        this.formDetail.createTime = val.createTime;
+        this.formDetail.remark = val.remark;
+        this.formDetail.email = val.email;
+        this.detailDialogVisible = true;
+      },
+      /*selectDepartment到getCheckedDepartment是对应的部门操作*/
+      selectDepartment(){//选择部门
+        this.dialogVisibleDepartment=true;
+      },
+      clearDepartment(){//清除部门的值
+        this.form.applyDepartmentName='';
+      },
+      loadNode(node,resolve){
+        var self = this;
+        self.$http.get('department/buildTree.do_', {
+          params: null
+        }).then((result) => {
+          resolve([result.departmentDto]);
+        }).catch(function (error) {
 
-        this.detailDialogVisible=true;
-      }
+        });
+      },
+      renderContent(h, { node, data, store }) {
+        // 这里编译器有红色波浪线不影响运行...
+        if(data.status != 1){
+          return (
+            <span style="color:red">{node.label}</span>
+        );
+        }else{
+          return (
+            <span>{node.label}</span>
+        );
+        }
+      },
+      handleClick(data,checked,node){
+        // 手动设置单选
+        if(checked === true) {
+          this.checkedId = data.id;
+          this.$refs.tree.setCheckedKeys([data.id]);
+          // 设置按钮是否可选（选中节点后调用两次handleClick，第一次checked为true，所以设置按钮写在这）
+          if(data.status === 1){
+            this.operationBtnActive=false;
+          }else{
+            this.operationBtnActive=true;
+          }
+        } else {
+          if (this.checkedId == data.id) {
+            this.$refs.tree.setCheckedKeys([data.id]);
+          }
+        }
+      },
+      getCheckedDepartment() {
+        // 获取部门 回填到文本框中
+        // alert(this.$refs.tree.getCheckedNodes()[0].departmentName);
+        this.accountForm.departmentName=this.$refs.tree.getCheckedNodes()[0].departmentName;
+        this.dialogVisibleDepartment=false;
+      },
     },
     filters: {
       ellipsis(value) {
