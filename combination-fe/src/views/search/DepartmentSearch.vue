@@ -19,6 +19,13 @@
         </el-form-item>
         <el-form-item label="部门所在城市">
           <el-input v-model="formInline.cityName"></el-input>
+         <!-- <el-select v-model="formInline.cityName" value="0">
+            <el-option label="全部" value="0"></el-option>
+            <el-option label="门店" value="1"></el-option>
+            <el-option label="停车场" value="2"></el-option>
+            <el-option label="交车中心" value="3"></el-option>
+            <el-option label="维修厂" value="4"></el-option>
+          </el-select>-->
         </el-form-item>
         <el-form-item label="上级部门">
           <el-input v-model="formInline.upperDepartmentName">
@@ -29,15 +36,24 @@
       </el-row>
       <el-row>
         <el-form-item label="部门级别">
-          <el-input v-model="formInline.level">
-          </el-input>
+          <el-select v-model="formInline.level">
+            <el-option label="总部" value="5"></el-option>
+            <el-option label="分公司" value="4"></el-option>
+            <el-option label="管理部" value="3"></el-option>
+            <el-option label="区域" value="2"></el-option>
+            <el-option label="办公点" value="1"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="状态">
-          <el-input v-model="formInline.status"></el-input>
+          <el-select v-model="formInline.status" value="0">
+            <el-option label="无效" value="0"></el-option>
+            <el-option label="有效" value="1"></el-option>
+            <el-option label="全部" value=""></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="部门类型">
           <el-select v-model="formInline.departmentType" value="0">
-            <el-option label="全部" value="0"></el-option>
+            <el-option label="全部" value=""></el-option>
             <el-option label="门店" value="1"></el-option>
             <el-option label="停车场" value="2"></el-option>
             <el-option label="交车中心" value="3"></el-option>
@@ -379,6 +395,7 @@
         CompanyNatureEnum: {},
         DepartmentStatusEnum: {},
         AccountStatusEnums: {},
+        DepartmetnLevelEnums:{},
         titleDepartment: '选择部门',
         dialogVisibleDepartment: false,
         exportDialogVisible: false,
@@ -494,7 +511,7 @@
             for (let i = 0; i < list.length; i++) {
               list[i].departmentType = this.DepartmentTypeEnum[list[i].departmentType];
               list[i].status = this.StatusEnum[list[i].status];
-
+              list[i].level=this.LevelEnum[list[i].level];
             }
             const data = this.formatJson(filterVal, list);
             export_json_to_excel(tHeader, data, '员工管理列表excel');

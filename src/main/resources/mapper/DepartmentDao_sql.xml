@@ -252,6 +252,7 @@
             AND T.department_type=#{departmentType}
             </if>
         </where>
+        GROUP BY  T.status,T.create_time ORDER BY T.status DESC ,T.create_time DESC
     </select>
     <select id="getDepartmentDtoById" parameterType="java.lang.Long" resultType="com.ucar.combination.model.dto.DepartmentDto">
         SELECT T.id,
