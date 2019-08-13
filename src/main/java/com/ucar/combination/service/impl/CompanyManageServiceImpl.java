@@ -64,7 +64,6 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      * @date: 2019/8/8 9:25
      * @return：
      */
-
     public Map getCompanyById(int companyId){
         Company company=companyManageDao.getCompanyById(companyId);
         String createEmp=companyManageDao.getEmpById(company.getCreateEmp());
@@ -82,9 +81,11 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      * @date: 2019/8/8 9:26
      * @return：
      */
-
-    public void updateCompanyById(Company company){
+    public Map<String,Object> updateCompanyById(Company company){
+        Map<String,Object>map=new HashMap<>();
+        map.put("result",true);
         companyManageDao.updateCompanyById(company);
+        return map;
     }
     /**
      * description: 校验统一社会信用代码
@@ -93,13 +94,16 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      * @date: 2019/8/8 15:36
      * @return：
      */
-    public int creditCodeValidate(String creditCode){
+    public Map<String, Object> creditCodeValidate(String creditCode){
+        Map<String, Object> map = new HashMap<>();
+        map.put("result", true);
         Integer validate ;
         validate = companyManageDao.creditCodeValidate(creditCode);
-        if(validate == null){
-            return 0;
+        if(validate>0){
+            map.put("result", false);
+            map.put("msg", "统一社会信用代码已存在！");
         }
-        return validate.intValue();
+        return map;
     }
     @Override
     public ResultPage queryRelationList(QueryParam queryParam){
@@ -116,7 +120,9 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
         List oldRelationCompany=(List<Long>)queryParam.get("oldRelationList");
         List newRelationCompany= (List<Long>) queryParam.get("newRelationList");
         String departmentId=(String)queryParam.get("departmentId");
+
         long accountId=(long)queryParam.get("accountId");
+        System.out.println(accountId);
         //添加、不变
         for(int i=0;i<newRelationCompany.size();i++){
             int flag=0;

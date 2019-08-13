@@ -16,13 +16,13 @@
       <el-form ref="form" :model="form" label-width="100px">
         <el-row>
           <el-col :span="6">
-            <el-form-item label="企业名称" label-width="70px">
-              <el-input style="width:200px;" v-model="form.companyName"></el-input>
+            <el-form-item label="企业名称" >
+              <el-input style="width:190px;" v-model="form.companyName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="统一社会信用代码" label-width="135px" style="margin-left: 20px" >
-              <el-input style="width:200px" v-model="form.creditCode"></el-input>
+            <el-form-item label="统一社会信用代码" style="margin-left: 20px" label-width="140px">
+              <el-input style="width:180px" v-model="form.creditCode"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -53,9 +53,9 @@
         </el-row>
 
         <el-row>
-          <el-col :span="6">
+          <el-col :span="13">
             <el-form-item label="状态" >
-              <el-select v-model="form.companyStatus" clearable  style="width:200px;" placeholder="请选择">
+              <el-select v-model="form.companyStatus" clearable  style="width:190px;" placeholder="请选择">
                 <el-option
                   v-for="item in options3"
                   :key="item.value"
@@ -66,7 +66,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="时间" >
+            <el-form-item label="时间" label-width="115px">
               <el-date-picker
                 v-model="form.birthdayName"
                 type="datetimerange"
@@ -101,19 +101,19 @@
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
-      <el-table-column prop="id" label="编号" width="150">
+      <el-table-column prop="id" label="编号" width="100px">
         <template slot-scope="scope">
           <el-button type="text" @click="companyIdBtn(scope.row.id)">{{scope.row.id}}</el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="companyName" label="公司名称"width="150"></el-table-column>
-      <el-table-column prop="creditCode" label="统一社会信用代码" width="120"></el-table-column>
-      <el-table-column prop="companyType" label="类型" width="150" style="text-align: center">
+      <el-table-column prop="companyName" label="公司名称"></el-table-column>
+      <el-table-column prop="creditCode" label="统一社会信用代码" ></el-table-column>
+      <el-table-column prop="companyType" label="类型"  style="text-align: center">
         <template slot-scope="scope">
           {{CompanyTypeEnum[scope.row.companyType]}}
         </template>
       </el-table-column>
-      <el-table-column prop="companyNature" label="公司性质" width="100" style="text-align: center">
+      <el-table-column prop="companyNature" label="公司性质"  width="110" style="text-align: center">
         <template slot-scope="scope">
           {{CompanyNatureEnum[scope.row.companyNature]}}
         </template>
@@ -128,7 +128,7 @@
           {{CompanyStatusEnum[scope.row.companyStatus]}}
         </template>
       </el-table-column>
-      <el-table-column prop="modifyTime" label="修改时间" width="140"></el-table-column>
+      <el-table-column prop="modifyTime" label="修改时间" ></el-table-column>
       <el-table-column prop="modifyName" label="修改人" width="120"></el-table-column>
     </el-table>
     <el-pagination background
@@ -141,96 +141,85 @@
                    :total="total">
     </el-pagination>
 
-    <el-dialog :title="title" :visible.sync="companyFlag" :close-on-click-modal="false" width="900px">
-      <div class="dialog-main">
-          <br>
-          <span style="font-size: 20px">基本信息</span>
-          <hr><br>
+    <el-dialog :title="title" :visible.sync="companyFlag" :close-on-click-modal="false" width="1220px">
+      <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
+        <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">基本信息</div>
+<!--      <div class="dialog-main">-->
         <el-form :inline="true" :model="companyForm" class="demo-form-inline" :disabled="true" label-width="100px">
           <el-row>
-            <el-col :span="10">
-              <el-form-item label="公司名称">
+            <el-col :span="9">
+              <el-form-item label="公司名称:">
                 <el-input style="width:200px;" v-model="companyForm.companyName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="统一社会信用代码">
+              <el-form-item label="统一社会信用代码:" label-width="140px">
                 <el-input style="width:200px;" v-model="companyForm.creditCode"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-          <el-col :span="10">
-            <el-form-item label="类型">
-              <el-select v-model="companyForm.companyType" clearable  style="width:200px;" placeholder="请选择">
-                <el-option
-                  v-for="item in options1"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label="营业期限" >
-              <el-date-picker
-                v-model="businessTerm"
-                type="daterange"
-                format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期">
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
+            <el-col :span="10">
+              <el-form-item label="营业期限:" >
+                <el-date-picker
+                  v-model="companyForm.businessTerm"
+                  type="daterange"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期">
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
           </el-row>
           <el-row>
-            <el-col :span="10">
-              <el-form-item label="住所">
+            <el-col :span="9">
+              <el-form-item label="住所:">
                 <el-input style="width:200px;" v-model="companyForm.companyAddress"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="经营范围">
+              <el-form-item label="经营范围:" label-width="140px">
                 <el-input style="width:200px;" v-model="companyForm.businessScope"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="10">
-              <el-form-item label="法定代表人">
+            <el-col :span="9">
+              <el-form-item label="法定代表人:">
                 <el-input style="width:200px;" v-model="companyForm.legalPerson"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="注册资本">
+              <el-form-item label="注册资本:" label-width="140px" >
                 <el-input style="width:200px;" v-model="companyForm.registeredCapital"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="10">
-              <el-form-item label="成立日期">
-                <el-date-picker
-                  v-model="companyForm.establishTime"
-                  type="date"
-                  format="yyyy-MM-dd"
-                  value-format="yyyy-MM-dd"
-                  placeholder="选择日期">
-                </el-date-picker>
+            <el-col :span="9">
+              <el-form-item label="类型:">
+                <el-select v-model="companyForm.companyType" clearable  style="width:200px;" placeholder="请选择">
+                  <el-option
+                    v-for="item in options1"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
               </el-form-item>
+
             </el-col>
             <el-col :span="10">
-              <el-form-item label="登记机关">
+              <el-form-item label="登记机关:" label-width="140px">
                 <el-input style="width:200px;" v-model="companyForm.registeredInstitution"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="10">
-              <el-form-item label="核准日期">
+            <el-col :span="9">
+              <el-form-item label="核准日期:">
                 <el-date-picker
                   v-model="companyForm.causeTime"
                   type="date"
@@ -241,10 +230,23 @@
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="登记状态">
+              <el-form-item label="登记状态:" label-width="140px">
                 <el-input style="width:200px;" v-model="companyForm.registeredStatus"></el-input>
               </el-form-item>
             </el-col>
+          </el-row>
+          <el-row>
+          <el-col :span="9">
+            <el-form-item label="成立日期:">
+              <el-date-picker
+                v-model="companyForm.establishTime"
+                type="date"
+                format="yyyy-MM-dd"
+                value-format="yyyy-MM-dd"
+                placeholder="选择日期">
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
           </el-row>
           <div style="margin-bottom: 10px">
             <br>
@@ -262,8 +264,8 @@
             <hr ><br>
           </div>
           <el-row>
-            <el-col :span="10">
-              <el-form-item label="公司性质">
+            <el-col :span="9">
+              <el-form-item label="公司性质:">
                 <el-radio-group v-model="companyForm.companyNature">
                   <el-radio :label="1">一般纳税人</el-radio>
                   <el-radio :label="2">小规模纳税人</el-radio>
@@ -271,31 +273,31 @@
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="注册地址">
+              <el-form-item label="注册地址:" label-width="140px" >
                 <el-input style="width:200px;" v-model="companyForm.registrationAddress"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="10">
-              <el-form-item label="开户银行">
+            <el-col :span="9">
+              <el-form-item label="开户银行:">
                 <el-input style="width:200px;" v-model="companyForm.bankName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="账号">
+              <el-form-item label="账号:" label-width="140px">
                 <el-input style="width:200px;" v-model="companyForm.bankAccount"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="10">
-              <el-form-item label="注册电话">
+            <el-col :span="9">
+              <el-form-item label="注册电话:">
                 <el-input style="width:200px;" v-model="companyForm.telephone"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="总公司标志">
+              <el-form-item label="总公司标志:" label-width="140px">
                 <el-radio-group v-model="companyForm.companyMark">
                   <el-radio  :label="1">总公司</el-radio>
                   <el-radio  :label="2">子公司</el-radio>
@@ -309,32 +311,32 @@
             <br>
           </div>
           <el-row>
-            <el-col :span="10">
-              <el-form-item label="新建人">
+            <el-col :span="9">
+              <el-form-item label="新建人:">
                 <el-input style="width:200px;" v-model="companyForm.createEmp" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="新建时间">
+              <el-form-item label="新建时间:" label-width="140px">
                 <el-input style="width:200px;" v-model="companyForm.createTime" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="10">
-              <el-form-item label="修改人">
+            <el-col :span="9">
+              <el-form-item label="修改人:">
                 <el-input style="width:200px;" v-model="companyForm.modifyEmp" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="修改时间">
+              <el-form-item label="修改时间:" label-width="140px">
                 <el-input style="width:200px;" v-model="companyForm.modifyTime" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
-              <el-form-item label="状态">
+              <el-form-item label="状态:">
                 <el-select v-model="companyForm.companyStatus" clearable  style="width:200px;" placeholder="请选择">
                   <el-option
                     v-for="item in options3"
@@ -350,7 +352,7 @@
           </el-row>
           <el-row>
             <el-col :span="10">
-              <el-form-item label="备注">
+              <el-form-item label="备注:">
                 <el-input style="width:200px;" v-model="companyForm.remark"></el-input>
               </el-form-item>
             </el-col>
@@ -408,8 +410,9 @@
 
         title: '公司详情',
         companyFlag:false,
-        businessTerm:[],
+
         companyForm:{
+          businessTerm:[],
           businessStartTime:'',
           businessDeadline:'',
           companyName:'',
@@ -536,7 +539,6 @@
       },
       modifyCompany(val) {//点击修改按钮，跳转到修改公司页面
         window.localStorage.setItem('companyId',val);
-        //alert(window.localStorage.getItem('companyId'));
         this.$router.replace('/ModifyCompany')
       },
       changeButton(){
@@ -566,10 +568,8 @@
           }else{
             self.companyForm.companyStatus=String(self.companyForm.companyStatus);
           }
-          //self.companyForm.companyStatus=String(self.companyForm.companyStatus);
-          self.businessTerm=[result.list.company.businessStartTime,result.list.company.businessDeadline];
-          //self.businessTerm[0]=result.list.company.businessStartTime;
-          //self.businessTerm[1]=result.list.company.businessDeadline;
+          self.companyForm.businessTerm=[result.list.company.businessStartTime,result.list.company.businessDeadline];
+          console.log( self.businessTerm)
         }).catch(function (error) {
           commonUtils.Log("company/getCompanyById.do_:" + error);
           self.$message.error("获取数据错误");
@@ -584,6 +584,9 @@
 
 </script>
 <style scoped>
-
+  .el-dialog__body{
+    height: 1000px;
+    width: 100%;
+  }
 
 </style>

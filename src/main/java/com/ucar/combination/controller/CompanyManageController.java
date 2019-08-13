@@ -78,13 +78,19 @@ public class CompanyManageController {
      */
     @ResponseBody
     @RequestMapping(value = "/createCompany",method = RequestMethod.POST)
-    public String createCompany(@RequestBody Company company, HttpSession session){
+    public Map<String,Object> createCompany(@RequestBody Company company, HttpSession session){
 
         Long accountId = (Long) session.getAttribute("accountId");
         company.setCreateEmp(accountId);
         company.setModifyEmp(accountId);
-        companyManageService.insertCompany(company);
-        return "success";
+        System.out.println("******************************");
+        System.out.println(company.getCreateEmp());
+        Map<String, Object> map = companyManageService.creditCodeValidate(company.getCreditCode());
+        if((Boolean) map.get("result")){
+            companyManageService.insertCompany(company);
+        }
+
+        return map;
     }
     /**
      * description: 获取单一公司信息
@@ -110,11 +116,23 @@ public class CompanyManageController {
      */
     @ResponseBody
     @RequestMapping(value = "/modifyCompany",method = RequestMethod.POST)
-    public String updateCompanyById(@RequestBody Company company, HttpSession session){
+    public Map<String,Object> updateCompanyById(@RequestBody Company company, HttpSession session){
         Long accountId = (Long) session.getAttribute("accountId");
         company.setModifyEmp(accountId);
-        companyManageService.updateCompanyById(company);
-        return "success";
+        Map<String, Object> map=new HashMap<>();
+        System.out.println("修改公司");
+        System.out.println(company.getCreditCode());
+        System.out.println(company.getOldCreditCode());
+        if(company.getOldCreditCode().equals(company.getCreditCode())){
+            map=companyManageService.updateCompanyById(company);
+        }else{
+             map = companyManageService.creditCodeValidate(company.getCreditCode());
+            if((Boolean) map.get("result")){
+                map=companyManageService.updateCompanyById(company);
+            }
+        }
+
+        return map;
     }
 
     @ResponseBody
