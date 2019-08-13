@@ -1,41 +1,50 @@
 <template>
   <home>
     <el-form :inline="true" label-width="100px" :model="formInline" class="demo-form-inline">
-      <el-form-item label="部门名称">
-        <el-input v-model="formInline.departmentName">
-        </el-input>
-      </el-form-item>
-      <el-form-item label="负责人ID">
-        <el-input v-model="formInline.StaffId"></el-input>
-      </el-form-item>
-      <el-form-item label="负责人姓名">
-        <el-input v-model="formInline.StaffName"></el-input>
-      </el-form-item>
-      <el-form-item label="手机号">
-        <el-input v-model="formInline.telePhone"></el-input>
-      </el-form-item>
-      <el-form-item label="部门所在城市">
-        <el-input v-model="formInline.cityName"></el-input>
-      </el-form-item>
-      <el-form-item label="部门级别">
-        <el-input v-model="formInline.level">
-        </el-input>
-      </el-form-item>
-      <el-form-item label="上级部门">
-        <el-input v-model="formInline.upperDepartmentNo"></el-input>
-      </el-form-item>
-      <el-form-item label="状态">
-        <el-input v-model="formInline.status"></el-input>
-      </el-form-item>
-      <el-form-item label="部门类型">
-        <el-select v-model="formInline.departmentType" value="0">
-          <el-option label="全部" value="0"></el-option>
-          <el-option label="门店" value="1"></el-option>
-          <el-option label="停车场" value="2"></el-option>
-          <el-option label="交车中心" value="3"></el-option>
-          <el-option label="维修厂" value="4"></el-option>
-        </el-select>
-      </el-form-item>
+      <el-row>
+        <el-form-item label="部门名称">
+          <el-input v-model="formInline.departmentName">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="负责人ID">
+          <el-input v-model="formInline.StaffId"></el-input>
+        </el-form-item>
+        <el-form-item label="负责人姓名">
+          <el-input v-model="formInline.StaffName"></el-input>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="手机号">
+          <el-input v-model="formInline.telePhone"></el-input>
+        </el-form-item>
+        <el-form-item label="部门所在城市">
+          <el-input v-model="formInline.cityName"></el-input>
+        </el-form-item>
+        <el-form-item label="上级部门">
+          <el-input v-model="formInline.upperDepartmentName">
+          </el-input>
+          <el-button type="text" @click="selectDepartment">选择</el-button>
+          <el-button type="text" @click="clearDepartment">清空</el-button>
+        </el-form-item>
+      </el-row>
+      <el-row>
+        <el-form-item label="部门级别">
+          <el-input v-model="formInline.level">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="状态">
+          <el-input v-model="formInline.status"></el-input>
+        </el-form-item>
+        <el-form-item label="部门类型">
+          <el-select v-model="formInline.departmentType" value="0">
+            <el-option label="全部" value="0"></el-option>
+            <el-option label="门店" value="1"></el-option>
+            <el-option label="停车场" value="2"></el-option>
+            <el-option label="交车中心" value="3"></el-option>
+            <el-option label="维修厂" value="4"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-row>
       <br>
       <el-form-item size="100px">
         <el-button type="primary" @click="Search">查询</el-button>
@@ -43,19 +52,20 @@
       </el-form-item>
     </el-form>
     <el-table ref="multipleTable" :data="tableData" border @selection-change='handleSelectionChange'>
-     <!-- <el-table-column label="选择" width="45">
-        <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.id" @change="ChooseOnDetail"><span width="0px;"></span>
-          </el-radio>
-        </template> prop="departmentNo"
-      </el-table-column>-->
-      <el-table-column  label="部门编号" width="140">
+      <!-- <el-table-column label="选择" width="45">
+         <template slot-scope="scope">
+           <el-radio v-model="selection" :label="scope.row.id" @change="ChooseOnDetail"><span width="0px;"></span>
+           </el-radio>
+         </template> prop="departmentNo"
+       </el-table-column>-->
+      <el-table-column label="部门编号" width="140">
         //此处是BUG吧，一摸一样的写法，上面个TEMPLATE就不行，下面个行
-      <!--  <template slot-scope="scope">
-          <el-button type="text" size="small" @click="ChooseOnDetail(scope.row.id)">{{scop.row.departmentNo}}</el-button>
-        </template>-->
+        <!--  <template slot-scope="scope">
+            <el-button type="text" size="small" @click="ChooseOnDetail(scope.row.id)">{{scop.row.departmentNo}}</el-button>
+          </template>-->
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="ChooseOnDetail(scope.row.id)">{{scope.row.departmentNo}}</el-button>
+          <el-button type="text" size="small" @click="ChooseOnDetail(scope.row.id)">{{scope.row.departmentNo}}
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column prop="workplace" label="办公点标识" width="140"></el-table-column>
@@ -278,6 +288,28 @@
         <el-button @click="cancel">取 消</el-button>
       </template>
     </el-dialog>
+    <!--选择部门时弹出的窗口-->
+    <el-dialog :title='titleDepartment' :visible.sync="dialogVisibleDepartment" :close-on-click-modal="false"
+               width="50%">
+      <div>
+        <span>选择要操作的部门</span>
+        <br><br>
+        <el-tree
+          ref="tree"
+          :props="defaultProps"
+          node-key="id"
+          :load="loadNode"
+          lazy="true"
+          check-strictly
+          show-checkbox
+          :render-content="renderContent"
+          @check-change="handleClick">
+        </el-tree>
+        <br>
+        <el-button type="primary" @click="getCheckedDepartment">确定</el-button>
+      </div>
+    </el-dialog>
+
   </home>
 </template>
 <script>
@@ -322,9 +354,16 @@
           telePhone: '',
           cityName: '',
           level: '',
+          upperDepartmentName:'',
           upperDepartmentNo: '',
           status: '',
           departmentType: ''
+        },
+        defaultProps: {
+          label: 'departmentName',
+          children: 'children',
+          id: 'id',
+          status: 'status'
         },
         tableData: [],
         tableCity: [],
@@ -340,6 +379,8 @@
         CompanyNatureEnum: {},
         DepartmentStatusEnum: {},
         AccountStatusEnums: {},
+        titleDepartment: '选择部门',
+        dialogVisibleDepartment: false,
         exportDialogVisible: false,
         checkAll: false,
         checkdepartment: [],
@@ -357,7 +398,7 @@
         // alert(this.row.tableData[0].departmentNo);
         var param = {
           //id: this.selection,
-          id:val,
+          id: val,
           page: this.currentPageCompany,
           limit: this.pageSizeCompany,
         };
@@ -518,6 +559,65 @@
         let checkedCount = value.length;
         this.checkAll = checkedCount === this.department.length;
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.department.length;
+      },
+      /*selectDepartment到getCheckedDepartment是对应的部门操作*/
+      selectDepartment() {//选择部门
+        this.dialogVisibleDepartment = true;
+      },
+      clearDepartment() {//清除部门的值
+        this.formInline.upperDepartmentName = '';
+      },
+      loadNode(node, resolve) {
+        var self = this;
+        self.$http.get('department/buildTree.do_', {
+          params: null
+        }).then((result) => {
+          resolve([result.departmentDto]);
+        }).catch(function (error) {
+
+        });
+      },
+      renderContent(h, {node, data, store}) {
+        // 这里编译器有红色波浪线不影响运行...
+        if (data.status != 1) {
+          return (
+            < span
+          style = "color:red" > {node.label} < /span>
+        )
+          ;
+        } else {
+          return (
+            < span > {node.label} < /span>
+        )
+          ;
+        }
+      },
+      handleClick(data, checked, node) {
+        // 手动设置单选
+        if (checked === true) {
+          this.checkedId = data.id;
+          this.$refs.tree.setCheckedKeys([data.id]);
+          // 设置按钮是否可选（选中节点后调用两次handleClick，第一次checked为true，所以设置按钮写在这）
+          if (data.status === 1) {
+            this.operationBtnActive = false;
+          } else {
+            this.operationBtnActive = true;
+          }
+        } else {
+          if (this.checkedId == data.id) {
+            this.$refs.tree.setCheckedKeys([data.id]);
+          }
+        }
+      },
+      getCheckedDepartment() {
+        /*// 获取部门 回填到文本框中
+        // alert(this.$refs.tree.getCheckedNodes()[0].departmentName);
+        //upperDepartmentName是显示到上级部门的部门名称
+        upperDepartmentNo是查找时用的部门编号
+        */
+        this.formInline.upperDepartmentName = this.$refs.tree.getCheckedNodes()[0].departmentName;
+        this.formInline.upperDepartmentNo=this.$refs.tree.getCheckedNodes()[0].departmentNo;
+        this.dialogVisibleDepartment = false;
       },
     },
     mounted() {

@@ -805,7 +805,7 @@
             } else {
               self.$message.error("离职失败")
             }
-
+            location.reload();
           }).catch(function (error) {
             commonUtils.Log("employee/quitEmployee.do_" + error);
             self.$message.error("获取数据错误");
@@ -835,6 +835,7 @@
             } else {
               self.$message.error("恢复失败")
             }
+            location.reload();
           }).catch(function (error) {
             commonUtils.Log("employee/recoverEmployee.do_" + error);
             self.$message.error("恢复失败");
@@ -958,7 +959,6 @@
         this.disabled = false;
         this.id = val.id;
         this.accountId = val.accountId;
-
       },
       loadNode(node,resolve){
         var self = this;
