@@ -407,6 +407,7 @@
      mounted() {
        commonUtils.Log("页面进来");
        this.judgmentAuthority();
+       this.fetchData();
     },
 
     methods: {
