@@ -2,7 +2,7 @@
   <div style="width: 500px;position: fixed; left: 30%; top: 30%;">
     <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="100px"
              class="demo-ruleForm">
-      <el-form-item label="账号">
+      <el-form-item label="账号" prop="accountName">
         <el-input type="text" v-model="ruleForm.accountName" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="新密码" prop="newPass">
@@ -54,11 +54,14 @@
           checkPass: '',
         },
         rules: {
+          accountName: [
+            {required: true, trigger: 'blur'}
+          ],
           newPass: [
-            {validator: validatePass, trigger: 'blur'}
+            {validator: validatePass, required: true, trigger: 'blur'}
           ],
           checkPass: [
-            {validator: validatePass2, trigger: 'blur'}
+            {validator: validatePass2, required: true, trigger: 'blur'}
           ],
         }
       };

@@ -394,7 +394,7 @@
         }
       },
       clearPermission(){//清除权限的值
-        this.form.applyDepartmentName='';
+        this.form.powerName='';
       },
 
       exportExcel() {
