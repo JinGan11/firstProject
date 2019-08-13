@@ -14,7 +14,7 @@ import AccountManagement from '@/views/accountManagement/AccountList'
 import RoleManagement from '@/views/roleManagement/RoleManagement'
 import CompanyManagement from '@/views/companyManagement/CompanyList'
 import CreateAccount from '@/views/accountManagement/CreateAccount'
-import ModifyAccount from '@/views/accountManagement/ModifyAccount'
+import ModifyAccount from '@/views/accountManagement/modifyAccount'
 import CreateRole from '@/views/roleManagement/CreateRole'
 import CreateRoleApply from '@/views/roleManagement/CreateRoleApply'
 import CreateCompany from'@/views/companyManagement/CreateCompany'
@@ -32,7 +32,9 @@ import RoleInf from "../views/roleManagement/RoleInf";
 import DepartmentUpdate from "@/views/departmentManagement/DepartmentUpdate";
 import AccountPowerSearch from "@/views/search/AccountPowerSearch";
 import RelationCompanyList from "@/views/companyManagement/RelationCompanyList";
+import rolePower from "@/views/search/RolePowerSearch";
 import ResetPass from "@/views/accountManagement/ResetPass";
+
 Vue.use(Router)
 
 export default new Router({
@@ -181,6 +183,11 @@ export default new Router({
     path: '/RoleInf',
     name: '角色信息',
     component: RoleInf,
+    meta: {requireAuth: true}
+  },{
+    path:'/search/roleSearch/rolePower',
+    name:'角色功能权限明细',
+    component:rolePower,
     meta: {requireAuth: true}
   },{
     path: "/departmentManagement/updateDepartment",
