@@ -90,8 +90,8 @@
     </div>
 
     <div style="margin-bottom: 10px">
-      <el-button type="primary" @click="createCompany" :disabled="companyButtonPermission.createPermission" style="width:70px">新建</el-button>
-      <el-button type="primary" @click="modifyCompany(selection)" :disabled="disabled || companyButtonPermission.modifyPermission" style="width:70px">修改</el-button>
+      <el-button type="primary" @click="createCompany" v-if="!companyButtonPermission.createPermission" style="width:70px">新建</el-button>
+      <el-button type="primary" @click="modifyCompany(selection)" v-if="!companyButtonPermission.modifyPermission" :disabled="disabled" style="width:70px">修改</el-button>
     </div>
 
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >

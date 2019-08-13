@@ -52,7 +52,7 @@
           </el-col>
           <el-col :span="3" >
             <el-form-item>
-              <el-button type="primary" style="width: 100px" @click="exportVisible = true" :disabled="provinceBtnPermission.exportPermission" size="medium">导出</el-button>
+              <el-button type="primary" style="width: 100px" @click="exportVisible = true" v-if="!provinceBtnPermission.exportPermission" size="medium">导出</el-button>
             </el-form-item>
           </el-col>
 <!--          <el-col :span="3" >-->

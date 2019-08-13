@@ -22,11 +22,11 @@
       </el-form>
     </div>
     <div style="margin-bottom: 10px">
-      <el-button type="primary" @click="createRole" :disabled="buttonPermission.createPermission" style="width:100px">新建</el-button>
-      <el-button type="primary" @click="modifyRole(selection)" :disabled="isModify || buttonPermission.modifyPermission" style="width:100px">修改</el-button>
-      <el-button type="primary" @click="deleteRole" :disabled="isModify || buttonPermission.deletePermission" style="width:100px">删除</el-button>
-      <el-button type="primary" @click="addAccount" :disabled="isAddCount || buttonPermission.addAccountPermission" style="width:100px">添加账号</el-button>
-      <el-button type="primary" @click="roleAssignPermission" :disabled="isModify || buttonPermission.assignPermission" style="width:100px">分配权限</el-button>
+      <el-button type="primary" @click="createRole" v-if="!buttonPermission.createPermission" style="width:100px">新建</el-button>
+      <el-button type="primary" @click="modifyRole(selection)" v-if="!buttonPermission.modifyPermission" :disabled="isModify" style="width:100px">修改</el-button>
+      <el-button type="primary" @click="deleteRole" v-if="!buttonPermission.deletePermission" :disabled="isModify" style="width:100px">删除</el-button>
+      <el-button type="primary" @click="addAccount" v-if="!buttonPermission.addAccountPermission" :disabled="isAddCount" style="width:100px">添加账号</el-button>
+      <el-button type="primary" @click="roleAssignPermission" v-if="!buttonPermission.assignPermission" :disabled="isModify" style="width:100px">分配权限</el-button>
     </div>
 
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">

@@ -81,12 +81,12 @@
       </el-form>
     </div>
     <div style="margin-bottom: 10px" v-if="!buttonDisabled">
-      <el-button type="primary" @click="createEmployee" :disabled="empButtonPermission.createPermission" style="width:70px">新建</el-button>
-      <el-button type="primary" @click="modifyEmployee" :disabled="disabled || empButtonPermission.modifyPermission" style="width:70px">修改</el-button>
-      <el-button type="primary" @click="deleteEmployee" :disabled="disabled || empButtonPermission.deletePermission" style="width:70px">删除</el-button>
-      <el-button type="primary" @click="quitEmployee" :disabled="disabled || empButtonPermission.quitPermission" style="width:70px">离职</el-button>
-      <el-button type="primary" @click="recovery" :disabled="disabled || empButtonPermission.recoveryPermission" style="width:70px">恢复</el-button>
-      <el-button type="primary" @click="distributionDepartment" :disabled="disabled || empButtonPermission.assignDepPermission" style="width:80px">分配部门</el-button>
+      <el-button type="primary" @click="createEmployee" v-if="!empButtonPermission.createPermission"  style="width:70px">新建</el-button>
+      <el-button type="primary" @click="modifyEmployee" v-if="!empButtonPermission.modifyPermission" :disabled="disabled" style="width:70px">修改</el-button>
+      <el-button type="primary" @click="deleteEmployee" v-if="!empButtonPermission.deletePermission" :disabled="disabled" style="width:70px">删除</el-button>
+      <el-button type="primary" @click="quitEmployee" v-if="!empButtonPermission.quitPermission" :disabled="disabled" style="width:70px">离职</el-button>
+      <el-button type="primary" @click="recovery" v-if="!empButtonPermission.recoveryPermission" :disabled="disabled" style="width:70px">恢复</el-button>
+      <el-button type="primary" @click="distributionDepartment" v-if="!empButtonPermission.assignDepPermission" :disabled="disabled" style="width:80px">分配部门</el-button>
     </div>
     <div style="margin-bottom: 10px" v-else>
       <el-button type="primary" @click="confirmChoice" style="width:70px">确认选择</el-button>

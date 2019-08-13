@@ -76,7 +76,7 @@
           </el-col>
           <el-col :span="6" >
             <el-form-item>
-              <el-button type="primary" style="width: 100px" @click="exportVisible=true" :disabled="countyBtnPermission.exportPermission" size="medium">导出</el-button>
+              <el-button type="primary" style="width: 100px" @click="exportVisible=true" v-if="!countyBtnPermission.exportPermission" size="medium">导出</el-button>
             </el-form-item>
           </el-col>
         </el-row>
