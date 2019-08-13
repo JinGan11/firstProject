@@ -23,6 +23,15 @@ public class AccountStaff extends BaseBean {
     String secretEmail;
     String remark;
     String tree;
+    String []departmentIds;
+
+    public String[] getDepartmentIds() {
+        return departmentIds;
+    }
+
+    public void setDepartmentIds(String[] departmentIds) {
+        this.departmentIds = departmentIds;
+    }
 
     public String getAccountName() {
         return accountName;

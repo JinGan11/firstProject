@@ -237,14 +237,11 @@
  	  @author junqiang.zhang@ucarinc.com
  	 -->
     <insert id="insertDepartmentPower" parameterType="com.ucar.combination.model.DepartmentPower">
-        INSERT INTO  t_r_department_power(
-            account_id,
-            department_id
-        )
-        VALUES (
-                #{accountId},
-                #{departmentId}
-               )
+        INSERT INTO  t_r_department_power( account_id,department_id )
+        VALUES
+        <foreach collection="departmentId"  item="item" separator=",">
+            (#{accountId},#{item})
+        </foreach>
     </insert>
     <!-- description: 手动选择数据权限删除权限
  	  @author junqiang.zhang@ucarinc.com-->
@@ -277,12 +274,12 @@
 
     <select id="selectAccountInfoById" parameterType="Integer" resultType="com.ucar.combination.model.AccountHistory">
         select ac.id as account_id,ac.create_emp,ac.create_time,ac.permissions,st.staff_name,st.staff_num
-from
-t_account ac, t_staff st
-WHERE
-ac.staff_id=st.id
-And
-ac.id=#{id}
+        from
+        t_account ac, t_staff st
+        WHERE
+        ac.staff_id=st.id
+        And
+        ac.id=#{id}
     </select>
 
     <update id="updateModifyTimeAndModifyName" parameterType="com.ucar.combination.model.Account">
@@ -290,6 +287,13 @@ ac.id=#{id}
         set t1.modify_emp=#{a.modifyEmpId},t1.modify_time=#{a.modifyTime}
         where t1.id = #{a.id}
     </update>
+    <!-- description: 查询账户名是否存在-->
+    <!-- * @author junqiang.zhang@ucarinc.com-->
+    <select id="selectAccountByAccountName" parameterType="String" resultType="String">
+        select account_name
+        from t_account
+        WHERE account_name = #{AccountName}
+    </select>
 
 </mapper>
 

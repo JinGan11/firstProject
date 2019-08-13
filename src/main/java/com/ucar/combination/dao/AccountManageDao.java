@@ -144,5 +144,12 @@ public interface AccountManageDao {
     AccountHistory selectAccountInfoById(Integer id);
 
     void updateModifyTimeAndModifyName(@Param("a") Account account);
-
+    /**
+     * description: 查询账户名是否存在 
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/13 10:41
+     * @params: accountName 账户名
+     * @return: List<String> 查询到的账户
+    */
+    List<String> selectAccountByAccountName(String accountName);
 }

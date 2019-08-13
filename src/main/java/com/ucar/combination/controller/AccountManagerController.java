@@ -72,6 +72,7 @@ public class AccountManagerController {
     public void createAccount(@RequestBody AccountStaff accountStaff, HttpSession session){
         try {
             Long user = (Long) session.getAttribute("accountId");
+            accountStaff.setAccountName(accountStaff.getAccountName().toLowerCase());
             accountStaff.setCreateEmp(user);
             accountStaff.setModifyEmp(user);
             accountManagerService.insertAccount(accountStaff);
@@ -205,6 +206,7 @@ public class AccountManagerController {
     public void modifyAccount(@RequestBody AccountStaff accountStaff,HttpSession session){
         try {
             accountStaff.setModifyEmp((Long) session.getAttribute("accountId"));
+            accountStaff.setCreateEmp((Long) session.getAttribute("accountId"));
             if(accountStaff.getStaffId() == null){
                 accountStaff.setStaffId(0L);
             }
@@ -223,6 +225,20 @@ public class AccountManagerController {
         }catch(Exception e) {
             throw new RuntimeException("");
         }
+    }
+
+    /**
+     * description: 查询账户名是否存在
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/13 10:41
+     * @params: request
+     * @return: int 查询到的账户条数
+     */
+    @ResponseBody
+    @RequestMapping("/checkAccountName.do_")
+    public int checkAccountName(HttpServletRequest request){
+        String accountName = request.getParameter("accountName").toLowerCase();
+        return accountManagerService.selectAccountByAccountName(accountName);
     }
     /**
      * description: 查询账户的部门权限
@@ -255,6 +271,7 @@ public class AccountManagerController {
     @ResponseBody
     @RequestMapping(value = "deleAccount.do_",method = RequestMethod.POST)
     public void deleAccount(@RequestBody AccountStaff accountStaff,HttpSession session){
+        accountStaff.setCreateEmp((Long) session.getAttribute("accountId"));
         accountStaff.setModifyEmp((Long) session.getAttribute("accountId"));
         accountManagerService.deleteAccountById(accountStaff);
     }

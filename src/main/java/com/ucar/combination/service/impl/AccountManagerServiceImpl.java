@@ -69,7 +69,7 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     public void insertAccount(AccountStaff accountStaff) {
         accountStaff.setPassword(DigestUtils.md5DigestAsHex((accountStaff.getPassword()).getBytes()));
         accountManageDao.insertAccount(accountStaff);
-        accountStaff.setOperationType("新增");
+        accountStaff.setOperationType("新建账号");
         accountStaff.setAccountId(accountManageDao.selectIdByNum(accountStaff.getAccountName()));
         insertAccountHistory(accountStaff);
     }
@@ -142,6 +142,8 @@ public class AccountManagerServiceImpl implements AccountManagerService {
      */
     @Override
     public int updateStaffAccount(AccountStaff accountStaff) {
+        accountStaff.setOperationType("修改账号");
+        insertAccountHistory(accountStaff);
         return employeeManageDao.updateAccount(accountStaff);
     }
 
@@ -173,10 +175,9 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     public void insertDepartmentPower(Long accountId, String tree) {
         DepartmentPower departmentPower = new DepartmentPower();
         departmentPower.setAccountId(accountId);
-        for(String departmentId:tree.split(" ")){
-            departmentPower.setDepartmentId(Long.parseLong(departmentId));
-            accountManageDao.insertDepartmentPower(departmentPower);
-        }
+        departmentPower.setDepartmentId(tree.split(" "));
+        accountManageDao.insertDepartmentPower(departmentPower);
+
     }
 
     /**
@@ -212,9 +213,9 @@ public class AccountManagerServiceImpl implements AccountManagerService {
      */
     @Override
     public int deleteAccountById(AccountStaff accountStaff) {
-        int flag = accountManageDao.deleteAccountById(accountStaff);
+        accountStaff.setOperationType("删除账号");
         insertAccountHistory(accountStaff);
-        return flag;
+        return accountManageDao.deleteAccountById(accountStaff);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -236,5 +237,17 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         accountManageDao.updateModifyTimeAndModifyName(account);
         accountManageDao.updateStatus(id, status);
         accountHistoryDao.insert(accountHistory);
+    }
+    /**
+     * description: 查询账户名是否存在
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/13 10:41
+     * @params: accountName 账户名
+     * @return: int 查询到的账户条数
+     */
+    @Override
+    public int selectAccountByAccountName(String accountName) {
+        List account = accountManageDao.selectAccountByAccountName(accountName);
+        return account.size();
     }
 }

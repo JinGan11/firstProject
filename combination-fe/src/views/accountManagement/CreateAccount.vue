@@ -12,7 +12,7 @@
     </div>
     <hr style="width: 70%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
     <div style="width:85%; margin-left: 30px; float: left">
-      <el-form  :model="newForm" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="120px"
+      <el-form  :model="newForm" status-icon :rules="rules" ref="newForm" size="medium" label-width="120px"
                  class="demo-ruleForm">
         <el-row>
           <el-col :span="9">
@@ -154,6 +154,27 @@
    import commonUtils from '../../common/commonUtils'
   export default {
     data() {
+      var validatePass = (rule, value, callback) => {
+        const self = this;
+        var param = {
+          accountName: value
+        };
+        self.$http.get('account/checkAccountName.do_',{
+          params: param
+        }).then((result) => {
+          if (result > 0) {
+            callback(new Error('账户已存在'));
+          }else{
+            if (self.newForm.checkPass !== '') {
+              self.$refs.newForm.validateField('checkPass');
+            }
+            callback();
+          }
+        }).catch(function (error) {
+          commonUtils.Log("account/checkAccountName.do_" + error);
+          self.$message.error("账户校验错误");
+        });
+      };
       return {
         defaultProps: {
           label: 'departmentName',
@@ -188,8 +209,8 @@
           accountName: [
             { required: true, message: '请输入登入账号', trigger: 'blur' },
             { pattern:/^(.*[\da-zA-Z@._]+$)/,message: '支持\'@._\字母和数字，请勿输入其他字符', trigger: 'blur' },
-            { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
-
+            { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' },
+            {validator: validatePass, trigger: 'blur'}
           ],
           permissions:[
             { required: true, message: '请选择数据类型'}
@@ -253,7 +274,7 @@
       },
       save() {//保存新建账户信息
         const self = this;
-        self.$refs["ruleForm"].validate(function(valid) {
+        self.$refs["newForm"].validate(function(valid) {
           if (valid) {
             if (self.newForm.permissions == 5 && self.$refs.tree.getCheckedNodes().length == 0) {
               self.$message.info("请选择部门");
@@ -290,6 +311,9 @@
         self.newForm.staffName = '';
         self.newForm.staffNum = '';
         self.newForm.secretEmail = '';
+        if(self.newForm.permissions == 2 || self.newForm.permissions == 3){
+          self.newForm.permissions == '';
+        }
         self.emailDisabled = false;
       },
       chooseStaff(staffData){//关联员工
@@ -307,7 +331,11 @@
       },
       pressionChange(){//当数据权限为手动选择是，选择部门框可见
         const self = this;
-        var a = self.newForm.permissions;
+        if((self.newForm.staffNum == ''||self.newForm.staffNum == null) && self.newForm.permissions >= 2
+          && self.newForm.permissions <= 3){
+          self.newForm.permissions = '';
+          self.$message.error('未选择员工，不可选该权限');
+        }
         self.departmentVisible = (self.newForm.permissions==5)?true:false;
       }
     },
