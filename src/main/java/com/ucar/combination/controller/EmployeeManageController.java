@@ -86,25 +86,35 @@ public class EmployeeManageController {
 
     }
     /**
-     * description:在员工表更改员工状态为无效
+     * description:在员工表逻辑删除员工：员工状态更为无效，对应账户状态更为无效，并插入历史记录表
      * @author shiya.li@ucarinc.com
      * @date   2019/8/7 9:47
      * @params 员工id
      * @return
      */
     @ResponseBody
-    @RequestMapping("/updateStatus.do_")
+    @RequestMapping("/deleteEmployee")
     public Result update(HttpServletRequest request){
-        String strid = request.getParameter("id");
-        String straccountId=request.getParameter("accountId");
+        int id = Integer.parseInt(request.getParameter("id"));
+        String accountId=request.getParameter("accountId");
+        int accountID=Integer.parseInt(accountId);
 
-        int id = Integer.parseInt(strid);
-        int accountId=Integer.parseInt(straccountId);
-        System.out.print("id:"+id);
-        System.out.print("accountId:"+accountId);
         employeeManageService.updateStatus(id);
-        accountManagerService.updateStatus(accountId,3);
+        accountManagerService.updateStatus(accountID,3);
+
+        Account account=accountManagerService.selectAccountById(accountId);
+        AccountStaff accountStaff=new AccountStaff();
+        /*accountStaff.setAccountId(Long.valueOf(accountId));*/
+        accountStaff.setAccountId(account.getId());
+        accountStaff.setOperationType("员工删除");
+        accountStaff.setStaffName(account.getStaffName());
+        accountStaff.setStaffNum(account.getStaffNum());
+        accountStaff.setPermissions(account.getPremissions());
+        accountStaff.setAccountState(account.getaccountState());
+        accountStaff.setCreateEmp(account.getId());
+        accountManagerService.insertAccountHistory(accountStaff);
         return Result.ok();
+        
     }
 
     /**
