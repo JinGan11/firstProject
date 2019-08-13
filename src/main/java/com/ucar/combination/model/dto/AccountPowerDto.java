@@ -23,6 +23,15 @@ public class AccountPowerDto {
 	private Date modifyTime;
 	private String remark;
 	private String email;
+	private String path;
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
 
 	public String getEmail() {
 		return email;
