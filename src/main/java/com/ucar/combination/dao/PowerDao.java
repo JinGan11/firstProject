@@ -42,7 +42,14 @@ public interface PowerDao {
      * @params
      * @return
      */
-    List<RolePowerDto> queryRolePowerList(Map<String, Object> map);
+   /* List<RolePowerDto> queryRolePowerList(Map<String, Object> map);*/
     List<RolePowerDto> queryRolePowerList(RolePowerDto rolePowerDto);
-
+    /**
+     * description: 角色权限明细查询导出列表
+     * @author shiya.li@ucarinc.com
+     * @date   2019/8/13 9:00
+     * @params
+     * @return
+     */
+    /* List<RolePowerDto> getRolePowerDtoList();*/
 }

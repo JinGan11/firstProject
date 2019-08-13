@@ -1,0 +1,66 @@
+﻿<template>
+  <home>
+
+
+    <!--
+    check-strictly：选中子节点后父节点不会跟着选中。
+    如果要多选，删掉handleClick里面全部代码。
+     -->
+    <el-tree
+      ref="tree"
+      :props="defaultProps"
+      node-key="id"
+      :load="loadNode"
+      lazy="true"
+      check-strictly
+      show-checkbox
+      @check-change="handleClick">
+    </el-tree>
+    <br>
+    <el-button type="primary" @click="getCheckedDeptId">点击获取选中部门id</el-button>
+
+
+  </home>
+</template>
+<script>
+  export default {
+    data() {
+      return {
+        defaultProps: {
+          label: 'departmentName',
+          children: 'children',
+          isLeaf: 'nodeIsLeaf',
+          id: 'id',
+          no: 'departmentNo',
+        }
+      };
+    },
+    methods: {
+      getCheckedDeptId(){
+        alert(this.$refs.tree.getCheckedNodes()[0].id);
+        // getCheckedNodes()获取的是数组
+        // .id可以改为.departmentNo或.departmentName等defaultProps中定义的属性
+      },
+      loadNode(node,resolve){
+        var self = this;
+        self.$http.get('department/buildTree2.do_')
+          .then((result) => {
+          resolve([result.departmentDto]);
+        }).catch(function (error) {
+
+        });
+      },
+      handleClick(data,checked,node){
+        // 手动设置单选
+        if(checked === true) {
+          this.checkedId = data.id;
+          this.$refs.tree.setCheckedKeys([data.id]);
+        } else {
+          if (this.checkedId == data.id) {
+            this.$refs.tree.setCheckedKeys([data.id]);
+          }
+        }
+      },
+    }
+  };
+</script>

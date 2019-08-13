@@ -230,6 +230,7 @@
         accountAssignPermissionFlag: false,
         accountAssignPermissionTitle: '账号权限分配',
         checkStrictly: false,
+        row: {},
 
         AccountButtonPermission: {
           createPermission: true,
@@ -291,16 +292,49 @@
         });
       },
       lock(){
-        let accountId  = {
-          id:this.selection
-        }
-        this.$http.post("account/lock",accountId)
+        this.$confirm('此操作将冻结该员工, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let accountId  = {
+            id:this.selection
+          };
+          this.$http.post("account/lock",accountId).then((result) => {
+            this.$message.success("冻结成功")
+          }).catch(function (error) {
+            commonUtils.Log("account/lock" + error);
+            this.$message.error("冻结失败");
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消冻结'
+          });
+        });
       },
       unlock(){
-        let accountId  = {
-          id:this.selection
-        }
-        this.$http.post("account/unLock",accountId)
+        this.$confirm('此操作将冻结该员工, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          let accountId  = {
+            id:this.selection
+          };
+          this.$http.post("account/unLock",accountId).then((result) => {
+            this.$message.success("解冻成功");
+          }).catch(function (error) {
+            commonUtils.Log("account/unlock" + error);
+            this.$message.error("解冻失败")
+
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消解冻'
+          });
+        });
       },
       handleCheckChange () {
         var a = '1';
@@ -356,9 +390,13 @@
       },
       deleteAccount(){
         const self = this;
-        var param = {
-          accountId: localStorage.getItem("accountId")
-        };
+         var param = {
+           accountId: self.row.id,
+           staffNum: self.row.staffNum,
+           staffName: self.row.staffName,
+           permissions: self.row.premissions,
+           accountState: self.row.accountState
+         };
         self.$http.post('account/deleAccount.do_',param)
           .then((result)=>{
             self.$message.info("删除成功");
@@ -371,6 +409,7 @@
       },
       approvalInfo(val){
         const self = this;
+        self.row = val;
         self.disabled = false;
         if(val.accountState != 3){
           self.deleteDisabled = false;

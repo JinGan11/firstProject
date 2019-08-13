@@ -62,7 +62,7 @@
             <el-form-item>
               <div v-if="!buttonDisabled">
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
-                <el-button type="primary" style="width:100px" @click="">导出</el-button>
+                <el-button type="primary" style="width:100px" @click="exportRolePower">导出</el-button>
               </div>
               <div v-else>
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
@@ -127,13 +127,26 @@
         <el-button type="primary" @click="getCheckedDepartment">确定</el-button>
       </div>
     </el-dialog>
-
+    <el-dialog :title='excelTitle' :visible.sync="rolePowerDialogVisible" :close-on-click-modal="false" width="600px">
+      <template>
+        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+        <div style="margin: 15px 0;"></div>
+        <el-checkbox-group v-model="checkRolePowers" @change="handleCheckRolePowerChange">//单选框
+          <el-checkbox v-for="rolePower in rolePowers" :label="rolePower" :key="rolePower">{{rolePower}}</el-checkbox>
+        </el-checkbox-group>
+      </template>
+      <template slot="footer">
+        <el-button type="primary" @click="exportExcel">确定导出</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </template>
+    </el-dialog>
   </home>
 
 </template>
 
 <script>
   import commonUtils from '../../common/commonUtils'
+  const rolePowersOptions = ['角色ID', '角色名称','支持业务线', '审批人账号', '审批人员工编号', '审批人姓名', '审批人所属部门', '角色状态', '权限名称'];
   export default {
     data() {
       return {
@@ -161,6 +174,16 @@
         dialogVisibleDepartment:false,
         buttonDisabled: false,
         titleDepartment:'选择部门',
+        excelTitle: '请选择需要导出的字段',
+        isIndeterminate: true,
+        checkAll: false,
+        rolePowerDialogVisible:false,
+        checkRolePowers: [],
+        rolePowers:rolePowersOptions,
+        rolePowerDtoList:[],
+        filterVal: [],
+        RoleStatusEnum: [],
+
       }
     },
     filters: {
@@ -211,6 +234,8 @@
           .then((result) => {
           self.tableData = result.page.list;
           self.total = result.page.totalCount;
+          self.rolePowerDtoList = result.rolePowerDtoList;
+          self.RoleStatusEnum = result.RoleStatusEnum;
         }).catch(function (error) {
           commonUtils.Log("queryRolePowerlist.do_:" + error);
           self.$message.error("获取数据错误");
@@ -268,6 +293,81 @@
       },
       clearDepartment(){//清除部门的值
         this.form.applyDepartmentName='';
+      },
+      exportRolePower(){
+        this.rolePowerDialogVisible = true;
+      },
+      handleCheckAllChange(val) {
+        this.checkRolePowers = val ? rolePowersOptions : [];
+        this.isIndeterminate = false;
+      },
+      handleCheckRolePowerChange(value) {
+        let checkedCount = value.length;
+        this.checkAll = checkedCount === this.rolePowers.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.rolePowers.length;
+      },
+      exportExcel() {
+        if(this.checkRolePowers.length ===0){
+          this.$message({
+            showClose: false,
+            message: '请选择需要导出的字段',
+            type: 'error'
+          });
+        }else{
+          require.ensure([], () => {
+            const {export_json_to_excel} = require('../../excel/Export2Excel');
+            const tHeader = this.checkRolePowers;
+            // 上面设置Excel的表格第一行的标题
+
+            const filterVal = this.exportField(this.checkRolePowers);
+            // 上面的staffNum、accountId、staffName是tableData里对象的属性
+            const list = this.rolePowerDtoList;  //把data里的tableData存到list
+            for (let i = 0; i < list.length; i++) {
+              list[i].roleStatus = this.RoleStatusEnum[list[i].roleStatus];
+            }
+            console.log(list);
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '角色权限列表excel');
+            this.$message({
+              showClose: true,
+              message: '文件导出成功',
+              type: 'success'
+            });
+            this.rolePowerDialogVisible=false;
+            this.checkRolePowers=[];
+            this.filterVal=[];
+          })
+        }
+      },
+      exportField(val) {
+        for (let i = 0; i < val.length; i++) {
+          if (this.checkRolePowers[i] === '角色ID') {
+            this.filterVal.push('roleId')
+          } else if (this.checkRolePowers[i] === '角色名称') {
+            this.filterVal.push('roleName')
+          } else if (this.checkRolePowers[i] === '支持业务线') {
+            this.filterVal.push('businessLine')
+          } else if (this.checkRolePowers[i] === '审批人账号') {
+            this.filterVal.push('approverAccountName')
+          } else if (this.checkRolePowers[i] === '审批人员工编号') {
+            this.filterVal.push('approverStaffNum')
+          } else if (this.checkRolePowers[i] === '审批人姓名') {
+            this.filterVal.push('approverStaffName')
+          } else if (this.checkRolePowers[i] === '审批人所属部门') {
+            this.filterVal.push('approverDepartmentName')
+          } else if (this.checkRolePowers[i] === '角色状态') {
+            this.filterVal.push('roleStatus')
+          } else if (this.checkRolePowers[i] === '权限名称') {
+            this.filterVal.push('powerName')
+          }
+        }
+        return this.filterVal;
+      },
+      formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
+      },
+      cancel() {
+        this.rolePowerDialogVisible = false;
       },
     }
   }

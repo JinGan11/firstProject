@@ -33,12 +33,12 @@
         </el-row>
 
         <el-row>
-          <el-col :span="10">
+          <el-col :span="8">
             <el-form-item label="所属部门">
-              <el-input placeholder="所属部门" :disabled="true" style="width:400px;" v-model="form.departmentId"></el-input>
+              <el-input placeholder="所属部门" :disabled="true" style="width:300px;" v-model="form.departmentId"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="2">
+          <el-col :span="4">
             <el-button
               type="text"
               @click="">选择
@@ -48,13 +48,13 @@
               @click="">清空
             </el-button>
           </el-col>
-          <el-col :span="10">
+          <el-col :span="8">
             <el-form-item label="上级部门">
-              <el-input placeholder="上级部门" :disabled="true" style="width:400px;"
+              <el-input placeholder="上级部门" :disabled="true" style="width:300px;"
                         v-model="form.upperDepartmentNo"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="2">
+          <el-col :span="4">
             <el-button
               type="text"
               @click="">选择

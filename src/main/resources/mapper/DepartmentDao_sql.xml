@@ -192,6 +192,17 @@
     <select id="selectLevel" resultType="Integer">
         select level from t_department where id=#{id}
     </select>
+    <select id="selectDepartmentTree2Dto" resultType="com.ucar.combination.model.dto.DepartmentTree2Dto">
+        SELECT
+        id,
+        department_no,
+        department_name,
+        upper_department_no,
+        support_business,
+        status
+        FROM t_department
+        ORDER BY id
+    </select>
 
     <select id="searchDepartment" resultType="com.ucar.combination.model.dto.SearchDepartmentDto">
         SELECT

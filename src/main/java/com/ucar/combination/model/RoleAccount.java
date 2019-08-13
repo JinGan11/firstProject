@@ -3,7 +3,7 @@ package com.ucar.combination.model;
 public class RoleAccount {
     private Integer Id;
     private String roleName;
-    private Byte businessLine;
+    private String businessLine;
     private String accountName;
     private Integer staffNum;
     private String staffName;
@@ -17,10 +17,6 @@ public class RoleAccount {
 
     public String getRoleName() {
         return roleName;
-    }
-
-    public Byte getBusinessLine() {
-        return businessLine;
     }
 
     public String getAccountName() {
@@ -55,9 +51,9 @@ public class RoleAccount {
         this.roleName = roleName;
     }
 
-    public void setBusinessLine(Byte businessLine) {
-        this.businessLine = businessLine;
-    }
+    public String getBusinessLine() { return businessLine; }
+
+    public void setBusinessLine(String businessLine) { this.businessLine = businessLine; }
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;

@@ -1,6 +1,7 @@
 <template>
   <home>
-    <el-form :inline="true" label-width="100px" :model="accountForm" class="demo-form-inline">
+    <el-form :inline="true" label-width="130px" :model="accountForm" class="demo-form-inline">
+      <el-row>
       <el-form-item label="登录账号">
         <el-input v-model="accountForm.accountName">
         </el-input>
@@ -11,12 +12,14 @@
       <el-form-item label="员工姓名">
         <el-input v-model="accountForm.staffName"></el-input>
       </el-form-item>
+      </el-row>
+      <el-row>
       <el-form-item label="员工所属部门">
         <el-input v-model="accountForm.departmentName"></el-input>
       </el-form-item>
       <el-form-item label="账号状态">
         <el-select v-model="accountForm.accountState" value="0">
-          <el-option label="无效" value="0"></el-option>
+          <el-option label="无效" value="3"></el-option>
           <el-option label="正常" value="1"></el-option>
           <el-option label="冻结" value="2"></el-option>
         </el-select>
@@ -24,7 +27,7 @@
       <el-form-item label="权限名称">
         <el-input v-model="accountForm.powerName"></el-input>
       </el-form-item>
-      <br>
+      </el-row>
       <el-form-item size="100px">
         <el-button type="primary" @click="Search">查询</el-button>
         <el-button @click="exportRole">导出</el-button>
@@ -208,6 +211,9 @@
         this.checkAll = checkedCount === this.roles.length;
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.roles.length;
       },
+    },
+    mounted() {
+      this.Search();
     }
   }
 </script>

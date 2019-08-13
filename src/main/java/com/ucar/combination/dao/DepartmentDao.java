@@ -2,10 +2,7 @@ package com.ucar.combination.dao;
 
 import com.ucar.combination.model.Department;
 import com.ucar.combination.model.dto.*;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
-
-import javax.jnlp.IntegrationService;
 import java.util.List;
 import java.util.Map;
 
@@ -167,6 +164,8 @@ public interface DepartmentDao {
      * @return
      */
     Integer selectLevel(Long id);
+
+    List<DepartmentTree2Dto> selectDepartmentTree2Dto();
 
     /*
      * description:

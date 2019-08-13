@@ -4,10 +4,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Department;
-import com.ucar.combination.model.dto.DepartmentDto;
-import com.ucar.combination.model.dto.DepartmentEditDto;
-import com.ucar.combination.model.dto.DepartmentTreeDto;
-import com.ucar.combination.model.dto.DepartmentUpperDto;
+import com.ucar.combination.model.dto.*;
 
 import java.util.List;
 import java.util.Map;
@@ -111,7 +108,7 @@ public interface DepartmentService {
      */
     List<Long> selectDataPowerIds(Long accountId);
 
-    /*
+    /**
      * description: 校验
      * @author 郑开添（kaitian.zheng@ucarinc.com）
      * @date 2019/8/12 10:30
@@ -129,6 +126,14 @@ public interface DepartmentService {
      */
     Map<String, Object> checkWorkplaceForUpper(Long id, String upperDepartment);
 
+    /**
+     * description: 建立部门树用于其他模块选择
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/12 17:09
+     * @params
+     * @return
+     */
+    DepartmentTree2Dto buildTree2();
 
     ResultPage searchDepartment(QueryParam queryParam);
 

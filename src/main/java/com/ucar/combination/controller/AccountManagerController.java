@@ -74,12 +74,11 @@ public class AccountManagerController {
             Long user = (Long) session.getAttribute("accountId");
             accountStaff.setCreateEmp(user);
             accountStaff.setModifyEmp(user);
-            Long accountId = accountManagerService.insertAccount(accountStaff);
+            accountManagerService.insertAccount(accountStaff);
             if(accountStaff.getPermissions() == 5){
-                accountManagerService.insertDepartmentPower(accountId,accountStaff.getTree());
+                accountManagerService.insertDepartmentPower(accountStaff.getAccountId(),accountStaff.getTree());
             }
             if(accountStaff.getStaffId()!= null && accountStaff.getStaffId()!= 0) {
-                accountStaff.setAccountId(accountId);
                 accountManagerService.updateStaffAccount(accountStaff);
             }
         }catch(Exception e) {
@@ -155,6 +154,7 @@ public class AccountManagerController {
     public void update(HttpServletRequest request){
         String strid = request.getParameter("accountId");
         int id = Integer.parseInt(strid);
+        //**************************************
         accountManagerService.updateStatus(id,3);
 
     }
@@ -173,22 +173,22 @@ public class AccountManagerController {
         ResultPage ownedRole = roleManagementService.getOwnedRoleList(account);
         return Result.ok().put("notOwnedRole" ,notOwnedRole).put("ownedRole", ownedRole);
     }
-    //冻结
+    //冻结账户信息
     @ResponseBody
     @RequestMapping(value = "/lock",method = RequestMethod.POST)
-    public Result lockAccount(@RequestBody Map<String,String> map){
+    public Result lockAccount(@RequestBody Map<String,String> map,HttpServletRequest request){
         String accountId = map.get("id");
         Integer status = 2;
-        accountManagerService.updateStatus(Integer.parseInt(accountId),status);
+        accountManagerService.lockAndUnlock(Integer.parseInt(accountId),status,"冻结",request);
         return null;
     }
 
     @ResponseBody
     @RequestMapping(value = "/unLock",method = RequestMethod.POST)
-    public Result unLockAccount(@RequestBody Map<String,String> map){
+    public Result unLockAccount(@RequestBody Map<String,String> map,HttpServletRequest request){
         String accountId = map.get("id");
         Integer status = 1;
-        accountManagerService.updateStatus(Integer.parseInt(accountId),status);
+        accountManagerService.lockAndUnlock(Integer.parseInt(accountId),status,"解冻",request);
         return null;
     }
 
@@ -251,6 +251,7 @@ public class AccountManagerController {
      * @params: accountStaff 账户id
      * @return:
      */
+    @Transactional
     @ResponseBody
     @RequestMapping(value = "deleAccount.do_",method = RequestMethod.POST)
     public void deleAccount(@RequestBody AccountStaff accountStaff,HttpSession session){

@@ -150,8 +150,11 @@ public class PowerController {
 ////        params.put("power_name",power_name);
 //        ResultPage resultPage = powerService.queryRolePowerList(new QueryParam(params));
             ResultPage resultPage = powerService.queryRolePowerList(rolePowerDto);
+            List<RolePowerDto> rolePowerDtoList = powerService.getRolePowerDtoList(rolePowerDto);
 
-        return new Result().ok().put("page", resultPage).put("RoleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values()));
+
+        return new Result().ok().put("page", resultPage).put("RoleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values()))
+                .put("rolePowerDtoList",rolePowerDtoList);
 
 
     }

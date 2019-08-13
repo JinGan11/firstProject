@@ -12,7 +12,7 @@
             <el-form-item  label="支持业务线">
               <el-select v-model="form.businessLine" clearable style="width:200px;" placeholder="请选择">
                 <el-option
-                  v-for="item in options"
+                  v-for="item in form.businessLineOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -42,7 +42,7 @@
             <el-form-item  label="角色状态">
               <el-select v-model="form.roleStatus" clearable style="width:200px;" placeholder="请选择">
                 <el-option
-                  v-for="item in options"
+                  v-for="item in form.roleStatusOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -54,7 +54,7 @@
             <el-form-item  label="账号状态">
               <el-select v-model="form.accountState" clearable style="width:200px;" placeholder="请选择">
                 <el-option
-                  v-for="item in options"
+                  v-for="item in form.accountStateOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -73,7 +73,7 @@
             <el-form-item>
               <div v-if="!buttonDisabled">
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
-                <el-button type="primary" style="width:100px" :disabled="roleADetailBtnPermission.exportPermission" @click="exportExcel">导出</el-button>
+                <el-button type="primary" @click="exportVisible=true"style="width:100px">导出</el-button>
               </div>
               <div v-else>
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
@@ -83,26 +83,32 @@
         </el-row>
       </el-form>
     </div>
-    <div style="margin-bottom: 10px" v-if="!buttonDisabled">
-    </div>
-    <div style="margin-bottom: 10px" v-else>
-    </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
-      <el-table-column label="选择" width="45">
-        <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.staffNum" @change="selectionActive"><span width="0px;"></span></el-radio>
-        </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
       <el-table-column prop="id" label="角色ID" width="120"></el-table-column>
       <el-table-column prop="roleName" label="角色名称" width="150"></el-table-column>
-      <el-table-column prop="businessLine" label="支持业务线" width="150"></el-table-column>
+      <el-table-column prop="businessLine" label="支持业务线" width="150">
+        <template slot-scope="scope">
+          {{scope.row.businessLine=="1"?'买买车'
+          :(scope.row.accountState=="2"?'闪贷':(scope.row.accountState=="3"?'租车'
+          :(scope.row.accountState=="4"?'专车':'保险')))}}
+        </template>
+      </el-table-column>
       <el-table-column prop="accountName" label="登陆账号" width="150"></el-table-column>
       <el-table-column prop="staffNum" label="员工编号" width="150"></el-table-column>
       <el-table-column prop="staffName" label="员工姓名" width="150"></el-table-column>
       <el-table-column prop="departmentName" label="所属部门" width="150"></el-table-column>
-      <el-table-column prop="roleStatus" label="角色状态" width="150"></el-table-column>
-      <el-table-column prop="accountState" label="账号状态" width="150"></el-table-column>
+      <el-table-column prop="roleStatus" label="角色状态" width="150">
+        <template slot-scope="scope">
+          {{scope.row.roleStatus===1?'有效':'无效'}}
+        </template>
+      </el-table-column>
+      <el-table-column prop="accountState" label="账号状态" width="150">
+        <template slot-scope="scope">
+          {{scope.row.accountState=="1"?'正常':(scope.row.accountState=="2"?'冻结':'无效')}}
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
@@ -113,41 +119,37 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
-    <el-dialog :title='excelTitle' :visible.sync="dialogVisible" :close-on-click-modal="false" width="600px">
+    <!--导出弹窗-->
+    </el-dialog>
+    <el-dialog :title='excelTitle' :visible.sync="exportVisible" :close-on-click-modal="false" width="600px">
       <template>
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         <div style="margin: 15px 0;"></div>
-        <el-checkbox-group v-model="checkedemployees" @change="handleCheckedEmployeesChange">
-          <el-checkbox v-for="city in employees" :label="city" :key="city">{{city}}</el-checkbox>
+        <el-checkbox-group v-model="checkedRoleAccountProps" @change="handleCheckedRoleAccountPropsChange">
+          <el-checkbox v-for="props in roleAccountProps" :label="props" :key="props">{{props}}</el-checkbox>
         </el-checkbox-group>
       </template>
       <template slot="footer">
-        <el-button type="primary" @click="exportExcel">确定导出</el-button>
+        <el-button type="primary" @click="exportVisible">确定导出</el-button>
         <el-button @click="cancel">取 消</el-button>
       </template>
     </el-dialog>
   </home>
-
 
 </template>
 
 <script>
   import commonUtils from '../../common/commonUtils'
 
-  const roleAccountOptions = ['角色ID', '角色名称', '支持业务线', '登录账号', '员工编号', '员工姓名', '所属部门', '角色状态', '账号状态'];
+  const roleAccountPropsEnums = ['角色ID', '角色名称', '支持业务线', '登录账号', '员工编号', '员工姓名', '所属部门', '角色状态', '账号状态'];
   export default {
-    // name: "roleAccount-list",
-    // inject:['test1'],
-    props: {
-      relAccount: false
-    },
     data() {
       return {
         total: 0,
         currentPage: 1,
         pageSize: 10,
         excelForm: {
-          roleId:'',
+          accountId:'',
           roleName:'',
           businessLine:'',
           accountName:'',
@@ -156,7 +158,7 @@
           departmentName: '',
           roleStatus:'',
           accountState:'',
-
+          roleAccountList:[],
         },
         form: {
           roleName:'',
@@ -166,61 +168,62 @@
           staffName: '',
           roleStatus:'',
           accountState: '',
-          // isDimission: '',
           departmentName: '',
+          businessLineOptions: [{
+            value: '',
+            label: '全部'
+          }, {
+            value: '1',
+            label: '买买车'
+          }, {
+            value: '2',
+            label: '闪贷'
+          }, {
+            value: '3',
+            label: '租车'
+          }, {
+            value: '4',
+            label: '专车'
+          }, {
+            value: '5',
+            label: '保险'
+          }],
+          accountStateOptions: [{
+            value: '',
+            label: '全部'
+          }, {
+            value: '1',
+            label: '正常'
+          }, {
+            value: '2',
+            label: '冻结'
+          }, {
+            value: '3',
+            label: '无效'
+          }],
+          roleStatusOptions: [{
+            value: '',
+            label: '全部'
+          }, {
+            value: '1',
+            label: '有效'
+          }, {
+            value: '0',
+            label: '无效'
+          }],
+
+          //导出文件
+          exportVisible:false,
+          isIndeterminate: true,
+          checkAll:false,
+          excelTitle: '请选择需要导出的字段',
+          checkedRoleAccountProps:[],
+          roleAccountProps: roleAccountPropsEnums,
+          filterVal: [],
         },
+
         tableData: [],
         selection: '',
-
-        roleADetailBtnPermission: {
-          exportPermission: true
-        }
-        // id: '',
-        // staffName: '',
-        // accountId: '',
-        // staffSex: '',
-        // SexEnum: {},
-        // staffTelephone: '',
-        // staffEmail: '',
-        // departmentId: '',
-        // upperDepartmentNo: '',
-        // isDimission: '',
-        // isDimissionEnum: {},
-        // title: '模板',
-        // excelTitle: '请选择需要导出的字段',
-        // dialogVisible: false,
-        // templateGroupName: '测试',
-        // description: '测试',
-        // staffDtoList: [],
-        // formdiStributionDepartment: {
-        //   staffId: '',
-        //   staffName: '',
-        //   staffSex: '',
-        //   staffPhone: '',
-        //   staffBeforeDepartment: '',
-        //   staffAfterDepartment: '',
-        // },
-        // distributionDepartmentFlag: false,
-        // deleteEmployeeFlag: false,
-        // options: [{
-        //   value: '2',
-        //   label: '全部'
-        // }, {
-        //   value: '0',
-        //   label: '在职'
-        // }, {
-        //   value: '1',
-        //   label: '离职'
-        // }],
-        // cloumnDisabled: false,
-        // buttonDisabled: false,
-        // checkAll: false,
-        // checkedroleAccount: [],
-        // roleAccount:roleAccountOptions,
-        // isIndeterminate: true,
-        // filterVal: [],
-        // list:[],
-        // disabled:true
       }
     },
     filters: {
@@ -231,49 +234,14 @@
         return value.substr(0, 3) + "****" + value.substr(-4);
       }
     },
-    // activated() {
-    //   commonUtils.Log("页面激活");
-    // },
-    // mounted() {
-    //   commonUtils.Log("页面进来");
-    // },
-    created(){
-      var self = this;
-      self.judgmentAuthority();
-      if(self.relAccount) {
-        self.form.isDimission = '在职';
-        self.buttonDisabled = true;
-        self.cloumnDisabled = true;
-        var param = {
-          page: self.currentPage,
-          limit: self.pageSize,
-          isDimission: 0,
-        };
-
-        self.$http.get('employee/querylist.do_', {
-          params: param
-        }).then((result) => {
-          self.tableData = result.page.list;
-          self.total = result.page.totalCount;
-          self.SexEnum = result.SexEnum;
-          self.isDimissionEnum = result.isDismissionEnum;
-          self.staffDtoList = result.staffDtoList;
-        }).catch(function (error) {
-          commonUtils.Log("employee/querylist.do_:" + error);
-          self.$message.error("获取数据错误");
-        })
-      };
+    activated() {
+      commonUtils.Log("页面激活");
+    },
+    mounted() {
+      commonUtils.Log("页面进来");
+      this.fetchData();
     },
     methods: {
-      judgmentAuthority() {
-        const self = this;
-        let permission = self.$store.state.powerList;
-        permission.forEach(item=>{
-          if (item === 55) {
-            self.roleADetailBtnPermission.exportPermission = false
-          }
-        });
-      },
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;
@@ -286,36 +254,34 @@
       handleSelectionChange(val) {
         this.selection = val;
       },
-      fetchData() { //获取数据
+      fetchData() { //根据查询条件获取数据
         var self = this;
-         var param = {
-        //   page: self.currentPage,
-        //   limit: self.pageSize,
-           roleName: self.form.roleName,
-           businessLine:self.form.businessLine,
-           accountName:self.form.accountName,
-           staffNum: self.form.staffNum,
-           staffName:self.form.staffName,
-           roleStatus:self.form.roleStatus,
-           accountState:self.form.accountState,
-           departmentName: self.form.departmentName,
-        //   isDimission: (self.form.isDimission === '2') ? '' : self.form.isDimission,
-        //   accountId: self.form.accountId,
-         };
+        var param = {
+          roleName: self.form.roleName,
+          businessLine:self.form.businessLine,
+          accountName:self.form.accountName,
+          staffNum: self.form.staffNum,
+          staffName:self.form.staffName,
+          roleStatus:self.form.roleStatus,
+          accountState:self.form.accountState,
+          departmentName: self.form.departmentName,
+        };
         self.$http.get('roleAccount/getRoleAccountList.do',{params: param}).then((result) => {
+          //对取回来的数据进行处理
+          console.log(result.page);
           self.tableData = result.page.list;
+          self.roleAccountList = result.roleAccountList;
           self.total = result.page.totalCount;
-          // self.SexEnum = result.SexEnum;
-          // self.isDimissionEnum = result.isDismissionEnum;
-          // self.staffDtoList = result.staffDtoList;
+          self.pageSize=result.page.pageSize;
+          self.currentPage=result.page.currPage;
         }).catch(function (error) {
-          commonUtils.Log("employee/querylist.do_:" + error);
+          commonUtils.Log("roleAccount/getRoleAccountList.do:" + error);
           self.$message.error("获取数据错误");
         });
       },
 
       exportExcel() {
-        if(this.checkedroleAccount.length ===0){
+        if(this.checkedRoleAccountProps.length ===0){
           this.$message({
             showClose: false,
             message: '请选择需要导出的字段',
@@ -324,33 +290,54 @@
         }else{
           require.ensure([], () => {
             const {export_json_to_excel} = require('../../excel/Export2Excel');
-            const tHeader = this.checkedroleAccount;
+            const tHeader = this.checkedRoleAccountProps;
             // 上面设置Excel的表格第一行的标题
 
-            const filterVal = this.exportField(this.checkedroleAccount);
+            const filterVal = this.exportField(this.checkedRoleAccountProps);
             // 上面的staffNum、accountId、staffName是tableData里对象的属性
-            const list = this.staffDtoList;  //把data里的tableData存到list
+            const list = this.roleAccountList;  //把data里的tableData存到list
             for (let i = 0; i < list.length; i++) {
-              if(list[i].isDimission === 0){
-                list[i].isDimission='在职'
-              }else if(list[i].isDimission === 1){
-                list[i].isDimission='离职'
+              if(list[i].roleStatus === 0){
+                list[i].roleStatus='无效'
+              }else if(list[i].roleStatus === 1){
+                list[i].roleStatus ='有效'
               }
-              if(list[i].staffSex === 1){
-                list[i].staffSex='男'
-              }else if(list[i].staffSex === 2){
-                list[i].staffSex='女'
+              if(list[i].accountState === 1){
+                list[i].accountState ='正常'
+              }else if(list[i].accountState === 2){
+                list[i].accountState ='冻结'
+              }else if(list[i].accountState === 3){
+                list[i].accountState ='无效'
+              }
+              if(list[i].accountState === 1){
+                list[i].accountState ='正常'
+              }else if(list[i].accountState === 2){
+                list[i].accountState ='冻结'
+              }else if(list[i].accountState === 3){
+                list[i].accountState='无效'
+              }
+              if(list[i].businessLine === 1){
+                list[i].businessLine ='买买车'
+              }else if(list[i].businessLine === 2){
+                list[i].businessLine='闪贷'
+              }else if(list[i].businessLine === 3){
+                list[i].businessLine ='租车'
+              }
+              else if(list[i].businessLine === 4){
+                list[i].businessLine ='专车'
+              }else if(list[i].businessLine === 5){
+                list[i].businessLine ='保险'
               }
             }
             const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '员工管理列表excel');
+            export_json_to_excel(tHeader, data, '角色账号明细列表excel');
             this.$message({
               showClose: true,
               message: '文件导出成功',
               type: 'success'
             });
-            this.dialogVisible=false;
-            this.checkedroleAccount=[];
+            this.exportVisible=false;
+            this.checkedRoleAccountProps=[];
             this.filterVal=[];
           })
         }
@@ -358,42 +345,42 @@
       formatJson(filterVal, jsonData) {
         return jsonData.map(v => filterVal.map(j => v[j]))
       },
+      cancel() {
+        this.exportVisible = false;
+      },
       handleCheckAllChange(val) {
-        this.checkedroleAccount = val ? roleAccountOptions : [];
+        this.checkedRoleAccountProps = val ? roleAccounPropsEnums : [];
         this.isIndeterminate = false;
       },
-      handleCheckedEmployeesChange(value) {
+      handleCheckedRoleAccountPropsChange(value) {
         let checkedCount = value.length;
-        this.checkAll = checkedCount === this.roleAccount.length;
-        this.isIndeterminate = checkedCount > 0 && checkedCount < this.roleAccount.length;
+        this.checkAll = checkedCount === this.roleAccountProps.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.roleAccountProps.length;
       },
       exportField(val) {
         for (let i = 0; i < val.length; i++) {
-          if (this.checkedroleAccount[i] === '员工编号') {
+          if (this.checkedRoleAccountProps[i] === '角色ID') {
+            this.filterVal.push('roleID')
+          } else if (this.checkedRoleAccountProps[i] === '角色名称') {
+            this.filterVal.push('roleName')
+          } else if (this.checkedRoleAccountProps[i] === '支持业务线') {
+            this.filterVal.push('businessLine')
+          } else if (this.checkedRoleAccountProps[i] === '登录账号') {
+            this.filterVal.push('accountName')
+          } else if (this.checkedRoleAccountProps[i] === '员工编号') {
             this.filterVal.push('staffNum')
-          } else if (this.checkedemployees[i] === '登录账号') {
-            this.filterVal.push('accountId')
-          } else if (this.checkedemployees[i] === '员工姓名') {
+          } else if (this.checkedRoleAccountProps[i] === '员工姓名') {
             this.filterVal.push('staffName')
-          } else if (this.checkedemployees[i] === '性别') {
-            this.filterVal.push('staffSex')
-          } else if (this.checkedemployees[i] === '员工手机') {
-            this.filterVal.push('staffTelephone')
-          } else if (this.checkedemployees[i] === '员工邮箱') {
-            this.filterVal.push('staffEmail')
-          } else if (this.checkedemployees[i] === '所属部门') {
-            this.filterVal.push('departmentId')
-          } else if (this.checkedemployees[i] === '上级部门') {
-            this.filterVal.push('upperDepartmentNo')
-          } else if (this.checkedemployees[i] === '是否离职') {
-            this.filterVal.push('isDimission')
+          } else if (this.checkedRoleAccountProps[i] === '所属部门') {
+            this.filterVal.push('departmentName')
+          } else if (this.checkedRoleAccountProps[i] === '角色状态') {
+            this.filterVal.push('roleStatus')
+          } else if (this.checkedRoleAccountProps[i] === '账号状态') {
+            this.filterVal.push('accountState')
           }
         }
         return this.filterVal;
       },
-      selectionActive(){
-        this.disabled=false
-      }
     }
   }
 </script>
