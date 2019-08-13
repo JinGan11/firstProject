@@ -83,9 +83,9 @@
           t1.approver_staff_num,
           t1.approver_staff_name,
           t1.approver_department_name,
-        GROUP_CONCAT(t3.power_name separator '-') power_name
-        from t_r_role_power t2 LEFT JOIN t_power t3 on t2.power_id=t3.power_id
-             join t_role_info t1 on t1.id=t2.role_info_id
+        GROUP_CONCAT(t3.path separator '-') power_name
+        from t_role_info t1 left join t_r_role_power t2 on t1.id=t2.role_info_id
+          LEFT JOIN t_power t3 on t2.power_id=t3.power_id
         <where>
             <if test="roleId!=null and roleId.trim()!=''">and t1.id=#{roleId}</if>
             <if test="roleName!=null and roleName.trim()!=''">and t1.role_name=#{roleName}</if>
@@ -97,7 +97,7 @@
                 t1.approver_staff_num=#{approverStaffNum}</if>
             <if test="approverDepartmentName!=null and approverDepartmentName.trim()!=''">and
                 t1.approver_department_name=#{approverDepartmentName}</if>
-            <if test="powerName!=null and powerName.trim()!=''">and t3.power_name=#{powerName}</if>
+            <if test="powerName!=null and powerName.trim()!=''">and t3.power_id=#{powerId}</if>
         </where>
         GROUP BY t1.id
     </select>

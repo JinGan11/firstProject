@@ -80,7 +80,11 @@
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <!--<el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>-->
-      <el-table-column prop="roleId" label="角色ID" width="120"></el-table-column>
+      <el-table-column prop="roleId" label="角色ID" width="120">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="ChooseOnDetail(scope.row.roleId)">{{scope.row.roleId}}</el-button>
+        </template>
+      </el-table-column>
       <el-table-column prop="roleName" label="角色名称" width="150"></el-table-column>
       <el-table-column prop="businessLine" label="支持业务线" width="150"></el-table-column>
       <el-table-column prop="approverAccountName" label="审批人账号s" width="150"></el-table-column>
@@ -156,6 +160,129 @@
         </el-form>
       </div>
     </el-dialog>
+
+    <el-dialog title="角色详情信息" :visible.sync="roleInfoDetailFlag" :close-on-click-modal="false" width="900px">
+      <el-form ref="form" :model="formDetail" label-width="80px">
+        <div>
+          <div style="margin-bottom: 10px">
+            <p>角色信息</p>
+          </div>
+          <div style="width:85%; margin-left: 70px">
+            <el-form ref="form" :model="formInfo" label-width="110px">
+              <el-row>
+                <el-col :span="10">
+                  <el-form-item label="角色ID">
+                    <el-input style="width:200px;" :disabled="true" v-model="formInfo.roleID"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item label="角色名称">
+                    <el-input style="width:200px;" :disabled="true" v-model="formInfo.roleName"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="10">
+                  <el-form-item label="审批人账号">
+                    <el-input style="width:200px;" :disabled="true" v-model="formInfo.accountNum"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item label="审批人员工编号">
+                    <el-input style="width:200px;" :disabled="true" v-model="formInfo.staffNum"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="10">
+                  <el-form-item label="审批人姓名">
+                    <el-input style="width:200px;" :disabled="true" v-model="formInfo.staffName"></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="10">
+                  <el-form-item label="审批人所属部门">
+                    <el-input style="width:200px;" :disabled="true" v-model="formInfo.departmentName"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="15">
+                  <el-form-item label="支持业务线">
+                    <!--<template v-for="item in chks">
+                      <input type="checkbox" name="hobby" :value="item.id"
+                           :checked="form.loopsss.indexOf(item.id) > -1"/>{{item.name}}
+                    </template>
+                    -->
+                    <input type="checkbox" :disabled="true" v-model="formInfo.businessLine" value="买买车">买买车
+                    <input type="checkbox" :disabled="true" v-model="formInfo.businessLine" value="租车">租车
+                    <input type="checkbox" :disabled="true" v-model="formInfo.businessLine" value="闪贷">闪贷
+                    <input type="checkbox" :disabled="true" v-model="formInfo.businessLine" value="专车">专车
+                    <input type="checkbox" :disabled="true" v-model="formInfo.businessLine" value="保险">保险
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="10">
+                  <el-form-item label="描述">
+                    <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" :disabled="true" v-model="formInfo.description"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-form>
+          </div>
+          <div>
+            <p>其它信息</p>
+            <div>
+              <div style="width:85%; margin-left: 70px">
+                <el-form ref="otherForm" :model="otherForm" label-width="110px">
+                  <el-row>
+                    <el-col :span="10">
+                      <el-form-item label="新建人">
+                        <el-input style="width:200px;" :disabled="true" v-model="otherForm.createEmp"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                      <el-form-item label="新建时间">
+                        <el-input style="width:200px;" :disabled="true" v-model="otherForm.createTime"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="10">
+                      <el-form-item label="修改人">
+                        <el-input style="width:200px;" :disabled="true" v-model="otherForm.modifyEmp"></el-input>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="10">
+                      <el-form-item label="修改时间">
+                        <el-input style="width:200px;" :disabled="true" v-model="otherForm.modifyTime"></el-input>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="1">
+                      <el-form-item label="状态">
+                        <el-select v-model="formInfo.roleStatus" :disabled="true" style="width:150px;">
+                          <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                          </el-option>
+                        </el-select>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </el-form>
+              </div>
+            </div>
+          </div>
+          <div style="text-align: center">
+            <el-button type="primary" @click="cancelRoleInfo" style="width:70px">取消</el-button>
+          </div>
+        </div>
+      </el-form>
+    </el-dialog>
     <el-dialog :title='excelTitle' :visible.sync="rolePowerDialogVisible" :close-on-click-modal="false" width="600px">
       <template>
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
@@ -191,7 +318,8 @@
           approverStaffName:'',
           approverDepartmentName:'',
           roleStatus:'',
-          powerName:''
+          powerName:'',
+          powerId:''
         },
         defaultProps: {
           label: 'departmentName',
@@ -228,6 +356,40 @@
         roleAssignPermissionTitle: '选择权限',
         powerTree: [],
         checkStrictly: false,
+        roleInfoDetailFlag: false,
+
+        formInfo: {
+          roleID: '',
+          roleName: '',
+          businessLine: [],
+          roleStatus: '',
+          accountNum: '',
+          staffNum: '',
+          staffName: '',
+          departmentName: '',
+          description: '',
+        },
+
+        otherForm:{
+          createEmp:'',
+          createEmpNum:'',
+          createEmpName:'',
+          createEmpTime:'',
+          modifyEmp:'',
+          modifyEmpNum:'',
+          modifyEmpName:'',
+          modifyEmpTime:'',
+        },
+
+        RoleStatusEnum: {},
+        options: [
+          {
+            value: 0,
+            label: '无效',
+          }, {
+            value: 1,
+            label: '有效',
+          }],
       }
     },
     filters: {
@@ -283,6 +445,7 @@
           approverDepartmentName:self.form.approverDepartmentName,
           roleStatus:self.form.roleStatus,
           powerName:self.form.powerName,
+          powerId:self.form.powerId,
         };
         self.$http.post('power/queryRolePowerlist.do_', param)
           .then((result) => {
@@ -385,6 +548,7 @@
       handleCheckChange (data,checked,node) {
         // 手动设置单选
         if(checked === true) {
+          this.form.powerId = data.powerId;
           this.checkedId = data.powerId;
           this.$refs.permTree.setCheckedKeys([data.powerId]);
         } else {
@@ -460,6 +624,36 @@
       cancel() {
         this.rolePowerDialogVisible = false;
       },
+      ChooseOnDetail(roleId) {
+        const self = this;
+        self.roleInfoDetailFlag = true;
+        var param = {
+          roleID: roleId,
+        };
+        self.$http.get('roleManage/getOtherOneInf.do_', {
+          params: param
+        }).then((result) => {
+          self.otherForm = result.page;
+          self.otherForm.createEmp = `${self.otherForm.createEmpNum}(${self.otherForm.createEmpName})`;
+          self.otherForm.modifyEmp = `${self.otherForm.modifyEmpNum}(${self.otherForm.modifyEmpName})`;
+        }).catch(function (error) {
+          commonUtils.Log("roleManage/getOtherOneInf.do_" + error);
+          self.$message.error("获取数据错误");
+        });
+        self.$http.get('roleManage/getOneInf.do_', {
+          params: param
+        }).then((result) => {
+          self.formInfo=result.page;
+          self.RoleStatusEnum = result.RoleStatusEnum;
+          self.formInfo.businessLine=self.formInfo.businessLine.split(',');
+        }).catch(function (error) {
+          commonUtils.Log("roleManage/getOneInf.do_:" + error);
+          self.$message.error("获取数据错误");
+        });
+      },
+      cancelRoleInfo() {
+        this.roleInfoDetailFlag = false;
+      }
     }
   }
 </script>

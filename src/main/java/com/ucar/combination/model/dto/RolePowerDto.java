@@ -16,8 +16,17 @@ public class RolePowerDto {
     private String approverStaffName;
     private String approverDepartmentName;
     private String powerName;
+    private Long powerId;
     private Integer page;
     private Integer limit;
+
+    public Long getPowerId() {
+        return powerId;
+    }
+
+    public void setPowerId(Long powerId) {
+        this.powerId = powerId;
+    }
 
     public Long getRoleId() {
         return roleId;
