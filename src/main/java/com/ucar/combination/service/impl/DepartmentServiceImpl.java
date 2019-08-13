@@ -135,6 +135,15 @@ public class DepartmentServiceImpl implements DepartmentService {
             String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
             map.put("msg", tmp + "下级部门包含状态为有效的部门，无法将当前部门改为无效！");
         }
+        // 业务线判断
+        List<String> supports = departmentDao.selectLowerDepartmentBusiness(department.getDepartmentNo());
+        if (supports != null && supports.size() > 0) {
+            if (!SupportBusinessUtil.compareSups(department.getSupportBusiness(), supports)) {
+                map.put("result", false);
+                String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
+                map.put("msg", tmp + "下级部门的业务线不能拥有本部门没有的，请修改或删除下级部门！");
+            }
+        }
         return map;
     }
 

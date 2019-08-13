@@ -238,19 +238,4 @@ public class DepartmentController {
         return new Result().ok().put("page", resultPage).put("department", departmentDto).put("CompanyTypeEnum", CommonEnums.toEnumMap(CommonEnums.CompanyType.values())).put("CompanyStatusEnum", CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values())).put("CompanyMarkEnum", CommonEnums.toEnumMap(CommonEnums.CompanyMark.values())).put("CompanyNatureEnum", CommonEnums.toEnumMap(CommonEnums.CompanyNature.values())).put("DepartmentTypeEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentType.values())).put("LevelEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentLevel.values())).put("DepartmentStatusEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentStatus.values()));
     }
 
-    /**
-     * description: 用于测试，后续删除
-     *
-     * @return
-     * @author 郑开添（kaitian.zheng@ucarinc.com）
-     * @date 2019/8/12 10:17
-     * @params
-     */
-    @ResponseBody
-    @RequestMapping("/test")
-    public List<Long> test(Long id) {
-        System.out.println("访问地址：http://localhost:8081/combination/department/test?id=1");
-        return departmentService.selectDataPowerIds(id);
-    }
-
 }

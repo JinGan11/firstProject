@@ -1,5 +1,6 @@
 package com.ucar.combination.utils;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.ucar.combination.model.dto.DepartmentUpperDto;
 
 import java.util.List;
@@ -66,6 +67,21 @@ public class SupportBusinessUtil {
                 list.get(i).setCanChoose(false);
         }
         return list;
+    }
+
+    /**
+     * description: 比较该业务线是否包含list中的全部
+     *
+     * @return
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/13 15:28
+     * @params
+     */
+    public static Boolean compareSups(String support1, List<String> support2) {
+        for (int i = 0; i < support2.size(); i++) {
+            if (compareSups(support1, support2.get(i)) < 0) return false;
+        }
+        return true;
     }
 
 }

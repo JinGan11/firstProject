@@ -167,6 +167,15 @@ public interface DepartmentDao {
 
     List<DepartmentTree2Dto> selectDepartmentTree2Dto();
 
+    /**
+     * description: 查找下级部门支持的业务线
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/13 15:19
+     * @params
+     * @return
+     */
+    List<String> selectLowerDepartmentBusiness(String departmentNo);
+
     /*
      * description:
      * @author jing.luo01@ucarinc.com

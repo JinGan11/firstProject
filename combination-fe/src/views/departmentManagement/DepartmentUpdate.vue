@@ -439,11 +439,11 @@
         //设置已选业务线
         var sups = data.supportBusiness.split("&");
         for(var i=0;i<sups.length;i++){
-          if(sups[i] == "闪贷") { self.supports.push("闪贷"); continue; }
-          if(sups[i] == "租车") { self.supports.push("租车"); continue; }
-          if(sups[i] == "专车") { self.supports.push("专车"); continue; }
-          if(sups[i] == "保险") { self.supports.push("保险"); continue; }
-          if(sups[i] == "买买车") { self.supports.push("买买车"); continue; }
+          if(sups[i] == "闪贷" && !self.businessDisable.shandai) { self.supports.push("闪贷"); continue; }
+          if(sups[i] == "租车"  && !self.businessDisable.zuche) { self.supports.push("租车"); continue; }
+          if(sups[i] == "专车" && !self.businessDisable.zhuanche) { self.supports.push("专车"); continue; }
+          if(sups[i] == "保险" && !self.businessDisable.baoxian) { self.supports.push("保险"); continue; }
+          if(sups[i] == "买买车" && !self.businessDisable.maimaiche) { self.supports.push("买买车"); continue; }
         }
         // 设置经纬度
         if(data.longitude.trim()!=""){

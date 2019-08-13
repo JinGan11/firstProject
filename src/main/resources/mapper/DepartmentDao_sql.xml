@@ -203,6 +203,10 @@
         FROM t_department
         ORDER BY id
     </select>
+    <select id="selectLowerDepartmentBusiness" resultType="String">
+        select support_business from t_department where upper_department_no=#{departmentNo} and status=1
+    </select>
+
 
     <select id="searchDepartment" resultType="com.ucar.combination.model.dto.SearchDepartmentDto">
         SELECT
