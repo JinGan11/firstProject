@@ -46,15 +46,13 @@
         <el-row>
           <el-col :span="15">
             <el-form-item label="支持业务线" prop="businessLine">
-              <!--<template v-for="item in chks">
-                <input type="checkbox" name="form.hobby" :value="item.id"
-                     :checked="form.loopsss.indexOf(item.id) > -1"/>{{item.name}}
-              </template>-->
-              <input type="checkbox" v-model="form.businessLine" value="买买车">买买车
-              <input type="checkbox" v-model="form.businessLine" value="租车">租车
-              <input type="checkbox" v-model="form.businessLine" value="闪贷">闪贷
-              <input type="checkbox" v-model="form.businessLine" value="专车">专车
-              <input type="checkbox" v-model="form.businessLine" value="保险">保险
+              <el-checkbox-group v-model="form.businessLine">
+                <el-checkbox label="买买车"></el-checkbox>
+                <el-checkbox label="租车"></el-checkbox>
+                <el-checkbox label="闪贷"></el-checkbox>
+                <el-checkbox label="专车"></el-checkbox>
+                <el-checkbox label="保险" ></el-checkbox>
+              </el-checkbox-group>
             </el-form-item>
           </el-col>
         </el-row>
@@ -188,7 +186,7 @@
           </el-row>
         </el-form>
       <div style="margin-bottom: 10px">
-        <el-button type="primary" @click="selectionConfirm" style="width:70px">确认选择</el-button>
+        <el-button type="primary" @click="selectionConfirm" :disabled="isChoose" style="width:70px">确认选择</el-button>
         <el-button type="primary" @click="selectionCancel" style="width:70px">取消</el-button>
       </div>
       <el-table ref="multipleTable" :data="tableData" border @current-change="handleSelectionChange" >
@@ -237,6 +235,7 @@
   export default {
     data() {
       return {
+        isChoose: true,
         total: 0,
         currentPage: 1,
         pageSize: 10,
@@ -280,9 +279,9 @@
         tableData:[],
         selection:[],
         rules: {
-          roleName: [{required: true, message: '角色名不能为空', trigger: 'blur'}],
-          accountNum: [{required: true, message: '账户不能为空', trigger: 'blur'}],
-          businessLine: [{required: true, message: '支持业务线不能为空', trigger: 'blur'}]
+          roleName: [{required: true, message: '角色名称不允许为空', trigger: 'blur'}],
+          accountNum: [{required: true, message: '审批人账号不允许为空', trigger: 'blur'}],
+          businessLine: [{required: true, message: '支持业务线不允许为空', trigger: 'blur'}]
         }
       };
     },
@@ -327,6 +326,7 @@
       },
       handleSelectionChange(val) {
         this.selection = val;
+        this.isChoose = false;
       },
       save(formName) {//保存新建角色信息
         const self = this;

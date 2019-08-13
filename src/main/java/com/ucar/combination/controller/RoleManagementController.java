@@ -170,8 +170,8 @@ public class RoleManagementController {
 	public void updateByModify(@RequestBody RoleDto role,HttpSession session ) {
 		Long accountId = (Long) session.getAttribute("accountId");
 		role.setModifyEmp(accountId);
+		//System.out.println("updateByModify:"+ JSON.toJSONString(role));
 		roleManagementService.updateByModify(role);
-		// System.out.println("insertRole:"+ JSON.toJSONString(role));
 	}
 
 	/**

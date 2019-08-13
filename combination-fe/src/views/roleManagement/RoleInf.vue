@@ -44,16 +44,13 @@
         <el-row>
           <el-col :span="15">
             <el-form-item label="支持业务线">
-              <!--<template v-for="item in chks">
-                <input type="checkbox" name="hobby" :value="item.id"
-                     :checked="form.loopsss.indexOf(item.id) > -1"/>{{item.name}}
-              </template>
-              -->
-              <input type="checkbox" :disabled="true" v-model="form.businessLine" value="买买车">买买车
-              <input type="checkbox" :disabled="true" v-model="form.businessLine" value="租车">租车
-              <input type="checkbox" :disabled="true" v-model="form.businessLine" value="闪贷">闪贷
-              <input type="checkbox" :disabled="true" v-model="form.businessLine" value="专车">专车
-              <input type="checkbox" :disabled="true" v-model="form.businessLine" value="保险">保险
+              <el-checkbox-group v-model="form.businessLine">
+                <el-checkbox label="买买车"></el-checkbox>
+                <el-checkbox label="租车"></el-checkbox>
+                <el-checkbox label="闪贷"></el-checkbox>
+                <el-checkbox label="专车"></el-checkbox>
+                <el-checkbox label="保险" ></el-checkbox>
+              </el-checkbox-group>
             </el-form-item>
           </el-col>
         </el-row>
