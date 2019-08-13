@@ -7,7 +7,7 @@
 
         <el-row class="demo-autocomplete">
           <el-col :span="8">
-            <div class="sub-title">国际代码：</div>
+            国际代码：
             <el-autocomplete
               class="inline-input"
               v-model="form.regionCode"
@@ -19,7 +19,7 @@
             ></el-autocomplete>
           </el-col>
           <el-col :span="12">
-            <div class="sub-title">省/直辖市</div>
+            省/直辖市:
             <el-autocomplete
               class="inline-input"
               v-model="form.regionName"
@@ -44,29 +44,30 @@
           </el-col>
 
         </el-row>
-        <el-row>
-          <el-col :span="3" :offset="8">
-            <el-form-item>
-              <el-button type="primary" style="width: 100px" @click="fetchData" size="medium">查询</el-button>
-            </el-form-item>
-          </el-col>
-          <el-col :span="3" >
-            <el-form-item>
-              <el-button type="primary" style="width: 100px" @click="exportVisible = true" v-if="!provinceBtnPermission.exportPermission" size="medium">导出</el-button>
-            </el-form-item>
-          </el-col>
-<!--          <el-col :span="3" >-->
-<!--            <el-form-item>-->
-<!--              <el-button type="primary" style="width: 100px" @click="createFormVisible = true" :disabled="provinceBtnPermission.createPermission" size="medium">新建</el-button>-->
-<!--            </el-form-item>-->
-<!--          </el-col>-->
-<!--          <el-col :span="3" >-->
-<!--            <el-form-item>-->
-<!--              <el-button type="primary" style="width: 100px" :disabled="provinceBtnPermission.modifyPermission" size="medium">修改</el-button>-->
-<!--            </el-form-item>-->
-<!--          </el-col>-->
-        </el-row>
-
+        <div style="margin-top: 10px">
+          <el-row>
+            <el-col :span="3" :offset="8">
+              <el-form-item>
+                <el-button type="primary" style="width: 100px" @click="fetchData" size="medium">查询</el-button>
+              </el-form-item>
+            </el-col>
+            <el-col :span="3" >
+              <el-form-item>
+                <el-button type="primary" style="width: 100px" @click="exportVisible = true" :disabled="provinceBtnPermission.exportPermission" size="medium">导出</el-button>
+              </el-form-item>
+            </el-col>
+            <!--          <el-col :span="3" >-->
+            <!--            <el-form-item>-->
+            <!--              <el-button type="primary" style="width: 100px" @click="createFormVisible = true" :disabled="provinceBtnPermission.createPermission" size="medium">新建</el-button>-->
+            <!--            </el-form-item>-->
+            <!--          </el-col>-->
+            <!--          <el-col :span="3" >-->
+            <!--            <el-form-item>-->
+            <!--              <el-button type="primary" style="width: 100px" :disabled="provinceBtnPermission.modifyPermission" size="medium">修改</el-button>-->
+            <!--            </el-form-item>-->
+            <!--          </el-col>-->
+          </el-row>
+        </div>
 
       </el-form>
     </div>
@@ -82,7 +83,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="modifyEmp" label="修改人"  width="200px"></el-table-column>
-      <el-table-column prop="modifyTime" label="修改时间"  width="200px"></el-table-column>
+      <el-table-column prop="modifyTime" label="修改时间"  ></el-table-column>
     </el-table>
     <!--分栏-->
     <el-pagination background

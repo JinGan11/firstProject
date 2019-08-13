@@ -74,7 +74,7 @@ public class SerachController {
 		String staffNum=request.getParameter("staffNum");
 		String staffName=request.getParameter("staffName");
 		String departmentName=request.getParameter("departmentName");
-		String powerName=request.getParameter("powerName");
+		String path=request.getParameter("path");
 		String accountState=request.getParameter("accountState");
 		param.put("page", page);
 		param.put("limit", limit);
@@ -82,7 +82,7 @@ public class SerachController {
 		param.put("staffNum",staffNum);
 		param.put("staffName",staffName);
 		param.put("departmentName",departmentName);
-		param.put("powerName",powerName);
+		param.put("path",path);
 		param.put("accountState",accountState);
 		ResultPage resultPage = accountManagerService.getAccountPowerList(new QueryParam(param));
 		if (resultPage.getList()!=null){

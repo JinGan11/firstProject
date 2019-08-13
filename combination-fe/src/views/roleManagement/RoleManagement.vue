@@ -521,11 +521,11 @@
           self.$http.get('roleManage/updateStatus.do_', {
             params: param
           }).then(() => {
-            self.$message.info("成功删除")
+            self.$message.info("角色删除成功")
             this.$router.go(0);
           }).catch(function (error) {
             commonUtils.Log("roleManage/updateStatus.do_:" + error);
-            self.$message.error("获取数据错误");
+            self.$message.error("角色删除失败");
           });
         }).catch(() => {
           this.$message({
@@ -537,11 +537,12 @@
       selectionActive(val) {
         this.myRole.roleId = val.roleId;
         this.myRole.roleName = val.roleName;
-        this.isModify = false;
         if(val.roleStatus === 1){
           this.isAddCount = false;
+          this.isModify = false;
         }else if(val.roleStatus === 0){
           this.isAddCount = true;
+          this.isModify = true;
         }
       },
       cellTrigger(val) {//角色详情页

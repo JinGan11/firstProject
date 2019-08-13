@@ -437,6 +437,7 @@
             params: param
           }).then(() => {
             self.$message.success("成功删除");
+            this.$router.go(0);
           }).catch(function (error) {
             commonUtils.Log("roleApply/deleteRoleApply.do_:" + error);
             self.$message.error("获取数据错误");
@@ -463,6 +464,7 @@
             params: param
           }).then(() => {
             self.$message.success("提交角色申请成功");
+            this.$router.go(0);
           }).catch(function (error) {
             commonUtils.Log("roleApply/commitRoleApply.do_:" + error);
             self.$message.error("获取数据错误");

@@ -65,18 +65,6 @@
         <el-table-column prop="staffName" label="关联员工姓名"width="150"></el-table-column>
         <el-table-column prop="staffNum" label="关联员工编号"  width="150"></el-table-column>
         <el-table-column prop="department" label="关联员工所属部门" width="200"></el-table-column>
-        <!--        <el-table-column prop="applyOperation" label="申请操作" width="150" style="text-align: center">-->
-        <!--          <template slot-scope="scope">-->
-        <!--            <el-select v-model="scope.row.applyOperation" clearable style="width:100px;" placeholder="请选择">-->
-        <!--              <el-option-->
-        <!--                v-for="item in options"-->
-        <!--                :key="item.value"-->
-        <!--                :label="item.label"-->
-        <!--                :value="item.value">-->
-        <!--              </el-option>-->
-        <!--            </el-select>-->
-        <!--          </template>-->
-        <!--        </el-table-column>-->
         <el-table-column prop="applyOperation" label="申请操作" width="150" style="text-align: center">
           <template slot-scope="scope">
             <el-select v-model="scope.row.applyOperation" clearable style="width:100px;" placeholder="请选择">
@@ -175,170 +163,174 @@
 
 
     <el-dialog :title='title1' :visible.sync="dialogVisibleRole"  :close-on-click-modal="false" width="85%">
-      <div>
-        <el-form ref="form" :model="formSelectRole" label-width="100px">
-          <el-row>
-            <el-col :span="10">
-              <el-form-item label="角色名称">
-                <el-input style="width:200px;" v-model="formSelectRole.name"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span ="10">
-              <el-form-item>
-                <el-button type="primary" @click="fetchDataRole" style="width:100px">查询</el-button>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
+      <div style="overflow: auto">
+        <div>
+          <el-form ref="form" :model="formSelectRole" label-width="100px">
+            <el-row>
+              <el-col :span="10">
+                <el-form-item label="角色名称">
+                  <el-input style="width:200px;" v-model="formSelectRole.name"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span ="10">
+                <el-form-item>
+                  <el-button type="primary" @click="fetchDataRole" style="width:100px">查询</el-button>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
+        <div style="margin-left:20px;margin-bottom: 10px;">
+          <el-button type="primary" @click="selectRole"  style="width:100px">确认选择</el-button>
+          <el-button type="primary" @click="cancelSelectRole" style="width:100px">取消</el-button>
+        </div>
+        <el-table :data="tableDataRole" border @row-click="getRoleDetails"  @selection-change="handleCurrentChangeRole" >
+          <el-table-column label="选择" width="45">
+            <template slot-scope="scope">
+              <el-radio v-model="selectionRoleInfo" :label="scope.row.roleId"><span width="0px;"></span></el-radio>
+            </template>
+          </el-table-column>
+          <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
+          <el-table-column prop="roleId" label="角色ID" width="150"></el-table-column>
+          <el-table-column prop="roleName" label="角色名称"width="150"></el-table-column>
+          <el-table-column prop="accountNum" label="审批人账号" width="120"></el-table-column>
+          <el-table-column prop="staffNum" label="审批人员工编号" ></el-table-column>
+          <el-table-column prop="staffName" label="审批人姓名" width="200"></el-table-column>
+          <el-table-column prop="departmentName" label="审批人所属部门" width="120"></el-table-column>
+          <!--        <el-table-column prop="roleStatus" label="状态" width="100"></el-table-column>-->
+          <el-table-column prop="roleStatus" label="状态" width="100" style="text-align: center">
+            <template slot-scope="scope">
+              {{RoleStatusEnum[scope.row.roleStatus]}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="description" label="描述" width="120"></el-table-column>
+        </el-table>
+        <el-pagination background
+                       @size-change="handleSizeChangeRole"
+                       @current-change="handleCurrentChangeRole"
+                       :current-page="currentPage"
+                       :page-sizes="[10, 50, 100, 200]"
+                       :page-size="pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="total">
+        </el-pagination>
       </div>
-      <div style="margin-left:20px;margin-bottom: 10px;">
-        <el-button type="primary" @click="selectRole"  style="width:100px">确认选择</el-button>
-        <el-button type="primary" @click="cancelSelectRole" style="width:100px">取消</el-button>
-      </div>
-      <el-table :data="tableDataRole" border @row-click="getRoleDetails"  @selection-change="handleCurrentChangeRole" >
-        <el-table-column label="选择" width="45">
-          <template slot-scope="scope">
-            <el-radio v-model="selectionRoleInfo" :label="scope.row.roleId"><span width="0px;"></span></el-radio>
-          </template>
-        </el-table-column>
-        <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
-        <el-table-column prop="roleId" label="角色ID" width="150"></el-table-column>
-        <el-table-column prop="roleName" label="角色名称"width="150"></el-table-column>
-        <el-table-column prop="accountNum" label="审批人账号" width="120"></el-table-column>
-        <el-table-column prop="staffNum" label="审批人员工编号" ></el-table-column>
-        <el-table-column prop="staffName" label="审批人姓名" width="200"></el-table-column>
-        <el-table-column prop="departmentName" label="审批人所属部门" width="120"></el-table-column>
-        <!--        <el-table-column prop="roleStatus" label="状态" width="100"></el-table-column>-->
-        <el-table-column prop="roleStatus" label="状态" width="100" style="text-align: center">
-          <template slot-scope="scope">
-            {{RoleStatusEnum[scope.row.roleStatus]}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="description" label="描述" width="120"></el-table-column>
-      </el-table>
-      <el-pagination background
-                     @size-change="handleSizeChangeRole"
-                     @current-change="handleCurrentChangeRole"
-                     :current-page="currentPage"
-                     :page-sizes="[10, 50, 100, 200]"
-                     :page-size="pageSize"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="total">
-      </el-pagination>
     </el-dialog>
 
 
     <el-dialog :title='title2' :visible.sync="dialogVisibleAccount"  :close-on-click-modal="false" width="80%">
-      <div style="width: 95%;">
-        <el-form ref="form" :model="form" label-width="100px">
-          <el-row>
-            <el-col :span="5">
-              <el-form-item label="登陆账号" >
-                <el-input style="width:140px;" v-model="form.accountNo"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item label="员工编号">
-                <el-input style="width:160px;" v-model="form.staffNo"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item label="员工姓名">
-                <el-input style="width:180px;" v-model="form.name"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item label="数据权限类型">
-                <el-select style="width:180px;" v-model="form.permissions" clearable placeholder="请选择">
-                  <el-option
-                    v-for="item in form.permissionsList"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="11">
-              <el-form-item label="员工所属部门">
-                <el-select v-model="form.department" placeholder="请选择" multiple collapse-tags>
-                  <el-option  :value="mineStatusValue" style="height: auto">
-                    <el-tree :data="data" check-strictly=true show-checkbox node-key="id" ref="tree" highlight-current :props="defaultProps"></el-tree>
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item label="是否关联员工">
-                <el-select style="width: 180px" v-model="form.isRelStaff" clearable placeholder="请选择">
-                  <el-option
-                    v-for="item in form.isRelStaffoptions"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="6">
-              <el-form-item label="账号状态">
-                <el-select style="width:180px;" v-model="form.status" clearable placeholder="请选择">
-                  <el-option
-                    v-for="item in form.accountStatusList"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
-        <el-form ref="form" :model="form">
-          <el-row>
-            <el-col style="text-align: center">
-              <el-form-item>
-                <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
-              </el-form-item>
-            </el-col>
-          </el-row>
-        </el-form>
+      <div style="overflow: auto">
+        <div style="width: 95%;">
+          <el-form ref="form" :model="form" label-width="100px">
+            <el-row>
+              <el-col :span="5">
+                <el-form-item label="登陆账号" >
+                  <el-input style="width:140px;" v-model="form.accountNo"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="员工编号">
+                  <el-input style="width:160px;" v-model="form.staffNo"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="员工姓名">
+                  <el-input style="width:180px;" v-model="form.name"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="数据权限类型">
+                  <el-select style="width:180px;" v-model="form.permissions" clearable placeholder="请选择">
+                    <el-option
+                      v-for="item in form.permissionsList"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="11">
+                <el-form-item label="员工所属部门">
+                  <el-select v-model="form.department" placeholder="请选择" multiple collapse-tags>
+                    <el-option  :value="mineStatusValue" style="height: auto">
+                      <el-tree :data="data" check-strictly=true show-checkbox node-key="id" ref="tree" highlight-current :props="defaultProps"></el-tree>
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="是否关联员工">
+                  <el-select style="width: 180px" v-model="form.isRelStaff" clearable placeholder="请选择">
+                    <el-option
+                      v-for="item in form.isRelStaffoptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-form-item label="账号状态">
+                  <el-select style="width:180px;" v-model="form.status" clearable placeholder="请选择">
+                    <el-option
+                      v-for="item in form.accountStatusList"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+          <el-form ref="form" :model="form">
+            <el-row>
+              <el-col style="text-align: center">
+                <el-form-item>
+                  <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
+        <div style="margin-bottom: 10px">
+          <el-button type="primary" @click="selectAccountConfirm" style="width:70px">确认选择</el-button>
+          <el-button type="primary" @click="cancelSelectAccount" style="width:70px">取消</el-button>
+        </div>
+        <el-table ref="multipleTable" :data="tableData" border  @selection-change="handleSelectAccount">
+          <el-table-column type="selection" width="35"></el-table-column>
+          <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
+          <el-table-column prop="accountName" label="登陆账号" style="width:auto"></el-table-column>
+          <el-table-column prop="staffNum" label="员工编号" style="width:auto"></el-table-column>
+          <el-table-column prop="staffName" label="员工姓名" style="width:auto"></el-table-column>
+          <el-table-column prop="department" label="所属部门" style="width:auto"></el-table-column>
+          <el-table-column prop="premissions" label="数据权限类型" style="width:auto">
+            <template slot-scope="scope">
+              {{form.permissionsEnum[scope.row.premissions]}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="accountState" label="账号状态" style="width:auto">
+            <template slot-scope="scope">
+              {{form.accountStatusEnum[scope.row.accountState]}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="modifyTime" label="操作时间" style="width:auto"></el-table-column>
+          <el-table-column prop="modifyEmpName" label="操作人" style="width:auto"></el-table-column>
+        </el-table>
+        <el-pagination background
+                       @size-change="handleSizeChangeAccount"
+                       @current-change="handleCurrentChangeAccount"
+                       :current-page="currentPage"
+                       :page-sizes="[10, 50, 100, 200]"
+                       :page-size="pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="total">
+        </el-pagination>
       </div>
-      <div style="margin-bottom: 10px">
-        <el-button type="primary" @click="selectAccountConfirm" style="width:70px">确认选择</el-button>
-        <el-button type="primary" @click="cancelSelectAccount" style="width:70px">取消</el-button>
-      </div>
-      <el-table ref="multipleTable" :data="tableData" border  @selection-change="handleSelectAccount">
-        <el-table-column type="selection" width="35"></el-table-column>
-        <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
-        <el-table-column prop="accountName" label="登陆账号" style="width:auto"></el-table-column>
-        <el-table-column prop="staffNum" label="员工编号" style="width:auto"></el-table-column>
-        <el-table-column prop="staffName" label="员工姓名" style="width:auto"></el-table-column>
-        <el-table-column prop="department" label="所属部门" style="width:auto"></el-table-column>
-        <el-table-column prop="premissions" label="数据权限类型" style="width:auto">
-          <template slot-scope="scope">
-            {{form.permissionsEnum[scope.row.premissions]}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="accountState" label="账号状态" style="width:auto">
-          <template slot-scope="scope">
-            {{form.accountStatusEnum[scope.row.accountState]}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="modifyTime" label="操作时间" style="width:auto"></el-table-column>
-        <el-table-column prop="modifyEmpName" label="操作人" style="width:auto"></el-table-column>
-      </el-table>
-      <el-pagination background
-                     @size-change="handleSizeChangeAccount"
-                     @current-change="handleCurrentChangeAccount"
-                     :current-page="currentPage"
-                     :page-sizes="[10, 50, 100, 200]"
-                     :page-size="pageSize"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="total">
-      </el-pagination>
     </el-dialog>
 
 
@@ -614,6 +606,7 @@
           for(let j=0;j<this.accountChangesList.length;j++){
             if(this.multipleSelection[i].id==this.accountChangesList[j].id){
               flag=1;
+              alert('账号 '+this.multipleSelection[i].accountName+' 已存在，不可重复添加');
             }
           }
           if(flag==0){
@@ -621,8 +614,6 @@
           }
 
         }
-        // alert(this.accountChangesList.length);
-        // alert(this.tableDataAccount.length)/;
         this.tableDataAccount=this.accountChangesList;
         this.dialogVisibleAccount=false;
       },
@@ -644,17 +635,6 @@
           //请求成功回调
           self.tableDataAccount = result.list;
           self.accountChangesList=result.list;
-
-          // alert(this.tableDataAccount[0].applyOperation);
-          // console.log(self.tableDataAccount);
-          // for(let i=0;i<this.tableDataAccount.length;i++){
-          //   if(this.tableDataAccount[i].applyOperation==1){
-          //     this.tableDataAccount[i].applyOperation=='添加';
-          //   }
-          //   if(this.tableDataAccount[i].applyOperation==2){
-          //     this.tableDataAccount[i].applyOperation=='移除';
-          //   }
-          // }
 
         }).catch(function (error) {
           //请求失败回调
@@ -684,14 +664,11 @@
       },
 
       savaModifyRoleApply(){// 保存修改
-        alert("111");
         for(let i=0;i<this.tableDataAccount.length;i++){//账号ID
-          console.log(this.tableDataAccount[i].accountName)
           this.accountIdList.push(this.tableDataAccount[i].id);
         }
         for(let i=0;i<this.tableDataAccount.length;i++){//申请操作
           this.applyOperationList.push(this.tableDataAccount[i].applyOperation)
-          // alert(this.applyOperationList[i]);
         }
         var self=this;
         self.forms.id=self.applyId;
@@ -709,8 +686,7 @@
         self.forms.accountIdList=self.accountIdList;
         self.forms.applyOperationList=self.applyOperationList;
 
-        alert(self.forms.id);
-
+        if (!self.$options.methods.checkInput(self)) return;
         self.$http.post("roleApply/modifyRoleApply.do_",self.forms)
           .then(result => {
             alert("修改角色申请成功");
@@ -719,8 +695,29 @@
           commonUtils.Log("/roleManagement/apply"+error);
           self.$message.error("角色申请修改保存失败");
         })
+      },
 
-      }
+      checkInput(self) {
+        if (self.formRoleInfo.roleName == '') {
+          alert("申请角色为必填项，不允许为空");
+          return false;
+        }
+        if(self.roleStatus==0){
+          alert("申请角色已失效，请重新选择");
+          return false;
+        }
+        if(self.tableDataAccount.length==0){
+          alert("申请账号不允许为空");
+          return false;
+        }
+        for(let i=0;i<self.tableDataAccount.length;i++){
+          if(self.tableDataAccount[i].applyOperation!=1||self.tableDataAccount[i].applyOperation!=2){
+            alert('账号申请操作不允许为空');
+            return false;
+          }
+        }
+        return true;
+      },
 
 
 

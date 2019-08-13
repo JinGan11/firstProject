@@ -211,8 +211,12 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="性别:" label-width="150px">
-                <el-input style="width:200px;" v-model="createForm.staffSex"></el-input>
+                <template>
+                  <el-radio v-model="createForm.staffSex" label="1">男</el-radio>
+                  <el-radio v-model="createForm.staffSex" label="2">女</el-radio>
+                </template>
               </el-form-item>
+
             </el-col>
             <el-col :span="12">
               <el-form-item label="员工手机号:" label-width="150px">
@@ -228,14 +232,16 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="归属部门:" label-width="150px">
-                <el-input style="width:200px;" v-model="createForm.departmentId"></el-input>
+                <el-input style="width:80px;" :disabled="true"  v-model="createForm.departmentName"></el-input>
+                <el-button type="text" @click="selectDepartment">选择</el-button>
+                <el-button type="text" @click="clearDepartment">清空</el-button>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
               <el-form-item label="是否离职:" label-width="150px">
-                <el-input style="width:200px;" v-model="createForm.isDimission"></el-input>
+                <el-input style="width:200px;" placeholder="否" :disabled="true" v-model="createForm.isDimission"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -312,9 +318,12 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="性别:" label-width="150px">
-                <el-input style="width:200px;" v-model="modifyForm.staffSex"></el-input>
-              </el-form-item>
+                <el-form-item label="性别:" label-width="150px">
+                  <template>
+                    <el-radio v-model="modifyForm.staffSex" label="1">男</el-radio>
+                    <el-radio v-model="modifyForm.staffSex" label="2">女</el-radio>
+                  </template>
+                </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="员工手机号:" label-width="150px">
@@ -330,14 +339,16 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="归属部门:" label-width="150px">
-                <el-input style="width:200px;" v-model="modifyForm.departmentId"></el-input>
+                <el-input style="width:80px;" :disabled="true"  v-model="modifyForm.departmentName"></el-input>
+                <el-button type="text" @click="selectDepartmentModify">选择</el-button>
+                <el-button type="text" @click="clearDepartmentModify">清空</el-button>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="12">
               <el-form-item label="是否离职:" label-width="150px">
-                <el-input style="width:200px;" v-model="modifyForm.isDimission"></el-input>
+                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.isDimission"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -396,6 +407,44 @@
 
       </el-form>
     </el-dialog>
+    <el-dialog :title='titleDepartment' :visible.sync="dialogVisibleDepartment"  :close-on-click-modal="false" width="50%">
+      <div>
+        <span>选择要操作的部门</span>
+        <br><br>
+        <el-tree
+          ref="tree"
+          :props="defaultProps"
+          node-key="id"
+          :load="loadNode"
+          lazy="true"
+          check-strictly
+          show-checkbox
+          :render-content="renderContent"
+          @check-change="handleClick">
+        </el-tree>
+        <br>
+        <el-button type="primary" @click="getCheckedDepartment">确定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog :title='titleDepartment' :visible.sync="dialogVisibleDepartmentModify"  :close-on-click-modal="false" width="50%">
+      <div>
+        <span>选择要操作的部门</span>
+        <br><br>
+        <el-tree
+          ref="tree"
+          :props="defaultProps"
+          node-key="id"
+          :load="loadNode"
+          lazy="true"
+          check-strictly
+          show-checkbox
+          :render-content="renderContent"
+          @check-change="handleClick">
+        </el-tree>
+        <br>
+        <el-button type="primary" @click="getCheckedDepartmentModify">确定</el-button>
+      </div>
+    </el-dialog>
 
   </home>
 
@@ -442,7 +491,8 @@
           staffTelephone:'',
           staffEmail:'',
           departmentId:'',
-          isDimission:'',
+          departmentName:'',
+          isDimission:'0',
           accountId:'',
           remark:'',
 
@@ -453,6 +503,8 @@
           staffSex:'',
           staffTelephone:'',
           staffEmail:'',
+          departmentId:'',
+          departmentName:'',
           createTime:'',
           createEmp:'',
           remark:'',
@@ -478,6 +530,15 @@
         modifyTitle:'员工信息修改页面',
         createDialogVisible:false,
         modifyDialogVisible:false,
+        defaultProps: {
+          label: 'departmentName',
+          children: 'children',
+          id: 'id',
+          status: 'status'
+        },
+        titleDepartment:'选择部门',
+        dialogVisibleDepartment:false,
+        dialogVisibleDepartmentModify:false,
 
         dialogVisible: false,
         templateGroupName: '测试',
@@ -711,12 +772,12 @@
             id:self.id,
             accountId:self.accountId,
           };
-          self.$http.get('employee/updateStatus.do_', {
+          self.$http.get('employee/deleteEmployee', {
             params: param
           }).then((result) => {
             self.$message.success("成功删除");
           }).catch(function (error) {
-            commonUtils.Log("employee/updateStatus.do_" + error);
+            commonUtils.Log("employee/deleteEmployee" + error);
             self.$message.error("获取数据错误");
           });
         }).catch(() => {
@@ -995,11 +1056,75 @@
         this.modifyForm.staffEmail=val.staffEmail;
         this.modifyForm.isDimission=val.isDimission;
         this.modifyForm.staffTelephone=val.staffTelephone;
-        this.modifyForm.departmentId=val.departmentId;
+        this.modifyForm.departmentName=val.departmentName;
         this.modifyForm.createTime=val.createTime;
         this.modifyForm.createEmp=val.createEmp;
         this.modifyForm.remark=val.remark;
-      }
+      },
+      selectDepartment(){//选择部门
+        this.dialogVisibleDepartment=true;
+      },
+      clearDepartment(){//清除部门的值
+        this.createForm.departmentName='';
+      },
+      loadNode(node,resolve){
+        var self = this;
+        self.$http.get('department/buildTree.do_', {
+          params: null
+        }).then((result) => {
+          resolve([result.departmentDto]);
+        }).catch(function (error) {
+
+        });
+      },renderContent(h, { node, data, store }) {
+        // 这里编译器有红色波浪线不影响运行...
+        if(data.status != 1){
+          return (
+            <span style="color:red">{node.label}</span>
+        );
+        }else{
+          return (
+            <span>{node.label}</span>
+        );
+        }
+      },
+      handleClick(data,checked,node){
+        // 手动设置单选
+        if(checked === true) {
+          this.checkedId = data.id;
+          this.$refs.tree.setCheckedKeys([data.id]);
+          // 设置按钮是否可选（选中节点后调用两次handleClick，第一次checked为true，所以设置按钮写在这）
+          if(data.status === 1){
+            this.operationBtnActive=false;
+          }else{
+            this.operationBtnActive=true;
+          }
+        } else {
+          if (this.checkedId == data.id) {
+            this.$refs.tree.setCheckedKeys([data.id]);
+          }
+        }
+      },
+      getCheckedDepartment() {
+        // 获取部门 回填到文本框中
+        // alert(this.$refs.tree.getCheckedNodes()[0].departmentName);
+        this.createForm.departmentName=this.$refs.tree.getCheckedNodes()[0].departmentName;
+        this.createForm.departmentId=this.$refs.tree.getCheckedNodes()[0].id;
+        this.dialogVisibleDepartment=false;
+      },
+      selectDepartmentModify(){//选择部门
+        this.dialogVisibleDepartmentModify=true;
+      },
+      clearDepartmentModify(){//清除部门的值
+        this.modifyForm.departmentName='';
+      },
+      getCheckedDepartmentModify() {
+        // 获取部门 回填到文本框中
+        // alert(this.$refs.tree.getCheckedNodes()[0].departmentName);
+        this.modifyForm.departmentName=this.$refs.tree.getCheckedNodes()[0].departmentName;
+        this.modifyForm.departmentId=this.$refs.tree.getCheckedNodes()[0].id;
+        this.dialogVisibleDepartmentModify=false;
+      },
 
     }
   }
