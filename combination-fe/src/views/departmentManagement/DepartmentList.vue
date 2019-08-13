@@ -6,7 +6,7 @@
       <el-button type="primary" :disabled="depButtonPermission.modifyPermission" @click="updateDept">修改</el-button>
       <el-button type="primary" @click="dialogVisible = true" v-bind:disabled="operationBtnActive || depButtonPermission.deletePermission">删除</el-button>
       <el-button type="primary" v-bind:disabled="operationBtnActive || depButtonPermission.modifyUpDepPermission" @click="changeUpper">修改上级部门</el-button>
-      <el-button type="primary" @click="relationCompanyBtn" :disabled="depButtonPermission.relCompanyPermission">关联公司</el-button>
+      <el-button type="primary" @click="relationCompanyBtn" :disabled="operationBtnActive || depButtonPermission.relCompanyPermission">关联公司</el-button>
     </div>
     <br>
     <div>

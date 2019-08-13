@@ -489,9 +489,6 @@
       cancel () {
         this.$router.replace('/departmentManagement/showDepartment');
       },
-      choosePerson () {
-        alert("没写呢，别急");
-      },
       // 部门级别修改后显示内容变更
       levelChange() {
         if(this.form.level==5) this.haveWorkplace=true;
@@ -516,10 +513,10 @@
         self.$http.post("department/updateDepartment.do_",self.form)
           .then(result => {
             if(!result.result){
-              alert(result.msg);
+              self.$message.error(result.msg);
               return false;
             }
-            alert("修改成功！");
+            self.$message.success("修改成功！");
             self.$router.replace("/departmentManagement/showDepartment");
           })
           .catch(function (error) {
@@ -546,58 +543,58 @@
           case 3:pattern_deptNo=/^G[a-zA-Z0-9]{6}$/;break;
           case 4:pattern_deptNo=/^Q[a-zA-Z0-9]{6}$/;break;
           case 5:pattern_deptNo=/^B[a-zA-Z0-9]{6}$/;break;
-          default:alert("请选择【部门级别】！");return false;
+          default:self.$message.error("请选择【部门级别】！");return false;
         }
         if(!pattern_deptNo.test(_form.departmentNo)){
-          alert("【部门编号】不符合规范！\n" +
+          self.$message.error("【部门编号】不符合规范！\n" +
             "要求：\n" +
-            "总部：7位数字或字母，以Z开头\n" +
-            "分公司：7位数字或字母，以F开头\n" +
-            "管理部：7位数字或字母，以G开头\n" +
-            "区域：7位数字或字母，以F开头\n" +
-            "办公点：7位数字或字母，以B开头\n");
+            "总部：7位数字或字母，以Z开头。\n" +
+            "分公司：7位数字或字母，以F开头。\n" +
+            "管理部：7位数字或字母，以G开头。\n" +
+            "区域：7位数字或字母，以F开头。\n" +
+            "办公点：7位数字或字母，以B开头。\n");
           return false;
         }
         // 办公点：部门类型 及 办公点标识 校验
         if(self.haveWorkplace){
           if(_form.departmentType<=0){
-            alert("办公点需要填写【部门类型】！");
+            self.$message.error("办公点需要填写【部门类型】！");
             return false;
           }
           var pattern_deptNo = /^[0-9]{1,3}$/;
           if(!pattern_deptNo.test(_form.workplace)){
-            alert("【办公点标识】不符合规范！\n" +
+            self.$message.error("【办公点标识】不符合规范！\n" +
               "要求：1-3位数字");
             return false;
           }
         }
         // 部门名称
         if(_form.departmentName.trim()==""){
-          alert("【部门名称】不能为空！");
+          self.$message.error("【部门名称】不能为空！");
           return false;
         }
         // 手机号
         var pattern_phone = /^1[0-9]{10}$/;
         if(!pattern_phone.test(_form.telephone)){
-          alert("请输入正确的11位【手机号】");
+          self.$message.error("请输入正确的11位【手机号】");
           return false;
         }
         // 邮箱
         if(_form.email!=""){
           var pattern_email = /^\w+@[a-z0-9]+\.[a-z]+$/i;
           if(!pattern_email.test(_form.email)){
-            alert("请输入正确的【邮箱】，或者不填写任何内容！");
+            self.$message.error("请输入正确的【邮箱】，或者不填写任何内容！");
             return false;
           }
         }
         // 支持业务线
         if(_form.supportBusiness==""){
-          alert("请至少选择一个【支持业务线】！");
+          self.$message.error("请至少选择一个【支持业务线】！");
           return false;
         }
         // 城市还没做！！！
         if(_form.cityId==""){
-          alert("请选择【城市】！");
+          self.$message.error("请选择【城市】！");
           return false;
         }
         return true;
@@ -696,7 +693,7 @@
         });
       },
       chooseCityDo2(){
-        alert(this.countySearchList[2].regionName);
+        self.$message.error(this.countySearchList[2].regionName);
       },
       chooseCityDo() {
         var self = this;
@@ -730,7 +727,7 @@
             }
           }
         }
-        alert("请至少选择一个城市！");
+        self.$message.error("请至少选择一个城市！");
       }
     }
   }
