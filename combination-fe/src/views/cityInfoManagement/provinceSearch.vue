@@ -86,8 +86,8 @@
           {{RegionStatus[scope.row.regionStatus]}}
         </template>
       </el-table-column>
-      <el-table-column prop="mEmp" label="修改人"  width="200px"></el-table-column>
-      <el-table-column prop="mTime" label="修改时间"  width="200px"></el-table-column>
+      <el-table-column prop="modifyEmp" label="修改人"  width="200px"></el-table-column>
+      <el-table-column prop="modifyTime" label="修改时间"  width="200px"></el-table-column>
     </el-table>
     <!--分栏-->
     <el-pagination background
@@ -101,29 +101,66 @@
     </el-pagination>
 
     <!--新建窗口-->
-    <el-dialog title="新建省/直辖市" :visible.sync="createFormVisible">
+    <el-dialog title="新建省/直辖市" :visible.sync="createFormVisible" :close-on-click-modal="false" >
       <el-form :model="createForm">
-        <el-form-item label="国际代码" >
-          <el-input v-model="createForm.regionCode" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="省/直辖市名称" >
-          <el-input v-model="createForm.regionName" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="名字拼音" >
-          <el-input v-model="createForm.regionPinyin" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="上级区划" >
-          <el-input v-model="createForm.upperRegion" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="状态" >
-        <el-input v-model="createForm.regionStatus" autocomplete="off"></el-input>
-      </el-form-item>
-        <el-form-item label="修改人" >
-          <el-input v-model="createForm.mEmp" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="修改时间" >
-          <el-input v-model="createForm.mTime" autocomplete="off"></el-input>
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="国际代码" >
+              <el-input v-model="createForm.regionCode" autocomplete="off" width="100px"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="省/直辖市名称" >
+              <el-input v-model="createForm.regionName" autocomplete="off" width="100px"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="名字拼音" >
+              <el-input v-model="createForm.regionPinyin" autocomplete="off" width="100px"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="上级区划" >
+              <el-input v-model="createForm.upperRegion" autocomplete="off" width="100px"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="类型" >
+              <el-input v-model="createForm.regionLevel" autocomplete="off" width="100px"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="状态" >
+              <el-select v-model="createForm.regionStatus" clearable style="width:100px;" placeholder="请选择" >
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="修改人" >
+              <el-input v-model="createForm.modifyEmp" autocomplete="off" disabled width="100px"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="修改时间" >
+              <el-input v-model="createForm.modifyTime" autocomplete="off" disabled width="100px"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -176,25 +213,30 @@
         regionPinyin:'',
         upperRegion:'',
         regionStatus:'',
-        mEmp:'',
-        mTime:'',
+        modifyEmp:'',
+        modifyTime:'',
         RegionStatus:{},
         //新建页面的表单
         createFormVisible:false,
         createForm:{
+            countryCode:'CN',
+            regionAreaCode:'',
+            upperRegionID:'',
+            remark:'无',
+            createEmp:'',
+            createTime:'',
+
             regionCode:'',
             regionName:'',
             regionPinyin:'',
+            regionLevel:'',
             regionStatus:'',
             upperRegion:'',
-            mEmp:'',
-            mTime:''
+            modifyEmp:'',
+            modifyTime:''
         },
         //表单 form 中的下拉栏
-        options:[{
-          value:'',
-          label:'全部'
-        }, {
+        options:[ {
           value: '1',
           label: '有效'
         },{
@@ -231,7 +273,14 @@
       this.judgmentAuthority();
       commonUtils.Log("页面进来");
       this.fetchData();
-        // this.provinceSuggest=this.provinceSearchList;
+        this.createForm.modifyEmp=window.sessionStorage.getItem("loginUsername");
+        // 页面加载完显示当前时间
+        this.createForm.modifyTime = this.dealWithTime(new Date());
+        // 定时器，定时修改显示的时间
+        let _this = this;
+        this.timer = setInterval(function () {
+            _this.createForm.modifyTime = _this.dealWithTime(new Date())
+        }, 1000);
     },
     methods: {
       judgmentAuthority() {
@@ -358,48 +407,15 @@
                 } else if (this.checkedRegionProps[i] === '状态') {
                     this.filterVal.push('regionStatus')
                 } else if (this.checkedRegionProps[i] === '修改人') {
-                    this.filterVal.push('mEmp')
+                    this.filterVal.push('modifyEmp')
                 } else if (this.checkedRegionProps[i] === '修改时间') {
-                    this.filterVal.push('mTime')
+                    this.filterVal.push('modifyTime')
                 }
             }
             return this.filterVal;
         },
-      //输入校验
-        // 只能输入汉字、英文、数字
-        btKeyDown(e) {
-            e.target.value = e.target.value.replace(/[^\u4E00-\u9FA5]/g,"");
-        },
-        //限制输入特殊字符
-        btKeyUp(e) {
-            e.target.value = e.target.value.replace(/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/g,"");
-        },
 
-
-      //创建新的区域
-      createRegion(){
-          var self=this;
-          self.createFormVisible = false;
-          var param={
-              regionCode:self.createForm.regionCode,
-              regionName:self.createForm.regionName,
-              regionPinyin:self.createForm.regionPinyin,
-              regionStatus:self.createForm.regionStatus,
-              upperRegion:self.createForm.upperRegion,
-              mEmp:self.createForm.mEmp,
-              mTime:self.createForm.mTime
-          };
-          self.$http.get('/regionManage/createProvince',{
-              params:param
-          }).then((result)=>{
-              console.log("chuangjianchenggong");
-          }).catch(function (error) {
-              commonUtils.Log("/regionManage/provinceSearch:" + error);
-              self.$message.error("获取数据错误");
-          });
-      },
-
-      //带建议的输入：省份名字
+        //带建议的输入：省份名字
         querySearch(queryString, cb) {
             var provinceSuggests = this.provinceSearchList;
             var results = queryString ? provinceSuggests.filter(this.createFilter(queryString)) : provinceSuggests;
@@ -416,8 +432,6 @@
         handleSelect(item) {
             console.log(item);
         },
-
-
         //带建议的输入：国际代码
         querySearchRegionCode(queryString, cb) {
             var provinceSuggests = this.provinceSearchList;
@@ -430,10 +444,67 @@
                 return (province.regionCode.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
             };
         },
-
         handleSelectRegionCode(item) {
             console.log(item);
-        }
+        },
+
+        //输入校验
+        // 只能输入汉字、英文、数字
+        btKeyDown(e) {
+            e.target.value = e.target.value.replace(/[^\u4E00-\u9FA5]/g,"");
+        },
+        //限制输入特殊字符
+        btKeyUp(e) {
+            e.target.value = e.target.value.replace(/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/g,"");
+        },
+
+
+      //创建新的区域
+      createRegion(){
+          var self=this;
+          self.createFormVisible=false;
+          var param={
+              regionCode:self.createForm.regionCode,
+              regionName:self.createForm.regionName,
+              regionPinyin:self.createForm.regionPinyin,
+              regionLevel:self.createForm.regionLevel,
+              upperRegion:self.createForm.upperRegion,
+              regionStatus: self.createForm.regionStatus,
+              modifyTime:self.createForm.modifyTime
+          };
+          self.$http.get('/regionManage/createProvince',{
+              params:param
+          }).then((result)=>{
+              //对取回来的数据进行处理
+              console.log(result);
+
+          }).catch(function (error) {
+              commonUtils.Log("/regionManage/createProvince:" + error);
+              self.$message.error("获取数据错误");
+          });
+      },
+        //其他信息栏：获取时间
+        dealWithTime (data) {
+            let formatDateTime;
+            let Y = data.getFullYear();
+            let M = data.getMonth() + 1;
+            let D = data.getDate();
+            let H = data.getHours();
+            let Min = data.getMinutes();
+            let S = data.getSeconds();
+            let W = data.getDay();
+            H = H < 10 ? ('0' + H) : H;
+            Min = Min < 10 ? ('0' + Min) : Min;
+            S = S < 10 ? ('0' + S) : S;
+            formatDateTime = Y + '年' + M + '月' + D + '日 ' + H + ':' + Min + ':' + S;
+            return formatDateTime;
+        },
+        destroyed () {
+            // 结束时清除定时器
+            if (this.timer) {
+                clearInterval(this.timer);
+            }
+        },
 
 
 

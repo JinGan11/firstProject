@@ -14,10 +14,10 @@
 	        t1.upper_city_id upperRegionID,
 	        t1.upper_city_name upperRegion,
 	        t1.`status` regionStatus,
-	        t1.create_emp cEmp,
-	        t1.create_time cTime,
-	        t1.modify_emp mEmp,
-	        t1.modify_time mTime,
+	        t1.create_emp createEmp,
+	        t1.create_time createTime,
+	        t1.modify_emp modifyEmp,
+	        t1.modify_time modifyTime,
 	        t1.remark remark
         FROM
         	t_b_city t1
@@ -48,10 +48,10 @@
 		t1.upper_city_id upperRegionID,
 		t1.upper_city_name upperRegion,
 		t1.`status` regionStatus,
-		t1.create_emp cEmp,
-		t1.create_time cTime,
-		t1.modify_emp mEmp,
-		t1.modify_time mTime,
+		t1.create_emp createEmp,
+		t1.create_time createTime,
+		t1.modify_emp modifyEmp,
+		t1.modify_time modifyTime,
 		t1.remark remark
 		FROM
 		t_b_city t1
@@ -88,10 +88,10 @@
 		t1.upper_city_id upperRegionID,
 		t2.upper_city_name upperRegionTwice ,
 		t1.`status` regionStatus,
-		t1.create_emp cEmp,
-		t1.create_time cTime,
-		t1.modify_emp mEmp,
-		t1.modify_time mTime,
+		t1.create_emp createEmp,
+		t1.create_time createTime,
+		t1.modify_emp modifyEmp,
+		t1.modify_time modifyTime,
 		t1.remark remark
 		FROM
 		t_b_city t1 LEFT JOIN (SELECT city_id,upper_city_name  FROM t_b_city ) t2 ON t1.upper_city_id=t2.city_id
@@ -119,4 +119,10 @@
 	</select>
 
 
+	<insert id="createProvince" parameterType="com.ucar.combination.model.Region">
+
+        INSERT INTO t_b_city ( international_code, city_name_pinyin,city_name,upper_city_name ,`level`,status,create_emp,create_time,modify_emp,modify_time,remark)
+        VALUES(#{regionCode}, #{regionPinyin},#{regionName}, #{upperRegion} ,#{regionLevel},#{regionStatus},#{createEmp},#{createTime},#{modifyEmp},#{modifyTime},'无')
+
+	</insert>
 </mapper>

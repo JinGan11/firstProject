@@ -1,16 +1,27 @@
 package com.ucar.combination.controller;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.Region;
 import com.ucar.combination.service.RegionManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.awt.image.ImageProducer;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,35 +132,47 @@ public class RegionManageController {
     }
 
 
+    /**
+     * description: 新建省/直辖市
+     * @author kailun.yang@ucarinc.com
+     * @date <2019-08-12>
+     * @param <[request]> <参数说明>
+     * @return <com.ucar.combination.common.Result><返回值说明>
+     */
     @ResponseBody
     @RequestMapping("/createProvince")
-    public Result createProvince(HttpServletRequest request) throws  IllegalAccessException{
+    public String createProvince(HttpServletRequest request, HttpSession session) throws IllegalAccessException, ParseException {
+        String mTime =request.getParameter("modifyTime");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        Date modifyTime = formatter.parse(mTime);
+//        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
-        String regionCode = request.getParameter("regionCode");
-        String regionName = request.getParameter("regionName");
-        String regionPinyin = request.getParameter("regionPinyin");
-        String upperRegion = request.getParameter("upperRegion");
-        String regionStatus = request.getParameter("regionStatus");
-        String mEmp = request.getParameter("mEmp");
-        String mTime = request.getParameter("mTime");
+        Long accountId = (Long) session.getAttribute("accountId");
+        Region region=new Region();
 
 
+        region.setRegionCode(request.getParameter("regionCode"));
+        region.setRegionName(request.getParameter("regionName"));
+        region.setRegionPinyin(request.getParameter("regionPinyin"));
+        region.setRegionLevel(Integer.valueOf(request.getParameter("regionLevel")));
+        region.setRegionStatus(Integer.valueOf(request.getParameter("regionStatus")));
+        region.setUpperRegion(request.getParameter("upperRegion"));
 
-        Map<String,Object> params=new HashMap<>();
-        params.put("regionCode", regionCode);
-        params.put("regionName", regionName);
-        params.put("regionPinyin",regionPinyin);
-        params.put("upperRegion",upperRegion);
-        params.put("regionStatus", regionStatus);
-        params.put("mEmp",mEmp);
-        params.put("mTime", mTime);
 
-        for(String key:params.keySet()){
-            System.out.println("key: "+key+" value: "+params.get(key));
-        }
+        region.setCreateEmp(accountId);
+        region.setCreateTime(modifyTime);
+        region.setModifyEmp(accountId);
+        region.setModifyTime(modifyTime);
+        region.setRemark("无情");
 
-//        return new Result().ok().put("msg",map);
-        return null;
+//        regionManageService.createProvince(region);
+
+        int resultValue=regionManageService.createProvince(region);
+//        System.out.println("resultValue : "+resultValue);
+        if(resultValue==1)
+            {return "success";}
+        else
+            {return "false";}
     }
 }

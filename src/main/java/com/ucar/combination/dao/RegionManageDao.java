@@ -1,5 +1,7 @@
 package com.ucar.combination.dao;
 
+import com.ucar.combination.model.Region;
+
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +41,7 @@ public interface RegionManageDao {
      */
     List<Object> countySearchList(Map<String, Object> map);
 
+    int createProvince(Region region);
 
 
 

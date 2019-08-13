@@ -79,8 +79,8 @@
           {{RegionStatus[scope.row.regionStatus]}}
         </template>
       </el-table-column>
-      <el-table-column prop="mEmp" label="修改人"  width="200px"></el-table-column>
-      <el-table-column prop="mTime" label="修改时间"  width="200px"></el-table-column>
+      <el-table-column prop="modifyEmp" label="修改人"  width="200px"></el-table-column>
+      <el-table-column prop="modifyTime" label="修改时间"  width="200px"></el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
@@ -136,8 +136,8 @@
         regionPinyin:'',
         regionAreaCode:'',
         regionStatus:'',
-        mEmp:'',
-        mTime:'',
+        modifyEmp:'',
+        modifyTime:'',
 
         options:[{
           value:'',
@@ -293,9 +293,9 @@
                 } else if (this.checkedRegionProps[i] === '状态') {
                     this.filterVal.push('regionStatus')
                 } else if (this.checkedRegionProps[i] === '修改人') {
-                    this.filterVal.push('mEmp')
+                    this.filterVal.push('modifyEmp')
                 } else if (this.checkedRegionProps[i] === '修改时间') {
-                    this.filterVal.push('mTime')
+                    this.filterVal.push('modifyTime')
                 }
             }
             return this.filterVal;

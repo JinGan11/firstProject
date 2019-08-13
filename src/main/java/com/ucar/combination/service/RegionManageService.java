@@ -2,8 +2,10 @@ package com.ucar.combination.service;
 
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.Region;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * description:行政区划管理
@@ -44,6 +46,14 @@ public interface RegionManageService {
     List<Object> getCountySearchList(QueryParam queryParam);
 
 
+    /**
+     * description: 新建省/直辖市
+     * @author kailun.yang@ucarinc.com
+     * @date <2019-08-12>
+     * @param <[params]> <参数说明>
+     * @return <java.lang.String><返回值说明>
+     */
+    int createProvince(Region region);
 
     String testSer();
 }

@@ -5,11 +5,13 @@ import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.RegionManageDao;
+import com.ucar.combination.model.Region;
 import com.ucar.combination.service.RegionManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * description:
@@ -43,6 +45,11 @@ public class RegionManageServiceImpl implements RegionManageService {
     @Override
     public List<Object> getCountySearchList(QueryParam queryParam) {
         return regionManageDao.countySearchList(queryParam);
+    }
+
+    @Override
+    public int createProvince(Region region) {
+        return regionManageDao.createProvince(region);
     }
 
     @Override

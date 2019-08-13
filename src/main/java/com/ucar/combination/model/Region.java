@@ -1,8 +1,11 @@
 package com.ucar.combination.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ucar.combination.model.dto.BaseBean;
 
+
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * description:
@@ -22,6 +25,8 @@ public class Region extends BaseBean {
     private Long upperRegionID;
     private String upperRegion;
     private String upperRegionTwice;
+    private Integer regionStatus;
+    private String remark;
 
     public String getUpperRegionTwice() {
         return upperRegionTwice;
@@ -30,13 +35,6 @@ public class Region extends BaseBean {
     public void setUpperRegionTwice(String upperRegionTwice) {
         this.upperRegionTwice = upperRegionTwice;
     }
-
-    private Integer regionStatus;
-    private String cEmp;
-    private Timestamp cTime;
-    private String mEmp;
-    private Timestamp mTime;
-    private String remark;
 
     public Long getCityID() {
         return cityID;
@@ -117,38 +115,6 @@ public class Region extends BaseBean {
 
     public void setRegionStatus(Integer regionStatus) {
         this.regionStatus = regionStatus;
-    }
-
-    public String getcEmp() {
-        return cEmp;
-    }
-
-    public void setcEmp(String cEmp) {
-        this.cEmp = cEmp;
-    }
-
-    public Timestamp getcTime() {
-        return cTime;
-    }
-
-    public void setcTime(Timestamp cTime) {
-        this.cTime = cTime;
-    }
-
-    public String getmEmp() {
-        return mEmp;
-    }
-
-    public void setmEmp(String mEmp) {
-        this.mEmp = mEmp;
-    }
-
-    public Timestamp getmTime() {
-        return mTime;
-    }
-
-    public void setmTime(Timestamp mTime) {
-        this.mTime = mTime;
     }
 
     public String getRemark() {
