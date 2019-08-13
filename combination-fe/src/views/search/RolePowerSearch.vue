@@ -38,7 +38,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="审批人所属部门">
-              <el-input style="width:80px;" v-model="form.approverDepartmentName"></el-input>
+              <el-input style="width:130px;" v-model="form.approverDepartmentName"></el-input>
               <el-button type="text" @click="selectDepartment">选择</el-button>
               <el-button type="text" @click="clearDepartment">清空</el-button>
             </el-form-item>
@@ -53,7 +53,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="权限名称">
-              <el-input placeholder="权限名称" style="width:200px;" v-model="form.powerName"></el-input>
+              <el-input placeholder="权限名称" style="width:130px;" v-model="form.powerName"></el-input>
               <el-button type="text" @click="selectPermissions">选择</el-button>
               <el-button type="text" @click="clearPermission">清空</el-button>
             </el-form-item>
