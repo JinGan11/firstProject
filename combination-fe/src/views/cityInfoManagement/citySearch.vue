@@ -4,7 +4,7 @@
       <el-form ref="form" :model="form" label-width="70px">
         <el-row class="demo-autocomplete">
           <el-col :span="6">
-            <div class="sub-title">国际代码：</div>
+            国际代码：
             <el-autocomplete
               class="inline-input"
               v-model="form.regionCode"
@@ -16,7 +16,7 @@
             ></el-autocomplete>
           </el-col>
           <el-col :span="6">
-            <div class="sub-title">城市名字</div>
+            城市名字:
             <el-autocomplete
               class="inline-input"
               v-model="form.regionName"
@@ -28,7 +28,7 @@
             ></el-autocomplete>
           </el-col>
           <el-col :span="6">
-            <div class="sub-title">所属省市</div>
+            所属省市:
             <el-autocomplete
               class="inline-input"
               v-model="form.upperRegion"
@@ -80,7 +80,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="modifyEmp" label="修改人"  width="200px"></el-table-column>
-      <el-table-column prop="modifyTime" label="修改时间"  width="200px"></el-table-column>
+      <el-table-column prop="modifyTime" label="修改时间"  ></el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"

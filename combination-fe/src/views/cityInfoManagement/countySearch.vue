@@ -3,8 +3,8 @@
     <div style="width:85%; margin-left: 70px">
       <el-form ref="form" :model="form" label-width="70px">
         <el-row class="demo-autocomplete">
-          <el-col :span="4">
-            <div class="sub-title">国际代码：</div>
+          <el-col :span="5">
+            国际代码：
             <el-autocomplete
               class="inline-input"
               v-model="form.regionCode"
@@ -15,8 +15,8 @@
               @select="handleSelect"
             ></el-autocomplete>
           </el-col>
-          <el-col :span="4">
-            <div class="sub-title">区县名字</div>
+          <el-col :span="5">
+            区县名字:
             <el-autocomplete
               class="inline-input"
               v-model="form.regionName"
@@ -27,8 +27,8 @@
               @select="handleSelect"
             ></el-autocomplete>
           </el-col>
-          <el-col :span="4">
-            <div class="sub-title">所属城市</div>
+          <el-col :span="5">
+            所属城市:
             <el-autocomplete
               class="inline-input"
               v-model="form.upperRegion"
@@ -39,8 +39,8 @@
               @select="handleSelect"
             ></el-autocomplete>
           </el-col>
-          <el-col :span="4">
-            <div class="sub-title">所属省市</div>
+          <el-col :span="55">
+            所属省市:
             <el-autocomplete
               class="inline-input"
               v-model="form.upperRegionTwice"
@@ -54,7 +54,7 @@
 
 
 
-          <el-col :span="4">
+          <el-col :span="2">
             <el-form-item label="状态：">
               <el-select v-model="form.regionStatus" clearable style="width:100px;" placeholder="请选择">
                 <el-option
@@ -68,18 +68,22 @@
           </el-col>
 
         </el-row>
-        <el-row>
-          <el-col :span="6" :offset="6">
-            <el-form-item>
-              <el-button type="primary" style="width: 100px" @click="fetchData" size="medium">查询</el-button>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" >
-            <el-form-item>
-              <el-button type="primary" style="width: 100px" @click="exportVisible=true" v-if="!countyBtnPermission.exportPermission" size="medium">导出</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <div style="margin-top: 10px">
+          <el-row>
+            <el-col :span="6" :offset="6">
+              <el-form-item>
+                <el-button type="primary" style="width: 100px" @click="fetchData" size="medium">查询</el-button>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6" >
+              <el-form-item>
+                <el-button type="primary" style="width: 100px" @click="exportVisible=true" :disabled="countyBtnPermission.exportPermission" size="medium">导出</el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+
+
       </el-form>
     </div>
 
@@ -98,7 +102,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="modifyEmp" label="修改人"  width="150px"></el-table-column>
-      <el-table-column prop="modifyTime" label="修改时间"  width="150px"></el-table-column>
+      <el-table-column prop="modifyTime" label="修改时间"  ></el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
