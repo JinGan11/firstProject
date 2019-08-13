@@ -275,6 +275,22 @@
         SELECT permissions FROM t_account WHERE id=#{id}
     </select>
 
+    <select id="selectAccountInfoById" parameterType="Integer" resultType="com.ucar.combination.model.AccountHistory">
+        select ac.id as account_id,ac.create_emp,ac.create_time,ac.permissions,st.staff_name,st.staff_num
+from
+t_account ac, t_staff st
+WHERE
+ac.staff_id=st.id
+And
+ac.id=#{id}
+    </select>
+
+    <update id="updateModifyTimeAndModifyName" parameterType="com.ucar.combination.model.Account">
+        update t_account t1
+        set t1.modify_emp=#{a.modifyEmpId},t1.modify_time=#{a.modifyTime}
+        where t1.id = #{a.id}
+    </update>
+
 </mapper>
 
 

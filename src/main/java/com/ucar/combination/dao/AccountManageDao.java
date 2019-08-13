@@ -1,10 +1,9 @@
 package com.ucar.combination.dao;
 
-import com.ucar.combination.model.Account;
-import com.ucar.combination.model.AccountStaff;
-import com.ucar.combination.model.DepartmentPower;
-import com.ucar.combination.model.RoleAccount;
+import com.ucar.combination.model.*;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -139,4 +138,11 @@ public interface AccountManageDao {
      * @return
      */
     Integer selectPermissionsById(Long id);
+    /*
+     用于插入历史记录之前查询出账号相应信息
+     */
+    AccountHistory selectAccountInfoById(Integer id);
+
+    void updateModifyTimeAndModifyName(@Param("a") Account account);
+
 }

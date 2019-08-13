@@ -154,6 +154,7 @@ public class AccountManagerController {
     public void update(HttpServletRequest request){
         String strid = request.getParameter("accountId");
         int id = Integer.parseInt(strid);
+        //**************************************
         accountManagerService.updateStatus(id,3);
 
     }
@@ -172,22 +173,22 @@ public class AccountManagerController {
         ResultPage ownedRole = roleManagementService.getOwnedRoleList(account);
         return Result.ok().put("notOwnedRole" ,notOwnedRole).put("ownedRole", ownedRole);
     }
-    //冻结
+    //冻结账户信息
     @ResponseBody
     @RequestMapping(value = "/lock",method = RequestMethod.POST)
-    public Result lockAccount(@RequestBody Map<String,String> map){
+    public Result lockAccount(@RequestBody Map<String,String> map,HttpServletRequest request){
         String accountId = map.get("id");
         Integer status = 2;
-        accountManagerService.updateStatus(Integer.parseInt(accountId),status);
+        accountManagerService.lockAndUnlock(Integer.parseInt(accountId),status,"冻结",request);
         return null;
     }
 
     @ResponseBody
     @RequestMapping(value = "/unLock",method = RequestMethod.POST)
-    public Result unLockAccount(@RequestBody Map<String,String> map){
+    public Result unLockAccount(@RequestBody Map<String,String> map,HttpServletRequest request){
         String accountId = map.get("id");
         Integer status = 1;
-        accountManagerService.updateStatus(Integer.parseInt(accountId),status);
+        accountManagerService.lockAndUnlock(Integer.parseInt(accountId),status,"解冻",request);
         return null;
     }
 

@@ -4,20 +4,22 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.dao.AccountHistoryDao;
 import com.ucar.combination.dao.AccountManageDao;
 import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.dao.PowerDao;
-import com.ucar.combination.model.Account;
-import com.ucar.combination.model.AccountStaff;
-import com.ucar.combination.model.DepartmentPower;
-import com.ucar.combination.model.RoleAccount;
+import com.ucar.combination.model.*;
 import com.ucar.combination.model.dto.AccountPowerDto;
 import com.ucar.combination.service.AccountManagerService;
 import com.ucar.combination.service.EmployeeManageService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +38,8 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     private EmployeeManageDao employeeManageDao;
     @Resource
     private PowerDao powerDao;
+    @Resource
+    private AccountHistoryDao accountHistoryDao;
 
     @Override
     public ResultPage queryList(QueryParam queryParam) {
@@ -211,5 +215,26 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         int flag = accountManageDao.deleteAccountById(accountStaff);
         insertAccountHistory(accountStaff);
         return flag;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void lockAndUnlock(int id, int status, String historyOperationType, HttpServletRequest request) {
+        //拿到当前登录账号的名字
+        HttpSession session = request.getSession();
+        String currentAccountId = session.getAttribute("accountId").toString();
+        Date date = new Date();
+        Account account = new Account();
+        account.setModifyEmpId(Long.parseLong(currentAccountId));
+        account.setModifyTime(date);
+        account.setId(Long.parseLong(String.valueOf(id)));
+         //拼装一条历史记录
+        AccountHistory accountHistory = accountManageDao.selectAccountInfoById(id);
+        accountHistory.setAccountState(Byte.parseByte(String.valueOf(status)));
+        accountHistory.setHistoryOperationType(historyOperationType);
+
+        accountManageDao.updateModifyTimeAndModifyName(account);
+        accountManageDao.updateStatus(id, status);
+        accountHistoryDao.insert(accountHistory);
     }
 }

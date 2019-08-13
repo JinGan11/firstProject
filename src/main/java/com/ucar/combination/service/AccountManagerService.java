@@ -7,6 +7,7 @@ import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.model.Staff;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -144,6 +145,8 @@ public interface AccountManagerService {
      * @return:
      */
     int deleteAccountById(AccountStaff accountStaff);
+
+    void lockAndUnlock(int id, int status, String historyOperationType, HttpServletRequest request);
 
 
 }
