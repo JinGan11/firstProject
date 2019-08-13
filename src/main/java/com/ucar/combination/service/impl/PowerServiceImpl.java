@@ -288,11 +288,11 @@ public class PowerServiceImpl implements PowerService {
      * @params
      * @return
      */
-    public ResultPage queryRolePowerList(QueryParam queryParam) {
+   /* public ResultPage queryRolePowerList(QueryParam queryParam) {
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
         List<RolePowerDto> list = powerDao.queryRolePowerList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
-    }
+    }*/
 
     @Override
     public ResultPage queryRolePowerList(RolePowerDto rolePowerDto) {
@@ -300,5 +300,8 @@ public class PowerServiceImpl implements PowerService {
         List<RolePowerDto> list = powerDao.queryRolePowerList(rolePowerDto);
         return new ResultPage(list, (int) page.getTotal(), rolePowerDto.getLimit(), rolePowerDto.getPage());
     }
-
+    public List<RolePowerDto> getRolePowerDtoList(RolePowerDto rolePowerDto){
+        List<RolePowerDto> list = powerDao.queryRolePowerList(rolePowerDto);
+        return list;
+    }
 }
