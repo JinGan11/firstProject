@@ -3,7 +3,9 @@ package com.ucar.combination.service;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Company;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -38,7 +40,7 @@ public interface CompanyManageService {
      * @date: 2019/8/6 15:12
      * @return：
      */
-    void insertCompany(Company company);
+    void insertCompany(MultipartFile[] file, String str, HttpSession session);
 
 
     Map getCompanyById(int companyId);
@@ -50,7 +52,7 @@ public interface CompanyManageService {
      * @date: 2019/8/8 9:05
      * @return：
      */
-    Map<String,Object> updateCompanyById(Company company);
+    void updateCompanyById(Company company);
     /**
      * description: 校验统一社会信用代码
      * @author: jianan.shu@ucarinc.com
@@ -58,9 +60,9 @@ public interface CompanyManageService {
      * @date: 2019/8/8 15:31
      * @return：
      */
-    Map<String, Object> creditCodeValidate(String creditCode);
+    int creditCodeValidate(String creditCode);
     ResultPage queryRelationList(QueryParam queryParam);
     ResultPage relationCompanyList(QueryParam queryParam);
-    void saveRelations(Map<String ,Object>queryParam);
+    void saveRelations(Map<String, Object> queryParam);
 
 }

@@ -31,7 +31,7 @@ public interface CompanyManageDao<mcmt> {
 
      * @return
      */
-    List<Company> getCompanyList(Map<String,Object> map);
+    List<Company> getCompanyList(Map<String, Object> map);
     /**
      * description: 插入公司信息
      * @author: jianan.shu@ucarinc.com
@@ -39,7 +39,7 @@ public interface CompanyManageDao<mcmt> {
      * @date: 2019/8/6 15:17
      * @return：
      */
-    void insertCompany(Company company);
+    Long insertCompany(Company company);
     /**
      * description: 得到修改的公司信息
      * @author: jianan.shu@ucarinc.com
@@ -71,11 +71,13 @@ public interface CompanyManageDao<mcmt> {
      * @date: 2019/8/8 15:32
      * @return：
      */
-    Integer creditCodeValidate(@Param("creditCode")String creditCode);
+    Integer creditCodeValidate(@Param("creditCode") String creditCode);
     List<CompanyDto> queryRelationList(Map<String, Object> map);
     List<CompanyDto>relationCompanyList(Map<String, Object> map);
-    void addRelationCompany(Map<String,Object>map);
-    void updateRelation(Map<String,Object>map);
-    Integer getRelationCount(Map<String,Object>map);
+    void addRelationCompany(Map<String, Object> map);
+    void updateRelation(Map<String, Object> map);
+    Integer getRelationCount(Map<String, Object> map);
+
+    void insertLicenses(List list);
 
 }

@@ -4,11 +4,16 @@ server:
   servlet:
     context-path: /combination
 spring:
-#  devtools:
-#    restart:
-#      enabled: true  #设置开启热部署
-#  freemarker:
-#    cache: false    #页面不加载缓存，修改即时生效
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
+  #  devtools:
+  #    restart:
+  #      enabled: true  #设置开启热部署
+  #  freemarker:
+  #    cache: false    #页面不加载缓存，修改即时生效
   http:
     encoding:
       force: true
@@ -52,7 +57,7 @@ spring:
 
   application:
     name: spirng-boot-mail
-# 配置邮件发送
+  # 配置邮件发送
   mail:
     host: smtp.qq.com
     username: 2207843123@qq.com
@@ -86,4 +91,5 @@ pagehelper:
   reasonable: true
   support-methods-arguments: true
   params: count=contSql
+
 

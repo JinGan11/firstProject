@@ -12,10 +12,8 @@ import com.ucar.combination.model.Department;
 import com.ucar.combination.service.CompanyManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -78,19 +76,10 @@ public class CompanyManageController {
      */
     @ResponseBody
     @RequestMapping(value = "/createCompany",method = RequestMethod.POST)
-    public Map<String,Object> createCompany(@RequestBody Company company, HttpSession session){
-
-        Long accountId = (Long) session.getAttribute("accountId");
-        company.setCreateEmp(accountId);
-        company.setModifyEmp(accountId);
-        System.out.println("******************************");
-        System.out.println(company.getCreateEmp());
-        Map<String, Object> map = companyManageService.creditCodeValidate(company.getCreditCode());
-        if((Boolean) map.get("result")){
-            companyManageService.insertCompany(company);
-        }
-
-        return map;
+    public String createCompany(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
+                                @RequestParam("company") String data ,HttpSession session){
+        companyManageService.insertCompany(businessLicenses, data,session);
+        return "success";
     }
     /**
      * description: 获取单一公司信息
@@ -116,23 +105,11 @@ public class CompanyManageController {
      */
     @ResponseBody
     @RequestMapping(value = "/modifyCompany",method = RequestMethod.POST)
-    public Map<String,Object> updateCompanyById(@RequestBody Company company, HttpSession session){
+    public String updateCompanyById(@RequestBody Company company, HttpSession session){
         Long accountId = (Long) session.getAttribute("accountId");
         company.setModifyEmp(accountId);
-        Map<String, Object> map=new HashMap<>();
-        System.out.println("修改公司");
-        System.out.println(company.getCreditCode());
-        System.out.println(company.getOldCreditCode());
-        if(company.getOldCreditCode().equals(company.getCreditCode())){
-            map=companyManageService.updateCompanyById(company);
-        }else{
-             map = companyManageService.creditCodeValidate(company.getCreditCode());
-            if((Boolean) map.get("result")){
-                map=companyManageService.updateCompanyById(company);
-            }
-        }
-
-        return map;
+        companyManageService.updateCompanyById(company);
+        return "success";
     }
 
     @ResponseBody

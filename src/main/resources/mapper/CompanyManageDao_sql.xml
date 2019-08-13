@@ -90,7 +90,10 @@
 
 
     <insert id="insertCompany" parameterType="com.ucar.combination.model.Company">
-        insert into t_company(
+        <selectKey resultType="_long" keyProperty="companyId" order="AFTER">
+            select @@IDENTITY as id
+        </selectKey>
+         insert into t_company(
             company_name,
             credit_code,
             company_type,
@@ -338,4 +341,11 @@
 
         </where>
     </select>
+    <insert id="insertLicenses">
+        insert into t_license(companyId,url)
+        values
+        <foreach collection="list"  item="item" separator=",">
+            (#{item.companyId},#{item.fileLocation})
+        </foreach>
+    </insert>
 </mapper>

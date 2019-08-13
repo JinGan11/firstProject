@@ -1,15 +1,23 @@
 package com.ucar.combination.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.CompanyManageDao;
 import com.ucar.combination.model.Company;
+import com.ucar.combination.model.dto.BusinessLicense;
 import com.ucar.combination.service.CompanyManageService;
+import com.ucar.combination.utils.FileUrlGenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,9 +61,32 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      * @return：
      */
     @Override
-    public void insertCompany(Company company){
-        System.out.println(company.getBusinessStartTime());
+    public void insertCompany(MultipartFile[] file, String str, HttpSession session){
+        Company company = JSON.parseObject(str, Company.class);
+        Long accountId = (Long) session.getAttribute("accountId");
+        company.setCreateEmp(accountId);
+        company.setModifyEmp(accountId);
         companyManageDao.insertCompany(company);
+        Long id =company.getCompanyId();
+        if (file.length != 0) {
+            List<BusinessLicense> list = new ArrayList<>();
+            for (int i = 0; i < file.length; i++) {
+                String url = FileUrlGenUtils.generateUrl(file[i]);
+                BusinessLicense businessLicense = new BusinessLicense();
+                businessLicense.setCompanyId(id);
+                businessLicense.setFileLocation(url);
+                list.add(businessLicense);
+            }
+            companyManageDao.insertLicenses(list);
+            for (int i = 0; i < file.length; i++) {
+                File license = new File(list.get(i).getFileLocation());
+                try {
+                    file[i].transferTo(license);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
     /**
      * description: 依据公司Id获取公司信息
@@ -64,6 +95,7 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      * @date: 2019/8/8 9:25
      * @return：
      */
+
     public Map getCompanyById(int companyId){
         Company company=companyManageDao.getCompanyById(companyId);
         String createEmp=companyManageDao.getEmpById(company.getCreateEmp());
@@ -81,11 +113,9 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      * @date: 2019/8/8 9:26
      * @return：
      */
-    public Map<String,Object> updateCompanyById(Company company){
-        Map<String,Object>map=new HashMap<>();
-        map.put("result",true);
+
+    public void updateCompanyById(Company company){
         companyManageDao.updateCompanyById(company);
-        return map;
     }
     /**
      * description: 校验统一社会信用代码
@@ -94,16 +124,13 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      * @date: 2019/8/8 15:36
      * @return：
      */
-    public Map<String, Object> creditCodeValidate(String creditCode){
-        Map<String, Object> map = new HashMap<>();
-        map.put("result", true);
+    public int creditCodeValidate(String creditCode){
         Integer validate ;
         validate = companyManageDao.creditCodeValidate(creditCode);
-        if(validate>0){
-            map.put("result", false);
-            map.put("msg", "统一社会信用代码已存在！");
+        if(validate == null){
+            return 0;
         }
-        return map;
+        return validate.intValue();
     }
     @Override
     public ResultPage queryRelationList(QueryParam queryParam){
@@ -120,9 +147,7 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
         List oldRelationCompany=(List<Long>)queryParam.get("oldRelationList");
         List newRelationCompany= (List<Long>) queryParam.get("newRelationList");
         String departmentId=(String)queryParam.get("departmentId");
-
         long accountId=(long)queryParam.get("accountId");
-        System.out.println(accountId);
         //添加、不变
         for(int i=0;i<newRelationCompany.size();i++){
             int flag=0;

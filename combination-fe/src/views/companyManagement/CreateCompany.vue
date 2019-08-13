@@ -234,7 +234,8 @@
       :on-remove="handleRemove"
       :onChange="getFileList"
       :auto-upload="false"
-      ref="upload">
+      ref="upload"
+      :http-request="uploadLicenses">
       <i class="el-icon-plus"></i>
       </el-upload>
       只能上传jpg/png/gif文件,且不超过2M,最多只能上传20张图片
@@ -293,6 +294,7 @@
           companyStatus:'1',
           remark:'',
           liscensePath:'',
+
         },
         nowTime: '',
         options1: [{
@@ -388,8 +390,8 @@
             { required: false, message: '备注'},
 
           ],
-
         },
+        formData: new FormData(),
       }
     },
     activated() {
@@ -414,7 +416,15 @@
       }
     },
     methods: {
+      //覆盖默认上传事件
+      uploadLicenses(file) {
+        // this.company.businessLicenses = file.file;
+        console.log(file.file);
+        this.formData.append("businessLicenses", file.file);
+      },
+
       save: function () {//保存新建公司信息
+        this.$refs.upload.submit();
         const self = this;
         self.$refs["ruleForm"].validate(function (valid) {
           //if(self.$options.methods.checkInput(self)==false) return;
@@ -429,28 +439,18 @@
               self.form.liscensePath = 'dfs';
               self.form.createEmp = '';
               self.form.modifyEmp = '';
-              self.$http.post("company/createCompany", self.form)
+              self.formData.append("company", JSON.stringify(self.form))
+              self.$http.post("company/createCompany", self.formData)
                 .then((result) => {
-                  if (!result.result) {
-                    alert(result.msg);
-                    return false;
-                  }
                   self.$alert("添加成功！");
                   self.$router.replace("/CompanyManagement");
+                  self.formData=new FormData();
                 })
                 .catch(function (error) {
                   commonUtils.Log("company/createCompany:" + error);
                   self.$message.error("新建公司失败");
+                  self.formData=new FormData();
                 });
-              this.$message({
-                type: 'success',
-                message: '保存成功!'
-              });
-            }).catch(() => {
-              this.$message({
-                type: 'info',
-                message: '已取消保存'
-              });
             });
           } else {
             console.log('error submit!!');
@@ -476,7 +476,7 @@
         for (let i = 0; i <this.unUploadFile.length ; i++) {
           this.fileList.push(this.unUploadFile[i]);
         }
-        this.$refs.upload.clearFiles()
+       // this.$refs.upload.clearFiles()
       },
       getFileList(file, fileList){
         this.unUploadFile=fileList;
