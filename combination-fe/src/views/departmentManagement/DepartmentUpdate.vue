@@ -424,7 +424,7 @@
       };
       self.$http.get("department/selectDepartmentById.do_",{ params: deptParam })
         .then(result => {
-          self.$options.methods.fillData(self,result.departmentEdit); // 填充其他数据
+          self.$options.methods.setSupportBusiness(self,result.departmentEdit); // 设置可选业务线+填充数据
         })
         .catch(function (error) {
 
@@ -432,18 +432,38 @@
     },
     components: {employeeList},
     methods: {
+      // 设置可选择业务线
+      setSupportBusiness(self,data){
+        var supParam = {
+          departmentNo: data.upperDepartmentNo
+        };
+        self.$http.get("department/getSupportBusiness.do_",{ params: supParam })
+          .then(result => {
+            var sups = result.split("&");
+            for(var i=0;i<sups.length;i++){
+              if(sups[i] == "闪贷") { self.businessDisable.shandai=false; continue; }
+              if(sups[i] == "租车") { self.businessDisable.zuche=false; continue; }
+              if(sups[i] == "专车") { self.businessDisable.zhuanche=false; continue; }
+              if(sups[i] == "保险") { self.businessDisable.baoxian=false; continue; }
+              if(sups[i] == "买买车") { self.businessDisable.maimaiche=false; continue; }
+            }
+            self.$options.methods.fillData(self,data); // 填充其他数据
+          })
+          .catch(function (error) {
+
+          });
+      },
       fillData(self,data){
         self.form=data;
         self.cityName=data.cityName;
-        self.$options.methods.setSupportBusiness(self,data.upperDepartmentNo);
         //设置已选业务线
         var sups = data.supportBusiness.split("&");
         for(var i=0;i<sups.length;i++){
-          if(sups[i] == "闪贷") { self.supports.push("闪贷"); continue; }
-          if(sups[i] == "租车") { self.supports.push("租车"); continue; }
-          if(sups[i] == "专车") { self.supports.push("专车"); continue; }
-          if(sups[i] == "保险") { self.supports.push("保险"); continue; }
-          if(sups[i] == "买买车") { self.supports.push("买买车"); continue; }
+          if(sups[i] == "闪贷" && !self.businessDisable.shandai) { self.supports.push("闪贷"); continue; }
+          if(sups[i] == "租车"  && !self.businessDisable.zuche) { self.supports.push("租车"); continue; }
+          if(sups[i] == "专车" && !self.businessDisable.zhuanche) { self.supports.push("专车"); continue; }
+          if(sups[i] == "保险" && !self.businessDisable.baoxian) { self.supports.push("保险"); continue; }
+          if(sups[i] == "买买车" && !self.businessDisable.maimaiche) { self.supports.push("买买车"); continue; }
         }
         // 设置经纬度
         if(data.longitude.trim()!=""){
@@ -466,26 +486,6 @@
         if(data.level!=5) self.haveWorkplace=false;
       },
 
-      // 设置可选择业务线
-      setSupportBusiness(self,dept_no){
-        var supParam = {
-          departmentNo: dept_no
-        };
-        self.$http.get("department/getSupportBusiness.do_",{ params: supParam })
-          .then(result => {
-            var sups = result.split("&");
-            for(var i=0;i<sups.length;i++){
-              if(sups[i] == "闪贷") { self.businessDisable.shandai=false; continue; }
-              if(sups[i] == "租车") { self.businessDisable.zuche=false; continue; }
-              if(sups[i] == "专车") { self.businessDisable.zhuanche=false; continue; }
-              if(sups[i] == "保险") { self.businessDisable.baoxian=false; continue; }
-              if(sups[i] == "买买车") { self.businessDisable.maimaiche=false; continue; }
-            }
-          })
-          .catch(function (error) {
-
-          });
-      },
       cancel () {
         this.$router.replace('/departmentManagement/showDepartment');
       },

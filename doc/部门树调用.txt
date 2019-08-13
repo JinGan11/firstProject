@@ -5,6 +5,7 @@
     <!--
     check-strictly：选中子节点后父节点不会跟着选中。
     如果要多选，删掉handleClick里面全部代码。
+    :default-expanded-keys设置默认展开的节点，根据部门id。
      -->
     <el-tree
       ref="tree"
@@ -12,6 +13,7 @@
       node-key="id"
       :load="loadNode"
       lazy="true"
+      :default-expanded-keys="[1]"
       check-strictly
       show-checkbox
       @check-change="handleClick">

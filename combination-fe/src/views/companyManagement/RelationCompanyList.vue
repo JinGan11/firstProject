@@ -184,10 +184,10 @@
 
     </el-dialog>
     </div>
-    <el-dialog :title="title" :visible.sync="companyContentFlag" :close-on-click-modal="false" width="1220px">
-      <div class="dialog-main">
-        <br>
-        <span style="font-size: 20px">基本信息</span>
+    <el-dialog :title="title" :visible.sync="companyContentFlag" :close-on-click-modal="false" width="950px">
+
+      <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
+        <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">基本信息</div>
         <hr><br>
         <el-form :inline="true" :model="companyForm" class="demo-form-inline" :disabled="true" label-width="100px">
           <el-row>
@@ -199,33 +199,6 @@
             <el-col :span="10">
               <el-form-item label="统一社会信用代码:" label-width="140px">
                 <el-input style="width:200px;" v-model="companyForm.creditCode"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="9">
-              <el-form-item label="类型:">
-                <el-select v-model="companyForm.companyType" clearable  style="width:200px;" placeholder="请选择">
-                  <el-option
-                    v-for="item in options1"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="营业期限:" label-width="140px">
-                <el-date-picker
-                  v-model="businessTerm"
-                  type="daterange"
-                  format="yyyy-MM-dd"
-                  value-format="yyyy-MM-dd"
-                  range-separator="至"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期">
-                </el-date-picker>
               </el-form-item>
             </el-col>
           </el-row>
@@ -255,7 +228,32 @@
           </el-row>
           <el-row>
             <el-col :span="9">
-              <el-form-item label="成立日期:">
+              <el-form-item label="类型:">
+                <el-select v-model="companyForm.companyType" clearable  style="width:200px;" placeholder="请选择">
+                  <el-option
+                    v-for="item in options1"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="登记机关:" label-width="140px">
+                <el-input style="width:200px;" v-model="companyForm.registeredInstitution"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="9">
+              <el-form-item label="登记状态:">
+                <el-input style="width:200px;" v-model="companyForm.registeredStatus"></el-input>
+              </el-form-item>
+
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="成立日期:" label-width="140px">
                 <el-date-picker
                   v-model="companyForm.establishTime"
                   type="date"
@@ -264,11 +262,7 @@
                   placeholder="选择日期">
                 </el-date-picker>
               </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="登记机关:" label-width="140px">
-                <el-input style="width:200px;" v-model="companyForm.registeredInstitution"></el-input>
-              </el-form-item>
+
             </el-col>
           </el-row>
           <el-row>
@@ -282,12 +276,24 @@
                   placeholder="选择日期">
                 </el-date-picker>
               </el-form-item>
+
             </el-col>
-            <el-col :span="10">
-              <el-form-item label="登记状态:" label-width="140px">
-                <el-input style="width:200px;" v-model="companyForm.registeredStatus"></el-input>
+          </el-row>
+          <el-row>
+            <el-col >
+              <el-form-item label="营业期限:" >
+                <el-date-picker
+                  v-model="businessTerm"
+                  type="daterange"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期">
+                </el-date-picker>
               </el-form-item>
             </el-col>
+
           </el-row>
           <div style="margin-bottom: 10px">
             <br>
@@ -306,16 +312,17 @@
           </div>
           <el-row>
             <el-col :span="10">
+              <el-form-item label="注册地址:">
+                <el-input style="width:200px;" v-model="companyForm.registrationAddress"></el-input>
+              </el-form-item>
+
+            </el-col>
+            <el-col :span="10">
               <el-form-item label="公司性质:">
                 <el-radio-group v-model="companyForm.companyNature">
                   <el-radio :label="1">一般纳税人</el-radio>
                   <el-radio :label="2">小规模纳税人</el-radio>
                 </el-radio-group>
-              </el-form-item>
-            </el-col>
-            <el-col :span="10">
-              <el-form-item label="注册地址:">
-                <el-input style="width:200px;" v-model="companyForm.registrationAddress"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -341,7 +348,7 @@
               <el-form-item label="总公司标志:">
                 <el-radio-group v-model="companyForm.companyMark">
                   <el-radio  :label="1">总公司</el-radio>
-                  <el-radio  :label="2">子公司</el-radio>
+                  <el-radio  :label="2" style="margin-left: 28px">子公司</el-radio>
                 </el-radio-group>
               </el-form-item>
             </el-col>
@@ -423,7 +430,7 @@
         pageSizeRel: 10,
         companyChangesList:[],
         relationCompany:[],
-        title:"公司",
+        title:"公司详情页面",
         companyFlag:false,
         total: 0,
         currentPage: 1,
