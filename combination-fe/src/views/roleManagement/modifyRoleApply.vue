@@ -614,6 +614,7 @@
           for(let j=0;j<this.accountChangesList.length;j++){
             if(this.multipleSelection[i].id==this.accountChangesList[j].id){
               flag=1;
+              alert('账号 '+this.multipleSelection[i].accountName+' 已存在，不可重复添加');
             }
           }
           if(flag==0){
@@ -621,8 +622,6 @@
           }
 
         }
-        // alert(this.accountChangesList.length);
-        // alert(this.tableDataAccount.length)/;
         this.tableDataAccount=this.accountChangesList;
         this.dialogVisibleAccount=false;
       },
@@ -644,17 +643,6 @@
           //请求成功回调
           self.tableDataAccount = result.list;
           self.accountChangesList=result.list;
-
-          // alert(this.tableDataAccount[0].applyOperation);
-          // console.log(self.tableDataAccount);
-          // for(let i=0;i<this.tableDataAccount.length;i++){
-          //   if(this.tableDataAccount[i].applyOperation==1){
-          //     this.tableDataAccount[i].applyOperation=='添加';
-          //   }
-          //   if(this.tableDataAccount[i].applyOperation==2){
-          //     this.tableDataAccount[i].applyOperation=='移除';
-          //   }
-          // }
 
         }).catch(function (error) {
           //请求失败回调
@@ -684,14 +672,11 @@
       },
 
       savaModifyRoleApply(){// 保存修改
-        alert("111");
         for(let i=0;i<this.tableDataAccount.length;i++){//账号ID
-          console.log(this.tableDataAccount[i].accountName)
           this.accountIdList.push(this.tableDataAccount[i].id);
         }
         for(let i=0;i<this.tableDataAccount.length;i++){//申请操作
           this.applyOperationList.push(this.tableDataAccount[i].applyOperation)
-          // alert(this.applyOperationList[i]);
         }
         var self=this;
         self.forms.id=self.applyId;
@@ -709,8 +694,7 @@
         self.forms.accountIdList=self.accountIdList;
         self.forms.applyOperationList=self.applyOperationList;
 
-        alert(self.forms.id);
-
+        if (!self.$options.methods.checkInput(self)) return;
         self.$http.post("roleApply/modifyRoleApply.do_",self.forms)
           .then(result => {
             alert("修改角色申请成功");
@@ -719,8 +703,29 @@
           commonUtils.Log("/roleManagement/apply"+error);
           self.$message.error("角色申请修改保存失败");
         })
+      },
 
-      }
+      checkInput(self) {
+        if (self.formRoleInfo.roleName == '') {
+          alert("申请角色为必填项，不允许为空");
+          return false;
+        }
+        if(self.roleStatus==0){
+          alert("申请角色已失效，请重新选择");
+          return false;
+        }
+        if(self.tableDataAccount.length==0){
+          alert("申请账号不允许为空");
+          return false;
+        }
+        for(let i=0;i<self.tableDataAccount.length;i++){
+          if(self.tableDataAccount[i].applyOperation!=1||self.tableDataAccount[i].applyOperation!=2){
+            alert('账号申请操作不允许为空');
+            return false;
+          }
+        }
+        return true;
+      },
 
 
 
