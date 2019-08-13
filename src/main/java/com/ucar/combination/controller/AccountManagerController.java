@@ -143,6 +143,53 @@ public class AccountManagerController {
                 .put("accountStatusEnum",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()))
                 .put("accountStatusList",CommonEnums.toJsonList(CommonEnums.AccountStatusEnum.values()));
     }
+
+    /**
+     * description: 账号列表查询，不含已选中的
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/13 17:22
+     * @params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/querylist2.do_")
+    public Result queryList2(HttpServletRequest request){
+        String page = request.getParameter("page");
+        if(page==null){
+            page = "1";
+        }
+        String limit = request.getParameter("limit");
+        if(limit==null){
+            limit = "10";
+        }
+        String accountName = request.getParameter("accountName");
+        String staffNum = request.getParameter("staffNo");
+        String staffName = request.getParameter("name");
+        String permissions = request.getParameter("permissions");
+        String departmentId = request.getParameter("department");
+        String isRelStaff = request.getParameter("isRelStaff");
+        String accountState = request.getParameter("status");
+        String filterId = request.getParameter("filterIds");
+        String[] filterIds = filterId.split(",");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("page", page);
+        params.put("limit", limit);
+        params.put("accountName", accountName);
+        params.put("staffNum", staffNum);
+        params.put("staffName", staffName);
+        params.put("permissions", permissions);
+        params.put("departmentId", departmentId);
+        params.put("isRelStaff", isRelStaff);
+        params.put("accountState", accountState);
+        params.put("filterIds",filterIds);
+        ResultPage resultPage = accountManagerService.queryList(new QueryParam(params));
+        return new Result().ok().put("page", resultPage)
+                .put("permissionList",CommonEnums.toJsonList(CommonEnums.Permission.values()))
+                .put("permissionEnum",CommonEnums.toEnumMap(CommonEnums.Permission.values()))
+                .put("accountStatusEnum",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()))
+                .put("accountStatusList",CommonEnums.toJsonList(CommonEnums.AccountStatusEnum.values()));
+    }
+
     /**
      * description:在账户表更改账户状态为无效
      * @author shiya.li@ucarinc.com

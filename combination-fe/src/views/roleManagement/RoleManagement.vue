@@ -30,7 +30,7 @@
     </div>
 
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
-      <el-table-column label="选择" width="45">
+      <el-table-column label="选择" width="50px">
         <template slot-scope="scope">
           <el-radio v-model="selection" :label="scope.row.roleId" @change="selectionActive(scope.row)"><span
             width="0px;"></span></el-radio>
@@ -462,9 +462,14 @@
           permissions: self.form.permissions,
           department: self.form.departmentId,
           isRelStaff: self.form.isRelStaff,
-          status: self.form.status
+          status: self.form.status,
+          filterIds: []
         };
-        self.$http.get('account/querylist.do_', {
+        for(var i=0;i<self.accountTableData.length;i++){
+          param.filterIds.push(self.accountTableData[i].id);
+        }
+        param.filterIds=param.filterIds+"";
+        self.$http.get('account/querylist2.do_', {
           params: param
         }).then((result) => {
           self.addAccountData = result.page.list;

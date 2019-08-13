@@ -126,6 +126,9 @@
         <if test="accountState != null and accountState.trim() != ''">
             and t1.account_state = #{accountState}
         </if>
+        <if test="filterIds != null">
+            and t1.id not in <foreach collection="filterIds" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+        </if>
         ORDER BY modify_time DESC
     </select>
     <select id="selectById" parameterType="java.lang.Long" resultType="com.ucar.combination.model.Account">
