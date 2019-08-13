@@ -10,6 +10,7 @@ import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.model.Department;
 import com.ucar.combination.model.dto.*;
 import com.ucar.combination.service.DepartmentService;
+import com.ucar.combination.utils.DepartmentTree2Builder;
 import com.ucar.combination.utils.DepartmentTreeBuilder;
 import com.ucar.combination.utils.DepartmentUpperTreeBuilder;
 import com.ucar.combination.utils.SupportBusinessUtil;
@@ -148,6 +149,13 @@ public class DepartmentServiceImpl implements DepartmentService {
             }
         }
         return map;
+    }
+
+    @Override
+    public DepartmentTree2Dto buildTree2() {
+        List<DepartmentTree2Dto> list = departmentDao.selectDepartmentTree2Dto();
+        DepartmentTree2Builder builder = new DepartmentTree2Builder(list);
+        return builder.getRootNode();
     }
 
     /*

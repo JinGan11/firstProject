@@ -25,8 +25,6 @@
         :render-content="renderContent"
         @check-change="handleClick">
       </el-tree>
-      <br>
-      <el-button @click="getCheckedNodes">点击弹出选中的部门的ID</el-button>
     </div>
 
     <el-dialog
@@ -100,10 +98,6 @@
       }).catch(function (error) {
 
         });
-      },
-      getCheckedNodes() {
-        // 用于演示获取部门id的方式
-        alert(this.$refs.tree.getCheckedNodes()[0].id);
       },
       handleClick(data,checked,node){
         // 手动设置单选

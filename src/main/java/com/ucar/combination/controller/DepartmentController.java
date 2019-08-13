@@ -6,10 +6,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Department;
-import com.ucar.combination.model.dto.DepartmentDto;
-import com.ucar.combination.model.dto.DepartmentEditDto;
-import com.ucar.combination.model.dto.DepartmentTreeDto;
-import com.ucar.combination.model.dto.DepartmentUpperDto;
+import com.ucar.combination.model.dto.*;
 import com.ucar.combination.service.CompanyManageService;
 import com.ucar.combination.service.DepartmentService;
 import com.ucar.combination.service.RegionManageService;
@@ -174,6 +171,21 @@ public class DepartmentController {
         if ((Boolean) map.get("result"))
             departmentService.updateDepartment(department);
         return map;
+    }
+
+    /**
+     * description: 建立部门树用于其他模块调用
+     *
+     * @return
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/12 17:11
+     * @params
+     */
+    @ResponseBody
+    @RequestMapping("/buildTree2.do_")
+    public Result buildTree2() {
+        DepartmentTree2Dto rootNode = departmentService.buildTree2();
+        return new Result().put("departmentDto", rootNode);
     }
 
     /*

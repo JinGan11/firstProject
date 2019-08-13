@@ -165,6 +165,8 @@ public interface DepartmentDao {
      */
     Integer selectLevel(Long id);
 
+    List<DepartmentTree2Dto> selectDepartmentTree2Dto();
+
     /*
      * description:
      * @author jing.luo01@ucarinc.com
