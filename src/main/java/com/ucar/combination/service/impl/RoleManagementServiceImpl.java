@@ -58,6 +58,12 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         roleManagementDao.updateStatus(id);
     }
 
+    @Override
+    public Role judgeExist(String roleName) {
+        Role result = roleManagementDao.judgeExist(roleName);
+        return result;
+    }
+
     /**
      * description: 获取所有角色数据列表
      * @author peng.zhang11@ucarinc.com

@@ -27,6 +27,7 @@ public interface RoleManagementService {
     ResultPage getRoleList();
     void updateStatus(int id);
     void insertRole(RoleDto role);
+    Role judgeExist(String roleName);
     ResultPage getOwnedRoleList(Account account);
     ResultPage getnotOwnedRoleList(Account account);
     RoleDto getOneInf(int id);

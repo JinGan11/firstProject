@@ -30,8 +30,35 @@ public interface RoleManagementDao {
      * @return 所有角色数据列表
      */
     List<Role> getRoleList();
+
+    /**
+     * description:依据主键ID逻辑删除数据
+     * @author gan.jin@ucarinc.com
+     * @date 2019/8/10 15:35
+     * @param id 主键
+     * @return
+     */
     void updateStatus(int id);
+
+    /**
+     * description:插入新的角色信息数据到数据库
+     * @author gan.jin@ucarinc.com
+     * @date 2019/8/10 15:36
+     * @param role RoDto类型
+     * @return
+     */
     void insertRole(RoleDto role);
+
+    /**
+     * description:用于判断角色名称是否存在
+     * @author gan.jin@ucarinc.com
+     * @date 2019/8/12 11:14
+     * @param roleName 角色名称
+     * @return 角色信息实体类
+     */
+
+    Role judgeExist(String roleName);
+
 
     /**
      * description: 通过账户id获取账户拥有的角色
