@@ -184,13 +184,13 @@
         },
         rules: {
           oldPass: [
-            {validator: validateOldPass, trigger: 'blur'}
+            {validator: validateOldPass, required: true, trigger: 'blur'}
           ],
           newPass: [
-            {validator: validatePass, trigger: 'blur'}
+            {validator: validatePass, required: true, trigger: 'blur'}
           ],
           checkPass: [
-            {validator: validatePass2, trigger: 'blur'}
+            {validator: validatePass2, required: true, trigger: 'blur'}
           ],
         }
       };
