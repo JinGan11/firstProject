@@ -7,6 +7,7 @@ import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.service.AccountManagerService;
+import com.ucar.combination.service.MailService;
 import com.ucar.combination.service.RoleManagementService;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,9 @@ public class AccountManagerController {
 
     @Resource
     private RoleManagementService roleManagementService;
+
+    @Resource
+    private MailService mailService;
 
     /*
      * description: 根据账号id查询account信息
@@ -252,5 +256,29 @@ public class AccountManagerController {
     public void deleAccount(@RequestBody AccountStaff accountStaff,HttpSession session){
         accountStaff.setModifyEmp((Long) session.getAttribute("accountId"));
         accountManagerService.deleteAccountById(accountStaff);
+    }
+
+    @ResponseBody
+    @RequestMapping("/resetPass")
+    public Result resetPass(@RequestBody Account account, HttpSession session){
+        Long OperateAccountId = (Long) session.getAttribute("accountId");
+        Account account1 = accountManagerService.selectById(account.getId());
+        String content = "请点击下面的链接重置密码 http://localhost:8082/resetPass 如果无法点击，请复制至浏览器。";
+        Result result = new Result();
+        AccountStaff accountStaff = new AccountStaff();
+        if (account1.getAccountSecretEmail() != null) {
+            result = mailService.sendMail(account1.getAccountSecretEmail(),"重置密码",content);
+            accountStaff.setAccountId(account1.getId());
+            accountStaff.setOperationType("2");
+            accountStaff.setStaffId(account1.getStaffId());
+            accountStaff.setAccountState(account1.getaccountState());
+            accountStaff.setPermissions(account1.getPremissions());
+            accountStaff.setStaffNum(account1.getStaffNum());
+            accountStaff.setCreateEmp(OperateAccountId);
+            accountManagerService.insertAccountHistory(accountStaff);
+        } else {
+            result.put("code", 202);
+        }
+        return result;
     }
 }

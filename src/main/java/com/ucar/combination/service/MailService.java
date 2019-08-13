@@ -1,6 +1,8 @@
 package com.ucar.combination.service;
 
+import com.ucar.combination.common.Result;
+
 public interface MailService {
 
-    void sendMail(String to, String subject, String content);
+    Result sendMail(String to, String subject, String content);
 }

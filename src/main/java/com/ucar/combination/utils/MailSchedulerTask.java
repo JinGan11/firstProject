@@ -37,7 +37,7 @@ public class MailSchedulerTask {
             for (int i = 0; i < accountList.size(); i++) {
                 Account account = accountList.get(i);
                 String content = account.getAccountName() + "您好！您的密码还有7天即将到期，请及时修改密码！";
-                mailService.sendMail(account.getSecretEmail(),"密码到期提醒",content);
+                mailService.sendMail(account.getAccountSecretEmail(),"密码到期提醒",content);
             }
         }
     }

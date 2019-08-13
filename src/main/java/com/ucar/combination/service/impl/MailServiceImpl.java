@@ -1,5 +1,6 @@
 package com.ucar.combination.service.impl;
 
+import com.ucar.combination.common.Result;
 import com.ucar.combination.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +33,8 @@ public class MailServiceImpl implements MailService {
      * @return
      */
     @Override
-    public void sendMail(String to, String subject, String content) {
+    public Result sendMail(String to, String subject, String content) {
+        Result result = new Result();
         SimpleMailMessage mailMessage=new SimpleMailMessage();
         mailMessage.setFrom(form);
         mailMessage.setTo(to);
@@ -41,9 +43,11 @@ public class MailServiceImpl implements MailService {
         mailMessage.setText(content);
         try {
             mailSender.send(mailMessage);
-            System.out.println("发送邮件成功");
+            result.put("code",200)
+            .put("msg","发送邮件成功");
         }catch (Exception e){
-            System.out.println("发送邮件失败");
+            result.put("code",201).put("msg","系统错误");
         }
+        return result;
     }
 }

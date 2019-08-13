@@ -74,13 +74,7 @@ Vue.config.productionTip = false
 // })
 /* eslint-disable no-new */
 
-new Vue({
-  el: '#app',
-  router,
-  store,
-  components: { App },
-  template: '<App/>'
-});
+
 //路由守卫
 router.beforeEach((to, from, next) => {
   // let allRoutes = store.getters.allRoutes;
@@ -99,6 +93,24 @@ router.beforeEach((to, from, next) => {
     }
   }
   else {
+    if (to.path === "/resetPass") {
+      utils.$emit("loginSuccess",false);
+      // window.sessionStorage.removeItem("loginUsername");
+      next()
+    } else if (to.path === "/") {
+      utils.$emit("loginSuccess",false);
+      window.sessionStorage.removeItem("loginUsername");
+      next()
+    }
     next();
   }
 });
+
+new Vue({
+  el: '#app',
+  router,
+  store,
+  components: { App },
+  template: '<App/>'
+});
+

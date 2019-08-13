@@ -32,7 +32,7 @@ import RoleInf from "../views/roleManagement/RoleInf";
 import DepartmentUpdate from "@/views/departmentManagement/DepartmentUpdate";
 import AccountPowerSearch from "@/views/search/AccountPowerSearch";
 import RelationCompanyList from "@/views/companyManagement/RelationCompanyList";
-import rolePower from "@/views/search/RolePowerSearch";
+import ResetPass from "@/views/accountManagement/ResetPass";
 Vue.use(Router)
 
 export default new Router({
@@ -183,11 +183,6 @@ export default new Router({
     component: RoleInf,
     meta: {requireAuth: true}
   },{
-    path:'/search/roleSearch/rolePower',
-    name:'角色功能权限明细',
-    component:rolePower,
-    meta: {requireAuth: true}
-  },{
     path: "/departmentManagement/updateDepartment",
     name: '修改部门',
     component: DepartmentUpdate,
@@ -202,6 +197,11 @@ export default new Router({
     name: '关联公司',
     component: RelationCompanyList,
     meta:{requireAuth:true}
+  },{
+    path: "/resetPass",
+    name: "重置密码",
+    component: ResetPass,
+
   }
 
   ]

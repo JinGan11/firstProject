@@ -33,6 +33,7 @@ public class Account {
     private int premissions;
     //密保邮箱
     private String secretEmail;
+    private String accountSecretEmail;
     //员工邮箱
     private String staffEmail;
     //创建时间
@@ -107,6 +108,13 @@ public class Account {
 
     public void setSecretEmail(String secretEmail) {
         this.secretEmail = secretEmail;
+    }
+    public String getAccountSecretEmail() {
+        return accountSecretEmail;
+    }
+
+    public void setAccountSecretEmail(String accountSecretEmail) {
+        this.accountSecretEmail = accountSecretEmail;
     }
 
     public Long getCreatEmpId() {

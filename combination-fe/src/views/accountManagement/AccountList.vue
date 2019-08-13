@@ -80,7 +80,7 @@
       <el-button type="primary" :disabled="deleteDisabled || AccountButtonPermission.deletePermission" @click="deleteAccount" style="width:70px">删除</el-button>
       <el-button type="primary" :disabled="deleteDisabled || AccountButtonPermission.frozenPermission" @click="lock" style="width:70px">冻结</el-button>
       <el-button type="primary" :disabled="deleteDisabled || AccountButtonPermission.thawPermission" @click="unlock" style="width:70px">解冻</el-button>
-      <el-button type="primary" :disabled="deleteDisabled || AccountButtonPermission.resetPermission" @click="" style="width:80px">密码重置</el-button>
+      <el-button type="primary" :disabled="deleteDisabled || AccountButtonPermission.resetPermission" @click="resetPass" style="width:80px">密码重置</el-button>
       <el-button type="primary" :disabled="deleteDisabled || AccountButtonPermission.assignAccountPermission" @click="assignPermission" style="width:80px">分配权限</el-button>
       <el-button type="primary" :disabled="deleteDisabled || AccountButtonPermission.historyPermission" @click="" style="width:80px">历史记录</el-button>
     </div>
@@ -380,6 +380,38 @@
         self.myAccount.id = val.id;
         self.myAccount.accountName = val.accountName;
         localStorage.setItem("accountId",val.id);
+      },
+      resetPass(){
+        const self = this;
+        let param = {
+          id: self.myAccount.id
+        }
+        self.$confirm('确定要重置密码吗？', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          self.$http.post("/account/resetPass",param)
+            .then(result => {
+              if (result.code === 200) {
+                self.$alert("重置密码邮件已发送成功，请注意查收！", '消息提醒', {
+                  confirmButtonText: '确定',
+                });
+              } else if (result.code === 201) {
+                self.$alert("操作失败！", '消息提醒', {
+                  confirmButtonText: '确定',
+                });
+              } else if (result.code === 202) {
+                self.$alert("密保邮箱有误", '消息提醒', {
+                  confirmButtonText: '确定',
+                });
+              }
+            })
+            .catch(function (error) {
+              commonUtils.Log("account/resetPass:" + error);
+              self.$message.error("系统错误，请稍后再试！");
+            });
+        })
       },
       assignPermission() {
         const self = this;

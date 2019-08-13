@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-container ref="container" class="view-container" v-if="loginIn">
+    <!--<el-container ref="container" class="view-container" v-if="$route.path.slice(-6)!=='/index'">-->
       <aside-menu :isCollapse="isCollapse" :data="data"></aside-menu>
       <div class="contentBox" :class="{'content-collapse':isCollapse}">
         <el-container>
@@ -111,8 +112,12 @@
       </el-dialog>
     </el-container>
 
-    <div id="abc" v-else>
+    <div id="abc" v-else-if="$route.path.slice(-6)==='/'">
       <login-page @loginSuccess="loginSuccess"></login-page>
+    </div>
+
+    <div id="resetPass" v-else>
+      <reset-pass></reset-pass>
     </div>
   </div>
 </template>
@@ -122,6 +127,7 @@
   import AsideMenu from './components/AsideMenu'
   import LoginPage from './views/Login'
   import utils from './common/util'
+  import ResetPass from './views/accountManagement/ResetPass'
 
   export default {
     data() {
@@ -190,6 +196,7 @@
       };
     },
     created() {
+      // console.log($route.path.slice(-6));
       const self = this;
       var log = localStorage.getItem("switchLog");
       // self.loginIn = localStorage.getItem('isLogin');
@@ -223,7 +230,7 @@
         this.loginIn = true
       }
     },
-    components: {MenuItem, AsideMenu, LoginPage},
+    components: {MenuItem, AsideMenu, LoginPage, ResetPass},
     methods: {
       loginSuccess(isSuccess, username, powerList) {
         const self = this;
