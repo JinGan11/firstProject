@@ -8,6 +8,7 @@ import com.ucar.combination.model.AssignPermission;
 import com.ucar.combination.model.PowerList;
 import com.ucar.combination.model.Role;
 import com.ucar.combination.model.RolePower;
+import com.ucar.combination.model.dto.RoleAccountStaffDto;
 import com.ucar.combination.model.dto.RoleDto;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public interface RoleManagementService {
     ResultPage getOwnedRoleList(Account account);
     ResultPage getnotOwnedRoleList(Account account);
     RoleDto getOneInf(int id);
+    RoleAccountStaffDto getOtherOneInf(int id);
     Result assignPermission(AssignPermission assignPermission, Long accountId);
     Result getRolePower(RolePower rolePower);
     void updateByModify(RoleDto role);

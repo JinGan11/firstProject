@@ -115,7 +115,7 @@
     </div>
 
     <el-dialog :title='title' :visible.sync="dialogVisibleAccount"  :close-on-click-modal="false" width="80%">
-      <div style="width: 95%;">
+      <div class = "dialog-main" style="overflow: auto">
         <el-form ref="accountForm" :model="accountForm" label-width="100px">
           <el-row>
             <el-col :span="5">
@@ -187,11 +187,9 @@
             </el-col>
           </el-row>
         </el-form>
-      </div>
       <div style="margin-bottom: 10px">
         <el-button type="primary" @click="selectionConfirm" style="width:70px">确认选择</el-button>
         <el-button type="primary" @click="selectionCancel" style="width:70px">取消</el-button>
-
       </div>
       <el-table ref="multipleTable" :data="tableData" border @current-change="handleSelectionChange" >
         <!--      <el-table-column type="selection" width="35"></el-table-column>-->
@@ -227,6 +225,7 @@
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="total">
       </el-pagination>
+      </div>
     </el-dialog>
 
   </div>
@@ -333,7 +332,6 @@
         const self = this;
         self.$refs[formName].validate((valid) =>{
           if (valid) {
-            alert(valid);
             var param = {
               roleName: self.form.roleName,
             };

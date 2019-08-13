@@ -5,6 +5,7 @@ import com.ucar.combination.model.AccountRole;
 import com.ucar.combination.model.Role;
 
 import com.ucar.combination.model.RolePower;
+import com.ucar.combination.model.dto.RoleAccountStaffDto;
 import com.ucar.combination.model.dto.RoleDto;
 import org.springframework.stereotype.Component;
 
@@ -97,6 +98,7 @@ public interface RoleManagementDao {
      */
     void insertAccountRole(AccountRole accountRole);
     RoleDto getOneInf(int id);
+    RoleAccountStaffDto getOtherOneInf(int id);
     void updateByModify(RoleDto role);
 
     /**

@@ -4,6 +4,10 @@ import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.AssignPermission;
+import com.ucar.combination.model.Role;
+import com.ucar.combination.model.RolePower;
+import com.ucar.combination.model.dto.RoleAccountStaffDto;
 import com.ucar.combination.model.*;
 import com.ucar.combination.model.dto.RoleDto;
 import com.ucar.combination.service.AccountManagerService;
@@ -142,6 +146,16 @@ public class RoleManagementController {
 		return Result.ok().put("page", roleDto).put("RoleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values()));
 	}
 
+	@ResponseBody
+	@RequestMapping("/getOtherOneInf.do_")
+	public Result getOtherOneInf(HttpServletRequest request) {
+		String strid = request.getParameter("roleID");
+		int id = Integer.parseInt(strid);
+		RoleAccountStaffDto roleAccountStaffDto = roleManagementService.getOtherOneInf(id);
+		//System.out.println("ASDFA");
+		return Result.ok().put("page", roleAccountStaffDto);
+	}
+
 	/**
 	 * description:修改后的数据插入
 	 *
@@ -153,7 +167,9 @@ public class RoleManagementController {
 
 	@ResponseBody
 	@RequestMapping(value = "/updateByModify.do_", method = RequestMethod.POST)
-	public void updateByModify(@RequestBody RoleDto role) {
+	public void updateByModify(@RequestBody RoleDto role,HttpSession session ) {
+		Long accountId = (Long) session.getAttribute("accountId");
+		role.setModifyEmp(accountId);
 		roleManagementService.updateByModify(role);
 		// System.out.println("insertRole:"+ JSON.toJSONString(role));
 	}

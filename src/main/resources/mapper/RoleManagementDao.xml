@@ -108,6 +108,24 @@
         where t1.id= #{id}
     </select>
 
+    <select id="getOtherOneInf" resultType="com.ucar.combination.model.dto.RoleAccountStaffDto" parameterType="int">
+        select
+        t2.account_name createEmp,
+        t2.account_name createEmpNum,
+        t3.staff_name createEmpName,
+        t1.create_time createTime,
+        t2.account_name modifyEmp,
+        t2.account_name modifyEmpNum,
+        t3.staff_name modifyEmpName,
+        t1.modify_time modifyTime
+        from t_role_info t1
+        LEFT JOIN t_account t2 on
+        t1.approver_account_name=t2.account_name
+        LEFT JOIN t_staff t3 on
+        t2.staff_id=t3.id
+        where t1.id= #{id}
+    </select>
+
     <select id="getRolePowerListById" parameterType="Long" resultType="com.ucar.combination.model.RolePower">
         select id, role_info_id, power_id
         from t_r_role_power
@@ -127,7 +145,7 @@
         t1.create_emp = #{createEmp},
         t1.create_time = #{createTime},
         t1.modify_emp = #{modifyEmp},
-        t1.modify_time = #{modifyTime}
+        t1.modify_time = now()
         where t1.id = #{roleID}
     </update>
 
