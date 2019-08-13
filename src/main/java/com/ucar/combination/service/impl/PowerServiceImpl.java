@@ -324,8 +324,10 @@ public class PowerServiceImpl implements PowerService {
         List<RolePowerDto> list = powerDao.queryRolePowerList(rolePowerDto);
         return new ResultPage(list, (int) page.getTotal(), rolePowerDto.getLimit(), rolePowerDto.getPage());
     }
+    @Override
     public List<RolePowerDto> getRolePowerDtoList(RolePowerDto rolePowerDto){
         List<RolePowerDto> list = powerDao.queryRolePowerList(rolePowerDto);
         return list;
     }
+
 }

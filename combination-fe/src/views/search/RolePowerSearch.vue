@@ -53,14 +53,16 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="权限名称">
-              <el-input placeholder="权限名称" :disabled="true" style="width:200px;" v-model="form.powerName"></el-input>
+              <el-input placeholder="权限名称" style="width:200px;" v-model="form.powerName"></el-input>
+              <el-button type="text" @click="selectPermissions">选择</el-button>
+              <el-button type="text" @click="clearPermission">清空</el-button>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col style="text-align: center">
             <el-form-item>
-              <div v-if="!buttonDisabled">
+              <div v-if="!BtnPermission.exportPermission">
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
                 <el-button type="primary" style="width:100px" @click="exportRolePower">导出</el-button>
               </div>
@@ -127,6 +129,33 @@
         <el-button type="primary" @click="getCheckedDepartment">确定</el-button>
       </div>
     </el-dialog>
+    <el-dialog :title="roleAssignPermissionTitle" :visible.sync="roleAssignPermissionFlag" :close-on-click-modal="false"
+               width="700px">
+      <div class="dialog-main" >
+        <el-form>
+          <el-row type="flex" justify="center" style="width: 100%;">
+            <el-col :span="11">
+              <el-scrollbar style="width: 400px">
+                <el-tree
+                  style="float: left;margin-left: 100px;height: 350px"
+                  ref="permTree"
+                  :props="PermissionProps"
+                  node-key="powerId"
+                  :load="loadNodePermTree"
+                  lazy="true"
+                  show-checkbox
+                  check-strictly
+                  @check-change="handleCheckChange">
+                </el-tree>
+              </el-scrollbar>
+            </el-col>
+          </el-row>
+          <div style="height: 80px;display: flex;align-items: center;margin-left: 80%">
+            <el-button type="primary" style="margin-right: 10px" @click="getCheckedPermission">确定</el-button>
+          </div>
+        </el-form>
+      </div>
+    </el-dialog>
     <el-dialog :title='excelTitle' :visible.sync="rolePowerDialogVisible" :close-on-click-modal="false" width="600px">
       <template>
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
@@ -183,7 +212,22 @@
         rolePowerDtoList:[],
         filterVal: [],
         RoleStatusEnum: [],
-
+        BtnPermission: {
+          exportPermission: true,
+        },
+        roleAssignPermissionFlag: false,
+        powerSelectedList: [],
+        selected: [],
+        PermissionProps: {
+          label: 'powerName',
+          children: 'children',
+          id: 'powerId'
+        },
+        selectedNodes: [],
+        myRole: [],
+        roleAssignPermissionTitle: '选择权限',
+        powerTree: [],
+        checkStrictly: false,
       }
     },
     filters: {
@@ -199,10 +243,20 @@
       commonUtils.Log("页面激活");
      },
      mounted() {
-      commonUtils.Log("页面进来");
+       commonUtils.Log("页面进来");
+       this.judgmentAuthority();
     },
 
     methods: {
+      judgmentAuthority() {
+        const self = this;
+        let permission = self.$store.state.powerList;
+        permission.forEach(item=>{
+          if (item === 56) {
+            self.BtnPermission.exportPermission = false
+          }
+        });
+      },
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;
@@ -306,6 +360,43 @@
         this.checkAll = checkedCount === this.rolePowers.length;
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.rolePowers.length;
       },
+
+      selectPermissions() {
+        const self = this;
+        self.roleAssignPermissionFlag = true;
+      },
+      getCheckedPermission() {
+        this.form.powerName=this.$refs.permTree.getCheckedNodes()[0].powerName;
+        this.roleAssignPermissionFlag=false;
+      },
+      //获取树数据
+      loadNodePermTree(node, resolve) {
+        var self = this;
+        self.$http.get('power/getPowerList', {
+          params: null
+        }).then((result) => {
+          resolve([result.powerTree]);
+        }).catch(function (error) {
+          commonUtils.Log("account/querylist.do_:" + error);
+          self.$message.error("获取数据错误")
+        });
+
+      },
+      handleCheckChange (data,checked,node) {
+        // 手动设置单选
+        if(checked === true) {
+          this.checkedId = data.powerId;
+          this.$refs.permTree.setCheckedKeys([data.powerId]);
+        } else {
+          if (this.checkedId == data.powerId) {
+            this.$refs.permTree.setCheckedKeys([data.powerId]);
+          }
+        }
+      },
+      clearPermission(){//清除权限的值
+        this.form.applyDepartmentName='';
+      },
+
       exportExcel() {
         if(this.checkRolePowers.length ===0){
           this.$message({
