@@ -125,7 +125,7 @@ public class DepartmentServiceImpl implements DepartmentService {
                 map.put("msg", tmp + "办公点标识已存在！");
             }
         }
-        if (departmentDao.checkUpperDepartment(department) < 1) {
+        if (departmentDao.checkUpperDepartment(department) < 1 && !department.getDepartmentNo().equals("Z000001")) {
             map.put("result", false);
             String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
             map.put("msg", tmp + "上级部门状态为无效，无法将当前部门改为有效！");
@@ -143,7 +143,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         Map<String, Object> map = new HashMap<>();
         map.put("result", true);
         if (departmentDao.selectLevel(id).equals(5)) {
-            if(departmentDao.checkWorkplaceForUpper(id,upperDepartment)>0){
+            if (departmentDao.checkWorkplaceForUpper(id, upperDepartment) > 0) {
                 map.put("result", false);
                 map.put("msg", "该上级部门中已有办公点标识与本部门相同的部门，请修改办公点标识后再进行修改！");
             }

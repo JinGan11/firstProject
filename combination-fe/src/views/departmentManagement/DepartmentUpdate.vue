@@ -31,8 +31,9 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="负责人ID">
-            <el-input style="width:200px;" v-model="form.staffId" :disabled="true" maxlength="20"></el-input>
-            <a style="color: blue" @click="choosePerson">选择</a>
+            <el-input style="width:160px;" v-model="form.staffId" :disabled="true" maxlength="20"></el-input>
+            <a style="color: blue;cursor: pointer" @click="changeDialogVisible">选择</a>
+            <a style="color: blue;cursor: pointer" @click="clearStaffInf">清空</a>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -287,11 +288,16 @@
     </el-dialog>
 
 
+    <el-dialog fullscreen :visible.sync="dialogEmployee" :close-on-click-modal="false" width="700px">
+      <employee-list :relAccount="relAccount" ></employee-list>
+    </el-dialog>
+
 
   </home>
 </template>
 
 <script>
+  import employeeList from '../employeeManagement/EmployeeList'
   export default {
     data() {
       return {
@@ -398,6 +404,15 @@
         chooseCityForm:{ provinceChosen:'',cityChosen:'',countyChosen:'' },
         isCityDisable:true,
         isCountyDisable:true,
+        //员工选择
+        dialogEmployee: false,
+        relAccount: 1,
+      }
+    },
+    provide(){
+      return{
+        changeDialogVisible:this.changeDialogVisible,
+        chooseStaff:this.chooseStaff
       }
     },
     mounted() {
@@ -415,6 +430,7 @@
 
         });
     },
+    components: {employeeList},
     methods: {
       fillData(self,data){
         self.form=data;
@@ -586,6 +602,24 @@
         }
         return true;
       },
+
+      //选择员工
+      changeDialogVisible() {//选择员工界面的开关
+        const self = this;
+        self.dialogEmployee = !self.dialogEmployee;
+      },
+      clearStaffInf(){//清除选择关联的员工
+        const self = this;
+        self.form.staffId = '';
+        self.form.staffName = '';
+      },
+      chooseStaff(staffData) {//关联员工
+        var self = this;
+        self.form.staffId = staffData.id;
+        self.form.staffName = staffData.staffName;
+      },
+
+
       // 城市选择
       chooseProvince() {
         var self=this;
