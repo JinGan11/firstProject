@@ -44,6 +44,20 @@
         where t1.id = #{id}
     </update>
 
+    <select id="judgeExist" resultType="com.ucar.combination.model.Role" parameterType="String">
+        select  t1.id              roleId,
+        t1.role_name       roleName,
+        t1.business_line   businessLine,
+        t1.approver_account_name   accountNum,
+        t1.approver_staff_num     staffNum,
+        t1.approver_staff_name     staffName,
+        t1.approver_department_name  departmentName,
+        t1.role_status    roleStatus,
+        t1.description    description
+        from t_role_info t1
+        where t1.role_name= #{roleName}
+    </select>
+
     <insert id="insertRole" parameterType="com.ucar.combination.model.dto.RoleDto">
         insert
         into t_role_info (role_name,business_line,role_status,approver_account_name,approver_staff_num,approver_staff_name,approver_department_name,description,create_emp,create_time,modify_emp,modify_time)

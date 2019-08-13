@@ -81,6 +81,28 @@ public class RoleManagementController {
 	}
 
 	/**
+	 * description:判断角色名称是否存在
+	 * @author gan.jin@ucarinc.com
+	 * @date 2019/8/12 11:04
+	 * @param request
+	 * @return com.ucar.combination.common.Result
+	 */
+
+	@ResponseBody
+	@RequestMapping("/judgeExist.do_")
+	public Result judge(HttpServletRequest request) {
+		String roleName = request.getParameter("roleName");
+		Role result = new Role();
+		result = roleManagementService.judgeExist(roleName);
+		if (result == null){
+			Role result1 = new Role();
+			result1.setRoleId(1);
+			return Result.ok().put("page",result1);
+		}
+		return Result.ok().put("page",result);
+	}
+
+	/**
 	 * description: 用于插入数据
 	 *
 	 * @param role 前端请求传入对象role

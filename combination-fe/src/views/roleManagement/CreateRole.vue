@@ -5,7 +5,7 @@
       <p>角色信息</p>
     </div>
     <div style="width:85%; margin-left: 70px">
-      <el-form ref="form" :model="form" label-width="110px" :rules="rules">
+      <el-form ref="form" :rules="rules" :model="form" label-width="110px">
         <el-row>
           <el-col :span="10">
             <el-form-item label="角色ID">
@@ -72,7 +72,7 @@
       <p>其它信息</p>
       <div>
         <div style="width:85%; margin-left: 70px">
-          <el-form ref="form" :model="form" label-width="110px">
+          <el-form ref="otherForm" :model="otherForm" label-width="110px">
             <el-row>
               <el-col :span="10">
                 <el-form-item label="新建人">
@@ -110,13 +110,13 @@
     </div>
 
     <div style="text-align: center">
-      <el-button type="primary" @click="save" style="width:70px">保存</el-button>
+      <el-button type="primary" @click="save('form')" style="width:70px">保存</el-button>
       <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
     </div>
 
     <el-dialog :title='title' :visible.sync="dialogVisibleAccount"  :close-on-click-modal="false" width="80%">
       <div style="width: 95%;">
-        <el-form ref="form" :model="form" label-width="100px">
+        <el-form ref="accountForm" :model="accountForm" label-width="100px">
           <el-row>
             <el-col :span="5">
               <el-form-item label="登陆账号" >
@@ -178,7 +178,7 @@
             </el-col>
           </el-row>
         </el-form>
-        <el-form ref="form" :model="form">
+        <el-form ref="accountForm" :model="accountForm">
           <el-row>
             <el-col style="text-align: center">
               <el-form-item>
@@ -238,11 +238,6 @@
   export default {
     data() {
       return {
-        rules: {
-          roleName: [{required: true, message: '角色名不能为空', trigger: ['blur','change']}],
-          accountNum: [{required: true, message: '账户不能为空', trigger: ['blur','change']}],
-          businessLine: [{required: true, message: '支持业务线不能为空', trigger: ['blur','change']}]
-        },
         total: 0,
         currentPage: 1,
         pageSize: 10,
@@ -258,6 +253,7 @@
           departmentName:'',
           description:'',
         },
+        otherForm:{},
         createTime:'',
         modifyTime:'',
         createEmp:'',
@@ -284,7 +280,12 @@
         },
         tableData:[],
         selection:[],
-      }
+        rules: {
+          roleName: [{required: true, message: '角色名不能为空', trigger: 'blur'}],
+          accountNum: [{required: true, message: '账户不能为空', trigger: 'blur'}],
+          businessLine: [{required: true, message: '支持业务线不能为空', trigger: 'blur'}]
+        }
+      };
     },
     activated() {
       commonUtils.Log("页面激活");
@@ -328,39 +329,62 @@
       handleSelectionChange(val) {
         this.selection = val;
       },
-      save() {//保存新建角色信息
-        var self = this;
-        if(!self.$options.methods.checkInput(self)) return;
-        this.$confirm('此操作将保存该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          self.form.businessLine=self.form.businessLine.join(',');
-          self.$http.post("roleManage/insertRole.do_", self.form)
-            .then((result) => {
-              self.$router.replace("/roleManagement/roleManagement");
-            })
-            .catch(function (error) {
-              commonUtils.Log("roleManage/insertRole:"+error);
-              self.$message.error("角色名称唯一");
-              self.$router.replace("/roleManagement/roleManagement");
-            });
-          this.$message({
-            type: 'success',
-            message: '保存成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消保存'
-          });
+      save(formName) {//保存新建角色信息
+        const self = this;
+        self.$refs[formName].validate((valid) =>{
+          if (valid) {
+            alert(valid);
+            var param = {
+              roleName: self.form.roleName,
+            };
+            self.$http.get("roleManage/judgeExist.do_", {
+                params: param
+              }).then((result) => {
+              if (result.page.roleStatus ===0||result.page.roleStatus===1 ){
+                alert("角色名称已存在");
+              }
+              else {
+                self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  type: 'warning'
+                }).then(() => {
+                  self.form.businessLine = self.form.businessLine.join(',');
+                  self.$http.post("roleManage/insertRole.do_", self.form)
+                    .then((result) => {
+                      self.$router.replace("/roleManagement/roleManagement");
+                    })
+                    .catch(function (error) {
+                      commonUtils.Log("roleManage/insertRole.do_" + error);
+                      self.$message.error("保存数据错误");
+                      self.$router.replace("/roleManagement/roleManagement");
+                    });
+                  self.$message({
+                    type: 'success',
+                    message: '保存成功!'
+                  });
+                }).catch(() => {
+                  self.$message({
+                    type: 'info',
+                    message: '已取消保存'
+                  });
+                });
+              }
+              }).catch(function (error) {
+                commonUtils.Log("account/judgeExist.do_:"+error);
+              self.$message.error("获取数据错误sdfas")
+              });
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
         });
       },
       cancel(){//关闭新建角色页面，返回角色管理列表页面
         this.$router.replace('/roleManagement/roleManagement')
       },
       chooseAccount(){
+
         this.accountForm.accountNo = null;
         this.accountForm.staffNo = null;
         this.accountForm.name = null;
@@ -407,21 +431,7 @@
           self.$message.error("获取数据错误")
         });
       },
-      checkInput(val){
-        if (val.form.roleName==''){
-          alert("角色名称不能为空（1-30个字符）");
-          return false;
-        }
-        if (val.form.accountNum==''){
-          alert("请选择审批人账号");
-          return false;
-        }
-        if (val.form.businessLine==''){
-          alert("支持业务线不能为空");
-          return false;
-        }
-        return true;
-      },
+
     },
 
 

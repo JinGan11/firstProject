@@ -71,7 +71,7 @@
       <p>其它信息</p>
       <div>
         <div style="width:85%; margin-left: 70px">
-          <el-form ref="form" :model="form" label-width="110px">
+          <el-form ref="otherForm" :model="otherForm" label-width="110px">
             <el-row>
               <el-col :span="10">
                 <el-form-item label="新建人">
@@ -115,12 +115,12 @@
       </div>
     </div>
     <div style="text-align: center">
-      <el-button type="primary" @click="save" style="width:70px">保存</el-button>
+      <el-button type="primary" @click="save('form')" style="width:70px">保存</el-button>
       <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
     </div>
     <el-dialog :title='title' :visible.sync="dialogVisibleAccount"  :close-on-click-modal="false" width="80%">
       <div style="width: 95%;">
-        <el-form ref="form" :model="form" label-width="100px">
+        <el-form ref="accountForm" :model="accountForm" label-width="100px">
           <el-row>
             <el-col :span="5">
               <el-form-item label="登陆账号" >
@@ -182,7 +182,7 @@
             </el-col>
           </el-row>
         </el-form>
-        <el-form ref="form" :model="form">
+        <el-form ref="accountForm" :model="accountForm">
           <el-row>
             <el-col style="text-align: center">
               <el-form-item>
@@ -253,6 +253,7 @@
         pageSize: 10,
         title:'选择账户',
         dialogVisibleAccount:false,
+        otherForm:{},
         form: {
           roleID:'',
           roleName:'',
@@ -339,33 +340,55 @@
       handleSelectionChange(val) {
         this.selection = val;
       },
-      save() {//保存修改角色信息
-        var self=this;
-        if(!self.$options.methods.checkInput(self)) return;
-        this.$confirm('此操作将保存该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          self.form.businessLine=self.form.businessLine.join(',');
-          self.$http.post("roleManage/updateByModify.do_", self.form)
-            .then((result) => {
-              self.$router.replace("/roleManagement/roleManagement");
-            })
-            .catch(function (error) {
-              commonUtils.Log("roleManage/updateByModify.do_:"+error);
-              self.$message.error("角色名称唯一");
-              self.$router.replace("/roleManagement/roleManagement");
+      save(formName) {//保存修改角色信息
+        const self = this;
+        self.$refs[formName].validate((valid) =>{
+          if (valid) {
+            alert(valid);
+            var param = {
+              roleName: self.form.roleName,
+            };
+            self.$http.get("roleManage/judgeExist.do_", {
+              params: param
+            }).then((result) => {
+              if (result.page.roleStatus ===0||result.page.roleStatus===1 ){
+                alert("角色名称已存在");
+              }
+              else {
+                self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
+                  confirmButtonText: '确定',
+                  cancelButtonText: '取消',
+                  type: 'warning'
+                }).then(() => {
+                  self.form.businessLine = self.form.businessLine.join(',');
+                  self.$http.post("roleManage/updateByModify.do_", self.form)
+                    .then((result) => {
+                      self.$router.replace("/roleManagement/roleManagement");
+                    })
+                    .catch(function (error) {
+                      commonUtils.Log("roleManage/updateByModify.do_" + error);
+                      self.$message.error("保存数据错误");
+                      self.$router.replace("/roleManagement/roleManagement");
+                    });
+                  self.$message({
+                    type: 'success',
+                    message: '保存成功!'
+                  });
+                }).catch(() => {
+                  self.$message({
+                    type: 'info',
+                    message: '已取消保存'
+                  });
+                });
+              }
+            }).catch(function (error) {
+              commonUtils.Log("roleManage/judgeExist.do_:"+error);
+              self.$message.error("获取数据错误sdfas")
             });
-          this.$message({
-            type: 'success',
-            message: '保存成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消保存'
-          });
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
         });
       },
       cancel(){//关闭新建角色页面，返回角色管理列表页面
@@ -437,17 +460,6 @@
           commonUtils.Log("roleManage/getOneInf.do_:" + error);
           self.$message.error("获取数据错误");
         });
-      },
-      checkInput(val){
-        if (val.form.roleName==''){
-          alert("角色名称不能为空(1-30字符)");
-          return false;
-        }
-        if (val.form.businessLine==''){
-          alert("支持业务线不能为空");
-          return false;
-        }
-        return true;
       },
   },
 
