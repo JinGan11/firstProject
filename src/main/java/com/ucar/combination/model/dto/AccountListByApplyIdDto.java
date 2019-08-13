@@ -7,11 +7,11 @@ package com.ucar.combination.model.dto;
  * @date: Create in 10:23 now
  **/
 public class AccountListByApplyIdDto {
-    private Long id;
+    private Long id;//账号id  注意是账号id   前台代码就是这样子的
     private String accountName;//申请账号
     private String staffName;//关联员工姓名
     private String staffNum;//关联员工编号
-    private String staffDepartmentName;//关联员工所属部门
+    private String department;//关联员工所属部门
     private Integer applyOperation;
 
     private Long applyId;//申请编号id
@@ -50,12 +50,12 @@ public class AccountListByApplyIdDto {
         this.staffNum = staffNum;
     }
 
-    public String getStaffDepartmentName() {
-        return staffDepartmentName;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setStaffDepartmentName(String staffDepartmentName) {
-        this.staffDepartmentName = staffDepartmentName;
+    public void setDepartment(String department) {
+        this.department = department;
     }
 
     public Integer getApplyOperation() {

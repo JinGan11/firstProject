@@ -90,12 +90,12 @@ public class RoleApplyManageController {
         String roleApplyNum = request.getParameter("selection");
         roleApplyManageService.deleteRoleApply(roleApplyNum);
     }
-    
+
     /**
     * @Description:  提交角色申请
-    * @Author: min.zhang08@ucarinc.com  
-    * @Params  
-    * @Return  
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
     * @Date  17:40 2019/8/7
     */
     @ResponseBody
@@ -126,27 +126,23 @@ public class RoleApplyManageController {
     @ResponseBody
     @RequestMapping(value = "/createRoleApply.do_",method = RequestMethod.POST)
     public void createRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto,HttpSession session){
-        System.out.println("1111111111111111111");
+        // 新建角色申请
+        Long accountId = (Long) session.getAttribute("accountId");
+        createRoleApplyDto.setModifyStaffName(accountId);//修改人ID
+        createRoleApplyDto.setApplyStatus(1);
+        roleApplyManageService.createRoleApply(createRoleApplyDto);
 
         //插入账号
         for(int i=0;i<createRoleApplyDto.getAccountIdList().length;i++){
             ApplyRoleAccountDto applyRoleAccountDto=new ApplyRoleAccountDto();
-            applyRoleAccountDto.setApplyId(1L);
-            applyRoleAccountDto.setRoleId(createRoleApplyDto.getRoleId());
-            applyRoleAccountDto.setAccountId(createRoleApplyDto.getAccountIdList()[i]);
-            applyRoleAccountDto.setApplyOperation(createRoleApplyDto.getApplyOperationList()[i]);
-            applyRoleAccountDto.setCreateEmp((Long) session.getAttribute("accountId"));
-            applyRoleAccountDto.setModifyEmp((Long) session.getAttribute("accountId"));
+            applyRoleAccountDto.setApplyId(createRoleApplyDto.getId());//申请编号id
+            applyRoleAccountDto.setRoleId(createRoleApplyDto.getRoleId());//角色id
+            applyRoleAccountDto.setAccountId(createRoleApplyDto.getAccountIdList()[i]);//账号id
+            applyRoleAccountDto.setApplyOperation(createRoleApplyDto.getApplyOperationList()[i]);//申请操作
+            applyRoleAccountDto.setCreateEmp((Long) session.getAttribute("accountId"));//新建人
+            applyRoleAccountDto.setModifyEmp((Long) session.getAttribute("accountId"));//修改人
             roleApplyManageService.createApplyRoleAccount(applyRoleAccountDto);
         }
-
-        // 新建角色申请
-        Long accountId = (Long) session.getAttribute("accountId");
-        createRoleApplyDto.setModifyStaffName(accountId);
-        createRoleApplyDto.setApplyStatus(1);
-        roleApplyManageService.createRoleApply(createRoleApplyDto);
-
-        System.out.println("222222222222");
 
     }
 
@@ -183,4 +179,26 @@ public class RoleApplyManageController {
         return Result.ok().put("page",loginInfoInRoleApplyDto);
     }
 
+    /**
+    * @Description:  修改
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  14:42 2019/8/13
+    */
+    @ResponseBody
+    @RequestMapping(value = "/modifyRoleApply.do_",method = RequestMethod.POST)
+    public void modifyRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto,HttpSession session){
+        createRoleApplyDto.setApplyStatus(1);
+        roleApplyManageService.modifyRoleApply(createRoleApplyDto);
+        //插入账号
+        for(int i=0;i<createRoleApplyDto.getAccountIdList().length;i++){
+            ApplyRoleAccountDto applyRoleAccountDto=new ApplyRoleAccountDto();
+            applyRoleAccountDto.setApplyId(createRoleApplyDto.getId());//申请id
+            applyRoleAccountDto.setRoleId(createRoleApplyDto.getRoleId());//角色id
+            applyRoleAccountDto.setAccountId(createRoleApplyDto.getAccountIdList()[i]);//账号id
+            applyRoleAccountDto.setApplyOperation(createRoleApplyDto.getApplyOperationList()[i]);//申请操作
+            roleApplyManageService.createApplyRoleAccount(applyRoleAccountDto);
+        }
+    }
 }

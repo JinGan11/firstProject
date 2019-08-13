@@ -85,4 +85,14 @@ public interface RoleApplyManageService {
     */
     void createApplyRoleAccount(ApplyRoleAccountDto applyRoleAccountDto);
 
+
+    /**
+    * @Description:  修改
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  14:41 2019/8/13
+    */
+    void modifyRoleApply(CreateRoleApplyDto createRoleApplyDto);
+
 }
