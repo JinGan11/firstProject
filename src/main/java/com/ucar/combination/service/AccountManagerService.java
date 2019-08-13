@@ -43,7 +43,7 @@ public interface AccountManagerService {
      * @PArams：账户信息
      * @Return：账户id
      */
-    public Long insertAccount(AccountStaff accountStaff);
+    public void insertAccount(AccountStaff accountStaff);
 
     ResultPage getRoleAccountList(QueryParam queryParam);
     /**

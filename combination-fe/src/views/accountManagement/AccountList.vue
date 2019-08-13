@@ -230,6 +230,7 @@
         accountAssignPermissionFlag: false,
         accountAssignPermissionTitle: '账号权限分配',
         checkStrictly: false,
+        row: {},
 
         AccountButtonPermission: {
           createPermission: true,
@@ -356,9 +357,13 @@
       },
       deleteAccount(){
         const self = this;
-        var param = {
-          accountId: localStorage.getItem("accountId")
-        };
+         var param = {
+           accountId: self.row.id,
+           staffNum: self.row.staffNum,
+           staffName: self.row.staffName,
+           permissions: self.row.premissions,
+           accountState: self.row.accountState
+         };
         self.$http.post('account/deleAccount.do_',param)
           .then((result)=>{
             self.$message.info("删除成功");
@@ -371,6 +376,7 @@
       },
       approvalInfo(val){
         const self = this;
+        self.row = val;
         self.disabled = false;
         if(val.accountState != 3){
           self.deleteDisabled = false;

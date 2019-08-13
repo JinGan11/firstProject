@@ -187,8 +187,9 @@
           ],
           accountName: [
             { required: true, message: '请输入登入账号', trigger: 'blur' },
-            { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' },
-            { pattern:/^(.*[\da-zA-Z@._]+$)/,message: '支持\'@._\字母和数字，请勿输入其他字符', trigger: 'blur' }
+            { pattern:/^(.*[\da-zA-Z@._]+$)/,message: '支持\'@._\字母和数字，请勿输入其他字符', trigger: 'blur' },
+            { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
+
           ],
           permissions:[
             { required: true, message: '请选择数据类型'}

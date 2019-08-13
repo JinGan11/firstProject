@@ -62,12 +62,12 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     }
 
     @Override
-    public Long insertAccount(AccountStaff accountStaff) {
+    public void insertAccount(AccountStaff accountStaff) {
         accountStaff.setPassword(DigestUtils.md5DigestAsHex((accountStaff.getPassword()).getBytes()));
         accountManageDao.insertAccount(accountStaff);
         accountStaff.setOperationType("新增");
+        accountStaff.setAccountId(accountManageDao.selectIdByNum(accountStaff.getAccountName()));
         insertAccountHistory(accountStaff);
-        return accountManageDao.selectIdByNum(accountStaff.getAccountName());
     }
 
     //lzy
@@ -208,6 +208,8 @@ public class AccountManagerServiceImpl implements AccountManagerService {
      */
     @Override
     public int deleteAccountById(AccountStaff accountStaff) {
-        return accountManageDao.deleteAccountById(accountStaff);
+        int flag = accountManageDao.deleteAccountById(accountStaff);
+        insertAccountHistory(accountStaff);
+        return flag;
     }
 }

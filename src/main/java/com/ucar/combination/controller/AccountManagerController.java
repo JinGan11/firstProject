@@ -74,12 +74,11 @@ public class AccountManagerController {
             Long user = (Long) session.getAttribute("accountId");
             accountStaff.setCreateEmp(user);
             accountStaff.setModifyEmp(user);
-            Long accountId = accountManagerService.insertAccount(accountStaff);
+            accountManagerService.insertAccount(accountStaff);
             if(accountStaff.getPermissions() == 5){
-                accountManagerService.insertDepartmentPower(accountId,accountStaff.getTree());
+                accountManagerService.insertDepartmentPower(accountStaff.getAccountId(),accountStaff.getTree());
             }
             if(accountStaff.getStaffId()!= null && accountStaff.getStaffId()!= 0) {
-                accountStaff.setAccountId(accountId);
                 accountManagerService.updateStaffAccount(accountStaff);
             }
         }catch(Exception e) {
@@ -251,6 +250,7 @@ public class AccountManagerController {
      * @params: accountStaff 账户id
      * @return:
      */
+    @Transactional
     @ResponseBody
     @RequestMapping(value = "deleAccount.do_",method = RequestMethod.POST)
     public void deleAccount(@RequestBody AccountStaff accountStaff,HttpSession session){

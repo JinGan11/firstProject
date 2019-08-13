@@ -26,7 +26,7 @@
         <result column="account_state" property="accountState"/>
         <result column="account_remark" property="remark"/>
     </resultMap>
-    <!--账户列表-->
+
     <select id="selectAccountById" parameterType="String" resultMap="account">
         select t1.id,
                t1.account_name,
@@ -85,6 +85,7 @@
     </insert>
     <select id="queryList" resultMap="account">
         SELECT t1.id,
+               t2.id staff_id,
                t1.account_name,
                t2.staff_name,
                t2.staff_num,
