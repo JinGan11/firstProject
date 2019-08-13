@@ -20,6 +20,7 @@
         node-key="id"
         :load="loadNode"
         lazy="true"
+        :default-expanded-keys="[1]"
         check-strictly
         show-checkbox
         :render-content="renderContent"
@@ -119,7 +120,7 @@
       deleteDept(){
         var check_node = this.$refs.tree.getCheckedNodes()[0];
         if( this.$options.methods.checkHaveChildren(check_node) ){
-          alert("删除失败，请先删除该部门的下级部门");
+          self.$message.error("删除失败，请先删除该部门的下级部门");
           return;
         }
         var params = {
@@ -140,7 +141,7 @@
         this.$refs.tree.insertAfter(check_node,tmpNode.id);
         this.$refs.tree.remove(tmpNode.id);
         this.operationBtnActive=true;
-        alert("部门删除成功");
+        self.$message.success("部门删除成功");
       },
       checkHaveChildren (data) {
         for(var i = 0;i<data.children.length;i++){

@@ -19,6 +19,7 @@
       node-key="id"
       :load="loadNode"
       lazy="true"
+      :default-expanded-keys="[1]"
       check-strictly
       show-checkbox
       :render-content="renderContent"
