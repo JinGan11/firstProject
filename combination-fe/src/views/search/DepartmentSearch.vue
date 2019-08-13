@@ -43,13 +43,21 @@
       </el-form-item>
     </el-form>
     <el-table ref="multipleTable" :data="tableData" border @selection-change='handleSelectionChange'>
-      <el-table-column label="选择" width="45">
+     <!-- <el-table-column label="选择" width="45">
         <template slot-scope="scope">
           <el-radio v-model="selection" :label="scope.row.id" @change="ChooseOnDetail"><span width="0px;"></span>
           </el-radio>
+        </template> prop="departmentNo"
+      </el-table-column>-->
+      <el-table-column  label="部门编号" width="140">
+        //此处是BUG吧，一摸一样的写法，上面个TEMPLATE就不行，下面个行
+      <!--  <template slot-scope="scope">
+          <el-button type="text" size="small" @click="ChooseOnDetail(scope.row.id)">{{scop.row.departmentNo}}</el-button>
+        </template>-->
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="ChooseOnDetail(scope.row.id)">{{scope.row.departmentNo}}</el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="departmentNo" label="部门编号" width="140"></el-table-column>
       <el-table-column prop="workplace" label="办公点标识" width="140"></el-table-column>
       <el-table-column prop="departmentName" label="部门名称" width="140"></el-table-column>
       <el-table-column prop="staffId" label="负责人ID" width="140"></el-table-column>
@@ -133,11 +141,6 @@
             <el-col :span="12">
               <el-form-item label="详细地址" label-width="150px">
                 <el-input style="width: 200px;" v-model="formDetail.address" placeholder=""></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.departmentNo" placeholder=""></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -349,10 +352,12 @@
       }
     },
     methods: {
-      ChooseOnDetail() {
+      //编号点击开始详情页
+      ChooseOnDetail(val) {
         // alert(this.row.tableData[0].departmentNo);
         var param = {
-          id: this.selection,
+          //id: this.selection,
+          id:val,
           page: this.currentPageCompany,
           limit: this.pageSizeCompany,
         };
@@ -515,5 +520,8 @@
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.department.length;
       },
     },
+    mounted() {
+      this.Search();
+    }
   }
 </script>

@@ -82,7 +82,6 @@ public class SerachController {
 		param.put("staffNum",staffNum);
 		param.put("staffName",staffName);
 		param.put("departmentName",departmentName);
-
 		param.put("powerName",powerName);
 		param.put("accountState",accountState);
 		ResultPage resultPage = accountManagerService.getAccountPowerList(new QueryParam(param));
