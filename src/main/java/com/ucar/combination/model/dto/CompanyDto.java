@@ -18,7 +18,7 @@ public class CompanyDto extends BaseBean {
     private Integer companyNature;
     private Integer companyMark;
     private Integer companyStatus;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date modifyTime;
     private Long modifyEmp;
     private String modifyName;

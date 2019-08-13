@@ -9,7 +9,7 @@ package com.ucar.combination.model;
  **/
 public class DepartmentPower {
     Long id;
-    Long departmentId;
+    String[] departmentId;
     Long accountId;
 
     public Long getId() {
@@ -20,11 +20,11 @@ public class DepartmentPower {
         this.id = id;
     }
 
-    public Long getDepartmentId() {
+    public String[] getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(Long departmentId) {
+    public void setDepartmentId(String[] departmentId) {
         this.departmentId = departmentId;
     }
 

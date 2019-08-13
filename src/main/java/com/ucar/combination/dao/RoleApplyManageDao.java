@@ -23,7 +23,7 @@ public interface RoleApplyManageDao {
     * @Return
     * @Date  15:22 2019/8/7
     */
-    void deleteRoleApply(String roleApplyNum);
+    void deleteRoleApply(int id);
 
     /**
     * @Description:  提交审核
@@ -32,7 +32,7 @@ public interface RoleApplyManageDao {
     * @Return
     * @Date  17:39 2019/8/7
     */
-    void commitRoleApply(String roleApplyNum);
+    void commitRoleApply(int id);
     
     /**
     * @Description:  角色申请 新建
@@ -72,4 +72,14 @@ public interface RoleApplyManageDao {
     * @Date  18:12 2019/8/10
     */
     void createApplyRoleAccount(ApplyRoleAccountDto applyRoleAccountDto);
+
+    /**
+    * @Description:  修改
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  14:40 2019/8/13
+    */
+    void modifyRoleApply(CreateRoleApplyDto createRoleApplyDto);
+
 }

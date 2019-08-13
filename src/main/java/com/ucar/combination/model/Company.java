@@ -49,6 +49,15 @@ public class Company extends BaseBean {
 	private Date modifyTime;
 	private String remark;
 	private Integer status;
+    private String oldCreditCode;
+
+	public String getOldCreditCode() {
+		return oldCreditCode;
+	}
+
+	public void setOldCreditCode(String oldCreditCode) {
+		this.oldCreditCode = oldCreditCode;
+	}
 
 	public Long getCompanyId() {
 		return companyId;

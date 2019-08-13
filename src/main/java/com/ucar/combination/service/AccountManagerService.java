@@ -148,5 +148,13 @@ public interface AccountManagerService {
 
     void lockAndUnlock(int id, int status, String historyOperationType, HttpServletRequest request);
 
+    /**
+     * description: 查询账户名是否存在
+     * @author junqiang.zhang@ucarinc.com
+     * @date:  2019/8/13 10:41
+     * @params: accountName 账户名
+     * @return: int 查询到的账户条数
+     */
+    int selectAccountByAccountName(String accountName);
 
 }

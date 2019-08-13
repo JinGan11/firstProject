@@ -75,24 +75,24 @@
             <el-row>
               <el-col :span="10">
                 <el-form-item label="新建人">
-                  <el-input style="width:200px;" :disabled="true" v-model="form.createEmp"></el-input>
+                  <el-input style="width:200px;" :disabled="true" v-model="otherForm.createEmp"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
                 <el-form-item label="新建时间">
-                  <el-input style="width:200px;" :disabled="true" v-model="form.createTime"></el-input>
+                  <el-input style="width:200px;" :disabled="true" v-model="otherForm.createTime"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="10">
                 <el-form-item label="修改人">
-                  <el-input style="width:200px;" :disabled="true" v-model="modifyEmp"></el-input>
+                  <el-input style="width:200px;" :disabled="true" v-model="otherForm.modifyEmp"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
                 <el-form-item label="修改时间">
-                  <el-input style="width:200px;" :disabled="true" v-model="modifyTime"></el-input>
+                  <el-input style="width:200px;" :disabled="true" v-model="otherForm.modifyTime"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -119,7 +119,7 @@
       <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
     </div>
     <el-dialog :title='title' :visible.sync="dialogVisibleAccount"  :close-on-click-modal="false" width="80%">
-      <div style="width: 95%;">
+      <div class = "dialog-main" style="overflow: auto">
         <el-form ref="accountForm" :model="accountForm" label-width="100px">
           <el-row>
             <el-col :span="5">
@@ -191,11 +191,9 @@
             </el-col>
           </el-row>
         </el-form>
-      </div>
       <div style="margin-bottom: 10px">
         <el-button type="primary" @click="selectionConfirm" style="width:70px">确认选择</el-button>
         <el-button type="primary" @click="selectionCancel" style="width:70px">取消</el-button>
-
       </div>
       <el-table ref="multipleTable" :data="tableData" border @current-change="handleSelectionChange" >
         <!--      <el-table-column type="selection" width="35"></el-table-column>-->
@@ -231,6 +229,7 @@
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="total">
       </el-pagination>
+      </div>
     </el-dialog>
   </div>
 
@@ -253,7 +252,16 @@
         pageSize: 10,
         title:'选择账户',
         dialogVisibleAccount:false,
-        otherForm:{},
+        otherForm:{
+          createEmp:'',
+          createEmpNum:'',
+          createEmpName:'',
+          createEmpTime:'',
+          modifyEmp:'',
+          modifyEmpNum:'',
+          modifyEmpName:'',
+          modifyEmpTime:'',
+        },
         form: {
           roleID:'',
           roleName:'',
@@ -264,11 +272,7 @@
           staffName:'',
           departmentName:'',
           description:'',
-          createEmp:'',
-          createTime:'',
         },
-        modifyEmp:'',
-        modifyTime:'',
         RoleStatusEnum:{},
         options:[
           {
@@ -308,53 +312,54 @@
     mounted() {
       commonUtils.Log("页面进来");
       this.fetchData();
-      this.modifyEmp=window.sessionStorage.getItem("loginUsername");
-      this.modifyTime=this.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+      this.fetchOtherData();
     },
     methods: {
-      format(date, fmt) {//时间格式
-        let o = {
-          "M+": date.getMonth() + 1, //月份
-          "d+": date.getDate(), //日
-          "H+": date.getHours(), //小时
-          "m+": date.getMinutes(), //分
-          "s+": date.getSeconds(), //秒
-          "q+": Math.floor((date.getMonth() + 3) / 3), //季度
-          "S": date.getMilliseconds() //毫秒
+      fetchOtherData() {
+        var roleid;
+        var self = this;
+        roleid = this.$route.query.roleID;
+        var param = {
+          roleID: roleid,
         };
-        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-        for (let k in o)
-          if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-        return fmt;
+        self.$http.get('roleManage/getOtherOneInf.do_', {
+          params: param
+        }).then((result) => {
+          self.otherForm = result.page;
+          self.otherForm.createEmp = `${self.otherForm.createEmpNum}(${self.otherForm.createEmpName})`;
+          self.otherForm.modifyEmp = `${self.otherForm.modifyEmpNum}(${self.otherForm.modifyEmpName})`;
+        }).catch(function (error) {
+          commonUtils.Log("roleManage/getOtherOneInf.do_" + error);
+          self.$message.error("获取数据错误");
+        });
       },
-      selectionConfirm(){
-        this.form.accountNum =this.selection.accountName;
-        this.form.staffNum =this.selection.staffNum;
+      selectionConfirm() {
+        this.form.accountNum = this.selection.accountName;
+        this.form.staffNum = this.selection.staffNum;
         this.form.staffName = this.selection.staffName;
         this.form.departmentName = this.selection.department;
-        this.dialogVisibleAccount=false;
+        this.dialogVisibleAccount = false;
       },
-      selectionCancel(){
-        this.dialogVisibleAccount=false;
+      selectionCancel() {
+        this.dialogVisibleAccount = false;
       },
       handleSelectionChange(val) {
         this.selection = val;
       },
       save(formName) {//保存修改角色信息
         const self = this;
-        self.$refs[formName].validate((valid) =>{
+        self.$refs[formName].validate((valid) => {
           if (valid) {
-            alert(valid);
+            var roleid = this.$route.query.roleID;
             var param = {
               roleName: self.form.roleName,
             };
             self.$http.get("roleManage/judgeExist.do_", {
               params: param
             }).then((result) => {
-              if (result.page.roleStatus ===0||result.page.roleStatus===1 ){
+              if ((result.page.roleStatus === 0 || result.page.roleStatus === 1)&&(result.page.roleId !== roleid)) {
                 alert("角色名称已存在");
-              }
-              else {
+              } else {
                 self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
                   confirmButtonText: '确定',
                   cancelButtonText: '取消',
@@ -382,7 +387,7 @@
                 });
               }
             }).catch(function (error) {
-              commonUtils.Log("roleManage/judgeExist.do_:"+error);
+              commonUtils.Log("roleManage/judgeExist.do_:" + error);
               self.$message.error("获取数据错误sdfas")
             });
           } else {
@@ -391,10 +396,10 @@
           }
         });
       },
-      cancel(){//关闭新建角色页面，返回角色管理列表页面
+      cancel() {//关闭新建角色页面，返回角色管理列表页面
         this.$router.replace('/roleManagement/roleManagement')
       },
-      chooseAccount(){
+      chooseAccount() {
         this.accountForm.accountNo = null;
         this.accountForm.staffNo = null;
         this.accountForm.name = null;
@@ -402,7 +407,7 @@
         this.accountForm.department = null;
         this.accountForm.isRelStaff = null;
         this.accountForm.status = null;
-        this.dialogVisibleAccount=true;
+        this.dialogVisibleAccount = true;
         this.fetchAccountData();
       },
       handleSizeChange(val) {
@@ -415,14 +420,14 @@
         this.fetchData(val, this.pageSize);
       },
 
-      fetchAccountData(){//获取账户信息
+      fetchAccountData() {//获取账户信息
         var self = this;
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
           accountName: self.accountForm.accountNo,
           staffNo: self.accountForm.staffNo,
-          name:self.accountForm.name,
+          name: self.accountForm.name,
           permissions: self.accountForm.permissions,
           department: self.accountForm.departmentId,
           isRelStaff: self.accountForm.isRelStaff,
@@ -438,30 +443,30 @@
           self.accountForm.accountStatusList = result.accountStatusList;
           self.total = result.page.totalCount;
         }).catch(function (error) {
-          commonUtils.Log("account/querylist.do_:"+error);
+          commonUtils.Log("account/querylist.do_:" + error);
           self.$message.error("获取数据错误")
         });
       },
 
-      fetchData(){
+      fetchData() {
         var roleid;
         var self = this;
-        roleid=this.$route.query.roleID;
+        roleid = this.$route.query.roleID;
         var param = {
           roleID: roleid,
         };
         self.$http.get('roleManage/getOneInf.do_', {
           params: param
         }).then((result) => {
-          self.form=result.page;
+          self.form = result.page;
           self.RoleStatusEnum = result.RoleStatusEnum;
-          self.form.businessLine=self.form.businessLine.split(',');
+          self.form.businessLine = self.form.businessLine.split(',');
         }).catch(function (error) {
-          commonUtils.Log("roleManage/getOneInf.do_:" + error);
+          commonUtils.Log("roleManage/getOneInf.do_" + error);
           self.$message.error("获取数据错误");
         });
       },
-  },
+    },
 
 
 

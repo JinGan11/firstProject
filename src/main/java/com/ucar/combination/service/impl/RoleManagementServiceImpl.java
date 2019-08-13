@@ -7,6 +7,7 @@ import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.RoleManagementDao;
 import com.ucar.combination.model.*;
+import com.ucar.combination.model.dto.RoleAccountStaffDto;
 import com.ucar.combination.model.dto.RoleDto;
 import com.ucar.combination.service.RoleManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,6 +140,12 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     public RoleDto getOneInf(int id) {
         RoleDto roleDto = roleManagementDao.getOneInf(id);
         return roleDto;
+    }
+
+    @Override
+    public RoleAccountStaffDto getOtherOneInf(int id) {
+        RoleAccountStaffDto roleAccountStaffDto = roleManagementDao.getOtherOneInf(id);
+        return roleAccountStaffDto;
     }
 
     /**

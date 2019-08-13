@@ -12,7 +12,7 @@
       </div>
       <hr style="width: 70%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
       <div style="width:85%; margin-left: 30px; float: left">
-        <el-form  :model="modifyForm" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="120px"
+        <el-form  :model="modifyForm" status-icon :rules="rules" ref="modifyForm" size="medium" label-width="120px"
                   class="demo-ruleForm">
           <el-row>
             <el-col :span="9">
@@ -319,14 +319,14 @@
       },
       save() {//保存修改账户信息
         const self = this;
-        self.$refs["ruleForm"].validate(function(valid) {
+        self.$refs["modifyForm"].validate(function(valid) {
           if (valid) {
-            if (self.modifyForm.permissions == 5 && this.$refs.tree.getCheckedNodes().length == 0) {
+            if (self.modifyForm.permissions == 5 && self.$refs.tree.getCheckedNodes().length == 0) {
               self.$message.info("请选择部门");
             } else {
               if (self.modifyForm.permissions == 5) {
-                for (var i = 0; i < this.$refs.tree.getCheckedNodes().length; i++) {
-                  self.modifyForm.tree += this.$refs.tree.getCheckedNodes()[i].id + ' ';
+                for (var i = 0; i < self.$refs.tree.getCheckedNodes().length; i++) {
+                  self.modifyForm.tree += self.$refs.tree.getCheckedNodes()[i].id + ' ';
                 }
               }
               self.$http.post('account/modifyAccount.do_', self.modifyForm)
@@ -352,6 +352,16 @@
         const self = this;
         self.dialogEmployee = !this.dialogEmployee;
       },
+      clearStaffInf(){//清除选择关联的员工
+        const self = this;
+        self.modifyForm.staffName = '';
+        self.modifyForm.staffNum = '';
+        self.modifyForm.secretEmail = '';
+        if(self.modifyForm.permissions == 2 || self.modifyForm.permissions == 3){
+          self.modifyForm.permissions = '';
+        }
+        self.emailDisabled = false;
+      },
       chooseStaff(staffData){//关联员工
         const self = this;
         self.modifyForm.staffNum = staffData.staffNum;
@@ -367,7 +377,11 @@
       },
       pressionChange(){//当数据权限为手动选择是，选择部门框可见
         const self = this;
-        var a = self.modifyForm.permissions;
+        if((self.modifyForm.staffNum == ''||self.modifyForm.staffNum == null) && self.modifyForm.permissions >= 2
+          && self.modifyForm.permissions <= 3){
+          self.modifyForm.permissions = '';
+          self.$message.error('未选择员工，不可选该权限');
+        }
         self.departmentVisible = (self.modifyForm.permissions==5)?true:false;
       }
     },

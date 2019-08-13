@@ -50,7 +50,7 @@ public interface CompanyManageService {
      * @date: 2019/8/8 9:05
      * @return：
      */
-    void updateCompanyById(Company company);
+    Map<String,Object> updateCompanyById(Company company);
     /**
      * description: 校验统一社会信用代码
      * @author: jianan.shu@ucarinc.com
@@ -58,7 +58,7 @@ public interface CompanyManageService {
      * @date: 2019/8/8 15:31
      * @return：
      */
-    int creditCodeValidate(String creditCode);
+    Map<String, Object> creditCodeValidate(String creditCode);
     ResultPage queryRelationList(QueryParam queryParam);
     ResultPage relationCompanyList(QueryParam queryParam);
     void saveRelations(Map<String ,Object>queryParam);

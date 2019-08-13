@@ -781,7 +781,7 @@ public abstract class CommonEnums {
 	public static enum applyOperationEnum implements IEnum{
 
 		ADD(1, "添加"),
-		REMOVE(0, "移除");
+		REMOVE(2, "移除");
 
 		private final int i;
 		private final String n;

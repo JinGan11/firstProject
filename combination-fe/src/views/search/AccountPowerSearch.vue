@@ -25,7 +25,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="权限名称">
-        <el-input v-model="accountForm.powerName"></el-input>
+        <el-input v-model="accountForm.path"></el-input>
       </el-form-item>
       </el-row>
       <el-form-item size="100px">
@@ -47,7 +47,18 @@
           {{AccountStatusEnums[scope.row.accountState]}}
         </template>
       </el-table-column>
-      <el-table-column prop="powerName" label="权限名称" width="140"></el-table-column>
+      <el-table-column prop="path" label="权限名称" width="140">
+        <template slot-scope="scope">
+          <el-popover
+            placement="bottom"
+            width="200"
+            trigger="click"
+            :content="scope.row.path">
+            <el-button slot="reference" type="text">{{scope.row.path|ellipsis}}</el-button>
+          </el-popover>
+
+        </template>
+      </el-table-column>
       <el-table-column prop="createEmp" v-if="false"  ></el-table-column>
       <el-table-column prop="createTime"  v-if="false"  ></el-table-column>
       <el-table-column prop="modifyEmp"   v-if="false"  ></el-table-column>
@@ -132,7 +143,7 @@
           staffNum:'',
           staffName:'',
           departmentName:'',
-          powerName:'',
+          path:'',
           accountState:'',
           status:'',
         },
@@ -181,7 +192,7 @@
           staffNum:this.accountForm.staffNum,
           staffName:this.accountForm.staffName,
           departmentName:this.accountForm.departmentName,
-          powerName:this.accountForm.powerName,
+          path:this.accountForm.path,
           accountState:this.accountForm.accountState,
         };
         self.$http.get('/roleAccount/getAccountPowerList.do_', {
@@ -252,7 +263,7 @@
           } else if (this.checkRoles[i] === '账号状态') {
             this.filterVal.push('accountState')
           } else if (this.checkRoles[i] === '权限名称') {
-            this.filterVal.push('powerName')
+            this.filterVal.push('path')
           }
         }
         return this.filterVal;
@@ -281,6 +292,15 @@
         this.formDetail.email=val.email;
 
         this.detailDialogVisible=true;
+      }
+    },
+    filters: {
+      ellipsis(value) {
+        if (!value) return "";
+        if (value.length > 30) {
+          return value.slice(0, 30) + "...";
+        }
+        return value;
       }
     },
     mounted() {

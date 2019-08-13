@@ -9,22 +9,22 @@
         <hr><br>
       </div>
       <div style="width:85%; margin-left: 70px">
-        <el-form ref="form" :model="form" label-width="80px">
+        <el-form ref="ruleForm" :model="form" :rules="rules" label-width="90px">
           <el-row>
             <el-col :span="10">
-              <el-form-item label="公司名称">
+              <el-form-item label="公司名称:" prop="companyName">
                 <el-input style="width:200px;" v-model="form.companyName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="统一社会信用代码">
+              <el-form-item label="统一社会信用代码:" prop="creditCode">
                 <el-input style="width:200px;" v-model="form.creditCode"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
-              <el-form-item label="类型">
+              <el-form-item label="类型:" prop="companyType">
                 <el-select v-model="form.companyType" clearable  style="width:200px;" placeholder="请选择">
                   <el-option
                     v-for="item in options1"
@@ -36,7 +36,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="营业期限" >
+              <el-form-item label="营业期限:" prop="businessTerm">
                 <el-date-picker
                   v-model="businessTerm"
                   type="daterange"
@@ -52,31 +52,31 @@
           </el-row>
           <el-row>
             <el-col :span="10">
-              <el-form-item label="住所">
+              <el-form-item label="住所:" prop="companyAddress">
                 <el-input style="width:200px;" v-model="form.companyAddress"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="经营范围">
+              <el-form-item label="经营范围:" prop="businessScope">
                 <el-input style="width:200px;" v-model="form.businessScope"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
-              <el-form-item label="法定代表人">
+              <el-form-item label="法定代表人:" prop="legalPerson">
                 <el-input style="width:200px;" v-model="form.legalPerson"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="注册资本">
+              <el-form-item label="注册资本:"  prop="registeredCapital">
                 <el-input style="width:200px;" v-model="form.registeredCapital"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
-              <el-form-item label="成立日期">
+              <el-form-item label="成立日期:" prop="establishTime">
                 <el-date-picker
                   v-model="form.establishTime"
                   type="date"
@@ -87,14 +87,14 @@
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="登记机关">
+              <el-form-item label="登记机关:" prop="registeredInstitution">
                 <el-input style="width:200px;" v-model="form.registeredInstitution"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
-              <el-form-item label="核准日期">
+              <el-form-item label="核准日期:" prop="causeTime">
                 <el-date-picker
                   v-model="form.causeTime"
                   type="date"
@@ -105,7 +105,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="登记状态">
+              <el-form-item label="登记状态:" prop="registeredStatus">
                 <el-input style="width:200px;" v-model="form.registeredStatus"></el-input>
               </el-form-item>
             </el-col>
@@ -127,7 +127,7 @@
           </div>
           <el-row>
             <el-col :span="10">
-              <el-form-item label="公司性质">
+              <el-form-item label="公司性质:" prop="companyNature">
                 <el-radio-group v-model="form.companyNature">
                   <el-radio :label="1">一般纳税人</el-radio>
                   <el-radio :label="2">小规模纳税人</el-radio>
@@ -135,31 +135,31 @@
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="注册地址">
+              <el-form-item label="注册地址:" prop="registrationAddress">
                 <el-input style="width:200px;" v-model="form.registrationAddress"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
-              <el-form-item label="开户银行">
+              <el-form-item label="开户银行:" prop="bankName">
                 <el-input style="width:200px;" v-model="form.bankName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="账号">
+              <el-form-item label="账号:" prop="bankAccount">
                 <el-input style="width:200px;" v-model="form.bankAccount"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="10">
-              <el-form-item label="注册电话">
+            <el-col :span="9">
+              <el-form-item label="注册电话:" prop="telephone">
                 <el-input style="width:200px;" v-model="form.telephone"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="总公司标志">
+              <el-form-item label="总公司标志:" label-width="125px" prop="companyMark">
                 <el-radio-group v-model="form.companyMark">
                   <el-radio  :label="1">总公司</el-radio>
                   <el-radio  :label="2">子公司</el-radio>
@@ -174,31 +174,31 @@
           </div>
           <el-row>
             <el-col :span="10">
-              <el-form-item label="新建人">
+              <el-form-item label="新建人:">
                 <el-input style="width:200px;" v-model="form.createEmp" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="新建时间">
+              <el-form-item label="新建时间:">
                 <el-input style="width:200px;" v-model="form.createTime" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
-              <el-form-item label="修改人">
+              <el-form-item label="修改人:">
                 <el-input style="width:200px;" v-model="form.modifyEmp" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
-              <el-form-item label="修改时间">
+              <el-form-item label="修改时间:">
                 <el-input style="width:200px;" v-model="form.modifyTime" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
-              <el-form-item label="状态">
+              <el-form-item label="状态:" prop="companyStatus">
                 <el-select v-model="form.companyStatus" clearable  style="width:200px;" placeholder="请选择">
                   <el-option
                     v-for="item in options2"
@@ -214,7 +214,7 @@
           </el-row>
           <el-row>
             <el-col :span="10">
-              <el-form-item label="备注">
+              <el-form-item label="备注:" prop="remark">
                 <el-input style="width:200px;" v-model="form.remark"></el-input>
               </el-form-item>
             </el-col>
@@ -232,8 +232,8 @@
     data() {
       return {
         businessTerm:[],
-
         form: {
+          oldCreditCode:'',
           businessStartTime:'',
           businessDeadline:'',
           companyName:'',
@@ -278,6 +278,83 @@
           value: '2',
           label: '无效'
         }],
+        rules: {
+          companyName: [
+            { required: true, message: '请输入公司名称', trigger: 'blur' },
+            { min: 2, max: 60, message: '长度在 2 到 60 个字符', trigger: 'blur' },
+          ],
+          creditCode: [
+            { required: true, message: '请输入统一社会信用代码', trigger: 'blur' },
+            { min: 15, max: 18, message: '长度在 15 到 18 个字符或数字', trigger: 'blur' },
+            { pattern:/^([\da-zA-Z]+$)/,message: '只支持字母和数字，请勿输入其他字符', trigger: 'blur' }
+          ],
+          companyType:[
+            { required: false, message: '公司类型', trigger: 'blur' },
+
+          ],
+          businessTerm:[
+            { required: false, message: '营业期限', trigger: 'blur' },
+
+          ],
+          registeredCapital:[
+            { required: false, message: '请选择数据类型'},
+           //{ min: 1, max: 20, message: '长度在 1 到 20 位数字', trigger: 'blur' },
+            { pattern:/^\d{1,20}$/,message: '长度在 1 到 20 位数字，请勿输入其他字符', trigger: 'blur' }
+
+          ],
+          companyAddress:[
+            { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' },
+          ],
+          businessScope:[
+            { min: 2, max: 200, message: '长度在 2 到 200 个字符', trigger: 'blur' },
+          ],
+          legalPerson:[
+            { min: 2, max: 60, message: '长度在 2 到 60 个字符', trigger: 'blur' },
+          ],
+          registeredInstitution:[
+            { min: 2, max: 60, message: '长度在 2 到 60 个字符', trigger: 'blur' },
+          ],
+          establishTime:[
+            { required: false, message: '成立日期'},
+
+          ],
+          causeTime:[
+            { required: false, message: '核准日期'},
+
+          ],
+          registeredStatus:[
+            { min: 2, max: 60, message: '长度在 2 到 60 个字符', trigger: 'blur' },
+          ],
+          registrationAddress:[
+            { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' },
+          ],
+          companyNature:[
+            { required: false, message: '公司性质'},
+
+          ],
+          companyMark:[
+            { required: false, message: '总公司标志'},
+
+          ],
+          bankName:[
+            { min: 2, max: 60, message: '长度在 2 到 60 个字符', trigger: 'blur' },
+          ],
+          bankAccount:[
+            { min: 7, max: 20, message: '长度在 7 到 20 位数字', trigger: 'blur' },
+          ],
+          telephone:[
+            { min: 11, max: 12, message: '长度在 11 到 12 位数字', trigger: 'blur' },
+          ],
+          companyStatus:[
+            { required: false, message: '状态'},
+
+          ],
+          remark:[
+            { required: false, message: '备注'},
+
+          ],
+
+        },
       }
     },
     activated() {
@@ -302,67 +379,82 @@
           self.form=result.list.company;
           self.form.createEmp=result.list.createEmp;
           self.form.modifyEmp=result.list.modifyEmp;
-          self.form.companyType=String(self.form.companyType);
-          self.form.companyStatus=String(self.form.companyStatus);
+          self.form.registeredCapital=parseInt(self.form.registeredCapital);
           self.businessTerm=[result.list.company.businessStartTime,result.list.company.businessDeadline];
-          //self.businessTerm[0]=result.list.company.businessStartTime;
-          //self.businessTerm[1]=result.list.company.businessDeadline;
+          self.form.oldCreditCode=result.list.company.creditCode;
+          if(self.form.companyType==null){
+            self.form.companyType="";
+          }else{
+            self.form.companyType=String(self.form.companyType);
+          }
+
+          if(self.form.companyStatus==null){
+            self.form.companyStatus="";
+          }else{
+            self.form.companyStatus=String(self.form.companyStatus);
+          }
         }).catch(function (error) {
           commonUtils.Log("company/getCompanyById.do_:" + error);
           self.$message.error("获取数据错误");
         });
       },
       save() {//保存修改公司信息
-        this.$confirm('此操作将保存该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          var self=this;
-          var companyId=window.localStorage.getItem('companyId');
-          self.form.companyId=companyId;
-          self.form.businessStartTime=self.businessTerm[0];
-          self.form.businessDeadline=self.businessTerm[1];
-          self.form.liscensePath='dfs';
-          self.form.createEmp='';
-          self.form.modifyEmp=''
-          self.$http.post("company/modifyCompany",self.form)
-            .then((result) => {
-              self.$router.replace("/CompanyManagement");
-            })
-            .catch(function (error) {
-              commonUtils.Log("company/modifyCompany:"+error);
-              self.$message.error("修改公司失败");
-            });
-          this.$message({
-            type: 'success',
-            message: '保存成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消保存'
-          });
-        });
-        // var self=this;
-        // var companyId=window.localStorage.getItem('companyId');
-        // self.form.companyId=companyId;
-        // self.form.businessStartTime=self.businessTerm[0];
-        // self.form.businessDeadline=self.businessTerm[1];
-        // self.form.liscensePath='dfs';
-        // self.form.createEmp='';
-        // self.form.modifyEmp='';
-        // self.$http.post("company/modifyCompany",self.form)
-        //   .then(result => {
-        //     self.$router.replace("/CompanyManagement");
-        //   })
-        //   .catch(function (error) {
-        //
-        //   })
-      },
+        const self = this;
+        console.log(self.form.registeredCapital)
+        self.$refs["ruleForm"].validate(function (valid) {
+          if (valid) {
+            console.log(self.form.registeredCapital)
+              //if(self.$options.methods.checkInput(self)==false) return;
+              self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                var companyId=window.localStorage.getItem('companyId');
+                self.form.companyId=companyId;
+                self.form.businessStartTime=self.businessTerm[0];
+                self.form.businessDeadline=self.businessTerm[1];
+                self.form.liscensePath='dfs';
+                self.form.createEmp='';
+                self.form.modifyEmp='';
+
+
+                self.$http.post("company/modifyCompany",self.form)
+                  .then((result) => {
+                    if (!result.result) {
+                      alert(result.msg);
+                      return false;
+                    }else{
+                      self.$alert("修改成功！");
+                      self.$router.replace("/CompanyManagement");
+                    }
+                  })
+                  .catch(function (error) {
+                    commonUtils.Log("company/modifyCompany:"+error);
+                    self.$message.error("修改公司失败");
+                  });
+                this.$message({
+                  type: 'success',
+                  message: '保存成功!'
+                });
+              }).catch(() => {
+                this.$message({
+                  type: 'info',
+                  message: '已取消保存'
+                });
+              });
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        })
+
+
+          },
       cancel(){//关闭新建公司页面，返回公司管理列表页面
         this.$router.replace('/CompanyManagement')
       },
+
     },
   }
 

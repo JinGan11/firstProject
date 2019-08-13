@@ -70,28 +70,28 @@
       <p>其它信息</p>
       <div>
         <div style="width:85%; margin-left: 70px">
-          <el-form ref="form" :model="form" label-width="110px">
+          <el-form ref="otherForm" :model="otherForm" label-width="110px">
             <el-row>
               <el-col :span="10">
                 <el-form-item label="新建人">
-                  <el-input style="width:200px;" :disabled="true" v-model="form.createEmp"></el-input>
+                  <el-input style="width:200px;" :disabled="true" v-model="otherForm.createEmp"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
                 <el-form-item label="新建时间">
-                  <el-input style="width:200px;" :disabled="true" v-model="form.createTime"></el-input>
+                  <el-input style="width:200px;" :disabled="true" v-model="otherForm.createTime"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="10">
                 <el-form-item label="修改人">
-                  <el-input style="width:200px;" :disabled="true" v-model="form.modifyEmp"></el-input>
+                  <el-input style="width:200px;" :disabled="true" v-model="otherForm.modifyEmp"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
                 <el-form-item label="修改时间">
-                  <el-input style="width:200px;" :disabled="true" v-model="form.modifyTime"></el-input>
+                  <el-input style="width:200px;" :disabled="true" v-model="otherForm.modifyTime"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -137,11 +137,19 @@
           staffName: '',
           departmentName: '',
           description: '',
-          createEmp: '',
-          createTime: '',
-          modifyEmp: '',
-          modifyTime: '',
         },
+
+        otherForm:{
+          createEmp:'',
+          createEmpNum:'',
+          createEmpName:'',
+          createEmpTime:'',
+          modifyEmp:'',
+          modifyEmpNum:'',
+          modifyEmpName:'',
+          modifyEmpTime:'',
+        },
+
         RoleStatusEnum: {},
         options: [
           {
@@ -159,8 +167,28 @@
     mounted() {
       commonUtils.Log("页面进来");
       this.fetchData();
+      this.fetchOtherData();
     },
     methods: {
+
+      fetchOtherData() {
+        var roleid;
+        var self = this;
+        roleid = this.$route.query.roleID;
+        var param = {
+          roleID: roleid,
+        };
+        self.$http.get('roleManage/getOtherOneInf.do_', {
+          params: param
+        }).then((result) => {
+          self.otherForm = result.page;
+          self.otherForm.createEmp = `${self.otherForm.createEmpNum}(${self.otherForm.createEmpName})`;
+          self.otherForm.modifyEmp = `${self.otherForm.modifyEmpNum}(${self.otherForm.modifyEmpName})`;
+        }).catch(function (error) {
+          commonUtils.Log("roleManage/getOtherOneInf.do_" + error);
+          self.$message.error("获取数据错误");
+        });
+      },
 
       cancel(){//关闭角色页面，返回角色管理列表页面
         this.$router.replace('/roleManagement/roleManagement')
