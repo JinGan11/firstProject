@@ -87,8 +87,9 @@ public class RoleApplyManageController {
     @ResponseBody
     @RequestMapping("/deleteRoleApply.do_")
     public void deleteRoleApply(HttpServletRequest request){
-        String roleApplyNum = request.getParameter("selection");
-        roleApplyManageService.deleteRoleApply(roleApplyNum);
+        String stringId = request.getParameter("selection");
+        int id = Integer.parseInt(stringId);
+        roleApplyManageService.deleteRoleApply(id);
     }
 
     /**
@@ -101,8 +102,9 @@ public class RoleApplyManageController {
     @ResponseBody
     @RequestMapping("/commitRoleApply.do_")
     public void commitRoleApply(HttpServletRequest request){
-        String roleApplyNum = request.getParameter("selection");
-        roleApplyManageService.commitRoleApply(roleApplyNum);
+        String stringId = request.getParameter("selection");
+        int id = Integer.parseInt(stringId);
+        roleApplyManageService.commitRoleApply(id);
     }
 
     /**

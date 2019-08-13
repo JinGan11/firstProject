@@ -50,8 +50,8 @@ public class RoleApplyManageServiceImpl implements RoleApplyManageService {
     * @Date  15:26 2019/8/7
     */
     @Override
-    public void deleteRoleApply(String roleApplyNum) {
-        roleApplyManageDao.deleteRoleApply(roleApplyNum);
+    public void deleteRoleApply(int id) {
+        roleApplyManageDao.deleteRoleApply(id);
     }
 
     /**
@@ -62,8 +62,8 @@ public class RoleApplyManageServiceImpl implements RoleApplyManageService {
     * @Date  17:41 2019/8/7
     */
     @Override
-    public void commitRoleApply(String roleApplyNum) {
-        roleApplyManageDao.commitRoleApply(roleApplyNum);
+    public void commitRoleApply(int id) {
+        roleApplyManageDao.commitRoleApply(id);
     }
 
     /**

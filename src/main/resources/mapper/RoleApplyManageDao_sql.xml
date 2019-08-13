@@ -19,7 +19,6 @@
         t1.reject_reason            rejectReason
         from t_role_apply t1,t_role_info t2
         where t1.role_id=t2.id
-        order by t1.id desc
         <if test="roleApplyNum!=null and roleApplyNum!=''">
             AND t1.apply_num=#{roleApplyNum}
         </if>
@@ -59,6 +58,7 @@
         <if test="modifyTimeEnd!=null and modifyTimeEnd!=''">
             AND t1.modify_time<![CDATA[ <= ]]> #{modifyTimeEnd}
         </if>
+        order by t1.apply_time desc
 
 
     </select>
@@ -68,14 +68,14 @@
     <update id="deleteRoleApply">
         update t_role_apply t1
         set t1.status=5
-        where t1.apply_num = #{roleApplyNum}
+        where t1.id= #{id}
     </update>
 
     <!--提交角色申请-->
     <update id="commitRoleApply">
         update t_role_apply t1
         set t1.status=2
-        where t1.apply_num = #{roleApplyNum}
+        where t1.id = #{id}
     </update>
 
 

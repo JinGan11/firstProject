@@ -378,6 +378,7 @@
         roleId:'',
         applyOperationList:[],
         accountChangesList:[],
+        roleStatus:'',
 
 
         formRoleInfo: {//申请信息
@@ -435,10 +436,10 @@
 
         optionOfApply: '',
         options: [{
-          value: '1',
+          value: 1,
           label: '添加'
         }, {
-          value: '2',
+          value: 2,
           label: '移除'
         }],
         forms:{
@@ -518,8 +519,6 @@
           commonUtils.Log("roleApply/queryLoginInRoleApply.do_" + error);
           self.$message.error("获取数据错误");
         });
-
-
       },
 
 
@@ -553,6 +552,7 @@
         //获取选中行的数据
         this.roleId=row.roleId;
         this.formRoleInfo.roleName=row.roleName;
+        this.roleStatus=row.roleStatus;
         this.formRoleInfo.approverStaffName=row.staffName;
         this.otherInfo.approverStaffName=row.staffName;
         this.formRoleInfo.businessLine=row.businessLine;
@@ -636,16 +636,12 @@
         for(let i=0;i<this.tableDataAccount.length;i++){//账号ID
           console.log(this.tableDataAccount[i].accountName)
           this.accountIdList.push(this.tableDataAccount[i].id);
-          // alert(this.accountIdList[i])
         }
-        alert('开始输出申请操作');
 
         for(let i=0;i<this.tableDataAccount.length;i++){
           this.applyOperationList.push(this.tableDataAccount[i].applyOperation)
-          alert(this.applyOperationList[i]);
         }
 
-        alert(this.roleId);
         var self=this;
         self.forms.roleApplyNum=self.formRoleInfo.roleApplyNum;
         self.forms.roleId=self.roleId;
@@ -659,11 +655,11 @@
         self.forms.modifyStaffName='';
         self.forms.modifyTime=self.otherInfo.modifyTime;
         self.forms.accountIdList=self.accountIdList;
-        // self.forms.tableDataAccount=self.tableDataAccount;
         self.forms.applyOperationList=self.applyOperationList;
 
-        // alert(self.forms.accountIdList);
-        // alert('大哥啊');
+
+        if(!self.$options.methods.checkInput(self)) return;
+
         self.$http.post("roleApply/createRoleApply.do_",self.forms)
           .then(result => {
             alert("新建成功");
@@ -672,7 +668,24 @@
           commonUtils.Log("/roleManagement/apply"+error);
           self.$message.error("角色申请新建保存失败");
         })
-      }
+      },
+
+
+      checkInput(val){
+        if (val.formRoleInfo.roleName==''){
+          alert("申请角色为必填项，不允许为空");
+          return false;
+        }
+        if (val.form.accountNum==''){
+          alert("请选择审批人账号");
+          return false;
+        }
+        if (val.form.businessLine==''){
+          alert("支持业务线不能为空");
+          return false;
+        }
+        return true;
+      },
 
     }
 

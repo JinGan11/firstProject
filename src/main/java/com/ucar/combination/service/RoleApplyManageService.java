@@ -37,7 +37,7 @@ public interface RoleApplyManageService {
     * @Return
     * @Date  15:25 2019/8/7
     */
-    void deleteRoleApply(String roleApplyNum);
+    void deleteRoleApply(int id);
 
     /**
     * @Description:  提交审核
@@ -46,7 +46,7 @@ public interface RoleApplyManageService {
     * @Return
     * @Date  17:40 2019/8/7
     */
-    void commitRoleApply(String roleApplyNum);
+    void commitRoleApply(int id);
 
     /**
     * @Description:

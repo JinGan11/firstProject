@@ -103,7 +103,7 @@
           <el-radio v-model="selection" @change="selectRow(scope.row)" :label="scope.row.id" ><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
-      <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
+      <el-table-column prop="id"  label="隐藏id"></el-table-column>
       <el-table-column prop="roleApplyNum" label="角色申请编号" width="150"></el-table-column>
       <el-table-column prop="roleId" label="申请角色ID"width="150"></el-table-column>
       <el-table-column prop="roleName" label="申请角色名称"  width="150"></el-table-column>
