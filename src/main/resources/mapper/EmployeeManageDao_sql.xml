@@ -40,7 +40,7 @@
         LEFT JOIN t_account t3
         on (t3.id=t1.account_id)
         ,t_department t2,t_department t4
-        where t1.department_id = t2.id and t2.upper_department_no=t4.department_no
+        where t1.department_id = t2.id and t2.upper_department_no=t4.department_no and t1.status=1
         <if test="relAccount == 1">
             AND (t1.account_id = '' or t1.account_id IS NULL or t1.account_id = 0)
         </if>

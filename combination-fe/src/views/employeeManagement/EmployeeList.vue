@@ -5,22 +5,22 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="员工编号">
-              <el-input placeholder="员工编号" prop="staffNum" style="width:200px;" v-model="form.staffNum"></el-input>
+              <el-input placeholder="员工编号" prop="staffNum" style="width:150px;" v-model="form.staffNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="员工姓名">
-              <el-input placeholder="员工姓名" style="width:200px;" v-model="form.staffName"></el-input>
+              <el-input placeholder="员工姓名" style="width:150px;" v-model="form.staffName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="登陆账号">
-              <el-input placeholder="登陆账号" :disabled="cloumnDisabled" style="width:200px;" v-model="form.accountName"></el-input>
+              <el-input placeholder="登陆账号" :disabled="cloumnDisabled" style="width:150px;" v-model="form.accountName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item  label="是否离职">
-              <el-select v-model="form.isDimission" clearable :disabled="cloumnDisabled" style="width:200px;" placeholder="请选择">
+              <el-select v-model="form.isDimission" clearable :disabled="cloumnDisabled" style="width:150px;" placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -35,7 +35,7 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="所属部门">
-              <el-input placeholder="所属部门" :disabled="true" style="width:300px;" v-model="form.departmentId"></el-input>
+              <el-input placeholder="所属部门" :disabled="true" style="width:200px;" v-model="form.departmentId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="4">
@@ -50,7 +50,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="上级部门">
-              <el-input placeholder="上级部门" :disabled="true" style="width:300px;"
+              <el-input placeholder="上级部门" :disabled="true" style="width:200px;"
                         v-model="form.upperDepartmentNo"></el-input>
             </el-form-item>
           </el-col>
@@ -322,12 +322,17 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="性别:" prop="staffSex" label-width="150px">
+              <!--<el-form-item label="性别:" prop="staffSex" label-width="150px">
                 <template>
                   <el-radio v-model="modifyForm.staffSex" label="1">男</el-radio>
                   <el-radio v-model="modifyForm.staffSex" label="2">女</el-radio>
-                </template>
-              </el-form-item>
+                </template>-->
+                <el-form-item label="性别:" label-width="150px">
+                  <el-radio-group v-model="modifyForm.staffSex">
+                    <el-radio :label="1">男</el-radio>
+                    <el-radio :label="2">女</el-radio>
+                  </el-radio-group>
+                </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="员工手机号:" prop="staffTelephone" label-width="150px">
@@ -352,7 +357,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="是否离职:" label-width="150px">
-                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.isDimission"></el-input>
+                <el-input style="width:200px;" :disabled="true"  v-model="modifyForm.isDimission"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -889,6 +894,7 @@
           .then((result) => {
             self.createDialogVisible=false;
             self.$message.success("新建用户成功");
+            location.reload();
           })
           .catch(function (error) {
             commonUtils.Log("employee/insertStaff:"+error);
@@ -915,6 +921,7 @@
 
             self.modifyDialogVisible=false;
             self.$message.success("修改成功");
+            location.reload();
           })
           .catch(function (error) {
             commonUtils.Log("employee/updateStaff:"+error);
@@ -947,6 +954,7 @@
             params: param
           }).then((result) => {
             self.$message.success("成功删除");
+            location.reload();
           }).catch(function (error) {
             commonUtils.Log("employee/deleteEmployee" + error);
             self.$message.error("获取数据错误");
@@ -1228,6 +1236,7 @@
         this.modifyForm.isDimission=val.isDimission;
         this.modifyForm.staffTelephone=val.staffTelephone;
         this.modifyForm.departmentName=val.departmentName;
+        this.modifyForm.departmentId=val.departmentId;
         this.modifyForm.createTime=val.createTime;
         this.modifyForm.createEmp=val.createEmp;
         this.modifyForm.remark=val.remark;
