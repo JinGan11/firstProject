@@ -224,13 +224,32 @@
       <el-row>
         <el-col style="text-align: center">
           <el-form-item>
-            <el-button type="primary" @click="" style="width:100px">审批通过</el-button>
+            <el-button type="primary" @click="approvalPass" style="width:100px">审批通过</el-button>
             &nbsp&nbsp&nbsp&nbsp&nbsp
-            <el-button type="primary" style="width:100px" @click="">审批拒绝</el-button>
+            <el-button type="primary" style="width:100px" @click=" rejectDialog = true">审批拒绝</el-button>
           </el-form-item>
         </el-col>
       </el-row>
     </el-form>
+    </el-dialog>
+    <el-dialog
+      title="请输入拒绝的理由"
+      :visible.sync="rejectDialog"
+      width="30%">
+      <span>
+         <div style="margin-top: 15px;margin-bottom: 15px">
+           <el-input
+             type="textarea"
+             :rows="4"
+             placeholder="请输入内容"
+             v-model="rejectReason">
+           </el-input>
+         </div>
+      </span>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="cancelReject">取 消</el-button>
+    <el-button type="primary" @click="approvalReject">确 定</el-button>
+  </span>
     </el-dialog>
   </home>
 </template>
@@ -302,7 +321,9 @@
         beginDateScope:'',
         dialogVisible:false,
         title:'角色申请审核',
-        isApproval:true
+        isApproval:true,
+        rejectDialog:false,
+        rejectReason:''
       }
     },
     activated() {
@@ -392,6 +413,58 @@
         this.apply.modify_emp = val.modifyEmp;
         this.apply.modify_time = val.modifyTime;
         this.apply.statue = this.ApplyStatusEnum[val.applyStatus];
+      },
+      approvalPass(){
+        var self = this;
+        var accountIds=[];
+        for (let i = 0; i < self.tableDataAccount.length; i++) {
+          accountIds.push(self.tableDataAccount[i].id)
+        }
+        var param = {
+          id:self.selection,
+          roleId:self.apply.role_id,
+          accountIds:accountIds.toString()
+        };
+        self.$http.get('roleApplyApproval/approvalPass.do_', {
+          params: param
+        }).then((result) => {
+            this.$message({
+              showClose: true,
+              message: '审批通过成功',
+              type: 'success'
+            });
+            self.dialogVisible=false;
+            self.fetchData();
+        }).catch(function (error) {
+          commonUtils.Log("roleApplyApproval/approvalPass.do_:"+error);
+          self.$message.error("审批通过失败");
+        });
+      },
+      approvalReject(){
+        var self = this;
+        var param = {
+          id:self.selection,
+          rejectReason:self.rejectReason
+        };
+        self.$http.get('roleApplyApproval/approvalReject.do_', {
+          params: param
+        }).then((result) => {
+            this.$message({
+              showClose: true,
+              message: '审批拒绝成功',
+              type: 'success'
+            });
+          self.fetchData();
+        }).catch(function (error) {
+          commonUtils.Log("roleApplyApproval/approvalReject.do_:"+error);
+          self.$message.error("拒绝失败");
+        });
+        self.rejectDialog=false;
+        self.dialogVisible=false;
+      },
+      cancelReject(){
+        this.rejectReason='';
+        this.rejectDialog = false;
       }
     }
   }

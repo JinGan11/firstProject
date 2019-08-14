@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ucar.combination.dao.RoleApplyApprovalDao">
+    <!--角色申请  修改   修改之前先删除之前选过的账户-->
+    <delete id="deleteAccountListInModifyApply" parameterType="Long">
+        delete from t_apply_role_account
+        where apply_id=#{applyId}
+    </delete>
+
+    <!--角色审批通过  修改申请信息状态-->
+   <update id="approvalPass" parameterType="map">
+       update t_role_apply
+        set   status=3,
+              approval_time=now(),
+              modify_emp=#{accountId},
+              modify_time=now()
+        where id=#{id}
+   </update>
+
+    <!--角色审批拒绝  修改申请信息状态 添加拒绝原因-->
+    <update id="approvalReject" parameterType="map">
+       update t_role_apply
+        set   status=4,
+              reject_reason=#{rejectReason},
+              modify_emp=#{accountId},
+              modify_time=now()
+        where id=#{id}
+   </update>
+
+    <insert id="insertRoleAccount" parameterType="map">
+        INSERT INTO  t_r_account_role( account_id,role_id,create_emp,create_time,modify_emp,modify_time )
+        VALUES
+        <foreach collection="accountIds"  item="item" separator=",">
+            (#{item},#{roleId},#{accountId},now(),#{accountId},now())
+        </foreach>
+    </insert>
+
+
+
+
+
+
+
+</mapper>

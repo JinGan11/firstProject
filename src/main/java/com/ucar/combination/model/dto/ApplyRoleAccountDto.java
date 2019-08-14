@@ -18,6 +18,15 @@ public class ApplyRoleAccountDto {
     private Date createTime;
     private Long modifyEmp;
     private Date modifyTime;
+    private Date approvalTime;
+
+    public Date getApprovalTime() {
+        return approvalTime;
+    }
+
+    public void setApprovalTime(Date approvalTime) {
+        this.approvalTime = approvalTime;
+    }
 
     public Long getId() {
         return id;
