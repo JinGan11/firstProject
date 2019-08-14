@@ -80,19 +80,19 @@
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <!--<el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>-->
-      <el-table-column prop="roleId" label="角色ID" width="120">
+      <el-table-column prop="roleId" label="角色ID" width="auto">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="ChooseOnDetail(scope.row.roleId)">{{scope.row.roleId}}</el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="roleName" label="角色名称" width="150"></el-table-column>
-      <el-table-column prop="businessLine" label="支持业务线" width="150"></el-table-column>
-      <el-table-column prop="approverAccountName" label="审批人账号s" width="150"></el-table-column>
-      <el-table-column prop="approverStaffNum" label="审批人员工编号" width="150"></el-table-column>
-      <el-table-column prop="approverStaffName" label="审批人姓名" width="150"></el-table-column>
-      <el-table-column prop="approverDepartmentName" label="审批人所属部门" width="150"></el-table-column>
-      <el-table-column prop="roleStatus" label="角色状态" width="150"></el-table-column>
-      <el-table-column prop="powerName" label="权限名称" width="150">
+      <el-table-column prop="roleName" label="角色名称" width="auto"></el-table-column>
+      <el-table-column prop="businessLine" label="支持业务线" width="auto"></el-table-column>
+      <el-table-column prop="approverAccountName" label="审批人账号s" width="auto"></el-table-column>
+      <el-table-column prop="approverStaffNum" label="审批人员工编号" width="auto"></el-table-column>
+      <el-table-column prop="approverStaffName" label="审批人姓名" width="auto"></el-table-column>
+      <el-table-column prop="approverDepartmentName" label="审批人所属部门" width="auto"></el-table-column>
+      <el-table-column prop="roleStatus" label="角色状态" width="auto"></el-table-column>
+      <el-table-column prop="powerName" label="权限名称" width="auto">
         <template slot-scope="scope">
           <el-popover
             placement="bottom"
