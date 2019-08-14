@@ -238,4 +238,17 @@ public class DepartmentController {
         return new Result().ok().put("page", resultPage).put("department", departmentDto).put("CompanyTypeEnum", CommonEnums.toEnumMap(CommonEnums.CompanyType.values())).put("CompanyStatusEnum", CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values())).put("CompanyMarkEnum", CommonEnums.toEnumMap(CommonEnums.CompanyMark.values())).put("CompanyNatureEnum", CommonEnums.toEnumMap(CommonEnums.CompanyNature.values())).put("DepartmentTypeEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentType.values())).put("LevelEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentLevel.values())).put("DepartmentStatusEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentStatus.values()));
     }
 
+    /**
+     * description: 得到城市的信息
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/14 15:30
+     * @params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getCityList.do_")
+    Result getCityList(){
+        List<Object> cityList=regionManageService.getCityList();
+        return Result.ok().put("cityList",cityList);
+    }
 }

@@ -69,4 +69,8 @@ public class RegionManageServiceImpl implements RegionManageService {
     public String testSer() {
         return "this is service";
     }
+    @Override
+    public List<Object> getCityList() {
+        return regionManageDao.getCityList();
+    }
 }

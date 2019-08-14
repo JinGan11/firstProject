@@ -588,11 +588,11 @@ public abstract class CommonEnums {
 	 * @return
 	 */
 	public static enum DepartmentLevel implements IEnum{
-		OFFICE_SPACE(1,"办公点"),
-		REGION(2,"区域"),
+		OFFICE_SPACE(5,"办公点"),
+		REGION(4,"区域"),
 		MANAGEMENT(3,"管理部"),
-		BRANCH_OFFICE(4,"分公司"),
-		HEADQUARTERS(5,"总部");
+		BRANCH_OFFICE(2,"分公司"),
+		HEADQUARTERS(1,"总部");
 		private final int i;
 		private final String n;
 
@@ -772,12 +772,12 @@ public abstract class CommonEnums {
 	}
 
 	/**
-	* @Description:  角色申请 新建  添加移除 枚举类
-	* @Author: min.zhang08@ucarinc.com
-	* @Params
-	* @Return
-	* @Date  19:36 2019/8/10
-	*/
+	 * @Description:  角色申请 新建  添加移除 枚举类
+	 * @Author: min.zhang08@ucarinc.com
+	 * @Params
+	 * @Return
+	 * @Date  19:36 2019/8/10
+	 */
 	public static enum applyOperationEnum implements IEnum{
 
 		ADD(1, "添加"),

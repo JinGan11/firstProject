@@ -2,55 +2,70 @@
   <home>
     <el-form :inline="true" label-width="130px" :model="accountForm" class="demo-form-inline">
       <el-row>
-        <el-form-item label="登录账号">
-          <el-input v-model="accountForm.accountName">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="员工编号">
-          <el-input v-model="accountForm.staffNum"></el-input>
-        </el-form-item>
-        <el-form-item label="员工所属部门">
-          <el-input :readonly="true" v-model="accountForm.departmentName"></el-input>
+        <el-col :span="6">
+          <el-form-item label="登录账号">
+            <el-input v-model="accountForm.accountName">
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="员工编号">
+            <el-input v-model="accountForm.staffNum"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="员工所属部门">
+            <el-input :disabled="true" v-model="accountForm.departmentName"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2">
           <el-button type="text" @click="selectDepartment">选择</el-button>
           <el-button type="text" @click="clearDepartment">清空</el-button>
-        </el-form-item>
-
+        </el-col>
       </el-row>
       <el-row>
-        <el-form-item label="员工姓名">
-          <el-input v-model="accountForm.staffName"></el-input>
-        </el-form-item>
-        <el-form-item label="账号状态">
-          <el-select v-model="accountForm.accountState" value="0">
-            <el-option label="无效" value="3"></el-option>
-            <el-option label="正常" value="1"></el-option>
-            <el-option label="冻结" value="2"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="权限名称">
-          <el-input v-model="accountForm.path"></el-input>
+        <el-col :span="6">
+          <el-form-item label="员工姓名">
+            <el-input v-model="accountForm.staffName"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="账号状态">
+            <el-select v-model="accountForm.accountState" value="0">
+              <el-option label="无效" value="3"></el-option>
+              <el-option label="正常" value="1"></el-option>
+              <el-option label="冻结" value="2"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="权限名称">
+            <el-input v-model="accountForm.path"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row style="text-align: center">
+        <el-form-item size="100px">
+          <el-button type="primary" @click="Search">查询</el-button>
+          <el-button @click="exportRole">导出</el-button>
         </el-form-item>
       </el-row>
-      <el-form-item size="100px">
-        <el-button type="primary" @click="Search">查询</el-button>
-        <el-button @click="exportRole">导出</el-button>
-      </el-form-item>
     </el-form>
     <el-table ref="multipleTable" :data="tableData" border @selection-change='handleSelectionChange'>
-      <el-table-column prop="accountName" label="登录账号" width="140">
+      <el-table-column prop="accountName" label="登录账号" width="170">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="formDetails(scope.row)">{{scope.row.accountName}}</el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="staffNum" label="员工编号" width="140"></el-table-column>
-      <el-table-column prop="staffName" label="员工姓名" width="140"></el-table-column>
-      <el-table-column prop="departmentName" label="员工所属部门" width="140"></el-table-column>
-      <el-table-column prop="accountState" label="账号状态" width="140">
+      <el-table-column prop="staffNum" label="员工编号" width="170"></el-table-column>
+      <el-table-column prop="staffName" label="员工姓名" width="170"></el-table-column>
+      <el-table-column prop="departmentName" label="员工所属部门" width="170"></el-table-column>
+      <el-table-column prop="accountState" label="账号状态" width="170">
         <template slot-scope="scope">
           {{AccountStatusEnums[scope.row.accountState]}}
         </template>
       </el-table-column>
-      <el-table-column prop="path" label="权限名称" width="140">
+      <el-table-column prop="path" label="权限名称">
         <template slot-scope="scope">
           <el-popover
             placement="bottom"
@@ -59,7 +74,6 @@
             :content="scope.row.path">
             <el-button slot="reference" type="text">{{scope.row.path|ellipsis}}</el-button>
           </el-popover>
-
         </template>
       </el-table-column>
       <el-table-column prop="createEmp" v-if="false"></el-table-column>
@@ -128,7 +142,8 @@
       </el-form>
     </el-dialog>
     <!--选择部门时弹出的窗口-->
-    <el-dialog :title='titleDepartment' :visible.sync="dialogVisibleDepartment"  :close-on-click-modal="false" width="50%">
+    <el-dialog :title='titleDepartment' :visible.sync="dialogVisibleDepartment" :close-on-click-modal="false"
+               width="50%">
       <div>
         <span>选择要操作的部门</span>
         <br><br>
@@ -191,8 +206,8 @@
         },
         tableData: [],
         AccountStatusEnums: {},
-        titleDepartment:'选择部门',
-        dialogVisibleDepartment:false,
+        titleDepartment: '选择部门',
+        dialogVisibleDepartment: false,
         detailDialogVisible: false,
         exportDialogVisible: false,
         checkAll: false,
@@ -325,13 +340,13 @@
         this.detailDialogVisible = true;
       },
       /*selectDepartment到getCheckedDepartment是对应的部门操作*/
-      selectDepartment(){//选择部门
-        this.dialogVisibleDepartment=true;
+      selectDepartment() {//选择部门
+        this.dialogVisibleDepartment = true;
       },
-      clearDepartment(){//清除部门的值
-        this.form.applyDepartmentName='';
+      clearDepartment() {//清除部门的值
+        this.form.applyDepartmentName = '';
       },
-      loadNode(node,resolve){
+      loadNode(node, resolve) {
         var self = this;
         self.$http.get('department/buildTree.do_', {
           params: null
@@ -341,28 +356,31 @@
 
         });
       },
-      renderContent(h, { node, data, store }) {
+      renderContent(h, {node, data, store}) {
         // 这里编译器有红色波浪线不影响运行...
-        if(data.status != 1){
+        if (data.status != 1) {
           return (
-            <span style="color:red">{node.label}</span>
-        );
-        }else{
+            < span
+          style = "color:red" > {node.label} < /span>
+        )
+          ;
+        } else {
           return (
-            <span>{node.label}</span>
-        );
+            < span > {node.label} < /span>
+        )
+          ;
         }
       },
-      handleClick(data,checked,node){
+      handleClick(data, checked, node) {
         // 手动设置单选
-        if(checked === true) {
+        if (checked === true) {
           this.checkedId = data.id;
           this.$refs.tree.setCheckedKeys([data.id]);
           // 设置按钮是否可选（选中节点后调用两次handleClick，第一次checked为true，所以设置按钮写在这）
-          if(data.status === 1){
-            this.operationBtnActive=false;
-          }else{
-            this.operationBtnActive=true;
+          if (data.status === 1) {
+            this.operationBtnActive = false;
+          } else {
+            this.operationBtnActive = true;
           }
         } else {
           if (this.checkedId == data.id) {
@@ -373,8 +391,8 @@
       getCheckedDepartment() {
         // 获取部门 回填到文本框中
         // alert(this.$refs.tree.getCheckedNodes()[0].departmentName);
-        this.accountForm.departmentName=this.$refs.tree.getCheckedNodes()[0].departmentName;
-        this.dialogVisibleDepartment=false;
+        this.accountForm.departmentName = this.$refs.tree.getCheckedNodes()[0].departmentName;
+        this.dialogVisibleDepartment = false;
       },
     },
     filters: {

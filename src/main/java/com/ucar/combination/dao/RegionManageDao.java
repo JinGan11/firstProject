@@ -44,5 +44,6 @@ public interface RegionManageDao {
     int createProvince(Region region);
 
 
+    List<Object> getCityList() ;
 
 }

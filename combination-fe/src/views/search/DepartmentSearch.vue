@@ -1,76 +1,120 @@
 <template>
   <home>
-    <el-form :inline="true" label-width="100px" :model="formInline" class="demo-form-inline">
+    <el-form :inline="true" :model="formInline" class="demo-form-inline" label-width="150px" >
       <el-row>
-        <el-form-item label="部门名称">
-          <el-input v-model="formInline.departmentName">
-          </el-input>
-        </el-form-item>
-        <el-form-item label="负责人ID">
-          <el-input v-model="formInline.StaffId"></el-input>
-        </el-form-item>
-        <el-form-item label="负责人姓名">
-          <el-input v-model="formInline.StaffName"></el-input>
-        </el-form-item>
+        <el-col :span="7">
+          <el-form-item label="部门名称">
+            <el-input v-model="formInline.departmentName" >
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="7">
+          <el-form-item label="负责人ID">
+            <el-input v-model="formInline.staffId" ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="7">
+          <el-form-item label="负责人姓名">
+            <el-input v-model="formInline.staffName" ></el-input>
+          </el-form-item>
+        </el-col>
       </el-row>
       <el-row>
-        <el-form-item label="手机号">
-          <el-input v-model="formInline.telePhone"></el-input>
-        </el-form-item>
-        <el-form-item label="部门所在城市">
-          <el-input v-model="formInline.cityName"></el-input>
-         <!-- <el-select v-model="formInline.cityName" value="0">
-            <el-option label="全部" value="0"></el-option>
-            <el-option label="门店" value="1"></el-option>
-            <el-option label="停车场" value="2"></el-option>
-            <el-option label="交车中心" value="3"></el-option>
-            <el-option label="维修厂" value="4"></el-option>
-          </el-select>-->
-        </el-form-item>
-        <el-form-item label="上级部门">
-          <el-input v-model="formInline.upperDepartmentName">
-          </el-input>
-          <el-button type="text" @click="selectDepartment">选择</el-button>
-          <el-button type="text" @click="clearDepartment">清空</el-button>
-        </el-form-item>
+        <el-col :span="7">
+          <el-form-item label="手机号">
+            <el-input v-model="formInline.telePhone" ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="7">
+          <el-form-item label="部门所在城市">
+            <!--<el-input v-model="formInline.cityName"></el-input>-->
+            <el-select v-model="formInline.cityName"
+                       remote
+                       reserve-keyword
+                       filterable
+                       placeholder="请输入关键字"
+                       :remote-method="remoteMethod"
+                       :loading="loading">
+              <el-option v-for="item in options"
+                         :key="item.value"
+                         :lable="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="7">
+          <el-form-item label="上级部门">
+            <el-input v-model="formInline.upperDepartmentName" >
+            </el-input>
+          </el-form-item>
+        </el-col>
+        <!--</el-row>
+        <el-row >-->
+        <!-- <el-col :span="4">
+           <el-button
+             type="text"
+             @click="">选择
+           </el-button>
+           <el-button
+             type="text"
+             @click="">清空
+           </el-button>
+         </el-col>-->
+        <el-col style="width: 160px">
+          <el-button type="text" @click="selectDepartment" :span="4">选择</el-button>
+          <el-button type="text" @click="clearDepartment" :span="4">清空</el-button>
+        </el-col>
       </el-row>
       <el-row>
-        <el-form-item label="部门级别">
-          <el-select v-model="formInline.level">
-            <el-option label="总部" value="5"></el-option>
-            <el-option label="分公司" value="4"></el-option>
-            <el-option label="管理部" value="3"></el-option>
-            <el-option label="区域" value="2"></el-option>
-            <el-option label="办公点" value="1"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="状态">
-          <el-select v-model="formInline.status" value="0">
-            <el-option label="无效" value="0"></el-option>
-            <el-option label="有效" value="1"></el-option>
-            <el-option label="全部" value=""></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="部门类型">
-          <el-select v-model="formInline.departmentType" value="0">
-            <el-option label="全部" value=""></el-option>
-            <el-option label="门店" value="1"></el-option>
-            <el-option label="停车场" value="2"></el-option>
-            <el-option label="交车中心" value="3"></el-option>
-            <el-option label="维修厂" value="4"></el-option>
-          </el-select>
-        </el-form-item>
+        <el-col :span="7">
+          <el-form-item label="部门级别">
+            <el-select v-model="formInline.level">
+              <el-option label="总部" value="1"></el-option>
+              <el-option label="分公司" value="2"></el-option>
+              <el-option label="管理部" value="3"></el-option>
+              <el-option label="区域" value="4"></el-option>
+              <el-option label="办公点" value="5"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="7">
+          <el-form-item label="状态">
+            <el-select v-model="formInline.status" value="0">
+              <el-option label="无效" value="0"></el-option>
+              <el-option label="有效" value="1"></el-option>
+              <el-option label="全部" value=""></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="7">
+          <el-form-item label="部门类型">
+            <el-select v-model="formInline.departmentType" value="0">
+              <el-option label="全部" value=""></el-option>
+              <el-option label="门店" value="1"></el-option>
+              <el-option label="停车场" value="2"></el-option>
+              <el-option label="交车中心" value="3"></el-option>
+              <el-option label="维修厂" value="4"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-row>
-      <br>
-      <el-form-item size="100px">
-        <el-button type="primary" @click="Search">查询</el-button>
-        <el-button @click="exportDepartment">导出</el-button>
-      </el-form-item>
+      <el-row>
+        <el-col style="text-align: center">
+          <el-form-item size="100px">
+            <div>
+              <el-button type="primary" @click="Search" style="width: 100px">查询</el-button>
+              <el-button @click="exportDepartment" style="width: 100px">导出</el-button>
+            </div>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
     </el-form>
     <el-table ref="multipleTable" :data="tableData" border @selection-change='handleSelectionChange'>
       <!-- <el-table-column label="选择" width="45">
          <template slot-scope="scope">
-           <el-radio v-model="selection" :label="scope.row.id" @change="ChooseOnDetail"><span width="0px;"></span>
+           <el-radio v-model="selection" :label="scope.row.id" @change="ChooseOnDetail"><:span width="0px;"></:span>
            </el-radio>
          </template> prop="departmentNo"
        </el-table-column>-->
@@ -333,6 +377,11 @@
   export default {
     data() {
       return {
+        options: [],
+        value: [],
+        list: [],
+        loading: false,
+        states: [],
         total: 0,
         currentPage: 1,
         pageSize: 10,
@@ -365,12 +414,12 @@
         },
         formInline: {
           departmentName: '',
-          StaffId: '',
-          StaffName: '',
+          staffId: '',
+          staffName: '',
           telePhone: '',
           cityName: '',
           level: '',
-          upperDepartmentName:'',
+          upperDepartmentName: '',
           upperDepartmentNo: '',
           status: '',
           departmentType: ''
@@ -395,7 +444,7 @@
         CompanyNatureEnum: {},
         DepartmentStatusEnum: {},
         AccountStatusEnums: {},
-        DepartmetnLevelEnums:{},
+        DepartmetnLevelEnums: {},
         titleDepartment: '选择部门',
         dialogVisibleDepartment: false,
         exportDialogVisible: false,
@@ -468,7 +517,6 @@
           self.total = result.page.totalCount;
           self.LevelEnum = result.LevelEnum;
           self.departmentList = self.tableData;
-          console.log(self.tableData);
         }).catch(function (error) {
           console.log('department/searchDepartment.do_' + error);
           self.$message.error("获取数据错误");
@@ -511,7 +559,7 @@
             for (let i = 0; i < list.length; i++) {
               list[i].departmentType = this.DepartmentTypeEnum[list[i].departmentType];
               list[i].status = this.StatusEnum[list[i].status];
-              list[i].level=this.LevelEnum[list[i].level];
+              list[i].level = this.LevelEnum[list[i].level];
             }
             const data = this.formatJson(filterVal, list);
             export_json_to_excel(tHeader, data, '员工管理列表excel');
@@ -633,12 +681,33 @@
         upperDepartmentNo是查找时用的部门编号
         */
         this.formInline.upperDepartmentName = this.$refs.tree.getCheckedNodes()[0].departmentName;
-        this.formInline.upperDepartmentNo=this.$refs.tree.getCheckedNodes()[0].departmentNo;
+        this.formInline.upperDepartmentNo = this.$refs.tree.getCheckedNodes()[0].departmentNo;
         this.dialogVisibleDepartment = false;
       },
+      remoteMethod(query) {
+        if (query !== '') {
+          this.loading = true;
+          setTimeout(() => {
+            this.loading = false;
+            this.options = this.list.filter(item => {
+              return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
+            });
+          }, 200);
+        } else {
+          this.options = [];
+        }
+      }
     },
     mounted() {
       this.Search();
+      this.$http.get("/department/getCityList.do_").then((result) => {
+
+        this.states = result.cityList;
+        this.list = this.states.map(item => {
+          return {value: item, label: item};
+        });
+        console.log(this.states);
+      })
     }
   }
 </script>

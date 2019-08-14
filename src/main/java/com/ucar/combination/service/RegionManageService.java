@@ -56,4 +56,12 @@ public interface RegionManageService {
     int createProvince(Region region);
 
     String testSer();
+    /**
+     * description: 用于得到所有城市的信息
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/14 15:02
+     * @params
+     * @return 返回一个城市的STRING集合
+     */
+    List<Object> getCityList();
 }
