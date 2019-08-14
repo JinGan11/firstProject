@@ -113,28 +113,29 @@
 </script>
 <style>
   .bg {
-    position: relative;
+    position: fixed;
     overflow: hidden;
     height: 100%;
     width: 100%;
     display: flex;
-    background-size: 100%;
+    background-size: cover;
     justify-content: center;
     align-items: center;
     background-repeat: no-repeat;
     background-image: url("../../static/img/bg02.jpg");
+    background-position: center 0;
   }
   .login-container {
     border-radius: 15px;
     background-clip: padding-box;
-    margin-top: 380px;
+    margin-top: 280px;
     width: 350px;
     padding: 35px 35px 15px 35px;
     background: #fff;
     border: 1px solid #eaeaea;
     z-index: 5;
     box-shadow: 0 0 25px #cac6c6;
-    background: rgba(170, 170, 160, 0.5);
+    background: rgba(150, 130, 120, 0.5);
   }
   .login_title {
     margin: 0px auto 40px auto;
