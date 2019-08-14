@@ -9,6 +9,8 @@ import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.model.Staff;
+import com.ucar.combination.model.dto.RoleAccountStaffDto;
+import com.ucar.combination.model.dto.StaffAccountDTO;
 import com.ucar.combination.service.AccountManagerService;
 import com.ucar.combination.service.EmployeeManageService;
 import org.checkerframework.checker.units.qual.A;
@@ -130,7 +132,7 @@ public class EmployeeManageController {
         }
         accountManagerService.insertAccountHistory(accountStaff);
         return Result.ok();
-        
+
     }
 
     /**
@@ -197,5 +199,16 @@ public class EmployeeManageController {
         staff.setModifyEmp((Long)(request.getSession().getAttribute("accountId")));
         employeeManageService.updateStaff(staff);
     }
-
+    @ResponseBody
+    @RequestMapping("/otherInfo.do_")
+    public Result getInfoByStaffId(HttpServletRequest request) {
+        String staffId = request.getParameter("staffId");
+        long id = Long.parseLong(staffId);
+        StaffAccountDTO staffAccountDTO = employeeManageService.getInfoByStaffId(id);
+        System.out.println(staffAccountDTO.getCreateEmpAccountName());
+        System.out.println(staffAccountDTO.getCreateEmpStaffName());
+        System.out.println(staffAccountDTO.getModifyEmpAccountName());
+        System.out.println(staffAccountDTO.getModifyEmpStaffName());
+        return Result.ok().put("status","success").put("list",staffAccountDTO);
+    }
 }

@@ -81,7 +81,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-
           <el-col :span="6">
             <el-form-item label="公司性质" style="margin-left: 20px">
               <el-select v-model="form.companyNature" clearable  style="width:150px;" placeholder="请选择">
@@ -95,7 +94,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row>
           <el-col :span="6">
             <el-form-item label="状态" >
@@ -131,12 +129,10 @@
           </el-col>
         </el-row>
       </el-form>
-
     <div style="margin-bottom: 10px">
       <el-button type="primary" @click="confirmBtn(selection)" style="width:70px">确认选择</el-button>
       <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
     </div>
-
     <el-table ref="multipleTable2" :data="tableData" border @selection-change="handleSelectionChange" >
       <el-table-column label="选择" width="45">
         <el-table-column type="selection" width="35"></el-table-column>
@@ -181,11 +177,9 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
-
     </el-dialog>
     </div>
     <el-dialog :title="title" :visible.sync="companyContentFlag" :close-on-click-modal="false" width="950px">
-
       <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
         <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">基本信息</div>
         <hr><br>
@@ -276,7 +270,6 @@
                   placeholder="选择日期">
                 </el-date-picker>
               </el-form-item>
-
             </el-col>
           </el-row>
           <el-row>
@@ -293,7 +286,6 @@
                 </el-date-picker>
               </el-form-item>
             </el-col>
-
           </el-row>
           <div style="margin-bottom: 10px">
             <br>
@@ -408,10 +400,11 @@
         </el-form>
       </div>
       <template slot="footer">
+        <div align="center">
         <el-button type="primary" @click="checkCompanyInfoBtn">确定</el-button>
+        </div>
       </template>
     </el-dialog>
-
   </home>
 </template>
 <script>
@@ -695,6 +688,7 @@
           self.companyForm=result.list.company;
           self.companyForm.createEmp=result.list.createEmp;
           self.companyForm.modifyEmp=result.list.modifyEmp;
+          //处理下拉框
           if(self.companyForm.companyType==null){
             self.companyForm.companyType="";
           }else{

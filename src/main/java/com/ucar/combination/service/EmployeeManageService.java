@@ -3,6 +3,7 @@ package com.ucar.combination.service;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Staff;
+import com.ucar.combination.model.dto.StaffAccountDTO;
 
 import java.util.List;
 
@@ -75,5 +76,12 @@ public interface EmployeeManageService {
      * @return
      */
     public void updateStaff(Staff staff);
-
+    /**
+     * description: 获取创建人和修改人值
+     * @author: jianan.shu@ucarinc.com
+     * @param: id 员工id
+     * @date: 2019/8/14 16:34
+     * @return：
+     */
+    public StaffAccountDTO getInfoByStaffId(long id);
 }

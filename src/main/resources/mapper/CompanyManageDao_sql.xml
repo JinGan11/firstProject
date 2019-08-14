@@ -354,4 +354,18 @@
         from t_license
          WHERE id=#{id}
     </select>
+    <select id="getCreateInfo" parameterType="int" resultType="java.util.Map">
+        select
+        t2.account_name accountName,
+        t3.staff_name staffName
+        from t_company t1,t_account t2,t_staff t3
+        where t1.create_emp=t2.id and t2.staff_id=t3.id and t1.id=#{companyId}
+    </select>
+    <select id="getModifyInfo" parameterType="int" resultType="java.util.Map">
+        select
+        t2.account_name accountName,
+        t3.staff_name staffName
+        from t_company t1,t_account t2,t_staff t3
+        where t1.modify_emp=t2.id and t2.staff_id=t3.id and t1.id=#{companyId}
+    </select>
 </mapper>

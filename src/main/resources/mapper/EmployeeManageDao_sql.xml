@@ -135,4 +135,18 @@
         SELECT department_id FROM t_staff WHERE account_id=#{id}
     </select>
 
+    <select id="getCreateInfo" parameterType="long" resultType="java.util.Map">
+        select
+        t1.account_name accountName,
+        t3.staff_name staffName
+        from t_account t1,t_staff t2,t_staff t3
+        WHERE t2.create_emp=t1.id and t1.staff_id=t3.id and t2.id=#{staffId}
+    </select>
+    <select id="getModifyInfo" parameterType="long" resultType="java.util.Map">
+        select
+        t1.account_name accountName,
+        t3.staff_name staffName
+        from t_account t1,t_staff t2,t_staff t3
+        WHERE t2.modify_emp=t1.id and t1.staff_id=t3.id and t2.id=#{staffId}
+    </select>
 </mapper>

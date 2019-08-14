@@ -51,7 +51,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row>
           <el-col :span="13">
             <el-form-item label="状态" >
@@ -362,8 +361,10 @@
           </el-row>
         </el-form>
       </div>
-      <template slot="footer">
+      <template slot="footer" >
+        <div align="center">
         <el-button type="primary" @click="checkCompanyInfoBtn">确定</el-button>
+        </div>
       </template>
     </el-dialog>
   </home>
@@ -413,7 +414,6 @@
 
         title: '公司详情',
         companyFlag:false,
-
         companyForm:{
           businessTerm:[],
           businessStartTime:'',

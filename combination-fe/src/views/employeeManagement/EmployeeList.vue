@@ -455,7 +455,7 @@
       </div>
     </el-dialog>
     <el-dialog :title='contentTitle' :visible.sync="contentDialogVisible" :close-on-click-modal="false" width="900px">
-      <el-form ref="form" :model="contentForm" label-width="80px">
+      <el-form ref="form" :model="contentForm" :disabled="true" label-width="80px">
         <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
           <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">员工信息</div>
           <el-row>
@@ -548,14 +548,12 @@
             </el-col>
           </el-row>
         </div>
-        <el-row>
-          <el-col style="text-align: center">
-            <el-form-item>
-              <el-button type="primary" style="width:100px" @click="confirmInfo" >确定</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
+        <template slot="footer" >
+          <div align="center">
+            <el-button type="primary" @click="confirmInfo">确定</el-button>
+          </div>
+        </template>
     </el-dialog>
   </home>
 
@@ -1314,6 +1312,7 @@
         }
       },
       staffNumBtn(val){
+
         this.contentDialogVisible=true;
         this.contentForm.accountId=val.accountId;
         this.contentForm.staffNum=val.staffNum;
@@ -1329,6 +1328,20 @@
         this.contentForm.modifyTime=val.modifyTime;
         this.contentForm.remark=val.remark;
 
+        //回填创建人和修改人
+        var self = this;
+        var param = {
+          staffId:val.id,
+        };
+        self.$http.get('employee/otherInfo.do_', {
+          params: param
+        }).then((result) => {
+          self.contentForm.createEmp = result.list.createEmpAccountName+"("+result.list.createEmpStaffName+")";
+          self.contentForm.modifyEmp = result.list.modifyEmpAccountName+"("+result.list.modifyEmpStaffName+")";
+        }).catch(function (error) {
+          commonUtils.Log("employee/otherInfo.do_:"+error);
+          self.$message.error("获取数据错误");
+        });
       },
       confirmInfo(){
         this.contentDialogVisible=false;

@@ -1,11 +1,13 @@
 package com.ucar.combination.dao;
 
 import com.ucar.combination.model.AccountStaff;
+import com.ucar.combination.model.dto.StaffAccountDTO;
 import com.ucar.combination.model.dto.StaffDto;
 
 import com.ucar.combination.model.Staff;
 import com.ucar.combination.model.User;
 import org.apache.ibatis.annotations.Lang;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -102,4 +104,14 @@ public interface EmployeeManageDao {
      * @return
      */
     Long selectDepartmentId(Long id);
+    /**
+     * description: 获取员工修改人和创建人
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 16:43
+     * @return：
+     */
+    Map<String,Object>getCreateInfo(long staffId);
+    Map<String,Object> getModifyInfo(long staffId);
+
 }

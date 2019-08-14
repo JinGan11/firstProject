@@ -121,6 +121,8 @@ public interface CompanyManageDao<mcmt> {
      * @return：
      */
     void insertLicenses(List list);
+    Map<String,Object> getCreateInfo(@Param("companyId") int companyId);
+    Map<String,Object> getModifyInfo(@Param("companyId") int companyId);
 
     /**
      * description: 通过id找文件路径

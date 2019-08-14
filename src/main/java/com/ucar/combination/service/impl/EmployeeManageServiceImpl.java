@@ -8,12 +8,14 @@ import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.CompanyManageDao;
 import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.model.Staff;
+import com.ucar.combination.model.dto.StaffAccountDTO;
 import com.ucar.combination.model.dto.StaffDto;
 import com.ucar.combination.service.EmployeeManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * description:员工管理列表
@@ -114,6 +116,22 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
     public void updateStaff(Staff staff){
         employeeManageDao.updateStaff(staff);
     }
-
+    /**
+     * description: 获取员工的修改人和创建人
+     * @author: jianan.shu@ucarinc.com
+     * @param: staffId 员工id
+     * @date: 2019/8/14 16:40
+     * @return：
+     */
+    public StaffAccountDTO getInfoByStaffId(long staffId){
+           StaffAccountDTO staffAccountDTO=new StaffAccountDTO();
+           Map<String,Object> createMap=employeeManageDao.getCreateInfo(staffId);
+           Map<String,Object> modifyMap=employeeManageDao.getModifyInfo(staffId);
+           staffAccountDTO.setCreateEmpAccountName((String)createMap.get("accountName"));
+           staffAccountDTO.setCreateEmpStaffName((String)createMap.get("staffName"));
+           staffAccountDTO.setModifyEmpAccountName((String)modifyMap.get("accountName"));
+           staffAccountDTO.setModifyEmpStaffName((String)modifyMap.get("staffName"));
+        return staffAccountDTO;
+    }
 }
 

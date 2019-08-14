@@ -396,6 +396,7 @@
           self.form.registeredCapital=parseInt(self.form.registeredCapital);
           self.businessTerm=[result.list.company.businessStartTime,result.list.company.businessDeadline];
           self.form.oldCreditCode=result.list.company.creditCode;
+          //下拉框处理
           if(self.form.companyType==null){
             self.form.companyType="";
           }else{
@@ -431,8 +432,6 @@
                 self.form.liscensePath='dfs';
                 self.form.createEmp='';
                 self.form.modifyEmp='';
-
-
                 self.$http.post("company/modifyCompany",self.form)
                   .then((result) => {
                     if (!result.result) {
