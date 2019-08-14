@@ -327,12 +327,12 @@
                   <el-radio v-model="modifyForm.staffSex" label="1">男</el-radio>
                   <el-radio v-model="modifyForm.staffSex" label="2">女</el-radio>
                 </template>-->
-                <el-form-item label="性别:" label-width="150px">
-                  <el-radio-group v-model="modifyForm.staffSex">
-                    <el-radio :label="1">男</el-radio>
-                    <el-radio :label="2">女</el-radio>
-                  </el-radio-group>
-                </el-form-item>
+              <el-form-item label="性别:" label-width="150px">
+                <el-radio-group v-model="modifyForm.staffSex">
+                  <el-radio :label="1">男</el-radio>
+                  <el-radio :label="2">女</el-radio>
+                </el-radio-group>
+              </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="员工手机号:" prop="staffTelephone" label-width="150px">
@@ -477,7 +477,7 @@
                   <el-radio :label="1">男</el-radio>
                   <el-radio :label="2">女</el-radio>
                 </el-radio-group>
-<!--                <el-input style="width:200px;" v-model="contentForm.staffSex"></el-input>-->
+                <!--                <el-input style="width:200px;" v-model="contentForm.staffSex"></el-input>-->
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -549,11 +549,11 @@
           </el-row>
         </div>
       </el-form>
-        <template slot="footer" >
-          <div align="center">
-            <el-button type="primary" @click="confirmInfo">确定</el-button>
-          </div>
-        </template>
+      <template slot="footer" >
+        <div align="center">
+          <el-button type="primary" @click="confirmInfo">确定</el-button>
+        </div>
+      </template>
     </el-dialog>
   </home>
 
@@ -888,16 +888,16 @@
         self.$refs["createForm"].validate(function (valid) {
           //if(self.$options.methods.checkInput(self)==false) return;
           if (valid) {
-        self.$http.post("employee/insertStaff",self.createForm)
-          .then((result) => {
-            self.createDialogVisible=false;
-            self.$message.success("新建用户成功");
-            location.reload();
-          })
-          .catch(function (error) {
-            commonUtils.Log("employee/insertStaff:"+error);
-            self.$message.error("新建用户失败");
-          })} else {
+            self.$http.post("employee/insertStaff",self.createForm)
+              .then((result) => {
+                self.createDialogVisible=false;
+                self.$message.success("新建用户成功");
+                location.reload();
+              })
+              .catch(function (error) {
+                commonUtils.Log("employee/insertStaff:"+error);
+                self.$message.error("新建用户失败");
+              })} else {
             console.log('error submit!!');
             return false;
           }
@@ -917,14 +917,14 @@
             self.$http.post("employee/updateStaff",self.modifyForm)
               .then(result => {
 
-            self.modifyDialogVisible=false;
-            self.$message.success("修改成功");
-            location.reload();
-          })
-          .catch(function (error) {
-            commonUtils.Log("employee/updateStaff:"+error);
-            self.$message.error("修改用户信息失败");
-          })} else {
+                self.modifyDialogVisible=false;
+                self.$message.success("修改成功");
+                location.reload();
+              })
+              .catch(function (error) {
+                commonUtils.Log("employee/updateStaff:"+error);
+                self.$message.error("修改用户信息失败");
+              })} else {
             console.log('error submit!!');
             return false;
           }
