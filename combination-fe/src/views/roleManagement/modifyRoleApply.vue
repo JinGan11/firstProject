@@ -197,7 +197,6 @@
           <el-table-column prop="staffNum" label="审批人员工编号" ></el-table-column>
           <el-table-column prop="staffName" label="审批人姓名" width="200"></el-table-column>
           <el-table-column prop="departmentName" label="审批人所属部门" width="120"></el-table-column>
-          <!--        <el-table-column prop="roleStatus" label="状态" width="100"></el-table-column>-->
           <el-table-column prop="roleStatus" label="状态" width="100" style="text-align: center">
             <template slot-scope="scope">
               {{RoleStatusEnum[scope.row.roleStatus]}}
@@ -461,16 +460,10 @@
     },
     activated() {
       commonUtils.Log("页面激活");
-
-
-      // for(let i=0;i<this.tableDataAccount.length;i++){
-      //   this.accountChangesList.push(this.tableDataAccount[i]);
-      // }
     },
     mounted() {
       commonUtils.Log("页面进来");
       this.applyId = sessionStorage.getItem('applyIdFromApply');
-      // alert(this.applyId);
       console.log(this.applyId);
 
       this.roleId=sessionStorage.getItem('roleIdFromApply');
@@ -607,7 +600,7 @@
           for(let j=0;j<this.accountChangesList.length;j++){
             if(this.multipleSelection[i].id==this.accountChangesList[j].id){
               flag=1;
-              alert('账号 '+this.multipleSelection[i].accountName+' 已存在，不可重复添加');
+              this.$message.info('账号 '+this.multipleSelection[i].accountName+' 已存在，不可重复添加');
             }
           }
           if(flag==0){
@@ -688,12 +681,10 @@
         self.forms.accountIdList=self.accountIdList;
         self.forms.applyOperationList=self.applyOperationList;
 
-
-        alert(self.forms.roleId);
         if (!self.$options.methods.checkInput(self)) return;
         self.$http.post("roleApply/modifyRoleApply.do_",self.forms)
           .then(result => {
-            alert("修改角色申请成功");
+            self.$message.info("修改角色申请成功");
             self.$router.replace("/roleManagement/apply");
           }).catch(function (error) {
           commonUtils.Log("/roleManagement/apply"+error);
@@ -703,21 +694,20 @@
 
       checkInput(self) {
         if (self.formRoleInfo.roleName == '') {
-          alert("申请角色为必填项，不允许为空");
+          self.$message.info("申请角色为必填项，不允许为空");
           return false;
         }
         if(self.roleStatus==0){
-          alert("申请角色已失效，请重新选择");
+          self.$message.info("申请角色已失效，请重新选择");
           return false;
         }
         if(self.tableDataAccount.length==0){
-          alert("申请账号不允许为空");
+          self.$message.info("申请账号不允许为空");
           return false;
         }
         for(let i=0;i<self.tableDataAccount.length;i++){
-          alert(self.tableDataAccount[i].applyOperation);
           if(self.tableDataAccount[i].applyOperation!=1&&self.tableDataAccount[i].applyOperation!=2){
-            alert('账号申请操作不允许为空');
+            self.$message.info('账号申请操作不允许为空');
             return false;
           }
         }

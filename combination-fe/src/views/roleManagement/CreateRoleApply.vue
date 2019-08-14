@@ -648,7 +648,7 @@
 
         self.$http.post("roleApply/createRoleApply.do_", self.forms)
           .then(result => {
-            alert("新建角色申请成功");
+            self.$message.info("新建角色申请成功");
             self.$router.replace("/roleManagement/apply");
           }).catch(function (error) {
           commonUtils.Log("/roleManagement/apply" + error);
@@ -658,20 +658,20 @@
 
       checkInput(self) {
         if (self.formRoleInfo.roleName == '') {
-          alert("申请角色为必填项，不允许为空");
+          self.$message.info("申请角色为必填项，不允许为空");
           return false;
         }
         if(self.roleStatus==0){
-          alert("申请角色已失效，请重新选择");
+          self.$message.info("申请角色已失效，请重新选择");
           return false;
         }
         if(self.tableDataAccount.length==0){
-          alert("申请账号不允许为空");
+          self.$message.info("申请账号不允许为空");
           return false;
         }
         for(let i=0;i<self.tableDataAccount.length;i++){
             if(self.tableDataAccount[i].applyOperation!=1&&self.tableDataAccount[i].applyOperation!=2){
-              alert('账号申请操作不允许为空');
+              self.$message.info('账号申请操作不允许为空');
               return false;
             }
           }

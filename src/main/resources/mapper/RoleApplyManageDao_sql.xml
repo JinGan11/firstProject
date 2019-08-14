@@ -14,11 +14,11 @@
         t1.apply_department_name    applyDepartmentName,
         t1.apply_time               applyTime,
         t1.status                   applyStatus,
-        t1.modify_emp               modifyEmp,
+        t3.account_name             modifyEmp,
         t1.modify_time              modifyTime,
         t1.reject_reason            rejectReason
-        from t_role_apply t1,t_role_info t2
-        where t1.role_id=t2.id
+        from t_role_apply t1,t_role_info t2,t_account t3
+        where t1.role_id=t2.id and t3.id=t1.modify_emp
         <if test="roleApplyNum!=null and roleApplyNum!=''">
             AND t1.apply_num=#{roleApplyNum}
         </if>

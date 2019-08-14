@@ -22,11 +22,9 @@ public class RoleApplyDto {
     private String applyDepartmentName;
     private Date applyTime;
     private Integer applyStatus;
-    private Long modifyEmp;
+    private String modifyEmp;
     private Date modifyTime;
     private String rejectReason;
-
-
 
     public Long getId() {
         return id;
@@ -67,15 +65,6 @@ public class RoleApplyDto {
     public void setApproverStaffName(String approverStaffName) {
         this.approverStaffName = approverStaffName;
     }
-
-//    public Integer getBusinessLine() {
-//        return businessLine;
-//    }
-//
-//    public void setBusinessLine(Integer businessLine) {
-//        this.businessLine = businessLine;
-//    }
-
 
     public String getBusinessLine() {
         return businessLine;
@@ -133,11 +122,11 @@ public class RoleApplyDto {
         this.applyStatus = applyStatus;
     }
 
-    public Long getModifyEmp() {
+    public String getModifyEmp() {
         return modifyEmp;
     }
 
-    public void setModifyEmp(Long modifyEmp) {
+    public void setModifyEmp(String modifyEmp) {
         this.modifyEmp = modifyEmp;
     }
 
