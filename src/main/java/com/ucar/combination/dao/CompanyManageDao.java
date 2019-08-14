@@ -2,6 +2,7 @@ package com.ucar.combination.dao;
 
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.Company;
+import com.ucar.combination.model.dto.BusinessLicense;
 import com.ucar.combination.model.dto.CompanyDto;
 import org.apache.ibatis.annotations.Param;
 
@@ -133,6 +134,6 @@ public interface CompanyManageDao<mcmt> {
      */
     String getFileUrlById(Long id);
 
-    List<Company> getIdsByCompanyId(int id);
+    List<BusinessLicense> getIdsByCompanyId(int id);
 
 }

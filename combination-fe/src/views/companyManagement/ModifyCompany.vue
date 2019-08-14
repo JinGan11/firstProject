@@ -120,7 +120,7 @@
               <p>附件照片</p>
               <div>
                 <ul>
-                  <li v-for ="item in licenses" :key="item">
+                  <li v-for ="item in licenses" :key="item.id">
                     <img :src="fileUrl+item.id" height="150px" width="200px"/>
                   </li>
                 </ul>
@@ -249,7 +249,6 @@
 
 <script>
   import commonUtils from '../../common/commonUtils'
-  const fileUrl="http://localhost:8081/combination/saveRelation.do_/getLicense?id="
   export default {
     data() {
       return {
@@ -377,7 +376,8 @@
           ],
 
         },
-        licenses:[]
+        licenses:[],
+        fileUrl:"http://localhost:8081/combination/company/getLicense?id="
       }
     },
     activated() {
@@ -417,6 +417,7 @@
           self.businessTerm=[result.list.company.businessStartTime,result.list.company.businessDeadline];
           self.form.oldCreditCode=result.list.company.creditCode;
           self.licenses = result.licenses;
+          console.log(self.licenses);
           //下拉框处理
           if(self.form.companyType==null){
             self.form.companyType="";

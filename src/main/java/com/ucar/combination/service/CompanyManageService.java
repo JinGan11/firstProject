@@ -3,6 +3,7 @@ package com.ucar.combination.service;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Company;
+import com.ucar.combination.model.dto.BusinessLicense;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -102,6 +103,6 @@ public interface CompanyManageService {
      */
     String getFileUrlById(Long id);
 
-    List<Company> getIdsByCompanyId(int id);
+    List<BusinessLicense> getIdsByCompanyId(int id);
 
 }

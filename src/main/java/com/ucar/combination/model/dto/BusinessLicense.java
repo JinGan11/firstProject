@@ -1,10 +1,19 @@
 package com.ucar.combination.model.dto;
 
 public class BusinessLicense {
+    private Long id;
     private Long companyId;
     private String fileLocation;
 
     public BusinessLicense() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public BusinessLicense(Long companyId, String fileLocation) {

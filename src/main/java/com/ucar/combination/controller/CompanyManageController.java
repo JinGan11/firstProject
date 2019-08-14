@@ -9,6 +9,7 @@ import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Company;
 import com.ucar.combination.model.Department;
+import com.ucar.combination.model.dto.BusinessLicense;
 import com.ucar.combination.service.CompanyManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -95,7 +96,7 @@ public class CompanyManageController {
     public Result getOneCompanyById(HttpServletRequest request){
         String id = request.getParameter("companyId");
         int companyId = Integer.parseInt(id);
-        List<Company> licenses = companyManageService.getIdsByCompanyId(companyId);
+        List<BusinessLicense> licenses = companyManageService.getIdsByCompanyId(companyId);
         Map<String,Object>list=companyManageService.getCompanyById(companyId);
         return Result.ok().put("list",list).put("licenses",licenses);
     }
@@ -217,7 +218,7 @@ public class CompanyManageController {
             out = response.getOutputStream();
             File file = new File(fileUrl);
             in = new FileInputStream(file);
-            byte[] b = new byte[100000];
+            byte[] b = new byte[1024];
             while (in.read(b) != -1) {
                 out.write(b);
             }

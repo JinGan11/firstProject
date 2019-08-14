@@ -373,7 +373,7 @@
         SELECT
         id,
         companyId ,
-        url
+        url fileLocation
         from t_license WHERE companyId=#{companyId}
     </select>
 </mapper>

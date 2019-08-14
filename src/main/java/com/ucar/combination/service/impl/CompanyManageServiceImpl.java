@@ -231,7 +231,7 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
     }
 
     @Override
-    public List<Company> getIdsByCompanyId(int id) {
+    public List<BusinessLicense> getIdsByCompanyId(int id) {
         return companyManageDao.getIdsByCompanyId(id);
     }
 }
