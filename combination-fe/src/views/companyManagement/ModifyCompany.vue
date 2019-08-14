@@ -118,27 +118,43 @@
           <el-row>
             <el-col :span="10">
               <p>附件照片</p>
-              <div>
-                <ul>
+              <!--<div class="demo-image__preview">-->
+                <!--<div v-for ="item in licenses" :key="item.id">-->
+                <!--<el-image-->
+                  <!--style="width: 200px; height: 200px"-->
+                  <!--:src="fileUrl+item.id"-->
+                  <!--@click="">-->
+                <!--</el-image>-->
+                <!--</div>-->
+              <!--</div>-->
+
+              <!--<div v-show="bigPic"  @click="small">-->
+                <!--<img :src=image >-->
+              <!--</div>-->
+
+
+
+              <ul class="box">
                   <li v-for ="item in licenses" :key="item.id">
-                    <img :src="fileUrl+item.id" height="150px" width="200px"/>
+                    <img :id="fileUrl+item.id" :src="fileUrl+item.id" height="150px" width="200px"/>
                   </li>
-                </ul>
-              </div>
+              </ul>
+              <!--<div class="mask" v-show="bigP"  @click="">-->
+                <!--<img :src=img >-->
+              <!--</div>-->
 
-
-              <el-upload
-                action="#"
-                list-type="picture-card"
-                :multiple="true"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :auto-upload="false"
-                ref="upload"
-                :http-request="uploadLicenses">
-                <i class="el-icon-plus"></i>
-                <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件,且不超过2M,最多只能上传20张图片</div>
-              </el-upload>
+              <!--<el-upload-->
+                <!--action="#"-->
+                <!--list-type="picture-card"-->
+                <!--:multiple="true"-->
+                <!--:on-preview="handlePreview"-->
+                <!--:on-remove="handleRemove"-->
+                <!--:auto-upload="false"-->
+                <!--ref="upload"-->
+                <!--:http-request="uploadLicenses">-->
+                <!--<i class="el-icon-plus"></i>-->
+                <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件,且不超过2M,最多只能上传20张图片</div>-->
+              <!--</el-upload>-->
 
             </el-col>
           </el-row>
@@ -377,7 +393,9 @@
 
         },
         licenses:[],
-        fileUrl:"http://localhost:8081/combination/company/getLicense?id="
+        fileUrl:"http://localhost:8081/combination/company/getLicense?id=",
+        img:'',
+        bigP:false
       }
     },
     activated() {
@@ -389,10 +407,13 @@
       this.fetchData();
     },
     methods: {
+      // bigPic(val){
+      //   var viewer = new Viewer(document.getElementById(val), {
+      //     url: val
+      //   });
+      // },
       //覆盖默认上传事件
       uploadLicenses(file) {
-        // this.company.businessLicenses = file.file;
-        console.log(file.file);
         this.formData.append("businessLicenses", file.file);
       },
       handleRemove(file, fileList) {
@@ -417,7 +438,6 @@
           self.businessTerm=[result.list.company.businessStartTime,result.list.company.businessDeadline];
           self.form.oldCreditCode=result.list.company.creditCode;
           self.licenses = result.licenses;
-          console.log(self.licenses);
           //下拉框处理
           if(self.form.companyType==null){
             self.form.companyType="";
@@ -495,7 +515,11 @@
 
 
 </script>
-<style scoped>
-
+<style  scoped>
+  ul,li{ padding:0; margin:0; overflow:hidden;}
+  li{ list-style:none;}
+  img{ border:0;}
+  .box{ width:800px;}
+  .box li{ float:left; width:200px; height:180px; margin-right:10px;}
 
 </style>

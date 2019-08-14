@@ -253,6 +253,11 @@
             <br>
             <span style="font-size: 20px">附件信息</span>
             <hr ><br>
+            <ul class="box">
+              <li v-for ="item in licenses" :key="item.id">
+                <img :id="fileUrl+item.id" :src="fileUrl+item.id" height="150px" width="200px"/>
+              </li>
+            </ul>
           </div>
           <el-row>
             <el-col :span="10">
@@ -472,7 +477,9 @@
         }, {
           value: '2',
           label: '无效'
-        }]
+        }],
+        licenses:[],
+        fileUrl:"http://localhost:8081/combination/company/getLicense?id=",
       }
     },
     activated() {
@@ -561,6 +568,7 @@
           self.companyForm=result.list.company;
           self.companyForm.createEmp=result.list.createEmp;
           self.companyForm.modifyEmp=result.list.modifyEmp;
+          self.licenses = result.licenses;
           if(self.companyForm.companyType==null){
             self.companyForm.companyType="";
           }else{
@@ -588,9 +596,10 @@
 
 </script>
 <style scoped>
-  .el-dialog__body{
-    height: 1000px;
-    width: 100%;
-  }
+  ul,li{ padding:0; margin:0; overflow:hidden;}
+  li{ list-style:none;}
+  img{ border:0;}
+  .box{ width:800px;}
+  .box li{ float:left; width:200px; height:180px; margin-right:10px;}
 
 </style>
