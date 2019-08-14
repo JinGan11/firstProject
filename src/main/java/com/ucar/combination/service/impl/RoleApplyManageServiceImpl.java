@@ -10,6 +10,8 @@ import com.ucar.combination.service.RoleApplyManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,6 +77,7 @@ public class RoleApplyManageServiceImpl implements RoleApplyManageService {
     */
     @Override
     public void createRoleApply(CreateRoleApplyDto createRoleApplyDto) {
+
         roleApplyManageDao.createRoleApply(createRoleApplyDto);
     }
 
@@ -141,7 +144,47 @@ public class RoleApplyManageServiceImpl implements RoleApplyManageService {
         roleApplyManageDao.deleteAccountListInModifyApply(applyId);
     }
 
+    /**
+    * @Description:  角色申请 当天总记录数
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  19:16 2019/8/14
+    */
+    @Override
+    public int getTodayApplyCount() {
+        Integer todayApplyCount=roleApplyManageDao.getTodayApplyCount();
+        return todayApplyCount;
+    }
 
+    /**
+    * @Description:  角色申请 申请编号
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  19:11 2019/8/14
+    */
+    @Override
+    public String getApplyNum() {
+        Integer todayApplyCount=roleApplyManageDao.getTodayApplyCount();
+        //角色申请顺序编号5位
+        int numCount=5;
+        StringBuffer applyNum=new StringBuffer("SQ");
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
+        applyNum.append(sdf.format(new Date()));
+        //如果今日申请数不为0，则加一
+        if(todayApplyCount!=0){
+            todayApplyCount=todayApplyCount+1;
+            for(int i=numCount;i>todayApplyCount.toString().length();i--){
+                applyNum.append("0");
+            }
+            applyNum.append(todayApplyCount.toString());
+        }else{
+            //如果今日无申请记录，则直接拼接编号00001
+            applyNum.append("00001");
+        }
+        return applyNum.toString();
+    }
 
 
 }

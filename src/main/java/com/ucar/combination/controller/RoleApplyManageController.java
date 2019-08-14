@@ -132,6 +132,9 @@ public class RoleApplyManageController {
         Long accountId = (Long) session.getAttribute("accountId");
         createRoleApplyDto.setModifyStaffName(accountId);//修改人ID
         createRoleApplyDto.setApplyStatus(1);
+        //设置申请编号
+        String roleApplyNum=roleApplyManageService.getApplyNum();
+        createRoleApplyDto.setRoleApplyNum(roleApplyNum);
         roleApplyManageService.createRoleApply(createRoleApplyDto);
 
         //插入账号

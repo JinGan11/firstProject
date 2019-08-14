@@ -104,4 +104,22 @@ public interface RoleApplyManageService {
     */
     void deleteAccountListInModifyApply(Long applyId);
 
+    /**
+    * @Description:  获取当天申请记录总数
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  18:03 2019/8/14
+    */
+    int getTodayApplyCount();
+
+    /**
+    * @Description:  角色申请 编号
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  19:10 2019/8/14
+    */
+
+    String getApplyNum();
 }

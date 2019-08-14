@@ -658,7 +658,7 @@
           for (let j = 0; j < this.accountChangesList.length; j++) {
             if (this.multipleSelection[i].id == this.accountChangesList[j].id) {
               flag = 1;
-              alert('账号 '+this.multipleSelection[i].accountName+' 已存在，不可重复添加');
+              this.$message.info('账号 '+this.multipleSelection[i].accountName+' 已存在，不可重复添加');
             }
           }
           if (flag == 0) {

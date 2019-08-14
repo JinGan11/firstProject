@@ -90,4 +90,13 @@ public interface RoleApplyManageDao {
     * @Date  9:20 2019/8/14
     */
     void deleteAccountListInModifyApply(Long applyId);
+
+    /**
+    * @Description:  获取当天申请记录总数
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  17:54 2019/8/14
+    */
+    int getTodayApplyCount();
 }
