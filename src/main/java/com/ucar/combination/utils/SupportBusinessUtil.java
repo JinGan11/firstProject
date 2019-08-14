@@ -23,8 +23,8 @@ public class SupportBusinessUtil {
      * @params String字符串，内容格式“买买车&专车&闪贷”
      */
     public static int compareSups(String supports1, String supports2) {
-        String[] sups1 = supports1.split("&");
-        String[] sups2 = supports2.split("&");
+        String[] sups1 = supports1.split("&|;");
+        String[] sups2 = supports2.split("&|;");
         if (sups1.length < sups2.length) return -1;
         Boolean find_flag = false; // 标志该轮遍历查询是否找到
         for (String tmp2 : sups2) {

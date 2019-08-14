@@ -439,7 +439,7 @@
         };
         self.$http.get("department/getSupportBusiness.do_",{ params: supParam })
           .then(result => {
-            var sups = result.split("&");
+            var sups = result.split(/[&;]/);
             for(var i=0;i<sups.length;i++){
               if(sups[i] == "闪贷") { self.businessDisable.shandai=false; continue; }
               if(sups[i] == "租车") { self.businessDisable.zuche=false; continue; }
@@ -457,7 +457,7 @@
         self.form=data;
         self.cityName=data.cityName;
         //设置已选业务线
-        var sups = data.supportBusiness.split("&");
+        var sups = data.supportBusiness.split(/[&;]/);
         for(var i=0;i<sups.length;i++){
           if(sups[i] == "闪贷" && !self.businessDisable.shandai) { self.supports.push("闪贷"); continue; }
           if(sups[i] == "租车"  && !self.businessDisable.zuche) { self.supports.push("租车"); continue; }
@@ -497,7 +497,7 @@
       save () {
         var self=this;
 
-        self.form.supportBusiness = self.$options.methods.addSubSign(self.supports); // 添加分隔符&
+        self.form.supportBusiness = self.$options.methods.addSubSign(self.supports); // 添加分隔符;
         self.form.longitude = self.longitudeNum + self.longitudeDirection;
         self.form.latitude = self.latitudeNum + self.latitudeDirection;
 
@@ -528,7 +528,7 @@
         if(data.length<=0) return "";
         var result = data[0];
         for(var i=1;i<data.length;i++){
-          result=result+"&"+data[i];
+          result=result+";"+data[i];
         }
         return result;
       },
