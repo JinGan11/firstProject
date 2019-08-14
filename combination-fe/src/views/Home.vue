@@ -37,7 +37,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-image: url("../../static/img/home.jpg");
-    background-position: center 0;
+    background-position: right 0;
   }
   .my-second-subject .my-text-ident{
     text-indent:60px;

@@ -5,12 +5,12 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="角色名称">
-              <el-input placeholder="角色名称" style="width:200px;" v-model="form.roleName"></el-input>
+              <el-input placeholder="角色名称"  v-model="form.roleName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="支持业务线">
-              <el-select placeholder="请选择" style="width:200px;"v-model="form.businessLine" value="0">
+              <el-select placeholder="请选择" v-model="form.businessLine" value="0">
                 <el-option label="买买车" value="0"></el-option>
                 <el-option label="闪贷" value="1"></el-option>
                 <el-option label="租车" value="2"></el-option>
@@ -21,24 +21,24 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="审批人账号">
-              <el-input placeholder="审批人账号" style="width:200px;" v-model="form.approverAccount"></el-input>
+              <el-input placeholder="审批人账号"  v-model="form.approverAccount"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="审批人员工编号">
-              <el-input placeholder="审批人员工编号" style="width:200px;" v-model="form.approverStaffNum"></el-input>
+              <el-input placeholder="审批人员工编号"  v-model="form.approverStaffNum"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="6">
             <el-form-item label="审批人姓名">
-              <el-input placeholder="审批人姓名" style="width:200px;" v-model="form.approverStaffName"></el-input>
+              <el-input placeholder="审批人姓名" v-model="form.approverStaffName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="审批人所属部门">
-              <el-input style="width:130px;" v-model="form.approverDepartmentName"></el-input>
+              <el-input  v-model="form.approverDepartmentName"></el-input>
               <el-button type="text" @click="selectDepartment">选择</el-button>
               <el-button type="text" @click="clearDepartment">清空</el-button>
             </el-form-item>
@@ -53,7 +53,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="权限名称">
-              <el-input placeholder="权限名称" style="width:130px;" v-model="form.powerName"></el-input>
+              <el-input placeholder="权限名称"  v-model="form.powerName"></el-input>
               <el-button type="text" @click="selectPermissions">选择</el-button>
               <el-button type="text" @click="clearPermission">清空</el-button>
             </el-form-item>
@@ -510,7 +510,7 @@
         this.dialogVisibleDepartment=true;
       },
       clearDepartment(){//清除部门的值
-        this.form.applyDepartmentName='';
+        this.form.approverDepartmentName='';
       },
       exportRolePower(){
         this.rolePowerDialogVisible = true;
