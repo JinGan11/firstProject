@@ -2,10 +2,10 @@
   <home style="margin-left: 20px">
     <br>
     <div>
-      <el-button type="primary" v-if="!depButtonPermission.createPermission" @click="addDept">新建子部门</el-button>
-      <el-button type="primary" v-if="!depButtonPermission.modifyPermission" :disabled="operationBtnActive" @click="updateDept">修改</el-button>
-      <el-button type="primary" @click="dialogVisible = true" v-if="!depButtonPermission.deletePermission" v-bind:disabled="operationBtnActive">删除</el-button>
-      <el-button type="primary" v-if="!depButtonPermission.modifyUpDepPermission" v-bind:disabled="operationBtnActive" @click="changeUpper">修改上级部门</el-button>
+      <el-button type="primary" v-if="!depButtonPermission.createPermission" v-bind:disabled="operationBtnActive" @click="addDept">新建子部门</el-button>
+      <el-button type="primary" v-if="!depButtonPermission.modifyPermission" v-bind:disabled="operationBtnActive" @click="updateDept">修改</el-button>
+      <el-button type="primary" @click="dialogVisible = true" v-if="!depButtonPermission.deletePermission" v-bind:disabled="operationBtnActive || operationBtnActive2">删除</el-button>
+      <el-button type="primary" v-if="!depButtonPermission.modifyUpDepPermission" v-bind:disabled="operationBtnActive || operationBtnActive2" @click="changeUpper">修改上级部门</el-button>
       <el-button type="primary" @click="relationCompanyBtn" v-if="!depButtonPermission.relCompanyPermission" :disabled="operationBtnActive">关联公司</el-button>
     </div>
     <br>
@@ -55,7 +55,7 @@
         },
         dialogVisible: false,
         operationBtnActive: true,
-
+        operationBtnActive2: true,
         depButtonPermission: {
           createPermission: true,
           modifyPermission: true,
@@ -111,6 +111,11 @@
           }else{
             this.operationBtnActive=true;
           }
+          // 总公司不能删除
+          if(data.departmentNo=="Z000001")
+            this.operationBtnActive2=true;
+          else
+            this.operationBtnActive2=false;
         } else {
           if (this.checkedId == data.id) {
             this.$refs.tree.setCheckedKeys([data.id]);
