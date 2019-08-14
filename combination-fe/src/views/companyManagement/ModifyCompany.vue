@@ -118,6 +118,20 @@
           <el-row>
             <el-col :span="10">
               <p>附件照片</p>
+              <el-upload
+                action="#"
+                list-type="picture-card"
+                :multiple="true"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :onChange="getFileList"
+                :auto-upload="false"
+                ref="upload"
+                >
+                <i class="el-icon-plus"></i>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件,且不超过2M,最多只能上传20张图片</div>
+              </el-upload>
+
             </el-col>
           </el-row>
           <div style="margin-bottom: 10px">

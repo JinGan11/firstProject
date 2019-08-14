@@ -112,6 +112,23 @@ public interface CompanyManageDao<mcmt> {
      * @return：
      */
     Integer getRelationCount(Map<String, Object> map);
+
+    /**
+     * description: 插入文件的存储路径
+     * @author: qingyu.lan@ucarinc.com
+     * @param:
+     * @date: 2019/8/13 15:23
+     * @return：
+     */
     void insertLicenses(List list);
+
+    /**
+     * description: 通过id找文件路径
+     * @author: qingyu.lan@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 15:23
+     * @return：
+     */
+    String getFileUrlById(Long id);
 
 }

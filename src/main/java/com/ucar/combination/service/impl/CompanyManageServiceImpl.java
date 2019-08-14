@@ -215,7 +215,11 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
                 companyManageDao.updateRelation(relMap);
             }
         }
+    }
 
+    @Override
+    public String getFileUrlById(Long id) {
+        return companyManageDao.getFileUrlById(id);
     }
 }
 

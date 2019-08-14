@@ -92,4 +92,13 @@ public interface CompanyManageService {
      */
     void saveRelations(Map<String, Object> queryParam);
 
+    /**
+     * description: 通过id找文件路径
+     * @author: qingyu.lan@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 15:23
+     * @return：
+     */
+    String getFileUrlById(Long id);
+
 }

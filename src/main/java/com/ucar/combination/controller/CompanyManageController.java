@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -203,4 +205,31 @@ public class CompanyManageController {
         companyManageService.saveRelations(params);
         return "success";
     }
+
+    @RequestMapping("/getLicense")
+    public void getLicenseById(HttpServletResponse response, @RequestParam("id") long id)  {
+        String fileUrl = companyManageService.getFileUrlById(id);
+        OutputStream out = null;
+        InputStream in = null;
+        try {
+            //获取IO流进行读入输出
+            out = response.getOutputStream();
+            File file = new File(fileUrl);
+            in = new FileInputStream(file);
+            byte[] b = new byte[2048];
+            while (in.read(b) != -1) {
+                out.write(b);
+            }
+            out.flush();
+        } catch (IOException e) {
+        } finally {
+            try {
+                if (out != null) out.close();
+                if (in != null) in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

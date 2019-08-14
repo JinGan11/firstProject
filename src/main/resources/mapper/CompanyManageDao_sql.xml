@@ -348,4 +348,10 @@
             (#{item.companyId},#{item.fileLocation})
         </foreach>
     </insert>
+
+    <select id="getFileUrlById" resultType="String" parameterType="Long">
+        SELECT  url
+        from t_license
+         WHERE id=#{id}
+    </select>
 </mapper>
