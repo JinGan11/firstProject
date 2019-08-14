@@ -111,7 +111,13 @@ public class CompanyManageController {
         companyManageService.updateCompanyById(company);
         return "success";
     }
-
+    /**
+     * description: 查询未关联公司列表
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 11:12
+     * @return：
+     */
     @ResponseBody
     @RequestMapping("/queryRelationList.do_")
     public Result searchCompanyQuery(HttpServletRequest request) {
@@ -143,7 +149,13 @@ public class CompanyManageController {
                 .put("CompanyMarkEnum", CommonEnums.toEnumMap(CommonEnums.CompanyMark.values()))
                 .put("CompanyStatusEnum", CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values()));
     }
-
+    /**
+     * description: 查询部门关联公司列表
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 11:11
+     * @return：
+     */
     @ResponseBody
     @RequestMapping("/querylistRel.do_")
     public Result relationCompanyQuery(HttpServletRequest request) {
@@ -162,7 +174,13 @@ public class CompanyManageController {
                 .put("CompanyStatusEnum", CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values()));
     }
 
-
+    /**
+     * description: 处理关联公司保存
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 11:11
+     * @return：
+     */
     @ResponseBody
     @RequestMapping(value = "/saveRelation.do_")
     public String saveRelation(HttpServletRequest request, HttpSession session) {

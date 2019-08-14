@@ -42,7 +42,13 @@ public interface CompanyManageService {
      */
     void insertCompany(MultipartFile[] file, String str, HttpSession session);
 
-
+    /**
+     * description: 根据公司id获取单一公司信息
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 11:17
+     * @return：
+     */
     Map getCompanyById(int companyId);
 
     /**
@@ -61,8 +67,29 @@ public interface CompanyManageService {
      * @return：
      */
     int creditCodeValidate(String creditCode);
+    /**
+     * description: 查询未关联公司
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 11:17
+     * @return：
+     */
     ResultPage queryRelationList(QueryParam queryParam);
+    /**
+     * description: 获取关联公司列表
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 11:17
+     * @return：
+     */
     ResultPage relationCompanyList(QueryParam queryParam);
+    /**
+     * description: 关联公司保存
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 11:18
+     * @return：
+     */
     void saveRelations(Map<String, Object> queryParam);
 
 }

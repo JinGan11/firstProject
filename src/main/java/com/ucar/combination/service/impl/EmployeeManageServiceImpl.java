@@ -5,6 +5,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.dao.CompanyManageDao;
 import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.model.Staff;
 import com.ucar.combination.model.dto.StaffDto;
@@ -24,7 +25,8 @@ import java.util.List;
 public class EmployeeManageServiceImpl implements EmployeeManageService {
     @Autowired(required = false)
     private EmployeeManageDao employeeManageDao;
-
+    @Autowired(required = false)
+    private CompanyManageDao companyManageDao;
     /**
      * description：查询员工列表
      * @author qingyu.lan@ucarinc.com
@@ -35,6 +37,7 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
     public ResultPage queryList(QueryParam queryParam) {
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
         List<Object> list = employeeManageDao.queryList(queryParam);
+
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
 

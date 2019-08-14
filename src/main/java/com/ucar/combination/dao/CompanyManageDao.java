@@ -72,12 +72,46 @@ public interface CompanyManageDao<mcmt> {
      * @return：
      */
     Integer creditCodeValidate(@Param("creditCode") String creditCode);
+    /**
+     * description: 查询未关联到部门的公司
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 11:13
+     * @return：
+     */
     List<CompanyDto> queryRelationList(Map<String, Object> map);
+    /**
+     * description: 获取和部门关联的公司
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 11:13
+     * @return：
+     */
     List<CompanyDto>relationCompanyList(Map<String, Object> map);
+    /**
+     * description: 添加关联公司
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 11:14
+     * @return：
+     */
     void addRelationCompany(Map<String, Object> map);
+    /**
+     * description: 更新关联公司
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 11:14
+     * @return：
+     */
     void updateRelation(Map<String, Object> map);
+    /**
+     * description: 得知表中是否已有该关联公司
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 11:14
+     * @return：
+     */
     Integer getRelationCount(Map<String, Object> map);
-
     void insertLicenses(List list);
 
 }

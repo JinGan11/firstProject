@@ -132,17 +132,38 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
         }
         return validate.intValue();
     }
+    /**
+     * description: 查询未关联公司
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 11:15
+     * @return：
+     */
     @Override
     public ResultPage queryRelationList(QueryParam queryParam){
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
         List<Company> list = companyManageDao.queryRelationList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
+    /**
+     * description: 关联公司
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 11:16
+     * @return：
+     */
     public ResultPage relationCompanyList(QueryParam queryParam){
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
         List<Company> list = companyManageDao.relationCompanyList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
+    /**
+     * description: 关联公司保存
+     * @author: jianan.shu@ucarinc.com
+     * @param:
+     * @date: 2019/8/14 11:16
+     * @return：
+     */
     public void saveRelations(Map<String ,Object>queryParam){
         List oldRelationCompany=(List<Long>)queryParam.get("oldRelationList");
         List newRelationCompany= (List<Long>) queryParam.get("newRelationList");

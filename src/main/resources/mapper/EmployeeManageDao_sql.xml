@@ -30,7 +30,11 @@
         t1.create_time createTime,
         t2.upper_department_no upperDepartmentNo,
         t2.department_name departmentName,
-        t4.department_name upperDepartmentName
+        t4.department_name upperDepartmentName,
+        t1.create_emp createEmp,
+        t1.modify_emp modifyEmp,
+        t1.modify_time modifyTime,
+        t1.remark remark
         FROM t_staff t1
         LEFT JOIN t_account t3
         on (t3.id=t1.account_id)

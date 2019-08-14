@@ -25,6 +25,11 @@ public class StaffDto extends BaseBean {
     private String upperDepartmentNo;
     private String upperDepartmentName;
 
+    private String createName;
+    private String modifyName;
+
+
+
     public StaffDto() {
     }
 
@@ -44,6 +49,22 @@ public class StaffDto extends BaseBean {
         this.accountId = accountId;
         this.upperDepartmentNo = upperDepartmentNo;
         this.upperDepartmentName = upperDepartmentName;
+    }
+
+    public String getCreateName() {
+        return createName;
+    }
+
+    public void setCreateName(String createName) {
+        this.createName = createName;
+    }
+
+    public String getModifyName() {
+        return modifyName;
+    }
+
+    public void setModifyName(String modifyName) {
+        this.modifyName = modifyName;
     }
 
     public String getDepartmentName() {

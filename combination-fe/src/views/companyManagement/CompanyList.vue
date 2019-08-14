@@ -95,7 +95,7 @@
     </div>
 
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
-      <el-table-column label="选择" width="45">
+      <el-table-column label="选择" width="50px">
         <template slot-scope="scope">
           <el-radio v-model="selection" :label="scope.row.id" @change="changeButton"><span width="0px;"></span></el-radio>
         </template>
