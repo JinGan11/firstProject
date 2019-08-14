@@ -44,7 +44,7 @@
         <el-row>
           <el-col :span="15">
             <el-form-item label="支持业务线">
-              <el-checkbox-group v-model="form.businessLine">
+              <el-checkbox-group v-model="form.businessLine" :disabled="true">
                 <el-checkbox label="买买车"></el-checkbox>
                 <el-checkbox label="租车"></el-checkbox>
                 <el-checkbox label="闪贷"></el-checkbox>

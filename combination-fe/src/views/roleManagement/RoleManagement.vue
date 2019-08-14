@@ -41,7 +41,7 @@
           <el-button type="text" size="small" @click="cellTrigger(scope.row.roleId)">{{scope.row.roleId}}</el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="roleName" label="角色名称" width="150"></el-table-column>
+      <el-table-column prop="roleName" label="角色名称" width="150" :show-overflow-tooltip='true' class="el-tooltip__popper"></el-table-column>
       <el-table-column prop="businessLine" v-if="false" label="支持业务线"></el-table-column>
       <el-table-column prop="accountNum" label="审批人账号" width="120"></el-table-column>
       <el-table-column prop="staffNum" label="审批人员工编号"></el-table-column>
@@ -52,7 +52,7 @@
           {{RoleStatusEnum[scope.row.roleStatus]}}
         </template>
       </el-table-column>
-      <el-table-column prop="description" label="描述" width="120"></el-table-column>
+      <el-table-column prop="description" label="描述" width="120" :show-overflow-tooltip='true' class="el-tooltip__popper"></el-table-column>
     </el-table>
 
     <el-pagination background
@@ -374,6 +374,8 @@
     mounted() {
       commonUtils.Log("页面进来");
       this.fetchData();
+
+
     },
     methods: {
       judgmentAuthority() {
@@ -768,5 +770,8 @@
   }
 </script>
 
-<style scoped>
+<style>
+  .el-tooltip__popper {
+    font-size: 14px; max-width:20%
+  } /*设置显示隐藏部分内容，按50%显示*/
 </style>
