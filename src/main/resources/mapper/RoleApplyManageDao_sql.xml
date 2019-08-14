@@ -196,17 +196,13 @@
         where id=#{id}
     </update>
 
-    <!--    &lt;!&ndash;角色申请 修改 账户列表&ndash;&gt;-->
-    <!--    <update id="modifyApplyRoleAccount" parameterType="com.ucar.combination.model.dto.ApplyRoleAccountDto">-->
-    <!--        update t_apply_role_account-->
-    <!--        set role_id=#{roleId},-->
-    <!--            account_id=#{accountId},-->
-    <!--            operation=#{applyOperation},-->
-    <!--            create_time=now(),-->
-    <!--            modify_time=now()-->
-    <!--        where apply_id=#{applyId}-->
+    <!--角色申请  修改   修改之前先删除之前选过的账户-->
+    <delete id="deleteAccountListInModifyApply" parameterType="Long">
+        delete from t_apply_role_account
+        where apply_id=#{applyId}
+    </delete>
 
-    <!--    </update>-->
+
 
 
 

@@ -129,4 +129,19 @@ public class RoleApplyManageServiceImpl implements RoleApplyManageService {
     }
 
 
+    /**
+    * @Description:  角色申请  修改   修改之前先删除之前选过的账户
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  9:23 2019/8/14
+    */
+    @Override
+    public void deleteAccountListInModifyApply(Long applyId) {
+        roleApplyManageDao.deleteAccountListInModifyApply(applyId);
+    }
+
+
+
+
 }

@@ -473,6 +473,7 @@
       // alert(this.applyId);
       console.log(this.applyId);
 
+      this.roleId=sessionStorage.getItem('roleIdFromApply');
       this.formRoleInfo.roleName = sessionStorage.getItem('roleNameFromApply');//角色名字
       this.formRoleInfo.roleApplyNum=sessionStorage.getItem('applyNumFromApply');//申请编号
       this.formRoleInfo.approverStaffName = sessionStorage.getItem('approverStaffNameFromApply');//审批人
@@ -634,6 +635,7 @@
 
           //请求成功回调
           self.tableDataAccount = result.list;
+
           self.accountChangesList=result.list;
 
         }).catch(function (error) {
@@ -686,6 +688,8 @@
         self.forms.accountIdList=self.accountIdList;
         self.forms.applyOperationList=self.applyOperationList;
 
+
+        alert(self.forms.roleId);
         if (!self.$options.methods.checkInput(self)) return;
         self.$http.post("roleApply/modifyRoleApply.do_",self.forms)
           .then(result => {
@@ -711,7 +715,8 @@
           return false;
         }
         for(let i=0;i<self.tableDataAccount.length;i++){
-          if(self.tableDataAccount[i].applyOperation!=1||self.tableDataAccount[i].applyOperation!=2){
+          alert(self.tableDataAccount[i].applyOperation);
+          if(self.tableDataAccount[i].applyOperation!=1&&self.tableDataAccount[i].applyOperation!=2){
             alert('账号申请操作不允许为空');
             return false;
           }

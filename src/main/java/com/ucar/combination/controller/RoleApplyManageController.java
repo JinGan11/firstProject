@@ -193,6 +193,12 @@ public class RoleApplyManageController {
     public void modifyRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto,HttpSession session){
         createRoleApplyDto.setApplyStatus(1);
         roleApplyManageService.modifyRoleApply(createRoleApplyDto);
+        System.out.println(createRoleApplyDto.getRoleId());
+        System.out.println(createRoleApplyDto.getId());
+
+        //修改之前先删除所有的账号
+        roleApplyManageService.deleteAccountListInModifyApply(createRoleApplyDto.getId());
+
         //插入账号
         for(int i=0;i<createRoleApplyDto.getAccountIdList().length;i++){
             ApplyRoleAccountDto applyRoleAccountDto=new ApplyRoleAccountDto();

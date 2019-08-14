@@ -546,6 +546,7 @@
         }
 
         sessionStorage.setItem('applyIdFromApply', row.id);
+        sessionStorage.setItem('roleIdFromApply', row.roleId);
         sessionStorage.setItem('applyNumFromApply',row.roleApplyNum);//角色申请编号
         sessionStorage.setItem('roleNameFromApply', row.roleName);//角色名字
         sessionStorage.setItem('approverStaffNameFromApply', row.approverStaffName);//审批人
