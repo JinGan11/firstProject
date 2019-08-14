@@ -4,7 +4,8 @@
       <el-menu :default-active="$route.path"
                router
                class="el-menu-vertical-demo"
-               :collapse="isCollapse">
+               :collapse="isCollapse"
+               unique-opened>
         <div class="aside-title" style="background: #1E90FF ;font-size: 28px;font-family: STKaiti">优车组织结构</div>
         <template v-for="item in data">
           <el-menu-item v-if="item.children === null" :index="item.url">
