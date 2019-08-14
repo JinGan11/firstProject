@@ -85,7 +85,6 @@
                   lazy="true"
                   show-checkbox
                   check-strictly
-                  :render-content="renderContent"
                   @check-change="handleClick">
                 </el-tree>
               </el-form-item>
@@ -179,8 +178,9 @@
         defaultProps: {
           label: 'departmentName',
           children: 'children',
+          isLeaf: 'nodeIsLeaf',
           id: 'id',
-          status: 'status'
+          no: 'departmentNo',
         },
         dialogEmployee: false,
         departmentVisible :false,
@@ -241,11 +241,10 @@
     methods: {
       loadNode(node,resolve){
         var self = this;
-        self.$http.get('department/buildTree.do_', {
-          params: null
-        }).then((result) => {
-          resolve([result.departmentDto]);
-        }).catch(function (error) {
+        self.$http.get('department/buildTree2.do_')
+          .then((result) => {
+            resolve([result.departmentDto]);
+          }).catch(function (error) {
 
         });
       },

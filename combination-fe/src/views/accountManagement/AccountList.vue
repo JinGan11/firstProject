@@ -32,10 +32,14 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="11">
+          <el-col :span="5">
             <el-form-item label="员工所属部门">
-              <el-input style="width:180px;" v-model="form.departmentId"></el-input>
+              <el-input style="width:140px;" :disabled="true" v-model="form.department"></el-input>
             </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-button type="text" @click="chooseDepartment">选择</el-button>
+            <el-button type="text">取消</el-button>
           </el-col>
           <el-col :span="6">
             <el-form-item label="是否关联员工">
@@ -176,6 +180,19 @@
         </el-form>
       </div>
     </el-dialog>
+    <el-dialog title="选择部门" :visible.sync="chooseDepartmentFlag" width="300px">
+      <el-tree
+        ref="tree"
+        :props="defaultProps1"
+        node-key="id"
+        :load="loadNodeDepartment"
+        lazy="true"
+        check-strictly
+        show-checkbox
+        default-expanded-keys="[1]"
+        @check-change="handleClick1">
+      </el-tree>
+    </el-dialog>
   </home>
 
 </template>
@@ -186,19 +203,27 @@
   export default {
     data() {
       return {
+        defaultProps1: {
+          label: 'departmentName',
+          children: 'children',
+          isLeaf: 'nodeIsLeaf',
+          id: 'id',
+          no: 'departmentNo',
+        },
         total: 0,
         currentPage: 1,
         pageSize: 10,
         form: {
-          accountNo: null,
-          staffNo: null,
-          name: null,
+          accountNo: '',
+          staffNo: '',
+          name: '',
           permissionsList:[],
           permissionsEnum:{},
           accountStatusList:[],
           accountStatusEnum:{},
-          permissions: null,
-          departmentId:null,
+          permissions: '',
+          departmentId:'',
+          department:'',
           isRelStaffoptions:[{
             value: '1',
             label: '是'
@@ -228,6 +253,7 @@
         },
         selectedNodes:[],
         accountAssignPermissionFlag: false,
+        chooseDepartmentFlag: false,
         accountAssignPermissionTitle: '账号权限分配',
         checkStrictly: false,
         row: {},
@@ -261,6 +287,29 @@
       }
     },
     methods: {
+      loadNodeDepartment(node,resolve){
+        var self = this;
+        self.$http.get('department/buildTree2.do_')
+          .then((result) => {
+            resolve([result.departmentDto]);
+          }).catch(function (error) {
+
+        });
+      },
+      handleClick1(data,checked,node){
+        // 手动设置单选
+        if(checked === true) {
+          this.checkedId = data.id;
+          this.$refs.tree.setCheckedKeys([data.id]);
+          this.form.departmentId = data.id;
+          this.form.department = data.departmentName;
+        } else {
+          if (this.checkedId == data.id) {
+            this.$refs.tree.setCheckedKeys([data.id]);
+          }
+        }
+        this.closeChooseDepartment();
+      },
       judgmentAuthority() {
         const self = this;
         let permission = self.$store.state.powerList;
@@ -389,22 +438,32 @@
         this.$router.replace('/modifyAccount')
       },
       deleteAccount(){
-        const self = this;
-         var param = {
-           accountId: self.row.id,
-           staffNum: self.row.staffNum,
-           staffName: self.row.staffName,
-           permissions: self.row.premissions,
-           accountState: self.row.accountState
-         };
-        self.$http.post('account/deleAccount.do_',param)
-          .then((result)=>{
-            self.$message.info("删除成功");
-            self.fetchData();
-
-          }).catch(function (error) {
-          commonUtils.Log("account/deleAccount.do_:"+error);
-          self.$message.error("删除失败")
+        this.$confirm('此操作将删除该员工, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          const self = this;
+          var param = {
+            accountId: self.row.id,
+            staffNum: self.row.staffNum,
+            staffName: self.row.staffName,
+            permissions: self.row.premissions,
+            accountState: self.row.accountState
+          };
+          self.$http.post('account/deleAccount.do_', param)
+            .then((result) => {
+              self.$message.info("删除成功");
+              self.$router.go(0)
+            }).catch(function (error) {
+            commonUtils.Log("account/deleAccount.do_:" + error);
+            self.$message.error("删除失败")
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });
         });
       },
       approvalInfo(val){
@@ -569,6 +628,12 @@
       cencel(){
         this.accountAssignPermissionFlag = false;
       },
+      chooseDepartment(){
+        this.chooseDepartmentFlag = true;
+      },
+      closeChooseDepartment(){
+        this.chooseDepartmentFlag = false;
+      }
     },
     created() {
       const self = this;

@@ -84,6 +84,7 @@
                   lazy="true"
                   show-checkbox
                   check-strictly
+                  :default-expanded-keys="modifyForm.trees"
                   :render-content="renderContent"
                   @check-change="handleClick">
                 </el-tree>
@@ -164,8 +165,9 @@
         defaultProps: {
           label: 'departmentName',
           children: 'children',
+          isLeaf: 'nodeIsLeaf',
           id: 'id',
-          status: 'status'
+          no: 'departmentNo',
         },
         dialogEmployee: false,
         departmentVisible :false,
@@ -221,11 +223,11 @@
     methods: {
       loadNode(node,resolve){//加载部门的树结构
         var self = this;
-        self.$http.get('department/buildTree.do_', {
-          params: null
-        }).then((result) => {
+        self.$http.get('department/buildTree2.do_')
+          .then((result) => {
           resolve([result.departmentDto]);
-          this.$refs.tree.setCheckedKeys(self.modifyForm.trees);
+          self.$refs.tree.setCheckedKeys(self.modifyForm.trees);
+          self.$refs.tree.setC
         }).catch(function (error) {
 
         });
