@@ -20,27 +20,17 @@
                 </el-switch>
 
                 <el-dropdown @command="handleCommand">
-  <span class="el-dropdown-link home_userinfo" style="display: flex;align-items: center;font-size: 23px;color: #FFF;">
-    <span style="margin-bottom: 7px;">{{loginUserName}}</span>
-    <i><img src="http://bpic.588ku.com/element_pic/01/40/00/64573ce2edc0728.jpg"
-            style="width: 35px;height: 35px;margin-right: 5px;margin-left: 5px;border-radius: 40px;margin-top:13px "/></i>
-  </span>
+                  <span class="el-dropdown-link home_userinfo" style="display: flex;align-items: center;font-size: 23px;color: #FFF;">
+                    <span style="margin-bottom: 7px;">{{loginUserName}}</span>
+                    <i><img src="http://bpic.588ku.com/element_pic/01/40/00/64573ce2edc0728.jpg"
+                            style="width: 35px;height: 35px;margin-right: 5px;margin-left: 5px;border-radius: 40px;margin-top:13px "/></i>
+                  </span>
                   <el-dropdown-menu slot="dropdown" style="position: relative;margin-top: -10px">
                     <el-dropdown-item command="getUserInfo">个人信息</el-dropdown-item>
                     <el-dropdown-item command="resetPassword">修改密码</el-dropdown-item>
                     <el-dropdown-item command="logout" divided>注销</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
-                <!--<el-dropdown @command="handleCommand">-->
-                <!--<span class="el-dropdown-link" style="font-size: 22px">-->
-                <!--{{loginUserName}}<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
-                <!--</span>-->
-                <!--<el-dropdown-menu slot="dropdown">-->
-                <!--<el-dropdown-item style="font-size: 18px" command="getUserInfo">个人信息</el-dropdown-item>-->
-                <!--<el-dropdown-item style="font-size: 18px" command="resetPassword">修改密码</el-dropdown-item>-->
-                <!--<el-dropdown-item style="font-size: 18px" command="logout">注销登陆</el-dropdown-item>-->
-                <!--</el-dropdown-menu>-->
-                <!--</el-dropdown>-->
               </el-col>
             </el-row>
           </el-header>

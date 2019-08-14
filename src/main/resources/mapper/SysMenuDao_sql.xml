@@ -12,6 +12,7 @@
         from t_power
         where status = 0
         and url != ''
+        and power_id != 1
         order by sort_id
     </select>
 </mapper>

@@ -122,13 +122,12 @@
     justify-content: center;
     align-items: center;
     background-repeat: no-repeat;
-    background-image: url("../../static/img/bg02.jpg");
+    background-image: url("../../static/img/bg.jpg");
     background-position: center 0;
   }
   .login-container {
     border-radius: 15px;
     background-clip: padding-box;
-    margin-top: 280px;
     width: 350px;
     padding: 35px 35px 15px 35px;
     background: #fff;

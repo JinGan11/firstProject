@@ -1,7 +1,7 @@
 <template>
-  <div class="content">
+  <div>
     <slot>
-      
+      <div class="content"></div>
     </slot>
   </div>
 </template>
@@ -27,19 +27,19 @@
 </script>
 
 <style scoped="scoped">
-  .my-text-ident{
-    text-indent:30px;
+  .content{
+    position: absolute;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: url("../../static/img/home.jpg");
+    background-position: center 0;
   }
   .my-second-subject .my-text-ident{
     text-indent:60px;
   }
-  .my-top-title{
-    font-size: 20px;
-    font-weight: bold;
-    margin: 20px 0px 30px 30px;
-  }
-</style>
-<style>
   .my-title .el-collapse-item__header{
     font-size: 15px;
     padding-left: 30px;
