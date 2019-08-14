@@ -102,6 +102,13 @@
                  LEFT JOIN t_department t3
                            ON (t2.department_id = t3.id)
         WHERE t1.account_state != 0
+        <if test="userPermission == 4">
+            and t1.id = #{userId}
+        </if>
+        <if test="userPermission == 2 or userPermission == 3 or userPermission == 5 ">
+            and t2.department_id in
+                <foreach collection="departmentIds" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+        </if>
         <if test="accountName != null and accountName.trim() != ''">
           and t1.account_name = #{accountName}
         </if>
@@ -118,10 +125,10 @@
             and t3.id = #{departmentId}
         </if>
         <if test="isRelStaff == 1 ">
-            and t1.staff_id != 0
+            and t1.staff_id != 0 and t1.staff_id is not null
         </if>
         <if test="isRelStaff == 0 ">
-            and t1.staff_id = 0
+            and (t1.staff_id = 0 or t1.staff_id is null)
         </if>
         <if test="accountState != null and accountState.trim() != ''">
             and t1.account_state = #{accountState}

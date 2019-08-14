@@ -7,6 +7,7 @@ import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.service.AccountManagerService;
+import com.ucar.combination.service.DepartmentService;
 import com.ucar.combination.service.MailService;
 import com.ucar.combination.service.RoleManagementService;
 import net.sf.json.JSONObject;
@@ -40,6 +41,9 @@ public class AccountManagerController {
 
     @Resource
     private RoleManagementService roleManagementService;
+
+    @Resource
+    private DepartmentService departmentService;
 
     @Resource
     private MailService mailService;
@@ -110,7 +114,7 @@ public class AccountManagerController {
      */
     @ResponseBody
     @RequestMapping("/querylist.do_")
-    public Result queryList(HttpServletRequest request){
+    public Result queryList(HttpServletRequest request,HttpSession session){
         String page = request.getParameter("page");
         if(page==null){
             page = "1";
@@ -122,6 +126,7 @@ public class AccountManagerController {
         String accountName = request.getParameter("accountName");
         String staffNum = request.getParameter("staffNo");
         String staffName = request.getParameter("name");
+        Long userId = (Long) session.getAttribute("accountId");
         String permissions = request.getParameter("permissions");
         String departmentId = request.getParameter("department");
         String isRelStaff = request.getParameter("isRelStaff");
@@ -134,6 +139,7 @@ public class AccountManagerController {
         params.put("staffName", staffName);
         params.put("permissions", permissions);
         params.put("departmentId", departmentId);
+        params.put("userId", userId);
         params.put("isRelStaff", isRelStaff);
         params.put("accountState", accountState);
         ResultPage resultPage = accountManagerService.queryList(new QueryParam(params));

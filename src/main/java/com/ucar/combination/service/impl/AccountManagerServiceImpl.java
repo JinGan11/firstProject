@@ -11,6 +11,7 @@ import com.ucar.combination.dao.PowerDao;
 import com.ucar.combination.model.*;
 import com.ucar.combination.model.dto.AccountPowerDto;
 import com.ucar.combination.service.AccountManagerService;
+import com.ucar.combination.service.DepartmentService;
 import com.ucar.combination.service.EmployeeManageService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,9 +41,24 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     private PowerDao powerDao;
     @Resource
     private AccountHistoryDao accountHistoryDao;
+    @Resource
+    private DepartmentService departmentService;
 
     @Override
     public ResultPage queryList(QueryParam queryParam) {
+        Long userId = (Long)queryParam.get("userId");
+        List<Long> departmentIdList = departmentService.selectDataPowerIds(userId);
+        int permission = accountManageDao.selectPermissionsById(userId);
+        queryParam.put("userPermission",permission);
+        Long [] departmentIds = new Long[departmentIdList.size()];
+        if(permission != 1 && permission != 4) {
+            int i = 0;
+            for (Long id : departmentIdList) {
+                departmentIds[i] = id;
+                i++;
+            }
+            queryParam.put("departmentIds",departmentIds);
+        }
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
         List<Account> list = accountManageDao.queryList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());

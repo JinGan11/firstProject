@@ -33,6 +33,7 @@ public class Account {
     private int premissions;
     //密保邮箱
     private String secretEmail;
+    //员工邮箱
     private String accountSecretEmail;
     //员工邮箱
     private String staffEmail;
