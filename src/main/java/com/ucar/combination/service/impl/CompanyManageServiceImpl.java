@@ -229,5 +229,10 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
     public String getFileUrlById(Long id) {
         return companyManageDao.getFileUrlById(id);
     }
+
+    @Override
+    public List<Company> getIdsByCompanyId(int id) {
+        return companyManageDao.getIdsByCompanyId(id);
+    }
 }
 

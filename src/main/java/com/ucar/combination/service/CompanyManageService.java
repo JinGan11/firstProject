@@ -6,6 +6,7 @@ import com.ucar.combination.model.Company;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -100,5 +101,7 @@ public interface CompanyManageService {
      * @return：
      */
     String getFileUrlById(Long id);
+
+    List<Company> getIdsByCompanyId(int id);
 
 }

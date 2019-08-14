@@ -133,4 +133,6 @@ public interface CompanyManageDao<mcmt> {
      */
     String getFileUrlById(Long id);
 
+    List<Company> getIdsByCompanyId(int id);
+
 }

@@ -118,16 +118,24 @@
           <el-row>
             <el-col :span="10">
               <p>附件照片</p>
+              <div>
+                <ul>
+                  <li v-for ="item in licenses" :key="item">
+                    <img :src="fileUrl+item.id" height="150px" width="200px"/>
+                  </li>
+                </ul>
+              </div>
+
+
               <el-upload
                 action="#"
                 list-type="picture-card"
                 :multiple="true"
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
-                :onChange="getFileList"
                 :auto-upload="false"
                 ref="upload"
-                >
+                :http-request="uploadLicenses">
                 <i class="el-icon-plus"></i>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件,且不超过2M,最多只能上传20张图片</div>
               </el-upload>
@@ -241,7 +249,7 @@
 
 <script>
   import commonUtils from '../../common/commonUtils'
-
+  const fileUrl="http://localhost:8081/combination/saveRelation.do_/getLicense?id="
   export default {
     data() {
       return {
@@ -369,6 +377,7 @@
           ],
 
         },
+        licenses:[]
       }
     },
     activated() {
@@ -380,6 +389,17 @@
       this.fetchData();
     },
     methods: {
+      //覆盖默认上传事件
+      uploadLicenses(file) {
+        // this.company.businessLicenses = file.file;
+        console.log(file.file);
+        this.formData.append("businessLicenses", file.file);
+      },
+      handleRemove(file, fileList) {
+      },
+      handlePreview(file) {
+
+      },
       fetchData(){
         var companyId;
         var self = this;
@@ -396,6 +416,7 @@
           self.form.registeredCapital=parseInt(self.form.registeredCapital);
           self.businessTerm=[result.list.company.businessStartTime,result.list.company.businessDeadline];
           self.form.oldCreditCode=result.list.company.creditCode;
+          self.licenses = result.licenses;
           //下拉框处理
           if(self.form.companyType==null){
             self.form.companyType="";

@@ -368,4 +368,12 @@
         from t_company t1,t_account t2,t_staff t3
         where t1.modify_emp=t2.id and t2.staff_id=t3.id and t1.id=#{companyId}
     </select>
+
+    <select id="getIdsByCompanyId" parameterType="int" resultType="com.ucar.combination.model.dto.BusinessLicense">
+        SELECT
+        id,
+        companyId ,
+        url
+        from t_license WHERE companyId=#{companyId}
+    </select>
 </mapper>

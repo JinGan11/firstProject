@@ -95,8 +95,9 @@ public class CompanyManageController {
     public Result getOneCompanyById(HttpServletRequest request){
         String id = request.getParameter("companyId");
         int companyId = Integer.parseInt(id);
+        List<Company> licenses = companyManageService.getIdsByCompanyId(companyId);
         Map<String,Object>list=companyManageService.getCompanyById(companyId);
-        return Result.ok().put("list",list);
+        return Result.ok().put("list",list).put("licenses",licenses);
     }
     /**
      * description: 修改公司信息
@@ -216,7 +217,7 @@ public class CompanyManageController {
             out = response.getOutputStream();
             File file = new File(fileUrl);
             in = new FileInputStream(file);
-            byte[] b = new byte[2048];
+            byte[] b = new byte[100000];
             while (in.read(b) != -1) {
                 out.write(b);
             }
