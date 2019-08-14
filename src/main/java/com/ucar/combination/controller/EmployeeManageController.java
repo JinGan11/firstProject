@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,9 +81,12 @@ public class EmployeeManageController {
      */
     @ResponseBody
     @RequestMapping(value = "/insertStaff",method = RequestMethod.POST)
-    public  void insertStaff(@RequestBody Staff staff){
+    public Result insertStaff(HttpSession session, @RequestBody Staff staff){
+        staff.setCreateEmp((Long) session.getAttribute("accountId"));
+        staff.setModifyEmp((Long) session.getAttribute("accountId"));
         employeeManageService.insertStaff(staff);
         System.out.println("insertStaff:"+ JSON.toJSONString(staff));
+        return Result.ok();
 
     }
     /**
@@ -95,23 +99,35 @@ public class EmployeeManageController {
     @ResponseBody
     @RequestMapping("/deleteEmployee")
     public Result update(HttpServletRequest request){
+        String strid=request.getParameter("id");
         int id = Integer.parseInt(request.getParameter("id"));
+
         String accountId=request.getParameter("accountId");
-        int accountID=Integer.parseInt(accountId);
-
+        System.out.print(accountId);
+        Integer accountID = null;
+        if (accountId != null) {
+            accountID=Integer.parseInt(accountId);
+        }
         employeeManageService.updateStatus(id);
-        accountManagerService.updateStatus(accountID,3);
-
-        Account account=accountManagerService.selectAccountById(accountId);
         AccountStaff accountStaff=new AccountStaff();
-        /*accountStaff.setAccountId(Long.valueOf(accountId));*/
-        accountStaff.setAccountId(account.getId());
-        accountStaff.setOperationType("员工删除");
-        accountStaff.setStaffName(account.getStaffName());
-        accountStaff.setStaffNum(account.getStaffNum());
-        accountStaff.setPermissions(account.getPremissions());
-        accountStaff.setAccountState(account.getaccountState());
-        accountStaff.setCreateEmp(account.getId());
+        if(accountId!=null){
+            accountManagerService.updateStatus(accountID,3);
+            Account account=accountManagerService.selectAccountById(accountId);
+            /*accountStaff.setAccountId(Long.valueOf(accountId));*/
+            accountStaff.setAccountId(account.getId());
+            accountStaff.setOperationType("员工删除");
+            accountStaff.setStaffName(account.getStaffName());
+            accountStaff.setStaffNum(account.getStaffNum());
+            accountStaff.setPermissions(account.getPremissions());
+            accountStaff.setAccountState(account.getaccountState());
+            accountStaff.setCreateEmp((Long)(request.getSession().getAttribute("accountId")));
+        }else{
+            Staff staff=employeeManageService.selectById(strid);
+            accountStaff.setOperationType("员工删除");
+            accountStaff.setCreateEmp((Long)(request.getSession().getAttribute("accountId")));
+            accountStaff.setStaffName(staff.getStaffName());
+            accountStaff.setStaffNum(staff.getStaffNum());
+        }
         accountManagerService.insertAccountHistory(accountStaff);
         return Result.ok();
         
@@ -177,10 +193,8 @@ public class EmployeeManageController {
      */
     @ResponseBody
     @RequestMapping("/updateStaff")
-    public  void updateStaff(@RequestBody Staff staff){
-        System.out.print("stuffId:"+staff.getStaffNum());
-
-        System.out.print("hello");
+    public  void updateStaff(HttpServletRequest request,@RequestBody Staff staff){
+        staff.setModifyEmp((Long)(request.getSession().getAttribute("accountId")));
         employeeManageService.updateStaff(staff);
     }
 

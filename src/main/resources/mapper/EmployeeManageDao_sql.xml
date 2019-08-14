@@ -28,6 +28,7 @@
         t1.department_id departmentId,
         t1.is_dimission isDimission,
         t1.create_time createTime,
+        t1.create_emp  createEmp,
         t2.upper_department_no upperDepartmentNo,
         t2.department_name departmentName,
         t4.department_name upperDepartmentName,
@@ -98,7 +99,7 @@
     </select>
     <insert id="insertStaff" parameterType="com.ucar.combination.model.Staff">
         insert into t_staff(staff_num,staff_name,staff_sex,staff_telephone,staff_email,department_id,is_dimission,status, create_time, create_emp, modify_time, modify_emp,remark)
-        value(#{staffNum}, #{staffName},#{staffSex},#{staffTelephone},#{staffEmail},#{departmentId},#{isDimission},1, NOW(), 1, NOW(), 1,#{remark})
+        value(#{staffNum}, #{staffName},#{staffSex},#{staffTelephone},#{staffEmail},#{departmentId},#{isDimission},1, NOW(),#{createEmp},NOW(),#{modifyEmp},#{remark})
     </insert>
     <update id="updateStatus">
         update t_staff t1
@@ -123,9 +124,9 @@
         t1.department_id=#{departmentId},
         t1.is_dimission=#{isDimission},
         t1.create_time=#{createTime},
-        t1.create_emp=1,
+        t1.create_emp=#{createEmp},
         t1.modify_time=NOW(),
-        t1.modify_emp=1,
+        t1.modify_emp=#{modifyEmp},
         t1.remark=#{remark}
         where  t1.id=#{id}
     </update>

@@ -305,7 +305,7 @@
       </el-form>
     </el-dialog>
     <el-dialog :title='modifyTitle' :visible.sync="modifyDialogVisible" :close-on-click-modal="false" width="900px">
-      <el-form ref="form" :model="modifyForm" :rules="rulesModify" label-width="80px">
+      <el-form ref="modifyForm" :model="modifyForm" :rules="rulesModify" label-width="80px">
         <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
           <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">员工信息</div>
           <el-row>
@@ -885,15 +885,15 @@
         self.$refs["createForm"].validate(function (valid) {
           //if(self.$options.methods.checkInput(self)==false) return;
           if (valid) {
-            self.$http.post("employee/insertStaff",self.createForm)
-              .then(result => {
-                this.createDialogVisible=false;
-                self.$message.success("新建用户成功");
-              })
-              .catch(function (error) {
-                commonUtils.Log("employee/insertStaff:"+error);
-                self.$message.error("新建用户失败");
-              })} else {
+        self.$http.post("employee/insertStaff",self.createForm)
+          .then((result) => {
+            self.createDialogVisible=false;
+            self.$message.success("新建用户成功");
+          })
+          .catch(function (error) {
+            commonUtils.Log("employee/insertStaff:"+error);
+            self.$message.error("新建用户失败");
+          })} else {
             console.log('error submit!!');
             return false;
           }
@@ -907,19 +907,19 @@
       saveUpdate(){
         console.log("=========")
         const self=this;
-        self.$refs["createForm"].validate(function (valid) {
+        self.$refs["modifyForm"].validate(function (valid) {
           //if(self.$options.methods.checkInput(self)==false) return;
           if (valid) {
             self.$http.post("employee/updateStaff",self.modifyForm)
               .then(result => {
 
-                this.modifyDialogVisible=false;
-                self.$message.success("修改成功");
-              })
-              .catch(function (error) {
-                commonUtils.Log("employee/updateStaff:"+error);
-                self.$message.error("修改用户信息失败");
-              })} else {
+            self.modifyDialogVisible=false;
+            self.$message.success("修改成功");
+          })
+          .catch(function (error) {
+            commonUtils.Log("employee/updateStaff:"+error);
+            self.$message.error("修改用户信息失败");
+          })} else {
             console.log('error submit!!');
             return false;
           }
