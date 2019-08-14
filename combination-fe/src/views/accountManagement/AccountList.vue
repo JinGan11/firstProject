@@ -72,7 +72,6 @@
           <el-col style="text-align: center">
             <el-form-item>
               <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
-              <el-button type="primary" style="width:100px" @click="">导出</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -200,6 +199,110 @@
     <el-dialog :visible.sync="accounFlag" :close-on-click-modal="false" width="800px">
         <account-view ref="c1" :accountId="accountId" ></account-view>
     </el-dialog>
+
+    <el-dialog :title='contentTitle' :visible.sync="contentFormFlag" :close-on-click-modal="false" width="900px">
+      <el-form ref="form" :model="contentForm" label-width="80px">
+        <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
+          <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">员工信息</div>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="员工编号:" label-width="150px">
+                <el-input style="width:200px;"  v-model="contentForm.staffNum"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="员工姓名:" label-width="150px">
+                <el-input style="width:200px;" v-model="contentForm.staffName"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="性别:" label-width="150px">
+                <el-radio-group v-model="contentForm.staffSex">
+                  <el-radio :label="1">男</el-radio>
+                  <el-radio :label="2">女</el-radio>
+                </el-radio-group>
+                <!--                <el-input style="width:200px;" v-model="contentForm.staffSex"></el-input>-->
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="员工手机号:" label-width="150px">
+                <el-input style="width:200px;" v-model="contentForm.staffTelephone"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="员工邮箱:" label-width="150px">
+                <el-input style="width:200px;" v-model="contentForm.staffEmail"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="归属部门:" label-width="150px">
+                <el-input style="width:200px;" v-model="contentForm.departmentId"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="是否离职:" label-width="150px">
+                <el-input style="width:200px;" v-model="contentForm.isDimission"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="登录账号:" label-width="150px">
+                <el-input style="width:200px;" :disabled="true" v-model="contentForm.accountId"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+
+
+
+        <div>
+          <div style="font-family: Consolas; font-size:20px ; margin-left:50px;margin-bottom: 20px;padding-top: 20px">其他信息</div>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="新建时间:" label-width="150px">
+                <el-input style="width:200px;" :disabled="true" v-model="contentForm.createTime"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="新建人:" label-width="150px">
+                <el-input style="width:200px;" :disabled="true" v-model="contentForm.createEmp"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="修改时间:" label-width="150px">
+                <el-input style="width:200px;" :disabled="true" v-model="contentForm.modifyTime"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="修改人:" label-width="150px">
+                <el-input style="width:200px;" :disabled="true" v-model="contentForm.modifyEmp"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="备注:" label-width="150px">
+                <el-input style="width:200px;" v-model="contentForm.remark"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+        <el-row>
+          <el-col style="text-align: center">
+            <el-form-item>
+              <el-button type="primary" style="width:100px" @click="confirmInfo" >确定</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </el-dialog>
   </home>
 </template>
 
@@ -257,10 +360,26 @@
           children: 'children',
           id: 'powerId'
         },
+        contentForm:{
+          staffNum:'',
+          staffName:'',
+          staffSex:'',
+          staffTelephone:'',
+          staffEmail:'',
+          departmentId:'',
+          isDimission:'',
+          accountId:'',
+          remark:'',
+          createTime:'',
+          createEmp:'',
+          staffNumBtn:'',
+          modifyEmp:'',
+        },
         selectedNodes:[],
         accountAssignPermissionFlag: false,
         chooseDepartmentFlag: false,
         accounFlag: false,
+        contentFormFlag: false,
         accountAssignPermissionTitle: '账号权限分配',
         checkStrictly: false,
         row: {},
@@ -295,6 +414,9 @@
       }
     },
     methods: {
+      test(){
+        this.contentFormFlag = true;
+      },
       loadNodeDepartment(node,resolve){
         var self = this;
         self.$http.get('department/buildTree2.do_')

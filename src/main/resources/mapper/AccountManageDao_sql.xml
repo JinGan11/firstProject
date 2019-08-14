@@ -110,13 +110,13 @@
                 <foreach collection="departmentIds" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
         </if>
         <if test="accountName != null and accountName.trim() != ''">
-          and t1.account_name = #{accountName}
+          and t1.account_name like concat('%',#{accountName},'%')
         </if>
         <if test="staffName != null and staffName.trim() != ''">
-          and t2.staff_name = #{staffName}
+          and t2.staff_name like concat('%',#{staffName},'%')
         </if>
         <if test="staffNum != null and staffNum.trim() != ''">
-          and t2.staff_num = #{staffNum}
+          and t2.staff_num like concat('%',#{staffNum},'%')
         </if>
         <if test="permissions != null and permissions.trim() != ''">
           and t1.permissions = #{permissions}
