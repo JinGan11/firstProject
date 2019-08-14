@@ -252,14 +252,14 @@
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="11">
+              <el-col :span="6">
                 <el-form-item label="员工所属部门">
-                  <el-select v-model="form.department" placeholder="请选择" multiple collapse-tags>
-                    <el-option  :value="mineStatusValue" style="height: auto">
-                      <el-tree :data="data" check-strictly=true show-checkbox node-key="id" ref="tree" highlight-current :props="defaultProps"></el-tree>
-                    </el-option>
-                  </el-select>
+                  <el-input style="width:140px;" :disabled="true" v-model="form.department"></el-input>
                 </el-form-item>
+              </el-col>
+              <el-col :span="6">
+                <el-button type="text" @click="chooseDepartment">选择</el-button>
+                <el-button type="text">取消</el-button>
               </el-col>
               <el-col :span="6">
                 <el-form-item label="是否关联员工">
@@ -334,6 +334,21 @@
     </el-dialog>
 
 
+    <el-dialog title="选择部门" :visible.sync="chooseDepartmentFlag" width="300px">
+      <el-tree
+        ref="tree"
+        :props="defaultProps1"
+        node-key="id"
+        :load="loadNodeDepartment"
+        lazy="true"
+        check-strictly
+        show-checkbox
+        default-expanded-keys="[1]"
+        @check-change="handleClick1">
+      </el-tree>
+    </el-dialog>
+
+
 
 
 
@@ -353,6 +368,13 @@
     name: "createRoleApply",
     data() {
       return {
+        defaultProps1: {
+          label: 'departmentName',
+          children: 'children',
+          isLeaf: 'nodeIsLeaf',
+          id: 'id',
+          no: 'departmentNo',
+        },
         total: 0,
         currentPage: 1,
         pageSize: 10,
@@ -369,6 +391,7 @@
         applyOperationList: [],
         accountChangesList: [],
         roleStatus: '',
+        chooseDepartmentFlag: false,
 
 
         formRoleInfo: {//申请信息
@@ -468,6 +491,30 @@
 
 
     methods: {
+      loadNodeDepartment(node,resolve){
+        var self = this;
+        self.$http.get('department/buildTree2.do_')
+          .then((result) => {
+            resolve([result.departmentDto]);
+          }).catch(function (error) {
+        });
+      },
+
+      handleClick1(data,checked,node){
+        // 手动设置单选
+        if(checked === true) {
+          this.checkedId = data.id;
+          this.$refs.tree.setCheckedKeys([data.id]);
+          this.form.departmentId = data.id;
+          this.form.department = data.departmentName;
+        } else {
+          if (this.checkedId == data.id) {
+            this.$refs.tree.setCheckedKeys([data.id]);
+          }
+        }
+        this.closeChooseDepartment();
+      },
+
       handleSizeChangeRole(val) {
         this.pageSize = val;
         this.currentPage = 1;
@@ -489,6 +536,10 @@
         this.fetchData(val, this.pageSize);
       },
 
+      //弹出部门对话框
+      chooseDepartment(){
+        this.chooseDepartmentFlag = true;
+      },
 
       selectRoleForRoleApply() {
         //点击选择，弹出选择角色对话框
