@@ -32,6 +32,8 @@
     overflow: hidden;
     height: 100%;
     width: 100%;
+    margin-top: -15px;
+    margin-left: -15px;
     background-size: cover;
     background-repeat: no-repeat;
     background-image: url("../../static/img/home.jpg");
