@@ -15,7 +15,8 @@ public class FileUrlGenUtils {
 
     /**
      * desc:生成文件写路径后续 再考虑唯一性。。
-     *
+     * @author qingyu.lan@ucarinc.com
+     * @version 1.0
      * @param file
      * @return
      */
@@ -24,7 +25,7 @@ public class FileUrlGenUtils {
         StringBuffer sb = new StringBuffer(ROOT_DIR);
         String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
         String dateTime = simpleDateFormat.format(new Date());
-        sb.append("aaaa").append(dateTime).append(rnd.nextInt(10000)).append(rnd.nextInt(999)).append("."+fileType);
+        sb.append("ucar").append(dateTime).append(rnd.nextInt(10000)).append(rnd.nextInt(999)).append("."+fileType);
         return sb.toString();
     }
 

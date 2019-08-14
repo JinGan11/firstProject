@@ -237,16 +237,8 @@
       ref="upload"
       :http-request="uploadLicenses">
       <i class="el-icon-plus"></i>
+      <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件,且不超过2M,最多只能上传20张图片</div>
       </el-upload>
-      只能上传jpg/png/gif文件,且不超过2M,最多只能上传20张图片
-        <el-upload
-          class="upload-demo"
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-          list-type="picture">
-        </el-upload>
       </span>
     </el-dialog>
     <el-dialog :visible.sync="picDetail">
@@ -473,10 +465,6 @@
       },
       handleClose(done,file,fileList) {
         done();
-        for (let i = 0; i <this.unUploadFile.length ; i++) {
-          this.fileList.push(this.unUploadFile[i]);
-        }
-       // this.$refs.upload.clearFiles()
       },
       getFileList(file, fileList){
         this.unUploadFile=fileList;
