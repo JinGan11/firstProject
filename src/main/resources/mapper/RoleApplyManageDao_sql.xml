@@ -16,7 +16,8 @@
         t1.status                   applyStatus,
         t3.account_name             modifyEmp,
         t1.modify_time              modifyTime,
-        t1.reject_reason            rejectReason
+        t1.reject_reason            rejectReason,
+        t1.approval_time            approveTime
         from t_role_apply t1,t_role_info t2,t_account t3
         where t1.role_id=t2.id and t3.id=t1.modify_emp
         <if test="roleApplyNum!=null and roleApplyNum!=''">

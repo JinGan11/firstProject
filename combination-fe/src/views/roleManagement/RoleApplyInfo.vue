@@ -7,7 +7,6 @@
         </el-col>
       </el-row>
     </div>
-
     <div style="margin-top: 20px;margin-left: 40px;margin-bottom:20px;">
       <br>
       <el-form ref="form" :model="formRoleInfo" label-width="110px">

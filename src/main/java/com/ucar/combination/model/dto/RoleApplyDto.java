@@ -14,7 +14,6 @@ public class RoleApplyDto {
     private Long roleId;
     private String roleName;
     private String approverStaffName;
-//    private Integer businessLine;
     private String businessLine;
     private String applyAccountName;
     private String applyStaffNum;
@@ -25,6 +24,7 @@ public class RoleApplyDto {
     private String modifyEmp;
     private Date modifyTime;
     private String rejectReason;
+    private Date approveTime;
 
     public Long getId() {
         return id;
@@ -144,5 +144,13 @@ public class RoleApplyDto {
 
     public void setRejectReason(String rejectReason) {
         this.rejectReason = rejectReason;
+    }
+
+    public Date getApproveTime() {
+        return approveTime;
+    }
+
+    public void setApproveTime(Date approveTime) {
+        this.approveTime = approveTime;
     }
 }
