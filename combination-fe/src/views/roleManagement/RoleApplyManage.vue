@@ -105,7 +105,11 @@
       </el-table-column>
       <el-table-column prop="id"  label="隐藏id"></el-table-column>
       <el-table-column prop="roleApplyNum" label="角色申请编号" width="150"></el-table-column>
-      <el-table-column prop="roleId" label="申请角色ID"width="150"></el-table-column>
+      <el-table-column prop="roleId" label="申请角色ID"width="150">
+        <template slot-scope="scope">
+          <el-button type="text" size="small" @click="cellTrigger(scope.row.roleId)">{{scope.row.roleId}}</el-button>
+        </template>
+      </el-table-column>
       <el-table-column prop="roleName" label="申请角色名称"  width="150"></el-table-column>
       <el-table-column prop="approverStaffName" label="审批负责人" width="150"></el-table-column>
       <el-table-column prop="businessLine" label="角色支持业务线" width="150"></el-table-column>
@@ -166,6 +170,16 @@
         <el-button type="primary" @click="getCheckedDepartment">确定</el-button>
       </div>
     </el-dialog>
+
+
+
+
+
+
+
+
+
+
   </home>
 </template>
 <script>
@@ -281,6 +295,11 @@
       cancel() {
         this.dialogVisibleRole = false;
       },
+
+      cellTrigger(val) {//角色详情页
+        this.$router.push({path: '/RoleInf', query: {roleID: val}});
+      },
+
       fetchData() { //获取数据
         var self = this;
         var param = {
@@ -432,7 +451,8 @@
             params: param
           }).then(() => {
             self.$message.success("成功删除");
-            this.$router.go(0);
+            self.fetchData();
+            self.selection=[];
           }).catch(function (error) {
             commonUtils.Log("roleApply/deleteRoleApply.do_:" + error);
             self.$message.error("获取数据错误");
@@ -459,7 +479,8 @@
             params: param
           }).then(() => {
             self.$message.success("提交角色申请成功");
-            this.$router.go(0);
+            self.fetchData();
+            self.selection=[];
           }).catch(function (error) {
             commonUtils.Log("roleApply/commitRoleApply.do_:" + error);
             self.$message.error("获取数据错误");
