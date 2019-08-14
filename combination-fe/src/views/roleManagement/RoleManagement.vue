@@ -471,7 +471,7 @@
           param.filterIds.push(self.accountTableData[i].id);
         }
         param.filterIds=param.filterIds+"";
-        self.$http.get('account/querylist2.do_', {
+        self.$http.get('account/querylist.do_', {
           params: param
         }).then((result) => {
           self.addAccountData = result.page.list;

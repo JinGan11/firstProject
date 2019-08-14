@@ -107,7 +107,7 @@
         </if>
         <if test="userPermission == 2 or userPermission == 3 or userPermission == 5 ">
             and t2.department_id in
-                <foreach collection="departmentIds" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+                <foreach collection="departmentIds" item="item" open="(" separator="," close=")">#{item}</foreach>
         </if>
         <if test="accountName != null and accountName.trim() != ''">
           and t1.account_name like concat('%',#{accountName},'%')
@@ -134,7 +134,7 @@
             and t1.account_state = #{accountState}
         </if>
         <if test="filterIds != null">
-            and t1.id not in <foreach collection="filterIds" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+            and t1.id not in <foreach collection="filterIds" item="item2" open="(" separator="," close=")">#{item2}</foreach>
         </if>
         ORDER BY modify_time DESC
     </select>
