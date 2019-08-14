@@ -96,7 +96,11 @@
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
-      <el-table-column prop="accountName" label="登陆账号" style="width:auto"></el-table-column>
+      <el-table-column prop="accountName" label="登陆账号" style="width:auto">
+        <template slot-scope="scope">
+          <el-button type="text" @click="accountBtn(scope.row.id)">{{scope.row.accountName}}</el-button>
+        </template>
+      </el-table-column>
       <el-table-column prop="staffNum" label="员工编号" style="width:auto"></el-table-column>
       <el-table-column prop="staffName" label="员工姓名" style="width:auto"></el-table-column>
       <el-table-column prop="department" label="所属部门" style="width:auto"></el-table-column>
@@ -193,13 +197,15 @@
         @check-change="handleClick1">
       </el-tree>
     </el-dialog>
+    <el-dialog :visible.sync="accounFlag" :close-on-click-modal="false" width="800px">
+        <account-view ref="c1" :accountId="accountId" ></account-view>
+    </el-dialog>
   </home>
-
 </template>
 
 <script>
   import commonUtils from '../../common/commonUtils'
-
+  import accountView from './AccountView'
   export default {
     data() {
       return {
@@ -254,10 +260,11 @@
         selectedNodes:[],
         accountAssignPermissionFlag: false,
         chooseDepartmentFlag: false,
+        accounFlag: false,
         accountAssignPermissionTitle: '账号权限分配',
         checkStrictly: false,
         row: {},
-
+        accountId: '',
         AccountButtonPermission: {
           createPermission: true,
           modifyPermission: true,
@@ -270,6 +277,7 @@
         }
       }
     },
+     components: {accountView},
     activated() {
       commonUtils.Log("页面激活");
     },
@@ -633,10 +641,18 @@
       },
       closeChooseDepartment(){
         this.chooseDepartmentFlag = false;
+      },
+      //账户信息明细
+      accountBtn(val){
+        localStorage.setItem("accountId",val);
+        self.accountId = val;
+        this.accounFlag = true;
+        this.$refs.c1.fetchData(val);
       }
     },
     created() {
       const self = this;
+
       self.judgmentAuthority();
       self.$http.get('account/querylist.do_').then((result) => {
         self.tableData = result.page.list;
