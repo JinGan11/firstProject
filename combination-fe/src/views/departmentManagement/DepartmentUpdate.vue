@@ -434,6 +434,15 @@
     methods: {
       // 设置可选择业务线
       setSupportBusiness(self,data){
+        if(data.departmentNo == "Z000001"){ //总公司无上级公司，情况不同
+          self.businessDisable.shandai=true;
+          self.businessDisable.zhuanche=true;
+          self.businessDisable.zuche=true;
+          self.businessDisable.baoxian=true;
+          self.businessDisable.maimaiche=true;
+          self.$options.methods.fillData(self,data); // 填充其他数据
+          return;
+        }
         var supParam = {
           departmentNo: data.upperDepartmentNo
         };
@@ -457,13 +466,21 @@
         self.form=data;
         self.cityName=data.cityName;
         //设置已选业务线
-        var sups = data.supportBusiness.split(/[&;]/);
-        for(var i=0;i<sups.length;i++){
-          if(sups[i] == "闪贷" && !self.businessDisable.shandai) { self.supports.push("闪贷"); continue; }
-          if(sups[i] == "租车"  && !self.businessDisable.zuche) { self.supports.push("租车"); continue; }
-          if(sups[i] == "专车" && !self.businessDisable.zhuanche) { self.supports.push("专车"); continue; }
-          if(sups[i] == "保险" && !self.businessDisable.baoxian) { self.supports.push("保险"); continue; }
-          if(sups[i] == "买买车" && !self.businessDisable.maimaiche) { self.supports.push("买买车"); continue; }
+        if(data.departmentNo == "Z000001"){ // 总公司无上级公司，情况不同
+          self.supports.push("闪贷");
+          self.supports.push("租车");
+          self.supports.push("专车");
+          self.supports.push("保险");
+          self.supports.push("买买车");
+        }else{
+          var sups = data.supportBusiness.split(/[&;]/);
+          for(var i=0;i<sups.length;i++){
+            if(sups[i] == "闪贷" && !self.businessDisable.shandai) { self.supports.push("闪贷"); continue; }
+            if(sups[i] == "租车"  && !self.businessDisable.zuche) { self.supports.push("租车"); continue; }
+            if(sups[i] == "专车" && !self.businessDisable.zhuanche) { self.supports.push("专车"); continue; }
+            if(sups[i] == "保险" && !self.businessDisable.baoxian) { self.supports.push("保险"); continue; }
+            if(sups[i] == "买买车" && !self.businessDisable.maimaiche) { self.supports.push("买买车"); continue; }
+          }
         }
         // 设置经纬度
         if(data.longitude.trim()!=""){
