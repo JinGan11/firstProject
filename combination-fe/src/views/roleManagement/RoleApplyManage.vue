@@ -230,13 +230,6 @@
             <el-table-column prop="staffNum" label="关联员工编号"  width="150"></el-table-column>
             <el-table-column prop="department" label="关联员工所属部门" width="200"></el-table-column>
             <el-table-column prop="applyOperation" label="申请操作" width="150" style="text-align: center">
-              <template slot-scope="scope" v-if="scope.row.applyOperation ===1">
-                添加
-              </template>
-              <template slot-scope="scope" v-if="scope.row.applyOperation ===2">
-                移除
-              </template>
-
             </el-table-column>
           </el-table>
         </div>
@@ -352,6 +345,7 @@
         multipleSelection: [],
         tableDataAccount: [],
         applyId:'',
+        applyStatusSwitch:'',
 
         applyTimeStart:'',
         applyTimeEnd:'',
@@ -764,19 +758,14 @@
         this.otherInfo.applyAccountName = sessionStorage.getItem('loginUsername');//申请人员工姓名
         this.otherInfo.modifyStaffName = sessionStorage.getItem('modifyEmpFromApply');//修改人员工姓名
 
-        if(row.applyStatus=== 1){
-          this.otherInfo.applyStatus='已新建';//状态
-        }else if(row.applyStatus=== 2){
-          this.otherInfo.applyStatus='待审批';
-        }else if(row.applyStatus=== 3){
-          this.otherInfo.applyStatus='审批通过';
-        }else if(row.applyStatus=== 4){
-          this.otherInfo.applyStatus='审批拒绝';
-        }else(row.applyStatus===5)
-        {
-          this.otherInfo.applyStatus='已删除';
+        switch (row.applyStatus) {
+          case 1: this.otherInfo.applyStatus='已新建'; break;
+          case 2: this.otherInfo.applyStatus='待审批'; break;
+          case 3: this.otherInfo.applyStatus='审批通过';break;
+          case 4: this.otherInfo.applyStatus='审批拒绝'; break;
+          case 5: this.otherInfo.applyStatus='已删除'; break;
+          default: this.otherInfo.applyStatus=null;
         }
-
         this.showAccountListByApplyId();//查询改申请编号 包含的账号列表
         this.queryLoginInRoleApply();//申请人  具体信息
       },
@@ -791,6 +780,15 @@
         }).then((result) => {
           //请求成功回调
           self.tableDataAccount = result.list;
+          for(let i=0;i<self.tableDataAccount.length;i++){
+            if(self.tableDataAccount[i].applyOperation===1){
+              self.tableDataAccount[i].applyOperation='添加';
+            }
+            if(self.tableDataAccount[i].applyOperation===2){
+              self.tableDataAccount[i].applyOperation='移除';
+            }
+          }
+
         }).catch(function (error) {
           //请求失败回调
           commonUtils.Log("roleApply/showAccountListByApplyId.do_:" + error);
