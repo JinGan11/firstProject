@@ -84,8 +84,8 @@
       <el-button type="primary" @click="createEmployee" v-if="!empButtonPermission.createPermission"  style="width:70px">新建</el-button>
       <el-button type="primary" @click="modifyEmployee" v-if="!empButtonPermission.modifyPermission" :disabled="disabled" style="width:70px">修改</el-button>
       <el-button type="primary" @click="deleteEmployee" v-if="!empButtonPermission.deletePermission" :disabled="disabled" style="width:70px">删除</el-button>
-      <el-button type="primary" @click="quitEmployee" v-if="!empButtonPermission.quitPermission" :disabled="disabled" style="width:70px">离职</el-button>
-      <el-button type="primary" @click="recovery" v-if="!empButtonPermission.recoveryPermission" :disabled="disabled" style="width:70px">恢复</el-button>
+      <el-button type="primary" @click="quitEmployee" v-if="!empButtonPermission.quitPermission" :disabled="quitDisabled" style="width:70px">离职</el-button>
+      <el-button type="primary" @click="recovery" v-if="!empButtonPermission.recoveryPermission" :disabled="recoveryDisabled" style="width:70px">恢复</el-button>
       <el-button type="primary" @click="distributionDepartment" v-if="!empButtonPermission.assignDepPermission" :disabled="disabled" style="width:80px">分配部门</el-button>
     </div>
     <div style="margin-bottom: 10px" v-else>
@@ -751,6 +751,8 @@
         filterVal: [],
         list: [],
         disabled: true,
+        quitDisabled:true,//离职按钮显示
+        recoveryDisabled:true,//恢复按钮显示
         departmentVisible:false,
         defaultProps: {
           label: 'departmentName',
@@ -1184,11 +1186,11 @@
         }
         return this.filterVal;
       },
-      approvalInfo(val){
+    /*  approvalInfo(val){
         this.disabled = false;
         this.id = val.id;
         this.accountId = val.accountId;
-      },
+      },*/
       loadNode(node,resolve){
         var self = this;
         self.$http.get('department/buildTree2.do_', {
@@ -1304,6 +1306,14 @@
           commonUtils.Log("employee/otherInfo.do_:"+error);
           self.$message.error("获取数据错误");
         });
+        //恢复，离职显示按钮
+        if (val.isDimission==0){
+          self.quitDisabled=false;
+          self.recoveryDisabled=true;
+        }else {
+          self.quitDisabled=true;
+          self.recoveryDisabled=false;
+        }
       },
       selectDepartment(){//选择部门
         this.dialogVisibleDepartment=true;

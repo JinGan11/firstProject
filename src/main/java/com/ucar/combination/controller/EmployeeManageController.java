@@ -173,7 +173,7 @@ public class EmployeeManageController {
         accountStaff.setOperationType("离职");
         accountStaff.setCreateEmp((Long)(request.getSession().getAttribute("accountId")));
         Integer status3=accountManagerService.insertAccountHistory(accountStaff);
-        if (status1==0&status2==0&status3!=0){
+        if (status1==0&status2!=0&status3!=0){
             return Result.ok().put("status","success");
         }else {
             return Result.ok().put("status","error");
