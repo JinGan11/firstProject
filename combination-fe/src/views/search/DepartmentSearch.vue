@@ -1,28 +1,28 @@
 <template>
   <home>
-    <el-form :inline="true" :model="formInline" class="demo-form-inline" label-width="150px" >
+    <el-form :inline="true" :model="formInline" class="demo-form-inline" label-width="150px">
       <el-row>
         <el-col :span="7">
           <el-form-item label="部门名称">
-            <el-input v-model="formInline.departmentName" >
+            <el-input v-model="formInline.departmentName">
             </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item label="负责人ID">
-            <el-input v-model="formInline.staffId" ></el-input>
+            <el-input v-model="formInline.staffId"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item label="负责人姓名">
-            <el-input v-model="formInline.staffName" ></el-input>
+            <el-input v-model="formInline.staffName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="7">
           <el-form-item label="手机号">
-            <el-input v-model="formInline.telePhone" ></el-input>
+            <el-input v-model="formInline.telePhone"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="7">
@@ -45,7 +45,7 @@
         </el-col>
         <el-col :span="7">
           <el-form-item label="上级部门">
-            <el-input v-model="formInline.upperDepartmentName" >
+            <el-input v-model="formInline.upperDepartmentName">
             </el-input>
           </el-form-item>
         </el-col>
@@ -164,7 +164,7 @@
     </el-pagination>
     <el-dialog title="详情信息" :visible.sync="dialogVisibleDetail" :close-on-click-modal="false" width="900px">
       <el-form ref="form" :model="formDetail" label-width="80px">
-        <hr>
+        <hr style="height: 1px">
         <div>
           <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">申请信息</div>
           <el-row>
@@ -225,7 +225,7 @@
             </el-col>
           </el-row>
         </div>
-        <hr>
+        <hr style="height: 1px">
         <div>
           <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">业务信息</div>
           <el-row>
@@ -257,7 +257,7 @@
             </el-col>
           </el-row>
         </div>
-        <hr>
+        <hr style="height: 1px">
         <div>
           <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">关联公司列表</div>
           <el-table :data="tableCity" ref="multipleTable">
@@ -297,7 +297,7 @@
         </div>
 
         <div>
-          <hr>
+          <hr style="height: 1px">
           <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">其他信息</div>
           <el-row>
             <el-col :span="12">
@@ -483,9 +483,9 @@
           this.formDetail.departmentType = resultss.DepartmentTypeEnum[this.formDetail.departmentType];
           this.formDetail.level = resultss.LevelEnum[this.formDetail.level];
           this.formDetail.status = resultss.DepartmentStatusEnum[this.formDetail.status];
-          console.log(this.tableCity);
+
         }).catch(function (error) {
-          console.log('department/selectDepartment.do_' + error);
+
           this.$message.error("获取数据错误");
         });
         this.dialogVisibleDetail = true;
@@ -518,7 +518,7 @@
           self.LevelEnum = result.LevelEnum;
           self.departmentList = result.listSearch;
         }).catch(function (error) {
-          console.log('department/searchDepartment.do_' + error);
+
           self.$message.error("获取数据错误");
         });
       },
@@ -706,7 +706,6 @@
         this.list = this.states.map(item => {
           return {value: item, label: item};
         });
-        console.log(this.states);
       })
     }
   }

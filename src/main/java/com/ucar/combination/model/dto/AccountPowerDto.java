@@ -10,6 +10,7 @@ import java.util.Date;
  * @create: 2019-08-09 15:15
  */
 public class AccountPowerDto {
+	private Long accountId;
 	private String accountName;
 	private Long staffId;
 	private String staffNum;
@@ -24,6 +25,32 @@ public class AccountPowerDto {
 	private String remark;
 	private String email;
 	private String path;
+	private String createEmpName;
+	private String modifyEmpName;
+
+	public Long getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
+	}
+
+	public String getCreateEmpName() {
+		return createEmpName;
+	}
+
+	public void setCreateEmpName(String createEmpName) {
+		this.createEmpName = createEmpName;
+	}
+
+	public String getModifyEmpName() {
+		return modifyEmpName;
+	}
+
+	public void setModifyEmpName(String modifyEmpName) {
+		this.modifyEmpName = modifyEmpName;
+	}
 
 	public String getPath() {
 		return path;

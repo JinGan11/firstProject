@@ -76,12 +76,12 @@
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column prop="createEmp" v-if="false"></el-table-column>
-      <el-table-column prop="createTime" v-if="false"></el-table-column>
-      <el-table-column prop="modifyEmp" v-if="false"></el-table-column>
-      <el-table-column prop="modifyTime" v-if="false"></el-table-column>
-      <el-table-column prop="remark" v-if="false"></el-table-column>
-      <el-table-column prop="email" v-if="false"></el-table-column>
+      <el-table-column prop="accountId" v-if="false"></el-table-column>
+      <!--  <el-table-column prop="createTime" v-if="false"></el-table-column>
+       <el-table-column prop="modifyEmp" v-if="false"></el-table-column>
+       <el-table-column prop="modifyTime" v-if="false"></el-table-column>
+       <el-table-column prop="remark" v-if="false"></el-table-column>
+       <el-table-column prop="email" v-if="false"></el-table-column>-->
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
@@ -105,40 +105,77 @@
         <el-button @click="cancel">取 消</el-button>
       </template>
     </el-dialog>
-    <el-dialog title='详情页面' :visible.sync="detailDialogVisible" :close-on-click-modal="false" width="600px">
-      <el-form :inline="true" label-width="130px" :model="formDetail" class="demo-form-inline">
+    <el-dialog title='详情页面' :visible.sync="detailDialogVisible" :close-on-click-modal="false" width="800px">
+      <hr style="height: 1px">
+      <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">账号信息</div>
+      <el-form label-width="130px" :model="formDetail" class="demo-form-inline">
         <el-row>
-          <el-form-item label="登录账号">
-            <el-input :readonly="true" v-model="formDetail.accountName">
-            </el-input>
-          </el-form-item>
-          <el-row>
+          <el-col :span="10">
+            <el-form-item label="登录账号">
+              <el-input :readonly="true" v-model="formDetail.accountName"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="密保邮箱">
+              <el-input :readonly="true" v-model="formDetail.secretEmail"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
             <el-form-item label="员工编号">
-              <el-input :readonly="true" v-model="formDetail.staffNum">
+              <el-input :readonly="true" v-model="formDetail.staffNum"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="员工姓名">
+              <el-input :readonly="true" v-model="formDetail.staffName">
               </el-input>
             </el-form-item>
-            <el-form-item label="密保邮箱">
-              <el-input :readonly="true" v-model="formDetail.email"></el-input>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="数据权限类型">
+              <el-input :readonly="true" v-model="formDetail.premissions"></el-input>
             </el-form-item>
-          </el-row>
-          <el-row>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="账号状态">
+              <el-input :readonly="true" v-model="formDetail.accountState"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <hr style="height: 1px;">
+        <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">其他信息</div>
+        <el-row>
+          <el-col :span="10">
             <el-form-item label="新建人">
-              <el-input :readonly="true" v-model="formDetail.createEmp"></el-input>
+              <el-input :readonly="true" v-model="formDetail.creatEmpName"></el-input>
             </el-form-item>
+          </el-col>
+          <el-col :span="10">
             <el-form-item label="新建时间">
               <el-input :readonly="true" v-model="formDetail.createTime"></el-input>
             </el-form-item>
-          </el-row>
-          <el-form-item label="修改人">
-            <el-input :readonly="true" v-model="formDetail.modifyEmp"></el-input>
-          </el-form-item>
-          <el-form-item label="修改时间">
-            <el-input :readonly="true" v-model="formDetail.modifyTime"></el-input>
-          </el-form-item>
-          <el-form-item label="备注">
-            <el-input :readonly="true" v-model="formDetail.remark"></el-input>
-          </el-form-item>
+          </el-col>
         </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="修改人">
+              <el-input :readonly="true" v-model="formDetail.modifyEmpName"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="10">
+            <el-form-item label="修改时间">
+              <el-input :readonly="true" v-model="formDetail.modifyTime"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-form-item label="备注">
+          <el-input :readonly="true" v-model="formDetail.remark"></el-input>
+        </el-form-item>
+
       </el-form>
     </el-dialog>
     <!--选择部门时弹出的窗口-->
@@ -196,6 +233,8 @@
           createTime: '',
           modifyEmp: '',
           modifyTime: '',
+          premissions: '',
+          accountState: '',
           remark: '',
         },
         defaultProps: {
@@ -218,6 +257,8 @@
         list: [],
         disabled: true,
         accountPowerList: [],
+        permissionEnum:[],
+        accountStatusEnum:[],
       }
     },
     methods: {
@@ -327,16 +368,18 @@
         this.checkAll = checkedCount === this.roles.length;
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.roles.length;
       },
+      //显示详情页，并注入详情页信息
       formDetails(val) {
-        this.formDetail.accountName = val.accountName;
-        this.formDetail.staffId = val.staffId;
-        this.formDetail.staffNum = val.staffNum;
-        this.formDetail.modifyTime = val.modifyTime;
-        this.formDetail.modifyEmp = val.modifyEmp;
-        this.formDetail.createEmp = val.createEmp;
-        this.formDetail.createTime = val.createTime;
-        this.formDetail.remark = val.remark;
-        this.formDetail.email = val.email;
+        var param = {
+          id: val.accountId,
+        }
+        this.$http.get("/account/selectAccountById.do_", {
+          params: param
+        }).then((result) => {
+          this.formDetail = result.account;
+          this.formDetail.premissions=result.permissionEnum[this.formDetail.premissions];
+          this.formDetail.accountState=result.accountStatusEnum[this.formDetail.accountState];
+        })
         this.detailDialogVisible = true;
       },
       /*selectDepartment到getCheckedDepartment是对应的部门操作*/

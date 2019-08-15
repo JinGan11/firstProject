@@ -62,7 +62,7 @@ public class AccountManagerController {
     @RequestMapping("/selectAccountById.do_")
     public Result selectAccountById(HttpServletRequest request){
         String id = request.getParameter("id");
-        return new Result().ok().put("account",accountManagerService.selectAccountById(id));
+        return new Result().ok().put("account",accountManagerService.selectAccountById(id)).put("permissionEnum",CommonEnums.toEnumMap(CommonEnums.Permission.values())).put("accountStatusEnum",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()));
     }
 
     /*

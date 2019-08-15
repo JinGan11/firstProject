@@ -34,6 +34,7 @@
     </insert>
     <select id="getAccountPowerList" resultType="com.ucar.combination.model.dto.AccountPowerDto">
         select
+        T.id accountId,
         T.account_name,
         T.staff_id,
         T1.staff_num,
