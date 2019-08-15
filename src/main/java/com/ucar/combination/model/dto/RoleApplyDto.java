@@ -25,6 +25,16 @@ public class RoleApplyDto {
     private Date modifyTime;
     private String rejectReason;
     private Date approveTime;
+    private Long accountId;
+
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
 
     public Long getId() {
         return id;

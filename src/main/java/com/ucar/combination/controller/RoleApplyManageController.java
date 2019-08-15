@@ -36,6 +36,7 @@ public class RoleApplyManageController {
     public Result list(HttpServletRequest request, HttpSession session) {
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
+
         //请求界面中的数据
         String roleApplyNum = request.getParameter("roleApplyNum");
         String roleId = request.getParameter("roleId");
@@ -49,6 +50,8 @@ public class RoleApplyManageController {
         String applyTimeEnd = request.getParameter("applyTimeEnd");
         String modifyTimeStart = request.getParameter("modifyTimeStart");
         String modifyTimeEnd = request.getParameter("modifyTimeEnd");
+        Long accountId = (Long) session.getAttribute("accountId");
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("page", page);
         params.put("limit", limit);
@@ -65,6 +68,8 @@ public class RoleApplyManageController {
         params.put("applyTimeEnd", applyTimeEnd);
         params.put("modifyTimeStart", modifyTimeStart);
         params.put("modifyTimeEnd", modifyTimeEnd);
+
+        params.put("accountId",accountId);
 
         if (request.getParameter("type").equals("角色审核")) {
             String accountName = (String) session.getAttribute("accountName");

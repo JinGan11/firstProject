@@ -342,6 +342,7 @@
         titleRoleApplyInfo:'角色申请详情',
 
 
+
         multipleSelection: [],
         tableDataAccount: [],
         applyId:'',
@@ -448,6 +449,7 @@
     mounted() {
       commonUtils.Log("页面进来");
       this.fetchData();
+
     },
     methods: {
       handleSizeChange(val) {
@@ -489,9 +491,6 @@
           modifyTimeEnd: self.form.modifyTime[1],
           type:'角色申请'
         };
-        // get请求 只是基本的HTTP调用，用来执行增晒改查  并不表示get用来获取数据
-        // url  请求地址
-        // param  对象 用来替换url中的模板变量，模板变量中未匹配到的属性添加在URL地址后边作为查询参数。
         self.$http.get('roleApply/querylist.do_', {
           params: param
         }).then((result) => {

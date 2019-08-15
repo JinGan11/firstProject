@@ -120,6 +120,6 @@ public interface RoleApplyManageService {
     * @Return
     * @Date  19:10 2019/8/14
     */
-
     String getApplyNum();
+
 }

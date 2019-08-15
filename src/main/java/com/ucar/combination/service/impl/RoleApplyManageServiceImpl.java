@@ -4,12 +4,15 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.dao.AccountManageDao;
 import com.ucar.combination.dao.RoleApplyManageDao;
 import com.ucar.combination.model.dto.*;
+import com.ucar.combination.service.DepartmentService;
 import com.ucar.combination.service.RoleApplyManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -24,10 +27,19 @@ import java.util.List;
 public class RoleApplyManageServiceImpl implements RoleApplyManageService {
     @Autowired(required = false)
     private RoleApplyManageDao roleApplyManageDao;
-
+    @Resource
+    private DepartmentService departmentService;
+    @Resource
+    private AccountManageDao accountManageDao;
 
     @Override
     public ResultPage queryList(QueryParam queryParam) {
+        Long accountId = (Long)queryParam.get("accountId");
+        List<Long> departmentIdList = departmentService.selectDataPowerIds(accountId);
+        int permission = accountManageDao.selectPermissionsById(accountId);
+        queryParam.put("userPermission",permission);
+        queryParam.put("departmentIdList",departmentIdList);
+
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
         List<RoleApplyDto> list = roleApplyManageDao.queryList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
