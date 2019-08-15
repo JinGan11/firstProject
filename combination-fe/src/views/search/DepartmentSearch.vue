@@ -335,7 +335,7 @@
         </div>
       </el-form>
     </el-dialog>
-    <el-dialog title='excelTitle' :visible.sync="exportDialogVisible" :close-on-click-modal="false" width="600px">
+    <el-dialog title='请选择需要导出的字段' :visible.sync="exportDialogVisible" :close-on-click-modal="false" width="600px">
       <template>
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         <div style="margin: 15px 0;"></div>
@@ -561,8 +561,21 @@
               list[i].status = this.StatusEnum[list[i].status];
               list[i].level = this.LevelEnum[list[i].level];
             }
+            //获取当前时间
+            var date = new Date();
+            var seperator1 = "-";
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+              month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+              strDate = "0" + strDate;
+            }
+            var currentdate = year + seperator1 + month + seperator1 + strDate;
             const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '员工管理列表excel');
+            export_json_to_excel(tHeader, data, '角色管理 '+currentdate);
             this.$message({
               showClose: true,
               message: '文件导出成功',
