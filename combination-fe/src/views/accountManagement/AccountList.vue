@@ -39,7 +39,7 @@
           </el-col>
           <el-col :span="6">
             <el-button type="text" @click="chooseDepartment">选择</el-button>
-            <el-button type="text">取消</el-button>
+            <el-button type="text" @click="clearDepartment">取消</el-button>
           </el-col>
           <el-col :span="6">
             <el-form-item label="是否关联员工">
@@ -186,14 +186,14 @@
     <el-dialog title="选择部门" :visible.sync="chooseDepartmentFlag" width="300px">
       <el-tree
         ref="tree"
-        :props="defaultProps1"
+        :props="defaultPropsTree"
         node-key="id"
         :load="loadNodeDepartment"
         lazy="true"
         check-strictly
         show-checkbox
         default-expanded-keys="[1]"
-        @check-change="handleClick1">
+        @check-change="handleClickChange">
       </el-tree>
     </el-dialog>
     <el-dialog :visible.sync="accounFlag" :close-on-click-modal="false" width="800px">
@@ -312,7 +312,7 @@
   export default {
     data() {
       return {
-        defaultProps1: {
+        defaultPropsTree: {
           label: 'departmentName',
           children: 'children',
           isLeaf: 'nodeIsLeaf',
@@ -426,7 +426,7 @@
 
         });
       },
-      handleClick1(data,checked,node){
+      handleClickChange(data,checked,node){
         // 手动设置单选
         if(checked === true) {
           this.checkedId = data.id;
@@ -760,6 +760,10 @@
       },
       chooseDepartment(){
         this.chooseDepartmentFlag = true;
+      },
+      clearDepartment(){
+        this.form.departmentId = '';
+        this.form.department = '';
       },
       closeChooseDepartment(){
         this.chooseDepartmentFlag = false;
