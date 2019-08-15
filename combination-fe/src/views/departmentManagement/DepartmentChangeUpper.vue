@@ -101,10 +101,10 @@
         self.$http.post("department/updateUpperDepartment.do_",params)
           .then(result => {
             if(result.result==false){
-              alert(result.msg);
+              self.$message.error(result.msg);
               return false;
             }
-            alert("修改成功！");
+            self.$message.success("修改成功！");
             self.$router.replace("/departmentManagement/showDepartment");
           })
           .catch(function (error) {
