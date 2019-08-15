@@ -66,6 +66,12 @@
         <if test="department != null and department.trim() != ''">
             AND t1.is_dimission =#{upper_department_no}
         </if>
+        <if test="department != null and department.trim() != ''">
+            AND t1.department_id =#{department}
+        </if>
+        <if test="upper_department_no != null and upper_department_no.trim() != ''">
+            AND t2.upper_department_no =#{upper_department_no}
+        </if>
         ORDER BY createTime DESC
     </select>
 
