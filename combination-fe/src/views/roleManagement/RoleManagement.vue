@@ -529,7 +529,10 @@
             params: param
           }).then(() => {
             self.$message.info("角色删除成功")
-            this.$router.go(0);
+            this.fetchData();
+            this.isAddCount = true;
+            this.isModify = true;
+
           }).catch(function (error) {
             commonUtils.Log("roleManage/updateStatus.do_:" + error);
             self.$message.error("角色删除失败");

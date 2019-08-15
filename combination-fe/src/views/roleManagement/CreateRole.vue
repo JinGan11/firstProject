@@ -74,24 +74,24 @@
             <el-row>
               <el-col :span="10">
                 <el-form-item label="新建人">
-                  <el-input style="width:200px;" :disabled="true" placeholder="当前操作账户" v-model="createEmp"></el-input>
+                  <el-input style="width:200px;" :disabled="true" placeholder="保存时的操作账户" v-model="createEmp"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
                 <el-form-item label="新建时间">
-                  <el-input style="width:200px;" :disabled="true" placeholder="当前时间" v-model="createTime"></el-input>
+                  <el-input style="width:200px;" :disabled="true" placeholder="保存时的时间" v-model="createTime"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="10">
                 <el-form-item label="修改人">
-                  <el-input style="width:200px;" :disabled="true" placeholder="当前操作账户" v-model="modifyEmp"></el-input>
+                  <el-input style="width:200px;" :disabled="true" placeholder="保存时的操作账户" v-model="modifyEmp"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
                 <el-form-item label="修改时间">
-                  <el-input style="width:200px;" :disabled="true" placeholder="当前操作时间" v-model="modifyTime"></el-input>
+                  <el-input style="width:200px;" :disabled="true" placeholder="保存时时间" v-model="modifyTime"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -290,10 +290,10 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
-      this.createEmp=window.sessionStorage.getItem("loginUsername");
-      this.modifyEmp=window.sessionStorage.getItem("loginUsername");
-      this.createTime=this.format(new Date(), "yyyy-MM-dd HH:mm:ss");
-      this.modifyTime=this.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+      //this.createEmp=window.sessionStorage.getItem("loginUsername");
+      //this.modifyEmp=window.sessionStorage.getItem("loginUsername");
+      //this.createTime=this.format(new Date(), "yyyy-MM-dd HH:mm:ss");
+      //this.modifyTime=this.format(new Date(), "yyyy-MM-dd HH:mm:ss");
     },
 
     methods: {
