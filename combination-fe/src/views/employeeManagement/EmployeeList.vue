@@ -145,22 +145,22 @@
           <el-form-item label="分配部门"></el-form-item>
           <br>
           <el-form-item label="员工编号">
-            <el-input v-model="formdiStributionDepartment.staffId" placeholder="请输入员工编号"></el-input>
+            <el-input v-model="formdiStributionDepartment.staffNum" disabled></el-input>
           </el-form-item>
           <el-form-item label="员工姓名">
-            <el-input v-model="formdiStributionDepartment.staffName" placeholder="请输入员工姓名"></el-input>
+            <el-input v-model="formdiStributionDepartment.staffName" disabled></el-input>
           </el-form-item>
           <el-form-item label="性别">
-            <el-input v-model="formdiStributionDepartment.staffSex" placeholder="请输入性别"></el-input>
+            <el-input v-model="formdiStributionDepartment.staffSex" disabled></el-input>
           </el-form-item>
           <el-form-item label="员工手机">
-            <el-input v-model="formdiStributionDepartment.staffPhone" placeholder="请输入员工手机"></el-input>
+            <el-input v-model="formdiStributionDepartment.staffPhone" disabled></el-input>
           </el-form-item>
           <el-form-item label="当前归属部门">
-            <el-input v-model="formdiStributionDepartment.staffBeforeDepartment" placeholder="请输入当前部门"></el-input>
+            <el-input v-model="formdiStributionDepartment.staffBeforeDepartment" disabled></el-input>
           </el-form-item>
           <el-form-item label="调整后部门">
-            <el-input style="width: 170px;" v-model="formdiStributionDepartment.staffAfterDepartment" placeholder="请输入归属部门"></el-input><el-button style="width: 40px" typ="primary" @click="departmentVisible=true">选择</el-button>
+            <el-input style="width: 170px;" v-model="formdiStributionDepartment.staffAfterDepartmentName" disabled></el-input><el-button style="width: 40px" typ="primary" @click="departmentVisible=true">选择</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -724,11 +724,13 @@
         staffDtoList: [],
         formdiStributionDepartment: {
           staffId: '',
+          staffNum:'',
           staffName: '',
           staffSex: '',
           staffPhone: '',
           staffBeforeDepartment: '',
           staffAfterDepartment: '',
+          staffAfterDepartmentName:'',
         },
         distributionDepartmentFlag: false,
         deleteEmployeeFlag: false,
@@ -1008,7 +1010,7 @@
             self.fetchData();
           }).catch(function (error) {
             commonUtils.Log("employee/deleteEmployee" + error);
-            self.$message.error("获取数据错误");
+           self.$message.error("获取数据错误");
           });
         }).catch(() => {
           this.$message({
@@ -1069,7 +1071,7 @@
 
           }).catch(function (error) {
             commonUtils.Log("employee/recoverEmployee.do_" + error);
-            self.$message.error("恢复失败");
+            //self.$message.error("恢复失败");
           });
         }).catch(() => {
           this.$message({
@@ -1203,6 +1205,7 @@
       },
       getCheckedNodes() {
         // 用于演示获取部门id的方式
+        this.formdiStributionDepartment.staffAfterDepartmentName=this.$refs.tree.getCheckedNodes()[0].departmentName;
         this.formdiStributionDepartment.staffAfterDepartment=this.$refs.tree.getCheckedNodes()[0].id;
         this.departmentVisible=false;
         //alert(this.$refs.tree.getCheckedNodes()[0].id);
@@ -1292,6 +1295,13 @@
         this.modifyForm.createTime=val.createTime;
         this.modifyForm.remark=val.remark;
 
+        this.formdiStributionDepartment.staffNum=val.staffNum;
+        this.formdiStributionDepartment.staffAfterDepartment=val.staffAfterDepartment;
+        this.formdiStributionDepartment.staffPhone=val.staffTelephone;
+        this.formdiStributionDepartment.staffSex=this.SexEnum[val.staffSex];
+        this.formdiStributionDepartment.staffBeforeDepartment=val.departmentName;
+        this.formdiStributionDepartment.staffName=val.staffName;
+
         //回填创建人和修改人
         var self = this;
         var param = {
@@ -1304,7 +1314,7 @@
 
         }).catch(function (error) {
           commonUtils.Log("employee/otherInfo.do_:"+error);
-          self.$message.error("获取数据错误");
+          //self.$message.error("获取数据错误");
         });
         //恢复，离职显示按钮
         if (val.isDimission==0){
