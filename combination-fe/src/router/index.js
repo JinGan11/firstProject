@@ -44,7 +44,8 @@ export default new Router({
     name: '首页',
     component: Home,
     meta:{
-      breadNumber:0
+      breadNumber:0,
+      requireAuth:true
     }
   },{
     path: '/',
