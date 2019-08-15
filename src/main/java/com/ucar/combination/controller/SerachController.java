@@ -45,9 +45,9 @@ public class SerachController {
 		params.put("staffNum", staffNum);
 		params.put("staffName", staffName);
 		params.put("roleStatus", roleStatus);
+        params.put("accountState", accountState);
 		params.put("departmentName", departmentName);
 		params.put("departmentId",departmentId);
-		params.put("accountState", accountState);
 		params.put("page", request.getParameter("currentPage"));
 		params.put("limit", request.getParameter("pageSize"));
 		ResultPage resultPage = accountManagerService.getRoleAccountList(new QueryParam(params));
