@@ -151,7 +151,9 @@ public class AccountManagerController {
         params.put("filterIds",filterIds);
         params.put("flag",flag);
         ResultPage resultPage = accountManagerService.queryList(new QueryParam(params));
+        List<Account> accountDtoList = accountManagerService.getAccountList(new QueryParam(params));
         return new Result().ok().put("page", resultPage)
+                .put("accountDtoList",accountDtoList)
                 .put("permissionList",CommonEnums.toJsonList(CommonEnums.Permission.values()))
                 .put("permissionEnum",CommonEnums.toEnumMap(CommonEnums.Permission.values()))
                 .put("accountStatusEnum",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()))

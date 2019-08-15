@@ -17,7 +17,7 @@
           <el-row>
             <el-col :span="9">
               <el-form-item label="登录账户">
-                <el-input  style="width:300px " v-model="modifyForm.accountNum" :disabled="true" autocomplete="off" ></el-input>
+                <el-input  style="width:250px " v-model="modifyForm.accountNum" :disabled="true" autocomplete="off" ></el-input>
               </el-form-item>
               <div style="position: absolute; width: 0px">
                 <el-form-item label="">
@@ -32,7 +32,7 @@
                 </el-form-item>
               </div>
               <el-form-item label="密码" >
-                <el-input  style="width:300px " type="password" v-model="modifyForm.password" :disabled="true" ></el-input>
+                <el-input  style="width:250px " type="password" v-model="modifyForm.password" :disabled="true" ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -40,7 +40,7 @@
           <el-row>
             <el-col :span="7">
               <el-form-item label="关联员工编号">
-                <el-input style="width: 180px" v-model="modifyForm.staffNum" :disabled="true"></el-input>
+                <el-input style="width: 150px" v-model="modifyForm.staffNum" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="2">
@@ -49,14 +49,14 @@
             </el-col>
             <el-col :span="8">
               <el-form-item label="员工姓名">
-                <el-input style="width: 300px" v-model="modifyForm.staffName" :disabled="true"></el-input>
+                <el-input style="width: 250px" v-model="modifyForm.staffName" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="9">
               <el-form-item label="数据权限类型" prop="permissions">
-                <el-select style="width:300px;" v-model="modifyForm.permissions" clearable placeholder="请选择" @change="pressionChange">
+                <el-select style="width:250px;" v-model="modifyForm.permissions" clearable placeholder="请选择" @change="pressionChange">
                   <el-option
                     v-for="item in permissionsList"
                     :key="item.value"
@@ -68,7 +68,7 @@
             </el-col>
             <el-col :span="8">
               <el-form-item label="密保邮箱" prop="secretEmail">
-                <el-input style="width:300px;" v-model="modifyForm.secretEmail" clearable :disabled="emailDisabled"></el-input>
+                <el-input style="width:250px;" v-model="modifyForm.secretEmail" clearable :disabled="emailDisabled"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -76,7 +76,7 @@
             <el-col :span="9">
               <el-form-item label="手动选择部门" prop="permissions">
                 <el-tree
-                  style="width:300px;"
+                  style="width:250px;"
                   ref="tree"
                   :props="defaultProps"
                   node-key="id"
@@ -104,12 +104,12 @@
           <el-row>
             <el-col :span="9">
               <el-form-item label="新建人">
-                <el-input style="width:300px;" :disabled="true" v-model="modifyForm.creatEmpName"></el-input>
+                <el-input style="width:250px;" :disabled="true" v-model="modifyForm.creatEmpName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="新建时间">
-                <el-input style="width:300px;" :disabled="true" v-model="modifyForm.createTime"></el-input>
+                <el-input style="width:250px;" :disabled="true" v-model="modifyForm.createTime"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -117,19 +117,19 @@
           <el-row>
             <el-col :span="9">
               <el-form-item label="修改人">
-                <el-input style="width:300px;" :disabled="true" v-model="modifyForm.modifyEmpName"></el-input>
+                <el-input style="width:250px;" :disabled="true" v-model="modifyForm.modifyEmpName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label="修改时间">
-                <el-input style="width:300px;" :disabled="true" v-model="modifyForm.modifyTime"></el-input>
+                <el-input style="width:250px;" :disabled="true" v-model="modifyForm.modifyTime"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="9">
               <el-form-item label="账号状态">
-                <el-select style="width:700px;" :disabled="true" v-model="modifyForm.accountState" clearable placeholder="请选择" @change="pressionChange">
+                <el-select style="width:250px;" :disabled="true" v-model="modifyForm.accountState" clearable placeholder="请选择" @change="pressionChange">
                   <el-option
                     v-for="item in statusList"
                     :key="item.value"
@@ -141,9 +141,9 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="6">
+            <el-col>
               <el-form-item label="备注">
-                <el-input style="width: 700px" type="textarea" :rows="2" v-model="modifyForm.remark"></el-input>
+                <el-input style="width: 73%" type="textarea" :rows="2" v-model="modifyForm.remark"></el-input>
               </el-form-item>
             </el-col>
           </el-row>

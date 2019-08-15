@@ -17,7 +17,7 @@
         <el-row>
           <el-col :span="9">
             <el-form-item label="登录账户" prop="accountName">
-              <el-input  style="width:300px " v-model="newForm.accountName" autocomplete="off" clearable></el-input>
+              <el-input  style="width:250px " v-model="newForm.accountName" autocomplete="off" clearable></el-input>
             </el-form-item>
             <div style="position: absolute; width: 0px">
               <el-form-item label="">
@@ -32,7 +32,7 @@
             </el-form-item>
             </div>
             <el-form-item label="密码" prop="password">
-              <el-input style="width:300px " type="password" v-model="newForm.password" autocomplete="off" clearable></el-input>
+              <el-input style="width:250px " type="password" v-model="newForm.password" autocomplete="off" clearable></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -40,7 +40,7 @@
         <el-row>
           <el-col :span="7">
             <el-form-item label="关联员工编号">
-              <el-input style="width: 180px" v-model="newForm.staffNum" disabled="true"></el-input>
+              <el-input style="width: 150px" v-model="newForm.staffNum" disabled="true"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="2">
@@ -49,14 +49,14 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="员工姓名">
-              <el-input style="width: 300px" v-model="newForm.staffName" disabled="true"></el-input>
+              <el-input style="width: 250px" v-model="newForm.staffName" disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="9">
             <el-form-item label="数据权限类型" prop="permissions">
-              <el-select style="width:300px;" v-model="newForm.permissions" clearable placeholder="请选择" @change="pressionChange">
+              <el-select style="width:250px;" v-model="newForm.permissions" clearable placeholder="请选择" @change="pressionChange">
                 <el-option
                   v-for="item in permissionsList"
                   :key="item.value"
@@ -68,7 +68,7 @@
           </el-col>
           <el-col :span="8">
             <el-form-item label="密保邮箱" prop="secretEmail">
-              <el-input style="width:300px;" v-model="newForm.secretEmail" clearable :disabled="emailDisabled"></el-input>
+              <el-input style="width:250px;" v-model="newForm.secretEmail" clearable :disabled="emailDisabled"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -77,7 +77,7 @@
             <el-col :span="6">
               <el-form-item label="手动选择部门" prop="permissions">
                 <el-tree
-                  style="width:300px;"
+                  style="width:250px;"
                   ref="tree"
                   :props="defaultProps"
                   node-key="id"
@@ -104,38 +104,38 @@
         <el-row>
           <el-col :span="9">
             <el-form-item label="新建人">
-              <el-input style="width:300px;" :disabled="true"></el-input>
+              <el-input style="width:250px;" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="新建时间">
-              <el-input style="width:300px;" :disabled="true"></el-input>
+              <el-input style="width:250px;" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="9">
             <el-form-item label="修改人">
-              <el-input style="width:300px;" :disabled="true"></el-input>
+              <el-input style="width:250px;" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
             <el-form-item label="修改时间">
-              <el-input style="width:300px;" :disabled="true"></el-input>
+              <el-input style="width:250px;" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="6">
             <el-form-item label="账号状态">
-              <el-select style="width:700px;" :disabled="true" clearable placeholder="正常" ></el-select>
+              <el-select style="width:250px;" :disabled="true" clearable placeholder="正常" ></el-select>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="6">
+          <el-col>
             <el-form-item label="备注">
-              <el-input style="width: 700px" type="textarea" :rows="2" v-model="newForm.remark"></el-input>
+              <el-input style="width: 72%" type="textarea" :rows="2" v-model="newForm.remark"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -202,7 +202,7 @@
         rules: {
           password: [
             { required: true, message: '请输入密码', trigger: 'blur' },
-            { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' },
+            { min: 8, max: 20, message: '长度在 8 到 20 个字符', trigger: 'blur' },
             {pattern:/((^(?=.*[a-z])(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]+$)|(^(?=.*\d)(?=.*[A-Z])(?=.*\W)[\da-zA-Z\W]+$)|(^(?=.*\d)(?=.*[a-z])(?=.*\W)[\da-zA-Z\W]+$)|(^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[\da-zA-Z\W]+$))/,
               message:'密码不合法，密码必须包含大小写字母，数字和特殊字符如(@#$%),且至少包含其中三种', trigger: 'blur'}
           ],

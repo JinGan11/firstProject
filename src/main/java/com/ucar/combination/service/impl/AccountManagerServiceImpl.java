@@ -44,6 +44,13 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     @Resource
     private DepartmentService departmentService;
 
+    /**
+     * description: 账户管理列表
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date：
+     * @PArams：queryParam 查询条件
+     * @Return：ResultPage 查询结果
+     */
     @Override
     public ResultPage queryList(QueryParam queryParam) {
         Long userId = (Long)queryParam.get("userId");
@@ -62,6 +69,31 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
         List<Account> list = accountManageDao.queryList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
+    }
+
+    /**
+     * description: 账户管理excel
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date： 2019/8/15 12:25
+     * @PArams：queryParam 查询条件
+     * @Return：List 查询结果
+     */
+    @Override
+    public List<Account> getAccountList(QueryParam queryParam) {
+        Long userId = (Long)queryParam.get("userId");
+        List<Long> departmentIdList = departmentService.selectDataPowerIds(userId);
+        int permission = accountManageDao.selectPermissionsById(userId);
+        queryParam.put("userPermission",permission);
+        Long [] departmentIds = new Long[departmentIdList.size()];
+        if(permission != 1 && permission != 4) {
+            int i = 0;
+            for (Long id : departmentIdList) {
+                departmentIds[i] = id;
+                i++;
+            }
+            queryParam.put("departmentIds",departmentIds);
+        }
+        return accountManageDao.queryList(queryParam);
     }
 
     @Override

@@ -13,7 +13,7 @@
               <el-input style="width:160px;" v-model="form.staffNo" clearable></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="7">
             <el-form-item label="员工姓名">
               <el-input style="width:180px;" v-model="form.name" clearable></el-input>
             </el-form-item>
@@ -32,16 +32,16 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="5">
+          <el-col :span="6">
             <el-form-item label="员工所属部门">
               <el-input style="width:140px;" :disabled="true" v-model="form.department"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="5">
             <el-button type="text" @click="chooseDepartment">选择</el-button>
             <el-button type="text" @click="clearDepartment">取消</el-button>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="7">
             <el-form-item label="是否关联员工">
               <el-select style="width: 180px" v-model="form.isRelStaff" clearable placeholder="请选择">
                 <el-option
@@ -72,6 +72,7 @@
           <el-col style="text-align: center">
             <el-form-item>
               <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
+              <el-button type="primary" @click="add1" style="width:100px" >导出</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -81,40 +82,39 @@
       <el-button type="primary" v-if="!AccountButtonPermission.createPermission" @click="creatAccount" style="width:70px">新建</el-button>
       <el-button type="primary" v-if="!AccountButtonPermission.modifyPermission" :disabled="deleteDisabled" @click="modifyAccount" style="width:70px">修改</el-button>
       <el-button type="primary" v-if="!AccountButtonPermission.deletePermission" :disabled="deleteDisabled" @click="deleteAccount" style="width:70px">删除</el-button>
-      <el-button type="primary" v-if="!AccountButtonPermission.frozenPermission" :disabled="deleteDisabled" @click="lock" style="width:70px">冻结</el-button>
-      <el-button type="primary" v-if="!AccountButtonPermission.thawPermission" :disabled="deleteDisabled" @click="unlock" style="width:70px">解冻</el-button>
+      <el-button type="primary" v-if="!AccountButtonPermission.frozenPermission" :disabled="deleteDisabled || frozenDisabled" @click="lock" style="width:70px">冻结</el-button>
+      <el-button type="primary" v-if="!AccountButtonPermission.thawPermission" :disabled="deleteDisabled || thawDisabled" @click="unlock" style="width:70px">解冻</el-button>
       <el-button type="primary" v-if="!AccountButtonPermission.resetPermission" :disabled="deleteDisabled" @click="resetPass" style="width:80px">密码重置</el-button>
       <el-button type="primary" v-if="!AccountButtonPermission.assignAccountPermission" :disabled="deleteDisabled" @click="assignPermission" style="width:80px">分配权限</el-button>
-      <el-button type="primary" v-if="!AccountButtonPermission.historyPermission" :disabled="deleteDisabled" @click="" style="width:80px">历史记录</el-button>
+      <el-button type="primary" v-if="!AccountButtonPermission.historyPermission" :disabled="disabled" @click="" style="width:80px">历史记录</el-button>
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
-<!--      <el-table-column type="selection" width="35"></el-table-column>-->
       <el-table-column label="选择" width="50px">
         <template slot-scope="scope">
           <el-radio v-model="selection" :label="scope.row.id" @change="approvalInfo(scope.row)"><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
-      <el-table-column prop="accountName" label="登陆账号" style="width:auto">
+      <el-table-column prop="accountName" label="登陆账号" width="130px">
         <template slot-scope="scope">
           <el-button type="text" @click="accountBtn(scope.row.id)">{{scope.row.accountName}}</el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="staffNum" label="员工编号" style="width:auto"></el-table-column>
-      <el-table-column prop="staffName" label="员工姓名" style="width:auto"></el-table-column>
-      <el-table-column prop="department" label="所属部门" style="width:auto"></el-table-column>
-      <el-table-column prop="premissions" label="数据权限类型" style="width:auto">
+      <el-table-column prop="staffNum" label="员工编号" width="130px" ></el-table-column>
+      <el-table-column prop="staffName" label="员工姓名" width="120px"></el-table-column>
+      <el-table-column prop="department" label="所属部门" width="120px"></el-table-column>
+      <el-table-column prop="premissions" label="数据权限类型" width="120px">
         <template slot-scope="scope">
           {{form.permissionsEnum[scope.row.premissions]}}
         </template>
       </el-table-column>
-      <el-table-column prop="accountState" label="账号状态" style="width:auto">
+      <el-table-column prop="accountState" label="账号状态" width="120px">
         <template slot-scope="scope">
           {{form.accountStatusEnum[scope.row.accountState]}}
         </template>
       </el-table-column>
-      <el-table-column prop="modifyTime" label="操作时间" style="width:auto"></el-table-column>
-      <el-table-column prop="modifyEmpName" label="操作人" style="width:auto"></el-table-column>
+      <el-table-column prop="modifyTime" label="操作时间" width=""></el-table-column>
+      <el-table-column prop="modifyEmpName" label="操作人" width="120px"></el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
@@ -199,13 +199,27 @@
     <el-dialog :visible.sync="accounFlag" :close-on-click-modal="false" width="800px">
         <account-view ref="c1" :accountId="accountId" ></account-view>
     </el-dialog>
+    <el-dialog :title='excelTitle' :visible.sync="exportVisible" :close-on-click-modal="false" width="600px">
+      <template>
+        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+        <div style="margin: 15px 0;"></div>
+        <el-checkbox-group v-model="checkedAccounts" @change="handleCheckedAccountsChange">
+          <el-checkbox v-for="account in accounts" :label="account" :key="account">{{account}}</el-checkbox>
+        </el-checkbox-group>
+      </template>
+      <template slot="footer">
+        <el-button type="primary" @click="exportExcel">确定导出</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </template>
+    </el-dialog>
   </home>
 </template>
 
 <script>
   import commonUtils from '../../common/commonUtils'
   import accountView from './AccountView'
-  export default {
+  const accountOptions = ['登陆账号','员工编号','员工姓名','所属部门','数据权限类型','账号状态','操作时间','操作人'];
+    export default {
     data() {
       return {
         defaultPropsTree: {
@@ -240,9 +254,12 @@
           status:null
         },
         tableData: [],
+        accountDtoList: [],
         selection: [],
         disabled: true,
         deleteDisabled: true,
+        frozenDisabled: true,
+        thawDisabled: true,
         myAccount:[],
         roleList: [],
         roleSelectedList: [],
@@ -261,6 +278,13 @@
         chooseDepartmentFlag: false,
         accounFlag: false,
         contentFormFlag: false,
+        exportVisible: false,
+        excelTitle: '请选择需要导出的字段',
+        isIndeterminate: true,
+        checkAll: false,
+        accounts: accountOptions,
+        checkedAccounts: [],
+        filterVal: [],
         accountAssignPermissionTitle: '账号权限分配',
         checkStrictly: false,
         row: {},
@@ -294,6 +318,22 @@
       {
         return this.rightSelected.length === 0
       }
+    },
+    created() {
+      const self = this;
+      self.judgmentAuthority();
+      self.$http.get('account/querylist.do_').then((result) => {
+        self.tableData = result.page.list;
+        self.accountDtoList = result.accountDtoList;
+        self.form.permissionsList = result.permissionList;
+        self.form.permissionsEnum = result.permissionEnum;
+        self.form.accountStatusEnum = result.accountStatusEnum;
+        self.form.accountStatusList = result.accountStatusList;
+        self.total = result.page.totalCount;
+      }).catch(function (error) {
+        commonUtils.Log("account/querylist.do_:"+error);
+        self.$message.error("获取数据错误")
+      });
     },
     methods: {
       test(){
@@ -363,6 +403,7 @@
           };
           this.$http.post("account/lock",accountId).then((result) => {
             this.$message.success("冻结成功")
+            this.fetchData();
           }).catch(function (error) {
             commonUtils.Log("account/lock" + error);
             this.$message.error("冻结失败");
@@ -385,6 +426,7 @@
           };
           this.$http.post("account/unLock",accountId).then((result) => {
             this.$message.success("解冻成功");
+            this.fetchData();
           }).catch(function (error) {
             commonUtils.Log("account/unlock" + error);
             this.$message.error("解冻失败")
@@ -417,6 +459,10 @@
       },
       fetchData(){
         var self = this;
+        self.disabled = true;
+        self.deleteDisabled = true;
+        self.frozenDisabled = true;
+        self.thawDisabled = true;
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
@@ -432,6 +478,7 @@
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
+          self.accountDtoList = result.accountDtoList;
           self.form.permissionsList = result.permissionList;
           self.form.permissionsEnum = result.permissionEnum;
           self.form.accountStatusEnum = result.accountStatusEnum;
@@ -466,7 +513,7 @@
           self.$http.post('account/deleAccount.do_', param)
             .then((result) => {
               self.$message.info("删除成功");
-              self.$router.go(0)
+              self.fetchData();
             }).catch(function (error) {
             commonUtils.Log("account/deleAccount.do_:" + error);
             self.$message.error("删除失败")
@@ -482,10 +529,18 @@
         const self = this;
         self.row = val;
         self.disabled = false;
-        if(val.accountState != 3){
+        if(val.accountState == 1){
           self.deleteDisabled = false;
+          self.frozenDisabled = false;
+          self.thawDisabled = true;
+        }else if(val.accountState == 2){
+          self.deleteDisabled = false;
+          self.frozenDisabled = true;
+          self.thawDisabled = false;
         }else{
           self.deleteDisabled = true;
+          self.frozenDisabled = true;
+          self.thawDisabled = true;
         }
         self.myAccount.id = val.id;
         self.myAccount.accountName = val.accountName;
@@ -656,23 +711,97 @@
         self.accountId = val;
         this.accounFlag = true;
         this.$refs.c1.fetchData(val);
-      }
-    },
-    created() {
-      const self = this;
+      },
+      //打开导出弹窗
+      add1() {
+        this.exportVisible = true;
+      },
+      cancel(){
+        this.exportVisible = false;
+      },
+      handleCheckAllChange(val) {
+        this.checkedAccounts = val ? accountOptions : [];
+        this.isIndeterminate = false;
+      },
+      handleCheckedAccountsChange(value) {
+        let checkedCount = value.length;
+        this.checkAll = checkedCount === this.accounts.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.employees.length;
+      },
+      exportExcel() {
+        if (this.checkedAccounts.length === 0) {
+          this.$message({
+            showClose: false,
+            message: '请选择需要导出的字段',
+            type: 'error'
+          });
+        } else {
+          require.ensure([], () => {
+            const {export_json_to_excel} = require('../../excel/Export2Excel');
+            const tHeader = this.checkedAccounts;
+            // 上面设置Excel的表格第一行的标题
 
-      self.judgmentAuthority();
-      self.$http.get('account/querylist.do_').then((result) => {
-        self.tableData = result.page.list;
-        self.form.permissionsList = result.permissionList;
-        self.form.permissionsEnum = result.permissionEnum;
-        self.form.accountStatusEnum = result.accountStatusEnum;
-        self.form.accountStatusList = result.accountStatusList;
-        self.total = result.page.totalCount;
-      }).catch(function (error) {
-        commonUtils.Log("account/querylist.do_:"+error);
-        self.$message.error("获取数据错误")
-      });
+            const filterVal = this.exportField(this.checkedAccounts);
+            // 上面的staffNum、accountId、staffName是tableData里对象的属性
+            const list = this.accountDtoList;  //把data里的tableData存到list
+            for (let i = 0; i < list.length; i++) {
+              if (list[i].premissions === 1) {
+                list[i].premissions = '全部'
+              } else if (list[i].premissions === 2) {
+                list[i].premissions = '递归'
+              } else if (list[i].premissions === 3) {
+                list[i].premissions = '本部门'
+              } else if (list[i].premissions === 4) {
+                list[i].premissions = '本人'
+              } else if (list[i].premissions === 5) {
+                list[i].premissions = '手动选择'
+              }
+              if (list[i].accountState === 1) {
+                list[i].accountState = '正常'
+              } else if (list[i].accountState === 2) {
+                list[i].accountState = '冻结'
+              } else if (list[i].accountState === 3) {
+                list[i].accountState = '无效'
+              }
+            }
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '员工管理列表excel');
+            this.$message({
+              showClose: true,
+              message: '文件导出成功',
+              type: 'success'
+            });
+            this.dialogVisible = false;
+            this.checkedemployees = [];
+            this.filterVal = [];
+          })
+        }
+      },
+      formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
+      },
+      exportField(val) {
+        for (let i = 0; i < val.length; i++) {
+          if (this.checkedAccounts[i] === '登陆账号') {
+            this.filterVal.push('accountName')
+          } else if (this.checkedAccounts[i] === '员工编号') {
+            this.filterVal.push('staffNum')
+          } else if (this.checkedAccounts[i] === '员工姓名') {
+            this.filterVal.push('staffName')
+          } else if (this.checkedAccounts[i] === '所属部门') {
+            this.filterVal.push('department')
+          } else if (this.checkedAccounts[i] === '数据权限类型') {
+            this.filterVal.push('premissions')
+          } else if (this.checkedAccounts[i] === '账号状态') {
+            this.filterVal.push('accountState')
+          } else if (this.checkedAccounts[i] === '操作时间') {
+            this.filterVal.push('modifyTime')
+          } else if (this.checkedAccounts[i] === '操作人') {
+            this.filterVal.push('modifyEmpName')
+          }
+        }
+        return this.filterVal;
+      },
     },
   }
 </script>

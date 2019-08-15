@@ -1,6 +1,6 @@
 <template>
   <home>
-    <div style="width:100%; margin-left: 70px">
+    <div style="width:100%; margin-left: 110px">
       <div>
         <div style="width: 60%; float:left">
           <h2 style="color: #409EFF">|账户信息</h2>

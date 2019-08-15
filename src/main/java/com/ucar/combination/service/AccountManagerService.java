@@ -24,10 +24,19 @@ public interface AccountManagerService {
      * description: 账户管理列表
      * @uthor： junqiang.zhang@ucarinc.com
      * @Date：
-     * @PArams：
-     * @Return：
+     * @PArams：queryParam 查询条件
+     * @Return：ResultPage 查询结果
      */
     ResultPage queryList(QueryParam queryParam);
+
+    /**
+     * description: 账户管理excel
+     * @uthor： junqiang.zhang@ucarinc.com
+     * @Date： 2019/8/15 12:25
+     * @PArams：queryParam 查询条件
+     * @Return：List 查询结果
+     */
+    List<Account> getAccountList(QueryParam queryParam);
 
     /**
      * description: 通过账户id查询账户数据
