@@ -16,6 +16,7 @@
               :fetch-suggestions="querySearchRegionCode"
               placeholder="请输入国际代码"
               @select="handleSelectRegionCode"
+              clearable
             ></el-autocomplete>
           </el-col>
           <el-col :span="12">
@@ -28,6 +29,7 @@
               :fetch-suggestions="querySearch"
               placeholder="请输入省市"
               @select="handleSelect"
+              clearable
             ></el-autocomplete>
           </el-col>
           <el-col :span="4">
@@ -253,6 +255,7 @@
           //带输入建议的选择框
           state1:'',
           provinceSuggest:[],
+          flags:'1',
 
         provinceBtnPermission: {
           createPermission: true,
@@ -413,7 +416,7 @@
 
         //带建议的输入：省份名字
         querySearch(queryString, cb) {
-            var provinceSuggests = this.provinceSearchList;
+            var provinceSuggests = this.provinceSuggest;
             var results = queryString ? provinceSuggests.filter(this.createFilter(queryString)) : provinceSuggests;
 
             // 调用 callback 返回建议列表的数据
@@ -430,7 +433,7 @@
         },
         //带建议的输入：国际代码
         querySearchRegionCode(queryString, cb) {
-            var provinceSuggests = this.provinceSearchList;
+            var provinceSuggests = this.provinceSuggest;
             var results = queryString ? provinceSuggests.filter(this.createFilterRegionCode(queryString)) : provinceSuggests;
             // 调用 callback 返回建议列表的数据
             cb(results);

@@ -13,6 +13,7 @@
               :fetch-suggestions="querySearchRegionCode"
               placeholder="请输入国际代码"
               @select="handleSelect"
+              clearable
             ></el-autocomplete>
           </el-col>
           <el-col :span="5">
@@ -25,6 +26,7 @@
               :fetch-suggestions="querySearchRegionName"
               placeholder="请输入区县"
               @select="handleSelect"
+              clearable
             ></el-autocomplete>
           </el-col>
           <el-col :span="5">
@@ -37,6 +39,7 @@
               :fetch-suggestions="querySearchUpperRegion"
               placeholder="请输入城市"
               @select="handleSelect"
+              clearable
             ></el-autocomplete>
           </el-col>
           <el-col :span="55">
@@ -49,6 +52,7 @@
               :fetch-suggestions="querySearchUpperRegionTwice"
               placeholder="请输入省市"
               @select="handleSelect"
+              clearable
             ></el-autocomplete>
           </el-col>
 
