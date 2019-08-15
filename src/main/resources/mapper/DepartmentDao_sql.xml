@@ -115,14 +115,14 @@
             T.longitude,
             T.latitude,
             T2.city_name cityName,
-            T3.staff_name createName,
-            T4.staff_name modifyName,
+            T3.account_name createName,
+            T4.account_name modifyName,
             T5.department_name upperDepartmentName
         FROM
             t_department T
             LEFT JOIN t_b_city T2 ON T.city_id=T2.city_id
-            LEFT JOIN t_staff T3 ON T.create_emp=T3.account_id
-            LEFT JOIN t_staff T4 ON T.modify_emp=T4.account_id
+            LEFT JOIN t_account T3 ON T.create_emp=T3.id
+            LEFT JOIN t_account T4 ON T.modify_emp=T4.id
             LEFT JOIN t_department T5 ON T.upper_department_no=T5.department_no
         WHERE
             T.id=#{id}

@@ -198,7 +198,7 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="修改人">
-            <el-input style="width:200px;" :disabled="true" v-model="form.modifyEmp"></el-input>
+            <el-input style="width:200px;" :disabled="true" v-model="form.modifyName"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
