@@ -164,12 +164,6 @@
           <el-table-column prop="staffNum" label="关联员工编号"  ></el-table-column>
           <el-table-column prop="department" label="关联员工所属部门" width="200"></el-table-column>
           <el-table-column prop="applyOperation" label="申请操作" width="150" style="text-align: center">
-            <template slot-scope="scope" v-if="scope.row.applyOperation ===0">
-              移除
-            </template>
-            <template slot-scope="scope" v-if="scope.row.applyOperation ===1">
-              添加
-            </template>
           </el-table-column>
         </el-table>
       </div>
@@ -395,6 +389,14 @@
 
           //请求成功回调
           this.tableDataAccount = result.list;
+          for(let i=0;i<this.tableDataAccount.length;i++){
+            if(this.tableDataAccount[i].applyOperation===1){
+              this.tableDataAccount[i].applyOperation='添加';
+            }
+            if(this.tableDataAccount[i].applyOperation===2){
+              this.tableDataAccount[i].applyOperation='移除';
+            }
+          }
 
         }).catch(function (error) {
           //请求失败回调
@@ -420,9 +422,9 @@
         var removeAccountIds=[];
 
         for (let i = 0; i < self.tableDataAccount.length; i++) {
-          if(self.tableDataAccount[i].applyOperation ===2){
+          if(self.tableDataAccount[i].applyOperation ==='移除'){
             removeAccountIds.push(self.tableDataAccount[i].id)
-          }else if(self.tableDataAccount[i].applyOperation ===1){
+          }else if(self.tableDataAccount[i].applyOperation ==='添加'){
             accountIds.push(self.tableDataAccount[i].id)
           }
         }
