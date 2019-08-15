@@ -189,7 +189,7 @@
           </el-row>
         </el-form>
       <div style="margin-bottom: 10px">
-        <el-button type="primary" @click="selectionConfirm" style="width:70px">确认选择</el-button>
+        <el-button type="primary" @click="selectionConfirm" :disabled="isChoose" style="width:70px">确认选择</el-button>
         <el-button type="primary" @click="selectionCancel" style="width:70px">取消</el-button>
       </div>
       <el-table ref="multipleTable" :data="tableData" border @current-change="handleSelectionChange" >
@@ -239,6 +239,7 @@
   export default {
     data() {
       return {
+        isChoose: true,
         rules: {
           roleName: [{required: true, message: '角色名不能为空', trigger: ['blur','change']}],
           accountNum: [{required: true, message: '账户不能为空', trigger: ['blur','change']}],
@@ -342,6 +343,7 @@
       },
       handleSelectionChange(val) {
         this.selection = val;
+        isChoose = false;
       },
       save(formName) {//保存修改角色信息
         const self = this;

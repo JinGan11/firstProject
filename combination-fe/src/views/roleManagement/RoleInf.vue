@@ -163,15 +163,15 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
-      this.fetchData();
-      this.fetchOtherData();
+      var roleid = this.$route.query.roleID;
+      this.fetchData(roleid);
+      this.fetchOtherData(roleid);
     },
     methods: {
 
-      fetchOtherData() {
-        var roleid;
+      fetchOtherData(roleid) {
+        //var roleid;
         var self = this;
-        roleid = this.$route.query.roleID;
         var param = {
           roleID: roleid,
         };
@@ -191,10 +191,10 @@
         this.$router.replace('/roleManagement/roleManagement')
       },
 
-      fetchData(){
-        var roleid;
+      fetchData(roleid){
+        //var roleid;
         var self = this;
-        roleid=this.$route.query.roleID;
+        //roleid=this.$route.query.roleID;
         var param = {
           roleID: roleid,
         };
