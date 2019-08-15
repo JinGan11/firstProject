@@ -91,7 +91,7 @@ public class DepartmentServiceImpl implements DepartmentService {
                 DepartmentTreeBuilder builder = new DepartmentTreeBuilder();
                 List<DepartmentTreeDto> list = departmentDao.queryDepartmentTreeAll();
                 builder.buildTree(list);
-                List<Long> ids2 = builder.getRecursionId(accountId);
+                List<Long> ids2 = builder.getRecursionId(employeeManageDao.selectDepartmentId(accountId));
                 return ids2;
             case 3: //3-本部门
                 List<Long> ids3 = new ArrayList<>();
@@ -188,26 +188,27 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     /**
      * description: 访问DAO层得到DEPARTMENT数据库的信息
-     * @author jing.luo01@ucarinc.com
-     * @date   2019/8/6 10:13
-     * @params id 描述
-
+     *
      * @return
+     * @author jing.luo01@ucarinc.com
+     * @date 2019/8/6 10:13
+     * @params id 描述
      */
     @Override
     public DepartmentDto getDepartmentDtoById(String id) {
         return departmentDao.getDepartmentDtoById(Long.valueOf(id));
     }
+
     /**
      * description: 得到所有的部门信息
-     * @author jing.luo01@ucarinc.com
-     * @date   2019/8/15 9:44
-     * @params queryParam 描述
-
+     *
      * @return 返回部门信息的LIST集合
+     * @author jing.luo01@ucarinc.com
+     * @date 2019/8/15 9:44
+     * @params queryParam 描述
      */
     @Override
-    public List<SearchDepartmentDto> searchDepartmentAll( QueryParam queryParam) {
+    public List<SearchDepartmentDto> searchDepartmentAll(QueryParam queryParam) {
         return departmentDao.searchDepartment(queryParam);
     }
 }
