@@ -417,13 +417,20 @@
       approvalPass(){
         var self = this;
         var accountIds=[];
+        var removeAccountIds=[];
+        console.log( self.tableDataAccount)
         for (let i = 0; i < self.tableDataAccount.length; i++) {
-          accountIds.push(self.tableDataAccount[i].id)
+          if(self.tableDataAccount.applyOperation ===0){
+            removeAccountIds.push(self.tableDataAccount[i].id)
+          }else if(self.tableDataAccount.applyOperation ===1){
+            accountIds.push(self.tableDataAccount[i].id)
+          }
         }
         var param = {
           id:self.selection,
+          accountIds:accountIds.toString(),
+          removeAccountIds:removeAccountIds.toString(),
           roleId:self.apply.role_id,
-          accountIds:accountIds.toString()
         };
         self.$http.get('roleApplyApproval/approvalPass.do_', {
           params: param

@@ -37,5 +37,14 @@ public interface RoleApplyApprovalDao {
      */
     void insertRoleAccount(Map<String, Object> map);
 
+    /**
+     * description:角色审批通过，移除对应角色账户信息
+     * @author qingyu.lan@ucarinc.com
+     * @date  2019-08-15 12:46:26
+     * @params map
+     * @return
+     */
+    void removeRoleAccount(Map<String, Object> map);
+
 
 }

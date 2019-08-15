@@ -37,13 +37,16 @@ public class RoleApplyApprovalController {
         String id = request.getParameter("id");
         String roleId = request.getParameter("roleId");
         String ids = request.getParameter("accountIds");
+        String deIds = request.getParameter("removeAccountIds");
         String[] accountIds = ids.split(",");
+        String[] removeAccountIds =deIds.split(",");
         Long accountId = (Long) session.getAttribute("accountId");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", id);
         params.put("roleId", roleId);
         params.put("accountIds", accountIds);
         params.put("accountId", accountId);
+        params.put("removeAccountIds",removeAccountIds);
         roleApplyApprovalService.approvalPass(params);
         return Result.ok().put("msg", "success");
     }

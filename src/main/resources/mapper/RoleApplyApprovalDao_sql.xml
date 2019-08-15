@@ -35,6 +35,14 @@
         </foreach>
     </insert>
 
+    <delete id="removeRoleAccount">
+        DELETE from t_r_account_role
+        WHERE role_id=#{roleId}
+        and account_id in
+        <foreach collection="removeAccountIds" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
+    </delete>
 
 
 

@@ -17,6 +17,7 @@ public class RoleApplyApprovalServiceImpl implements RoleApplyApprovalService {
     public void approvalPass(Map<String, Object> map) {
         roleApplyApprovalDao.approvalPass(map);
         roleApplyApprovalDao.insertRoleAccount(map);
+        roleApplyApprovalDao.removeRoleAccount(map);
     }
 
     @Override
