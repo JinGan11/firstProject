@@ -9,6 +9,7 @@ public interface UserService {
 
     Result login(User loginUser);
     ReturnResult updatePassword(UpdateUserPwd userPwdVo);
+    ReturnResult resetPassword(UpdateUserPwd userPwd);
     Result getEmpInfo(User user);
     Result isFirstLogin(User user);
     Result getAllAccountListByModifyTime();

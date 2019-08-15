@@ -44,6 +44,20 @@ public class UserController {
     }
 
     /**
+     * description: 修改密码
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/7/31 16:52
+     * @params user 存储前台传入的用户信息以及要修改的密码
+     * @return 结果集
+     */
+    @RequestMapping("/resetPassword")
+    public ReturnResult resetPassword(@RequestBody UpdateUserPwd userPwdVo) {
+        //通过session获取用户的Id
+        ReturnResult result = userService.resetPassword(userPwdVo);
+        return result;
+    }
+
+    /**
      * description: 获得员工的具体信息
      * @author peng.zhang11@ucarinc.com
      * @date   2019/7/31 16:53

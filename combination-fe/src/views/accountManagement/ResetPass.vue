@@ -20,7 +20,6 @@
 </template>
 
 <script>
-  import App from '../../App'
   import commonUtils from "../../common/commonUtils";
   import utils from '../../common/util'
   export default {
@@ -73,10 +72,9 @@
           if (valid) {
             var param = {
               accountName: self.ruleForm.accountName,
-              oldPassword: self.ruleForm.oldPass,
               newPassword: self.ruleForm.newPass
             };
-            self.$http.post('user/updatePassword', param)
+            self.$http.post('user/resetPassword', param)
               .then((result) => {
                 if (result.code === 200) {
                   self.$confirm('密码修改成功，请重新登录', '提示', {
@@ -84,7 +82,6 @@
                     type: 'warning'
                   }).then(() => {
                     utils.$emit("clearLoginSession");
-                    App.methods.clearLoginSession();
                     self.$router.replace("/")
                   })
                 } else if (result.code === 300) {
@@ -92,7 +89,7 @@
                     confirmButtonText: '确定',
                   });
                 } else {
-                  self.$alert("旧密码输入错误！", '消息提醒', {
+                  self.$alert("旧密码输入错误！!", '消息提醒', {
                     confirmButtonText: '确定',
                   });
                 }
