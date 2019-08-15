@@ -282,4 +282,16 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     public void updateAccountSecretEmailById(String secretEmail,String id){
         accountManageDao.updateAccountSecretEmailById(secretEmail,id);
     }
+    /**
+     * description: 得到所有的AccountPowerDto信息，用于导出所有数据时用
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/15 9:49
+     * @params queryParam 描述
+
+     * @return List<AccountPowerDto>返回AccountPowerDto的集合
+     */
+    @Override
+    public List<AccountPowerDto> getAllAccountPowerList(QueryParam queryParam) {
+        return powerDao.getAccountPowerList(queryParam);
+    }
 }

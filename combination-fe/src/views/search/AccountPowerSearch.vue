@@ -249,7 +249,7 @@
             self.tableData = result.page.list;
             self.total = result.page.totalCount;
             this.AccountStatusEnums = result.AccountStatusEnums;
-            this.accountPowerList = result.page.list;
+            this.accountPowerList = result.accountPowerDtoList;
           } else {
             alert("查询失败");
           }

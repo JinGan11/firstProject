@@ -5,6 +5,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.RoleAccount;
+import com.ucar.combination.model.dto.AccountPowerDto;
 import com.ucar.combination.service.AccountManagerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -94,8 +95,9 @@ public class SerachController {
 		param.put("path",path);
 		param.put("accountState",accountState);
 		ResultPage resultPage = accountManagerService.getAccountPowerList(new QueryParam(param));
+		List<AccountPowerDto> accountPowerDtoList=accountManagerService.getAllAccountPowerList(new QueryParam(param));
 		if (resultPage.getList()!=null){
-			return Result.ok().put("page",resultPage).put("status","success").put("AccountStatusEnums",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()));
+			return Result.ok().put("page",resultPage).put("status","success").put("AccountStatusEnums",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values())).put("accountPowerDtoList",accountPowerDtoList);
 		}else {
 			return Result.ok().put("status","error");
 		}

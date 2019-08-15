@@ -198,7 +198,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     public DepartmentDto getDepartmentDtoById(String id) {
         return departmentDao.getDepartmentDtoById(Long.valueOf(id));
     }
+    /**
+     * description: 得到所有的部门信息
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/15 9:44
+     * @params queryParam 描述
 
+     * @return 返回部门信息的LIST集合
+     */
     @Override
     public List<SearchDepartmentDto> searchDepartmentAll( QueryParam queryParam) {
         return departmentDao.searchDepartment(queryParam);

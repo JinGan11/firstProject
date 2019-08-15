@@ -6,6 +6,7 @@ import com.ucar.combination.model.*;
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.model.Staff;
+import com.ucar.combination.model.dto.AccountPowerDto;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -165,5 +166,13 @@ public interface AccountManagerService {
      * @return: List<String> 查询到的账户
      */
     void updateAccountSecretEmailById(String secretEmail,String id);
+    /**
+     * description: 得到所有的AccountPowerDto的信息
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/15 9:48
+     * @params queryParam 描述
 
+     * @return AccountPowerDto的LIST集合
+     */
+    List<AccountPowerDto> getAllAccountPowerList(QueryParam queryParam);
 }
