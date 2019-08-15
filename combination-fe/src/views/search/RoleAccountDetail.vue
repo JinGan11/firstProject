@@ -10,7 +10,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="支持业务线">
-              <el-select v-model="form.businessLine" clearable style="width:200px;" placeholder="请选择">
+              <el-select v-model="form.businessLine" clearable style="width:150px;" placeholder="请选择">
                 <el-option
                   v-for="item in businessLineOptions"
                   :key="item.value"
@@ -86,7 +86,11 @@
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <!--      <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>-->
-      <el-table-column prop="id" label="角色ID" width="120"></el-table-column>
+      <el-table-column prop="roleId" label="角色ID" width="120">
+        <template slot-scope="scope">
+          <el-button type="text" @click="roleBtn(scope.row.roleId)">{{scope.row.roleId}}</el-button>
+        </template>
+      </el-table-column>
       <el-table-column prop="roleName" label="角色名称" width="150"></el-table-column>
       <el-table-column prop="businessLine" label="支持业务线" width="150">
         <template slot-scope="scope">
@@ -151,7 +155,12 @@
         @check-change="handleClick1">
       </el-tree>
     </el-dialog>
-    <el-dialog :visible.sync="accounFlag" :close-on-click-modal="false" width="800px">
+<!--角色详情页弹窗-->
+    <el-dialog :visible.sync="roleFlag" :close-on-click-modal="false" width="800px">
+      <role-inf ref="c1" :roleId="roleId" ></role-inf>
+    </el-dialog>
+<!--账号详情页弹窗-->
+    <el-dialog :visible.sync="accountFlag" :close-on-click-modal="false" width="800px">
       <account-view ref="c1" :accountId="accountId" ></account-view>
     </el-dialog>
   </home>
@@ -159,6 +168,7 @@
 
 <script>
   import commonUtils from '../../common/commonUtils'
+  import roleInf from '../roleManagement/roleInf'
   import accountView from '../accountManagement/AccountView'
   export default {
     data() {
@@ -263,7 +273,9 @@
         checkedRoleAccount:[], //导出选择的字段
         isIndeterminate:true,//修改全选复选框样式
         accountId: '',
-        accounFlag: false
+        accountFlag: false,
+        roleId:'',
+        roleFlag:false,
       }
     },
     // activated() {
@@ -272,7 +284,8 @@
     // mounted() {
     //   commonUtils.Log("页面进来");
     // },
-    components: {accountView},
+
+    components: {accountView,roleInf},
     methods: {
       fetchData() { //根据查询条件获取数据
         var self = this;
@@ -359,7 +372,7 @@
       exportField(val) {
         for (let i = 0; i < val.length; i++) {
           if (this.checkedRoleAccount[i] === '角色ID') {
-            this.filterVal.push('id')
+            this.filterVal.push('roleId')
           } else if (this.checkedRoleAccount[i] === '角色名称') {
             this.filterVal.push('roleName')
           } else if (this.checkedRoleAccount[i] === '支持业务线') {
@@ -388,7 +401,6 @@
         this.checkAll = checkedCount === this.roleAccountOptions.length;
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.roleAccountOptions.length;
       },
-
 
       closeChooseDepartment() {
         this.chooseDepartmentFlag = false;
@@ -419,11 +431,20 @@
         }
         this.chooseDepartmentFlag=false;
       },
+
+      //角色信息明细
+      roleBtn(val){
+        localStorage.setItem("roleId",val);
+        self.roleId = val;
+        this.roleFlag = true;
+        this.$refs.c1.fetchData(val);
+      },
+
       //账户信息明细
       accountBtn(val){
         localStorage.setItem("accountId",val);
         self.accountId = val;
-        this.accounFlag = true;
+        this.accountFlag = true;
         this.$refs.c1.fetchData(val);
       }
     }

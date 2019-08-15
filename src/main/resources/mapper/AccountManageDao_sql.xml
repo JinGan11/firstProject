@@ -159,7 +159,7 @@
 
     </select>
     <resultMap type="com.ucar.combination.model.RoleAccount" id="RoleAccount">
-        <result column="id" property="id"/>
+        <result column="role_id" property="roleId"/>
         <result column="role_name" property="roleName"/>
         <result column="business_line" property="businessLine"/>
         <result column="account_name" property="accountName"/>
@@ -172,7 +172,7 @@
     </resultMap>
     <select id="getRoleAccountList" resultMap="RoleAccount">
         select
-        a.id,
+        a.id role_id,
         c.id account_id,
         a.role_name,
         a.business_line,

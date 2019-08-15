@@ -56,8 +56,24 @@ public interface AccountManagerService {
      */
     public void insertAccount(AccountStaff accountStaff);
 
+    /**
+     * description: 查询角色账号明细
+     * @uthor： zhengyong.liao@ucarinc.com
+     * @Date：  2019/8/7
+     * @PArams：
+     * @Return：
+     */
     ResultPage getRoleAccountList(QueryParam queryParam);
+
+    /**
+     * description: 历史记录
+     * @uthor： zhengyong.liao@ucarinc.com
+     * @Date：  2019/8/7
+     * @PArams：
+     * @Return：
+     */
     List<RoleAccount> queryRoleAccountList(QueryParam queryParam);
+
     /**
      * description:由账户id将账户状态设置为无效
      * @author shiya.li@ucarinc.com

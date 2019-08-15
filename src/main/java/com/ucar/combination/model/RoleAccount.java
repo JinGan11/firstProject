@@ -1,7 +1,7 @@
 package com.ucar.combination.model;
 
 public class RoleAccount {
-    private Integer id;
+    private Long roleId;
     private Long accountId;
     private String roleName;
     private String businessLine;
@@ -20,9 +20,9 @@ public class RoleAccount {
         this.accountId = accountId;
     }
 
-    public Integer getId() { return id; }
+    public Long getRoleId() { return roleId; }
 
-    public void setId(Integer id) { this.id = id; }
+    public void setRoleId(Long roleId) { this.roleId = roleId; }
 
     public String getRoleName() {
         return roleName;
