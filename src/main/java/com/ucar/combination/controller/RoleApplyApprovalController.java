@@ -38,8 +38,14 @@ public class RoleApplyApprovalController {
         String roleId = request.getParameter("roleId");
         String ids = request.getParameter("accountIds");
         String deIds = request.getParameter("removeAccountIds");
-        String[] accountIds = ids.split(",");
-        String[] removeAccountIds =deIds.split(",");
+        String[] accountIds=null;
+        String[] removeAccountIds=null;
+        if(ids!=""){
+            accountIds = ids.split(",");
+        }
+        if(deIds!=""){
+            removeAccountIds =deIds.split(",");
+        }
         Long accountId = (Long) session.getAttribute("accountId");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("id", id);

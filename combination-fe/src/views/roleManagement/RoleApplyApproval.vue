@@ -418,14 +418,16 @@
         var self = this;
         var accountIds=[];
         var removeAccountIds=[];
-        console.log( self.tableDataAccount)
+
         for (let i = 0; i < self.tableDataAccount.length; i++) {
-          if(self.tableDataAccount.applyOperation ===0){
+          if(self.tableDataAccount[i].applyOperation ===2){
             removeAccountIds.push(self.tableDataAccount[i].id)
-          }else if(self.tableDataAccount.applyOperation ===1){
+          }else if(self.tableDataAccount[i].applyOperation ===1){
             accountIds.push(self.tableDataAccount[i].id)
           }
         }
+        console.log( accountIds);
+        console.log( removeAccountIds);
         var param = {
           id:self.selection,
           accountIds:accountIds.toString(),
@@ -435,7 +437,7 @@
         self.$http.get('roleApplyApproval/approvalPass.do_', {
           params: param
         }).then((result) => {
-            this.$message({
+          self.$message({
               showClose: true,
               message: '审批通过成功',
               type: 'success'

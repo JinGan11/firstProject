@@ -102,7 +102,10 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
         //String modifyEmp=companyManageDao.getEmpById(company.getModifyEmp());
         Map<String,Object>createMap=companyManageDao.getCreateInfo(companyId);
         Map<String,Object>modifyMap=companyManageDao.getModifyInfo(companyId);
-        String createAccountName=(String)createMap.get("accountName");
+        String createAccountName = null;
+        if(createMap.get("accountName") != null) {
+            createAccountName=(String)createMap.get("accountName");
+        }
         String createStaffName=(String)createMap.get("staffName");
         String modifyAccountName=(String)modifyMap.get("accountName");
         String modifyStaffName=(String)modifyMap.get("staffName");

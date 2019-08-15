@@ -1,5 +1,6 @@
 package com.ucar.combination.dao;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +46,15 @@ public interface RoleApplyApprovalDao {
      * @return
      */
     void removeRoleAccount(Map<String, Object> map);
+
+    /**
+     * description:通过角色id查找关联账号
+     * @author qingyu.lan@ucarinc.com
+     * @date  2019-08-15 12:48:26
+     * @params id
+     * @return
+     */
+    List<Integer> selectRoleAccountByRoleId(Map<String, Object> map);
 
 
 }

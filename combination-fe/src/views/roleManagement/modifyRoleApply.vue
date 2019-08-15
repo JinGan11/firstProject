@@ -699,9 +699,10 @@
           params: param
         }).then((result) => {
 
+
           //请求成功回调
           self.tableDataAccount = result.list;
-
+          console.log( self.tableDataAccount)
           self.accountChangesList=result.list;
 
         }).catch(function (error) {

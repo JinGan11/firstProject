@@ -114,8 +114,19 @@
             <span style="font-size: 20px">附件信息</span>
           </div>
             营业执照附件：
-            <el-button type="primary" @click="uploadPic" >图片管理</el-button>
-
+          <el-upload
+            action="#"
+            list-type="picture-card"
+            :multiple="true"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :onChange="getFileList"
+            :auto-upload="false"
+            ref="upload"
+            :http-request="uploadLicenses">
+            <i class="el-icon-plus"></i>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件,且不超过2M,最多只能上传20张图片</div>
+          </el-upload>
           <div style="margin-bottom: 10px">
             <br>
             <span style="font-size: 20px">发票信息</span>
@@ -218,29 +229,6 @@
         </el-form>
       </div>
     </div>
-
-    <el-dialog
-      title="图片管理"
-      :visible.sync="dialogVisible"
-      width="50%"
-      :before-close="handleClose">
-      <span>
-
-    <el-upload
-      action="#"
-      list-type="picture-card"
-      :multiple="true"
-      :on-preview="handlePreview"
-      :on-remove="handleRemove"
-      :onChange="getFileList"
-      :auto-upload="false"
-      ref="upload"
-      :http-request="uploadLicenses">
-      <i class="el-icon-plus"></i>
-      <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件,且不超过2M,最多只能上传20张图片</div>
-      </el-upload>
-      </span>
-    </el-dialog>
     <el-dialog :visible.sync="picDetail">
       <img width="100%" :src="dialogImageUrl" alt="">
     </el-dialog>
@@ -254,7 +242,6 @@
     data() {
       return {
         businessTerm:[],
-        dialogVisible:false,
         picDetail:false,
         dialogImageUrl: '',
         disabled: false,
@@ -459,9 +446,6 @@
       handlePreview(file) {
         this.dialogImageUrl = file.url;
         this.picDetail = true;
-      },
-      uploadPic(){
-        this.dialogVisible = true;
       },
       handleClose(done,file,fileList) {
         done();

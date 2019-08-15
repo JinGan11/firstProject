@@ -31,22 +31,29 @@
         INSERT INTO  t_r_account_role( account_id,role_id,create_emp,create_time,modify_emp,modify_time )
         VALUES
         <foreach collection="accountIds"  item="item" separator=",">
+            <if test="accountIds!=null and accountIds!=''">
             (#{item},#{roleId},#{accountId},now(),#{accountId},now())
+            </if>
         </foreach>
+
     </insert>
 
     <delete id="removeRoleAccount">
+        <if test="removeAccountIds!=null and removeAccountIds!=''">
         DELETE from t_r_account_role
         WHERE role_id=#{roleId}
         and account_id in
         <foreach collection="removeAccountIds" open="(" separator="," close=")" item="item">
             #{item}
         </foreach>
+        </if>
     </delete>
 
-
-
-
-
+    <select id="selectRoleAccountByRoleId" resultType="java.lang.Integer">
+        SELECT account_id
+        from t_r_account_role
+        where
+        role_id =#{roleId}
+    </select>
 
 </mapper>
