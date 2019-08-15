@@ -12,6 +12,7 @@ import com.ucar.combination.model.Staff;
 import com.ucar.combination.model.dto.RoleAccountStaffDto;
 import com.ucar.combination.model.dto.StaffAccountDTO;
 import com.ucar.combination.service.AccountManagerService;
+import com.ucar.combination.service.DepartmentService;
 import com.ucar.combination.service.EmployeeManageService;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ public class EmployeeManageController {
     private EmployeeManageService employeeManageService;
     @Autowired
     private AccountManagerService accountManagerService;
+
+    @Autowired
+    private DepartmentService departmentService;
 
     /**
      * 查询员工列表
@@ -68,6 +72,11 @@ public class EmployeeManageController {
         params.put("department", department);
         params.put("upper_department_no", upper_department_no);
         params.put("relAccount",relAccount);
+        HttpSession session = request.getSession();
+        Long accountId = (Long) session.getAttribute("accountId");
+        List<Long> departmentIdList = departmentService.selectDataPowerIds(accountId);
+        params.put("departmentIdList",departmentIdList);
+        params.put("accountId",accountId);
         ResultPage resultPage = employeeManageService.queryList(new QueryParam(params));
         List<Object> staffDtoList = employeeManageService.getStaffList(new QueryParam(params));
         return new Result().ok().put("page", resultPage).put("SexEnum", CommonEnums.toEnumMap(CommonEnums.Sex.values()))

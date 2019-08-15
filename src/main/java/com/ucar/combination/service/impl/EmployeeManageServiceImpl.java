@@ -5,11 +5,13 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.dao.AccountManageDao;
 import com.ucar.combination.dao.CompanyManageDao;
 import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.model.Staff;
 import com.ucar.combination.model.dto.StaffAccountDTO;
 import com.ucar.combination.model.dto.StaffDto;
+import com.ucar.combination.service.DepartmentService;
 import com.ucar.combination.service.EmployeeManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,9 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
     private EmployeeManageDao employeeManageDao;
     @Autowired(required = false)
     private CompanyManageDao companyManageDao;
+    @Autowired
+    private AccountManageDao accountManageDao;
+
     /**
      * description：查询员工列表
      * @author qingyu.lan@ucarinc.com
@@ -37,6 +42,9 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
      */
     @Override
     public ResultPage queryList(QueryParam queryParam) {
+        Long accountId = (Long) queryParam.get("accountId");
+        int permission = accountManageDao.selectPermissionsById(accountId);
+        queryParam.put("userPermission",permission);
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
         List<Object> list = employeeManageDao.queryList(queryParam);
 
