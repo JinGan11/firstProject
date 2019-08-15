@@ -341,10 +341,7 @@
           },
           createFilterRegionCode(queryString) {
               return (county) => {
-                  return (county.regionCode.toLowerCase().indexOf(queryString.toLowerCase()) === 0,
-                      county.regionName.toLowerCase().indexOf(queryString.toLowerCase()) === 0,
-                      county.upperRegion.toLowerCase().indexOf(queryString.toLowerCase()) === 0,
-                      county.upperRegionTwice.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+                  return (county.regionCode.toLowerCase().indexOf(queryString.toLowerCase()) === 0
                   );
               };
           },
