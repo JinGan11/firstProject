@@ -35,33 +35,33 @@
         <el-row>
           <el-col :span="8">
             <el-form-item label="所属部门">
-              <el-input placeholder="所属部门" :disabled="true" style="width:200px;" v-model="form.departmentId"></el-input>
+              <el-input placeholder="所属部门" :disabled="true" style="width:200px;" v-model="searchDeptName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="4">
             <el-button
               type="text"
-              @click="">选择
+              @click="searchDeptDialogVisible = true">选择
             </el-button>
             <el-button
               type="text"
-              @click="">清空
+              @click="searchDeptClear">清空
             </el-button>
           </el-col>
           <el-col :span="8">
             <el-form-item label="上级部门">
               <el-input placeholder="上级部门" :disabled="true" style="width:200px;"
-                        v-model="form.upperDepartmentNo"></el-input>
+                        v-model="searchDeptUpperName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="4">
             <el-button
               type="text"
-              @click="">选择
+              @click="searchDeptUpperDialogVisible = true">选择
             </el-button>
             <el-button
               type="text"
-              @click="">清空
+              @click="searchDeptUpperClear">清空
             </el-button>
           </el-col>
         </el-row>
@@ -191,6 +191,7 @@
         lazy="true"
         check-strictly
         show-checkbox
+        :default-expanded-keys="[1]"
         :render-content="renderContent"
         @check-change="handleClick">
       </el-tree>
@@ -428,6 +429,7 @@
           lazy="true"
           check-strictly
           show-checkbox
+          :default-expanded-keys="[1]"
           :render-content="renderContent"
           @check-change="handleClick">
         </el-tree>
@@ -447,6 +449,7 @@
           lazy="true"
           check-strictly
           show-checkbox
+          :default-expanded-keys="[1]"
           :render-content="renderContent"
           @check-change="handleClick">
         </el-tree>
@@ -555,6 +558,43 @@
         </div>
       </template>
     </el-dialog>
+
+
+    <el-dialog title='选择当前部门' :visible.sync="searchDeptDialogVisible"  :close-on-click-modal="false" width="50%">
+      <div>
+        <el-tree
+          ref="treeDept"
+          :props="defaultPropsDept"
+          node-key="id"
+          :load="loadNodeDept"
+          lazy="true"
+          :default-expanded-keys="[1]"
+          check-strictly
+          show-checkbox
+          @check-change="handleClickDept">
+        </el-tree>
+        <br>
+        <el-button type="primary" @click="searchDeptCheck">确定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title='选择上级部门' :visible.sync="searchDeptUpperDialogVisible"  :close-on-click-modal="false" width="50%">
+      <div>
+        <el-tree
+          ref="treeDeptUpper"
+          :props="defaultPropsDept"
+          node-key="id"
+          :load="loadNodeDept"
+          lazy="true"
+          :default-expanded-keys="[1]"
+          check-strictly
+          show-checkbox
+          @check-change="handleClickDeptUpper">
+        </el-tree>
+        <br>
+        <el-button type="primary" @click="searchDeptUpperCheck">确定</el-button>
+      </div>
+    </el-dialog>
+
   </home>
 
 </template>
@@ -751,6 +791,17 @@
           staffNumBtn:'',
           modifyEmp:'',
         },
+        searchDeptDialogVisible: false,
+        searchDeptUpperDialogVisible: false,
+        searchDeptName: '',
+        searchDeptUpperName: '',
+        defaultPropsDept: {
+          label: 'departmentName',
+          children: 'children',
+          isLeaf: 'nodeIsLeaf',
+          id: 'id',
+          no: 'departmentNo',
+        }
       }
     },
     filters: {
@@ -1144,7 +1195,7 @@
       },
       loadNode(node,resolve){
         var self = this;
-        self.$http.get('department/buildTree.do_', {
+        self.$http.get('department/buildTree2.do_', {
           params: null
         }).then((result) => {
           resolve([result.departmentDto]);
@@ -1252,7 +1303,7 @@
       },
       loadNode(node,resolve){
         var self = this;
-        self.$http.get('department/buildTree.do_', {
+        self.$http.get('department/buildTree2.do_', {
           params: null
         }).then((result) => {
           resolve([result.departmentDto]);
@@ -1350,8 +1401,59 @@
       confirmInfo(){
         this.contentDialogVisible=false;
       },
+      loadNodeDept(node,resolve){
+        var self = this;
+        self.$http.get('department/buildTree2.do_')
+          .then((result) => {
+            resolve([result.departmentDto]);
+          }).catch(function (error) {
 
-
+        });
+      },
+      handleClickDept(data,checked,node){
+        // 手动设置单选
+        if(checked === true) {
+          this.checkedId = data.id;
+          this.$refs.treeDept.setCheckedKeys([data.id]);
+        } else {
+          if (this.checkedId == data.id) {
+            this.$refs.treeDept.setCheckedKeys([data.id]);
+          }
+        }
+      },
+      handleClickDeptUpper(data,checked,node){
+        // 手动设置单选
+        if(checked === true) {
+          this.checkedId = data.id;
+          this.$refs.treeDeptUpper.setCheckedKeys([data.id]);
+        } else {
+          if (this.checkedId == data.id) {
+            this.$refs.treeDeptUpper.setCheckedKeys([data.id]);
+          }
+        }
+      },
+      searchDeptCheck(){
+        //alert("选择部门");
+        this.searchDeptName=this.$refs.treeDept.getCheckedNodes()[0].departmentName;
+        this.form.departmentId=this.$refs.treeDept.getCheckedNodes()[0].id;
+        this.searchDeptDialogVisible = false;
+      },
+      searchDeptClear(){
+        //alert("清空部门");
+        this.searchDeptName="";
+        this.form.departmentId="";
+      },
+      searchDeptUpperCheck(){
+        //alert("选择上级部门");
+        this.searchDeptUpperName=this.$refs.treeDeptUpper.getCheckedNodes()[0].departmentName;
+        this.form.upperDepartmentNo=this.$refs.treeDeptUpper.getCheckedNodes()[0].departmentNo;
+        this.searchDeptUpperDialogVisible = false;
+      },
+      searchDeptUpperClear(){
+        //alert("清空上级部门");
+        this.searchDeptUpperName="";
+        this.form.upperDepartmentNo="";
+      }
     }
   }
 </script>
