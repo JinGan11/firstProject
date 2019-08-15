@@ -246,7 +246,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="是否离职:" prop="isDimission" label-width="150px">
-                <el-input style="width:200px;" placeholder="否" :disabled="true" v-model="createForm.isDimission"></el-input>
+                <el-input style="width:200px;"  :disabled="true" v-model="this.isDimissionEnum[0]"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -323,11 +323,6 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <!--<el-form-item label="性别:" prop="staffSex" label-width="150px">
-                <template>
-                  <el-radio v-model="modifyForm.staffSex" label="1">男</el-radio>
-                  <el-radio v-model="modifyForm.staffSex" label="2">女</el-radio>
-                </template>-->
               <el-form-item label="性别:" label-width="150px">
                 <el-radio-group v-model="modifyForm.staffSex">
                   <el-radio :label="1">男</el-radio>
@@ -1035,10 +1030,10 @@
           }).then((result) => {
             if (result.status=="success"){
               self.$message.success("成功离职");
+              self.fetchData();
             } else {
               self.$message.error("离职失败")
             }
-            location.reload();
           }).catch(function (error) {
             commonUtils.Log("employee/quitEmployee.do_" + error);
             self.$message.error("获取数据错误");
@@ -1065,10 +1060,11 @@
           }).then((result) => {
             if (result.status=="success"){
               self.$message.success("恢复成功");
+              self.fetchData();
             } else {
               self.$message.error("恢复失败")
             }
-            location.reload();
+
           }).catch(function (error) {
             commonUtils.Log("employee/recoverEmployee.do_" + error);
             self.$message.error("恢复失败");
@@ -1287,13 +1283,27 @@
         this.modifyForm.staffName=val.staffName;
         this.modifyForm.staffSex=val.staffSex;
         this.modifyForm.staffEmail=val.staffEmail;
-        this.modifyForm.isDimission=val.isDimission;
+        this.modifyForm.isDimission=this.isDimissionEnum[val.isDimission];
         this.modifyForm.staffTelephone=val.staffTelephone;
         this.modifyForm.departmentName=val.departmentName;
         this.modifyForm.departmentId=val.departmentId;
         this.modifyForm.createTime=val.createTime;
-        this.modifyForm.createEmp=val.createEmp;
         this.modifyForm.remark=val.remark;
+
+        //回填创建人和修改人
+        var self = this;
+        var param = {
+          staffId:val.id,
+        };
+        self.$http.get('employee/otherInfo.do_', {
+          params: param
+        }).then((result) => {
+          self.modifyForm.createEmp = result.list.createEmpAccountName+"("+result.list.createEmpStaffName+")";
+
+        }).catch(function (error) {
+          commonUtils.Log("employee/otherInfo.do_:"+error);
+          self.$message.error("获取数据错误");
+        });
       },
       selectDepartment(){//选择部门
         this.dialogVisibleDepartment=true;
@@ -1393,6 +1403,7 @@
         }).then((result) => {
           self.contentForm.createEmp = result.list.createEmpAccountName+"("+result.list.createEmpStaffName+")";
           self.contentForm.modifyEmp = result.list.modifyEmpAccountName+"("+result.list.modifyEmpStaffName+")";
+
         }).catch(function (error) {
           commonUtils.Log("employee/otherInfo.do_:"+error);
           self.$message.error("获取数据错误");
