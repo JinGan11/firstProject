@@ -193,12 +193,10 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
                 Integer count ;
                 count = companyManageDao.getRelationCount(map);
                 if(count == 0){
-                    System.out.println("添加：");
                     map.put("createEmp",accountId);
                     map.put("modifyEmp",accountId);
                     companyManageDao.addRelationCompany(map);;
                 }else{
-                    System.out.println("更新：");
                     map.put("status",1);
                     map.put("modifyEmp",accountId);
                     companyManageDao.updateRelation(map);

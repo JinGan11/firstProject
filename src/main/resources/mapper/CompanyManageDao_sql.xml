@@ -270,7 +270,7 @@
                 and T.modify_emp=t1.id
 
         </where>
-
+        ORDER BY id DESC
     </select>
 
     <select id="relationCompanyList" resultType="com.ucar.combination.model.dto.CompanyDto">
