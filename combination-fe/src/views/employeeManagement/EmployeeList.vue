@@ -622,13 +622,15 @@
             { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }],
           staffName:[{ required: true, message: '请输入员工姓名', trigger: 'blur' },
             { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }],
-          staffSex:[{required: true}],
+
           staffTelephone:[{ required: true, validator: checkphone, trigger: "blur" }],
-          staffEmail:[{ required: true, message: '请输入邮箱地址' },
-            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
-          remark:[{required:true}]
+          staffEmail:[
+            { type: 'email', message: '请录入正确的邮箱地址', trigger: ['blur', 'change'] }],
+          departmentName:[{required: true}],
+
         },
         modifyForm:{
+          accountId:'',
           staffNum:'',
           staffName:'',
           staffSex:'',
@@ -641,15 +643,14 @@
           remark:'',
         },
         rulesModify:{
-          staffNum: [{ required: true, message: '请输入员工编号', trigger: 'blur' },
-            { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }],
-          staffName:[{ required: true, message: '请输入员工姓名', trigger: 'blur' },
+          staffNum: [{ required: true, message: '员工编号为必填项，不允许为空', trigger: 'blur' },
+            { min: 1, max: 20, message: '员工编号不满足录入条件，仅支持长度在 1 到 20 位字符', trigger: 'blur' }],
+          staffName:[{ required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur' },
             { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }],
-          staffSex:[{required: true}],
           staffTelephone:[{ required: true, validator: checkphone, trigger: "blur" }],
-          staffEmail:[{ required: true, message: '请输入邮箱地址' },
+          staffEmail:[
             { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
-          remark:[{required:true}]
+          departmentName:[{required: true}],
         },
 
         tableData: [],
@@ -888,16 +889,20 @@
         self.$refs["createForm"].validate(function (valid) {
           //if(self.$options.methods.checkInput(self)==false) return;
           if (valid) {
-            self.$http.post("employee/insertStaff",self.createForm)
-              .then((result) => {
-                self.createDialogVisible=false;
-                self.$message.success("新建用户成功");
-                location.reload();
-              })
-              .catch(function (error) {
-                commonUtils.Log("employee/insertStaff:"+error);
-                self.$message.error("新建用户失败");
-              })} else {
+        self.$http.post("employee/insertStaff",self.createForm)
+          .then((result) => {
+            if (result.code === 300) {
+              self.$message.error('员工编号已存在，不允许重复');
+            } else {
+              self.createDialogVisible=false;
+              self.$message.success("新建用户成功");
+              self.fetchData();
+            }
+          })
+          .catch(function (error) {
+            commonUtils.Log("employee/insertStaff:"+error);
+            self.$message.error("新建用户失败");
+          })} else {
             console.log('error submit!!');
             return false;
           }
@@ -917,14 +922,14 @@
             self.$http.post("employee/updateStaff",self.modifyForm)
               .then(result => {
 
-                self.modifyDialogVisible=false;
-                self.$message.success("修改成功");
-                location.reload();
-              })
-              .catch(function (error) {
-                commonUtils.Log("employee/updateStaff:"+error);
-                self.$message.error("修改用户信息失败");
-              })} else {
+            self.modifyDialogVisible=false;
+            self.$message.success("修改成功");
+                self.fetchData();
+          })
+          .catch(function (error) {
+            commonUtils.Log("employee/updateStaff:"+error);
+            self.$message.error("修改用户信息失败");
+          })} else {
             console.log('error submit!!');
             return false;
           }
@@ -952,7 +957,7 @@
             params: param
           }).then((result) => {
             self.$message.success("成功删除");
-            location.reload();
+            self.fetchData();
           }).catch(function (error) {
             commonUtils.Log("employee/deleteEmployee" + error);
             self.$message.error("获取数据错误");
@@ -1312,7 +1317,6 @@
         }
       },
       staffNumBtn(val){
-
         this.contentDialogVisible=true;
         this.contentForm.accountId=val.accountId;
         this.contentForm.staffNum=val.staffNum;

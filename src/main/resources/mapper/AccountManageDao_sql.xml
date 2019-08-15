@@ -304,7 +304,11 @@
         from t_account
         WHERE account_name = #{AccountName}
     </select>
-
+    <update id="updateAccountSecretEmailById" >
+         update  t_account t1
+         set t1.account_secret_email=#{secretEmail}
+         where t1.id=#{id}
+    </update>
 </mapper>
 
 

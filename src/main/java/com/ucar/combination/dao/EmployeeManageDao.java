@@ -105,6 +105,14 @@ public interface EmployeeManageDao {
      */
     Long selectDepartmentId(Long id);
     /**
+     * description: 查看所有的员工编号
+     * @author shiya.li@ucarinc.com
+     * @date 2019/8/14 17:20
+     * @params
+     * @return
+     */
+    List<String> selectAllStaffName();
+    /**
      * description: 获取员工修改人和创建人
      * @author: jianan.shu@ucarinc.com
      * @param:

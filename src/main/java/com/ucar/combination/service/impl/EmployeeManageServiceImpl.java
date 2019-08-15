@@ -125,6 +125,17 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
         employeeManageDao.updateStaff(staff);
     }
     /**
+     * description: 查看所有的员工编号
+     * @author shiya.li@ucarinc.com
+     * @date 2019/8/14 17:20
+     * @params
+     * @return
+     */
+    public List<String> selectAllStaffName(){
+        List<String> list=employeeManageDao.selectAllStaffName();
+        return list;
+    }
+    /**
      * description: 获取员工的修改人和创建人
      * @author: jianan.shu@ucarinc.com
      * @param: staffId 员工id

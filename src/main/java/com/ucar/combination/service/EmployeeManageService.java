@@ -77,6 +77,15 @@ public interface EmployeeManageService {
      */
     public void updateStaff(Staff staff);
     /**
+     * description: 查看所有的员工编号
+     * @author shiya.li@ucarinc.com
+     * @date 2019/8/14 17:20
+     * @params
+     * @return
+     */
+    public List<String> selectAllStaffName();
+
+    /**
      * description: 获取创建人和修改人值
      * @author: jianan.shu@ucarinc.com
      * @param: id 员工id

@@ -106,7 +106,7 @@
     </select>
     <insert id="insertStaff" parameterType="com.ucar.combination.model.Staff">
         insert into t_staff(staff_num,staff_name,staff_sex,staff_telephone,staff_email,department_id,is_dimission,status, create_time, create_emp, modify_time, modify_emp,remark)
-        value(#{staffNum}, #{staffName},#{staffSex},#{staffTelephone},#{staffEmail},#{departmentId},#{isDimission},1, NOW(),#{createEmp},NOW(),#{modifyEmp},#{remark})
+        value(#{staffNum}, #{staffName},#{staffSex},#{staffTelephone},#{staffEmail},#{departmentId},0,1, NOW(),#{createEmp},NOW(),#{modifyEmp},#{remark})
     </insert>
     <update id="updateStatus">
         update t_staff t1
@@ -140,6 +140,10 @@
 
     <select id="selectDepartmentId" resultType="Long">
         SELECT department_id FROM t_staff WHERE account_id=#{id}
+    </select>
+    <select id="selectAllStaffName" resultType="java.lang.String">
+        select staff_num
+        from t_staff
     </select>
 
     <select id="getCreateInfo" parameterType="long" resultType="java.util.Map">

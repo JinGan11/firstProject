@@ -156,5 +156,13 @@ public interface AccountManagerService {
      * @return: int 查询到的账户条数
      */
     int selectAccountByAccountName(String accountName);
+    /**
+     * description: 员工更改邮箱地址，关联的有效账号的邮箱同步更新
+     * @author shiya.li@ucarinc.com
+     * @date:  2019/8/14 22:40
+     * @params: accountName 账户名
+     * @return: List<String> 查询到的账户
+     */
+    void updateAccountSecretEmailById(String secretEmail,String id);
 
 }

@@ -93,11 +93,15 @@ public class EmployeeManageController {
     @ResponseBody
     @RequestMapping(value = "/insertStaff",method = RequestMethod.POST)
     public Result insertStaff(HttpSession session, @RequestBody Staff staff){
-        staff.setCreateEmp((Long) session.getAttribute("accountId"));
-        staff.setModifyEmp((Long) session.getAttribute("accountId"));
-        employeeManageService.insertStaff(staff);
-        System.out.println("insertStaff:"+ JSON.toJSONString(staff));
-        return Result.ok();
+        List<String> list=employeeManageService.selectAllStaffName();
+        if(list.contains(staff.getStaffNum())){
+            return Result.ok().put("code", 300) ;
+        }else{
+            staff.setCreateEmp((Long) session.getAttribute("accountId"));
+            staff.setModifyEmp((Long) session.getAttribute("accountId"));
+            employeeManageService.insertStaff(staff);
+            return Result.ok();
+        }
 
     }
     /**
@@ -207,6 +211,15 @@ public class EmployeeManageController {
     public  void updateStaff(HttpServletRequest request,@RequestBody Staff staff){
         staff.setModifyEmp((Long)(request.getSession().getAttribute("accountId")));
         employeeManageService.updateStaff(staff);
+
+        Long accountId=staff.getAccountId();
+        if(accountId!=null&&staff.getStaffEmail()!=null){
+            Account account=accountManagerService.selectAccountById(String.valueOf(accountId));
+            if(account.getaccountState()==1){
+                accountManagerService.updateAccountSecretEmailById(staff.getStaffEmail(), String.valueOf(accountId));
+            }
+
+        }
     }
     @ResponseBody
     @RequestMapping("/otherInfo.do_")
