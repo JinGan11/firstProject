@@ -39,8 +39,10 @@ public class RoleApplyApprovalServiceImpl implements RoleApplyApprovalService {
                 roleApplyApprovalDao.insertRoleAccount(map);
             }
         }
+        if(map.get("removeAccountIds")!=null){
+            roleApplyApprovalDao.removeRoleAccount(map);
+        }
         roleApplyApprovalDao.approvalPass(map);
-        roleApplyApprovalDao.removeRoleAccount(map);
     }
 
     @Override
