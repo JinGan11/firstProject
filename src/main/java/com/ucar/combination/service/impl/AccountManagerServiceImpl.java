@@ -122,7 +122,13 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         insertAccountHistory(accountStaff);
     }
 
-    //lzy
+    /**
+     * description: 查询角色账号明细
+     * @uthor： zhengyong.liao@ucarinc.com
+     * @Date：  2019/8/7
+     * @PArams：
+     * @Return：
+     */
     @Override
     public ResultPage getRoleAccountList(QueryParam queryParam) {
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
