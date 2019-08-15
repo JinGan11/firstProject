@@ -442,9 +442,8 @@
 
       //账户信息明细
       accountBtn(val){
-        localStorage.setItem("accountId",val);
-        self.accountId = val;
-        this.accountFlag = true;
+        this.$router.push({path: '/ModifyRole', query: {roleID: val}});
+        this.accounFlag = true;
         this.$refs.c1.fetchData(val);
       }
     }

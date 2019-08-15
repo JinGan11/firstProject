@@ -1167,7 +1167,7 @@
           if (this.checkedemployees[i] === '员工编号') {
             this.filterVal.push('staffNum')
           } else if (this.checkedemployees[i] === '登录账号') {
-            this.filterVal.push('accountId')
+            this.filterVal.push('accountName')
           } else if (this.checkedemployees[i] === '员工姓名') {
             this.filterVal.push('staffName')
           } else if (this.checkedemployees[i] === '性别') {
