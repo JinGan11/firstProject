@@ -1,7 +1,7 @@
 <template>
   <home>
-    <div style="width:85%; margin-left: 70px">
-      <el-form ref="form" :model="form" label-width="80px">
+    <div style="width:95%;">
+      <el-form ref="form" :model="form" label-width="auto">
         <el-row>
           <el-col :span="6">
             <el-form-item label="角色名称">
@@ -37,10 +37,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="审批人所属部门">
-              <el-input  v-model="form.approverDepartmentName"></el-input>
-              <el-button type="text" @click="selectDepartment">选择</el-button>
-              <el-button type="text" @click="clearDepartment">清空</el-button>
+            <el-form-item label="审批人所属部门" label-width="auto">
+              <el-input  v-model="form.approverDepartmentName" style="width: 60%"></el-input>
+              <el-button type="text" @click="selectDepartment" >选择</el-button>
+              <el-button type="text" @click="clearDepartment" style="margin-left: 0px;">清空</el-button>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -53,9 +53,9 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="权限名称">
-              <el-input placeholder="权限名称"  v-model="form.powerName"></el-input>
+              <el-input placeholder="权限名称"  v-model="form.powerName" style="width: 60%"></el-input>
               <el-button type="text" @click="selectPermissions">选择</el-button>
-              <el-button type="text" @click="clearPermission">清空</el-button>
+              <el-button type="text" @click="clearPermission" style="margin-left: 0px;">清空</el-button>
             </el-form-item>
           </el-col>
         </el-row>
