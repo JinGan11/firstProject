@@ -166,7 +166,7 @@
               <el-scrollbar style="width: 400px">
                 <el-tree
                   style="float: left;margin-left: 100px;height: 350px"
-                  ref="tree"
+                  ref="powerTree"
                   :props="defaultProps"
                   node-key="powerId"
                   :load="loadNode"
@@ -256,7 +256,7 @@
           children: 'children',
           id: 'powerId'
         },
-        selectedNodes:[],
+        selectedNodes: null,
         accountAssignPermissionFlag: false,
         chooseDepartmentFlag: false,
         accounFlag: false,
@@ -283,6 +283,7 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
+      this.checkStrictly = true;
     },
     computed: {
       leftButtonDisable()
@@ -524,13 +525,12 @@
       },
       assignPermission() {
         const self = this;
+        self.initAccountPermission();
         self.accountAssignPermissionTitle = self.myAccount.accountName + "权限分配";
         self.$nextTick(() => {
-          self.$refs.tree.setCheckedKeys([]);
+          self.$refs.powerTree.setCheckedKeys([]);
         });
         self.accountAssignPermissionFlag = true;
-        self.initAccountPermission();
-        // this.$router.replace('/accountManagement/AssignPermission')
       },
       //初始化账户权限分配
       initAccountPermission() {
@@ -538,7 +538,13 @@
         self.checkStrictly = true;
         let param = {
           id: self.myAccount.id
-        }
+        };
+        self.$http.post('power/getAccountPower.do_',param).then((result) => {
+          self.selectedNodes = result.accountPower;
+        }).catch(function (error) {
+          commonUtils.Log("power/getAccountPower.do_" + error);
+          self.$message.error("获取数据错误")
+        });
         self.$http.post('account/getRoleList.do_',param).then((result) => {
           self.roleList = result.notOwnedRole.list;
           self.selected = result.ownedRole.list;
@@ -547,13 +553,7 @@
           commonUtils.Log("account/getRoleList.do_" + error);
           self.$message.error("获取数据错误")
         });
-        self.$http.post('power/getAccountPower.do_',param).then((result) => {
-          self.selectedNodes = result.accountPower;
-          self.checkStrictly = false;
-        }).catch(function (error) {
-          commonUtils.Log("power/getAccountPower.do_" + error);
-          self.$message.error("获取数据错误")
-        });
+
       },
       selectionChangeLeft(val) {
         this.leftSelected = val
@@ -602,6 +602,7 @@
           params: null
         }).then((result) => {
           resolve([result.powerTree]);
+          self.checkStrictly = false;
         }).catch(function (error) {
 
         });
@@ -609,23 +610,23 @@
       handleClick(data,checked,node){
         if(checked === true) {
           this.checkedId = data.id;
-          this.$refs.tree.setCheckedKeys([data.id]);
+          this.$refs.powerTree.setCheckedKeys([data.id]);
         } else {
           if (this.checkedId === data.id) {
-            this.$refs.tree.setCheckedKeys([data.id]);
+            this.$refs.powerTree.setCheckedKeys([data.id]);
           }
         }
       },
       handleCheckChange(data, checked, indeterminate) {
         const self = this;
-        console.log(self.$refs.tree.getCheckedNodes())
+        console.log(self.$refs.powerTree.getCheckedNodes())
       },
       preservePower() {
         const self = this;
         var param = {
           id: self.myAccount.id,
           roleList : self.selected,
-          powerList: self.$refs.tree.getCheckedNodes().concat(self.$refs.tree.getHalfCheckedNodes())
+          powerList: self.$refs.powerTree.getCheckedNodes().concat(self.$refs.powerTree.getHalfCheckedNodes())
         };
         self.$http.post("power/modifyPermission", param)
           .then((result) => {
