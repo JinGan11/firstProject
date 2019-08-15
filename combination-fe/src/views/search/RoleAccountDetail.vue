@@ -9,10 +9,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item  label="支持业务线">
+            <el-form-item label="支持业务线">
               <el-select v-model="form.businessLine" clearable style="width:200px;" placeholder="请选择">
                 <el-option
-                  v-for="item in form.businessLineOptions"
+                  v-for="item in businessLineOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -39,10 +39,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item  label="角色状态">
+            <el-form-item label="角色状态">
               <el-select v-model="form.roleStatus" clearable style="width:200px;" placeholder="请选择">
                 <el-option
-                  v-for="item in form.roleStatusOptions"
+                  v-for="item in roleStatusOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -50,11 +50,11 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
-            <el-form-item  label="账号状态">
+          <el-col :span="5">
+            <el-form-item label="账号状态">
               <el-select v-model="form.accountState" clearable style="width:200px;" placeholder="请选择">
                 <el-option
-                  v-for="item in form.accountStateOptions"
+                  v-for="item in accountStateOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -62,21 +62,22 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="5">
             <el-form-item label="所属部门">
-              <el-input placeholder="所属部门" disabled="true" style="width:400px;" v-model="form.departmentName"></el-input>
+              <el-input :disabled="true" style="width:200px;" v-model="form.departmentName"></el-input>
             </el-form-item>
+          </el-col>
+          <el-col :span="2">
+            <el-button type="text" @click="chooseDepartmentFlag=true">选择</el-button>
+            <el-button type="text" @click="chooseDepartmentFlag=false">取消</el-button>
           </el-col>
         </el-row>
         <el-row>
           <el-col style="text-align: center">
             <el-form-item>
-              <div v-if="!buttonDisabled">
+              <div>
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
-                <el-button type="primary" @click="exportVisible=true"style="width:100px">导出</el-button>
-              </div>
-              <div v-else>
-                <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
+                <el-button type="primary" @click="exportVisible=true" style="width:100px">导出</el-button>
               </div>
             </el-form-item>
           </el-col>
@@ -84,8 +85,7 @@
       </el-form>
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
-      </el-table-column>
-      <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
+      <!--      <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>-->
       <el-table-column prop="id" label="角色ID" width="120"></el-table-column>
       <el-table-column prop="roleName" label="角色名称" width="150"></el-table-column>
       <el-table-column prop="businessLine" label="支持业务线" width="150">
@@ -110,29 +110,45 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination background
-                   @size-change="handleSizeChange"
+    <el-pagination @size-change="handleSizeChange"
                    @current-change="handleCurrentChange"
                    :current-page="currentPage"
-                   :page-sizes="[10, 50, 100, 200]"
+                   :page-sizes="[10, 50, 100]"
                    :page-size="pageSize"
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
     <!--导出弹窗-->
     </el-dialog>
-    <el-dialog :title='excelTitle' :visible.sync="exportVisible" :close-on-click-modal="false" width="600px">
+    <el-dialog title='请选择需要导出的字段' :visible.sync="exportVisible" :close-on-click-modal="false" width="600px">
       <template>
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         <div style="margin: 15px 0;"></div>
-        <el-checkbox-group v-model="checkedRoleAccountProps" @change="handleCheckedRoleAccountPropsChange">
-          <el-checkbox v-for="props in roleAccountProps" :label="props" :key="props">{{props}}</el-checkbox>
+        <el-checkbox-group v-model="checkedRoleAccount" @change="handleCheckedRoleAccountChange">
+          <el-checkbox v-for="(roleAccount,index) in roleAccountOptions" :label="roleAccount" :key="index">
+            {{roleAccount}}
+          </el-checkbox>
         </el-checkbox-group>
       </template>
       <template slot="footer">
-        <el-button type="primary" @click="exportVisible">确定导出</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="exportExcel">确定导出</el-button>
+        <el-button @click="exportVisible=false">取 消</el-button>
       </template>
+    </el-dialog>
+
+    <!--选择部门弹窗-->
+    <el-dialog title="选择部门" :visible.sync="chooseDepartmentFlag" width="300px">
+      <el-tree
+        ref="tree"
+        :props="defaultProps1"
+        node-key="id"
+        :load="loadNodeDepartment"
+        lazy="true"
+        check-strictly
+        show-checkbox
+        default-expanded-keys="[1]"
+        @check-change="handleClick1">
+      </el-tree>
     </el-dialog>
   </home>
 
@@ -141,38 +157,56 @@
 <script>
   import commonUtils from '../../common/commonUtils'
 
-  const roleAccountPropsEnums = ['角色ID', '角色名称', '支持业务线', '登录账号', '员工编号', '员工姓名', '所属部门', '角色状态', '账号状态'];
   export default {
     data() {
       return {
+        defaultProps1: {
+          label: 'departmentName',
+          children: 'children',
+          isLeaf: 'nodeIsLeaf',
+          id: 'id',
+          no: 'departmentNo',
+        },
         total: 0,
         currentPage: 1,
         pageSize: 10,
         excelForm: {
-          accountId:'',
-          roleName:'',
-          businessLine:'',
-          accountName:'',
+          roleId: '',
+          accountId: '',
+          roleName: '',
+          businessLine: '',
+          accountName: '',
           staffNum: '',
           staffName: '',
+          departmentId: '',
           departmentName: '',
-          roleStatus:'',
-          accountState:'',
-          roleAccountList:[],
+          roleStatus: '',
+          accountState: '',
         },
         form: {
-          roleName:'',
-          businessLine:'',
-          accountName:'',
+          roleName: '',
+          businessLine: '',
+          accountName: '',
           staffNum: '',
           staffName: '',
-          roleStatus:'',
+          roleStatus: '',
           accountState: '',
-          departmentName: '',
-          businessLineOptions: [{
+          // department:'',
+          // departmentId:'',
+          departmentName: ''
+        },
+        //导出文件
+        exportVisible: false,
+        checkAll: false,
+        // checkedRegionProps:[],
+        filterVal: [],
+
+        businessLineOptions: [
+          {
             value: '',
             label: '全部'
-          }, {
+          },
+          {
             value: '1',
             label: '买买车'
           }, {
@@ -188,10 +222,12 @@
             value: '5',
             label: '保险'
           }],
-          accountStateOptions: [{
+        accountStateOptions: [
+          {
             value: '',
             label: '全部'
-          }, {
+          },
+          {
             value: '1',
             label: '正常'
           }, {
@@ -201,7 +237,8 @@
             value: '3',
             label: '无效'
           }],
-          roleStatusOptions: [{
+        roleStatusOptions: [
+          {
             value: '',
             label: '全部'
           }, {
@@ -211,123 +248,95 @@
             value: '0',
             label: '无效'
           }],
-
-          //导出文件
-          exportVisible:false,
-          isIndeterminate: true,
-          checkAll:false,
-          excelTitle: '请选择需要导出的字段',
-          checkedRoleAccountProps:[],
-          roleAccountProps: roleAccountPropsEnums,
-          filterVal: [],
-        },
+        roleAccountOptions: ['角色ID', '角色名称', '支持业务线', '登录账号', '员工编号', '员工姓名', '所属部门', '角色状态', '账号状态'],
+        chooseDepartmentFlag: false,
+        accountStatusEnum:[],
+        businessLineEnum:[],
+        roleStatusEnum:[],
 
         tableData: [],
+        roleAccountList:[],//符合查询条件的所有数据
         selection: '',
+        checkedRoleAccount:[], //导出选择的字段
+        isIndeterminate:true,//修改全选复选框样式
+
       }
     },
-    filters: {
-      protect: function(value) {
-        if (!value) {
-          return ''
-        }
-        return value.substr(0, 3) + "****" + value.substr(-4);
-      }
-    },
-    activated() {
-      commonUtils.Log("页面激活");
-    },
-    mounted() {
-      commonUtils.Log("页面进来");
-      this.fetchData();
-    },
+    // activated() {
+    //   commonUtils.Log("页面激活");
+    // },
+    // mounted() {
+    //   commonUtils.Log("页面进来");
+    // },
     methods: {
-      handleSizeChange(val) {
-        this.pageSize = val;
-        this.currentPage = 1;
-        this.fetchData(1, val);
-      },
-      handleCurrentChange(val) {
-        this.currentPage = val;
-        this.fetchData(val, this.pageSize);
-      },
-      handleSelectionChange(val) {
-        this.selection = val;
-      },
       fetchData() { //根据查询条件获取数据
         var self = this;
         var param = {
           roleName: self.form.roleName,
-          businessLine:self.form.businessLine,
-          accountName:self.form.accountName,
+          businessLine: self.form.businessLine,
+          accountName: self.form.accountName,
           staffNum: self.form.staffNum,
-          staffName:self.form.staffName,
-          roleStatus:self.form.roleStatus,
-          accountState:self.form.accountState,
+          staffName: self.form.staffName,
+          roleStatus: self.form.roleStatus,
+          accountState: self.form.accountState,
           departmentName: self.form.departmentName,
+          currentPage: self.currentPage,
+          pageSize: self.pageSize
         };
-        self.$http.get('roleAccount/getRoleAccountList.do',{params: param}).then((result) => {
+        self.$http.get('roleAccount/getRoleAccountList.do', {params: param}).then((result) => {
           //对取回来的数据进行处理
-          console.log(result.page);
+          console.log(result);
           self.tableData = result.page.list;
-          self.roleAccountList = result.roleAccountList;
           self.total = result.page.totalCount;
-          self.pageSize=result.page.pageSize;
-          self.currentPage=result.page.currPage;
+          self.pageSize = result.page.pageSize;
+          self.currentPage = result.page.currPage;
+          self.roleAccountList=result.roleAccountList;
+          self.accountStatusEnum=result.accountStatusEnum;
+          self.businessLineEnum=result.businessLineEnum;
+          self.roleStatusEnum=result.roleStatusEnum;
         }).catch(function (error) {
           commonUtils.Log("roleAccount/getRoleAccountList.do:" + error);
           self.$message.error("获取数据错误");
         });
+
+      },
+      handleSizeChange(val) {
+        this.pageSize = val;
+        this.fetchData();
+      },
+      handleCurrentChange(val) {
+        this.currentPage = val;
+        this.fetchData();
+      },
+      handleSelectionChange(val) {
+        this.selection = val;
       },
 
+      handleCheckAllChange(val) {//导出字段全选按钮
+        console.log("check:"+val);
+        this.checkedRoleAccount = val ? this.roleAccountOptions : [];
+        this.isIndeterminate = false;
+      },
       exportExcel() {
-        if(this.checkedRoleAccountProps.length ===0){
+        if (this.checkedRoleAccount.length === 0) {
           this.$message({
             showClose: false,
             message: '请选择需要导出的字段',
             type: 'error'
           });
-        }else{
+        } else {
           require.ensure([], () => {
             const {export_json_to_excel} = require('../../excel/Export2Excel');
-            const tHeader = this.checkedRoleAccountProps;
+            const tHeader = this.checkedRoleAccount;
             // 上面设置Excel的表格第一行的标题
 
-            const filterVal = this.exportField(this.checkedRoleAccountProps);
+            const filterVal = this.exportField(this.checkedRoleAccount);
             // 上面的staffNum、accountId、staffName是tableData里对象的属性
-            const list = this.roleAccountList;  //把data里的tableData存到list
+            const list = this.roleAccountList;  //把data里的roleAccountList存到list
             for (let i = 0; i < list.length; i++) {
-              if(list[i].roleStatus === 0){
-                list[i].roleStatus='无效'
-              }else if(list[i].roleStatus === 1){
-                list[i].roleStatus ='有效'
-              }
-              if(list[i].accountState === 1){
-                list[i].accountState ='正常'
-              }else if(list[i].accountState === 2){
-                list[i].accountState ='冻结'
-              }else if(list[i].accountState === 3){
-                list[i].accountState ='无效'
-              }
-              if(list[i].accountState === 1){
-                list[i].accountState ='正常'
-              }else if(list[i].accountState === 2){
-                list[i].accountState ='冻结'
-              }else if(list[i].accountState === 3){
-                list[i].accountState='无效'
-              }
-              if(list[i].businessLine === 1){
-                list[i].businessLine ='买买车'
-              }else if(list[i].businessLine === 2){
-                list[i].businessLine='闪贷'
-              }else if(list[i].businessLine === 3){
-                list[i].businessLine ='租车'
-              }
-              else if(list[i].businessLine === 4){
-                list[i].businessLine ='专车'
-              }else if(list[i].businessLine === 5){
-                list[i].businessLine ='保险'
-              }
+              list[i].roleStatus = this.roleStatusEnum[list[i].roleStatus];
+              list[i].businessLine=this.businessLineEnum[list[i].businessLine];
+              list[i].accountState=this.accountStatusEnum[list[i].accountState];
             }
             const data = this.formatJson(filterVal, list);
             export_json_to_excel(tHeader, data, '角色账号明细列表excel');
@@ -336,50 +345,74 @@
               message: '文件导出成功',
               type: 'success'
             });
-            this.exportVisible=false;
-            this.checkedRoleAccountProps=[];
-            this.filterVal=[];
+            this.exportVisible = false;
+            this.checkedRoleAccount = [];
+            this.filterVal = [];
           })
         }
       },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => v[j]))
-      },
-      cancel() {
-        this.exportVisible = false;
-      },
-      handleCheckAllChange(val) {
-        this.checkedRoleAccountProps = val ? roleAccounPropsEnums : [];
-        this.isIndeterminate = false;
-      },
-      handleCheckedRoleAccountPropsChange(value) {
-        let checkedCount = value.length;
-        this.checkAll = checkedCount === this.roleAccountProps.length;
-        this.isIndeterminate = checkedCount > 0 && checkedCount < this.roleAccountProps.length;
-      },
       exportField(val) {
         for (let i = 0; i < val.length; i++) {
-          if (this.checkedRoleAccountProps[i] === '角色ID') {
-            this.filterVal.push('roleID')
-          } else if (this.checkedRoleAccountProps[i] === '角色名称') {
+          if (this.checkedRoleAccount[i] === '角色ID') {
+            this.filterVal.push('id')
+          } else if (this.checkedRoleAccount[i] === '角色名称') {
             this.filterVal.push('roleName')
-          } else if (this.checkedRoleAccountProps[i] === '支持业务线') {
+          } else if (this.checkedRoleAccount[i] === '支持业务线') {
             this.filterVal.push('businessLine')
-          } else if (this.checkedRoleAccountProps[i] === '登录账号') {
+          } else if (this.checkedRoleAccount[i] === '登录账号') {
             this.filterVal.push('accountName')
-          } else if (this.checkedRoleAccountProps[i] === '员工编号') {
+          } else if (this.checkedRoleAccount[i] === '员工编号') {
             this.filterVal.push('staffNum')
-          } else if (this.checkedRoleAccountProps[i] === '员工姓名') {
+          } else if (this.checkedRoleAccount[i] === '员工姓名') {
             this.filterVal.push('staffName')
-          } else if (this.checkedRoleAccountProps[i] === '所属部门') {
+          } else if (this.checkedRoleAccount[i] === '所属部门') {
             this.filterVal.push('departmentName')
-          } else if (this.checkedRoleAccountProps[i] === '角色状态') {
+          } else if (this.checkedRoleAccount[i] === '角色状态') {
             this.filterVal.push('roleStatus')
-          } else if (this.checkedRoleAccountProps[i] === '账号状态') {
+          } else if (this.checkedRoleAccount[i] === '账号状态') {
             this.filterVal.push('accountState')
           }
         }
         return this.filterVal;
+      },
+      formatJson(filterVal, jsonData) {
+        return jsonData.map(v => filterVal.map(j => v[j]))
+      },
+      handleCheckedRoleAccountChange(value) {
+        let checkedCount = value.length;
+        this.checkAll = checkedCount === this.roleAccountOptions.length;
+        this.isIndeterminate = checkedCount > 0 && checkedCount < this.roleAccountOptions.length;
+      },
+
+
+      closeChooseDepartment() {
+        this.chooseDepartmentFlag = false;
+      },
+      loadNodeDepartment(node, resolve) {
+        var self = this;
+        self.$http.get('department/buildTree2.do_')
+          .then((result) => {
+            resolve([result.departmentDto]);
+          }).catch(function (error) {
+
+        });
+      },
+      handleClick1(data, checked, node) {
+        console.log(data);
+        // 手动设置单选
+        if (checked === true) {
+          // this.checkedId = data.id;
+          this.$refs.tree.setCheckedKeys([data.id]);
+          // this.form.departmentId = data.id;
+          this.form.departmentName = data.departmentName;
+        } else {
+          // if (this.checkedId == data.id) {
+          //   this.$refs.tree.setCheckedKeys([data.id]);
+          //   this.form.departmentName = data.departmentName;
+          //
+          // }
+        }
+        this.chooseDepartmentFlag=false;
       },
     }
   }

@@ -1,7 +1,7 @@
 package com.ucar.combination.model;
 
 public class RoleAccount {
-    private Integer Id;
+    private Integer id;
     private String roleName;
     private String businessLine;
     private String accountName;
@@ -11,9 +11,9 @@ public class RoleAccount {
     private Byte roleStatus;
     private String accountState;
 
-    public Integer getId() {
-        return Id;
-    }
+    public Integer getId() { return id; }
+
+    public void setId(Integer id) { this.id = id; }
 
     public String getRoleName() {
         return roleName;
@@ -41,10 +41,6 @@ public class RoleAccount {
 
     public String getAccountState() {
         return accountState;
-    }
-
-    public void setId(Integer id) {
-        Id = id;
     }
 
     public void setRoleName(String roleName) {

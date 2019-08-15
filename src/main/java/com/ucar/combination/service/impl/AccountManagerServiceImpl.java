@@ -93,10 +93,16 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     //lzy
     @Override
     public ResultPage getRoleAccountList(QueryParam queryParam) {
-        Page<?> page = PageHelper.startPage(1, 10);
+        Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
         List<RoleAccount> list = accountManageDao.getRoleAccountList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
+
+    @Override
+    public List<RoleAccount> queryRoleAccountList(QueryParam queryParam) {
+        return accountManageDao.getRoleAccountList(queryParam);
+    }
+
 
     /**
      * description: 员工账号状态

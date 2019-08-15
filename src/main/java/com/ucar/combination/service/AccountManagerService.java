@@ -47,6 +47,7 @@ public interface AccountManagerService {
     public void insertAccount(AccountStaff accountStaff);
 
     ResultPage getRoleAccountList(QueryParam queryParam);
+    List<RoleAccount> queryRoleAccountList(QueryParam queryParam);
     /**
      * description:由账户id将账户状态设置为无效
      * @author shiya.li@ucarinc.com

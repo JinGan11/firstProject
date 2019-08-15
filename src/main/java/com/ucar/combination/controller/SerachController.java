@@ -4,6 +4,7 @@ import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.RoleAccount;
 import com.ucar.combination.service.AccountManagerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -25,6 +27,7 @@ public class SerachController {
 	@ResponseBody
 	@RequestMapping("/getRoleAccountList.do")
 	public Result getRoleAccountList(HttpServletRequest request) {
+		String roleId = request.getParameter("roleId");
 		String roleName = request.getParameter("roleName");
 		String businessLine = request.getParameter("businessLine");
 		String accountName = request.getParameter("accountName");
@@ -33,23 +36,29 @@ public class SerachController {
 		String roleStatus = request.getParameter("roleStatus");
 		String accountState = request.getParameter("accountState");
 		String departmentName = request.getParameter("departmentName");
+		String departmentId = request.getParameter("departmentId");
 		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("roleId",roleId);
 		params.put("roleName", roleName);
 		params.put("businessLine", businessLine);
 		params.put("accountName", accountName);
 		params.put("staffNum", staffNum);
 		params.put("staffName", staffName);
 		params.put("roleStatus", roleStatus);
-		params.put("departmentId", departmentName);
+		params.put("departmentName", departmentName);
+		params.put("departmentId",departmentId);
 		params.put("accountState", accountState);
-		params.put("page", 1);
-		params.put("limit", 10);
+		params.put("page", request.getParameter("currentPage"));
+		params.put("limit", request.getParameter("pageSize"));
 		ResultPage resultPage = accountManagerService.getRoleAccountList(new QueryParam(params));
+		List<RoleAccount> roleAccountList=accountManagerService.queryRoleAccountList(new QueryParam(params));
 		return new Result().ok().put("page", resultPage)
-				.put("permissionList", CommonEnums.toJsonList(CommonEnums.Permission.values()))
-				.put("permissionEnum", CommonEnums.toEnumMap(CommonEnums.Permission.values()))
+				.put("roleAccountList",roleAccountList)
 				.put("accountStatusEnum", CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()))
-				.put("accountStatusList", CommonEnums.toJsonList(CommonEnums.AccountStatusEnum.values()));
+				.put("businessLineEnum", CommonEnums.toEnumMap(CommonEnums.BusinessLineEnum.values()))
+				.put("roleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values()))
+				.put("permissionList", CommonEnums.toJsonList(CommonEnums.Permission.values()))
+				.put("permissionEnum", CommonEnums.toEnumMap(CommonEnums.Permission.values()));
 	}
 
 	/**
