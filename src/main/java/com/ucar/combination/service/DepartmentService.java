@@ -137,7 +137,7 @@ public interface DepartmentService {
 
     ResultPage searchDepartment(QueryParam queryParam);
 
-    /*
+    /**
      * description:
      * @author jing.luo01@ucarinc.com
      * @date   2019/8/6 10:11
@@ -147,4 +147,12 @@ public interface DepartmentService {
      */
     DepartmentDto getDepartmentDtoById(String id);
 
+    /**
+     * description: 得到SearchDepartmentDto的所有信息
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/15 9:36
+     * @params
+     * @return 返回SearchDepartmentDto的集合
+     */
+    List<SearchDepartmentDto> searchDepartmentAll(QueryParam queryParam);
 }
