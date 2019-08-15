@@ -79,7 +79,7 @@
           {{RegionStatus[scope.row.regionStatus]}}
         </template>
       </el-table-column>
-      <el-table-column prop="modifyEmp" label="修改人"  width="200px"></el-table-column>
+      <el-table-column prop="modifyEmpName" label="修改人"  width="200px"></el-table-column>
       <el-table-column prop="modifyTime" label="修改时间"  ></el-table-column>
     </el-table>
     <el-pagination background

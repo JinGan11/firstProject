@@ -27,6 +27,15 @@ public class Region extends BaseBean {
     private String upperRegionTwice;
     private Integer regionStatus;
     private String remark;
+    private String modifyEmpName;
+
+    public String getModifyEmpName() {
+        return modifyEmpName;
+    }
+
+    public void setModifyEmpName(String modifyEmpName) {
+        this.modifyEmpName = modifyEmpName;
+    }
 
     public String getUpperRegionTwice() {
         return upperRegionTwice;
