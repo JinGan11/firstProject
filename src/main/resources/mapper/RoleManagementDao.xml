@@ -14,30 +14,14 @@
     t1.description    description
     from t_role_info t1
     where 1=1
+    <if test="flag != null and flag.trim() !=''">
+        AND t1.role_status = 1
+    </if>
     <if test="role_name != null and role_name.trim() != ''">
         AND t1.role_name like concat('%',#{role_name},'%')
     </if>
     ORDER BY t1.create_time desc
 </select>
-
-    <select id="queryEffectiveList" resultType="com.ucar.combination.model.Role">
-        select
-        t1.id              roleId,
-        t1.role_name       roleName,
-        t1.business_line   businessLine,
-        t1.approver_account_name   accountNum,
-        t1.approver_staff_num     staffNum,
-        t1.approver_staff_name     staffName,
-        t1.approver_department_name  departmentName,
-        t1.role_status    roleStatus,
-        t1.description    description
-        from t_role_info t1
-        where t1.role_status = 1
-        <if test="role_name != null and role_name.trim() != ''">
-            AND t1.role_name like concat('%',#{role_name},'%')
-        </if>
-        ORDER BY t1.create_time desc
-    </select>
 
     <select id="queryroleList" resultType="com.ucar.combination.model.Role">
          select

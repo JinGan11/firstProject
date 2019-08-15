@@ -60,10 +60,12 @@ public class RoleManagementController {
 		String page = request.getParameter("page");
 		String limit = request.getParameter("limit");
 		String roleName = request.getParameter("roleName");
+		String flag = request.getParameter("flag");
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("page", page);
 		params.put("limit", limit);
 		params.put("role_name", roleName);
+		params.put("flag",flag);
 		ResultPage resultPage = roleManagementService.queryList(new QueryParam(params));
 		List<Role> roleList = roleManagementService.queryroleList();
 		return Result.ok().put("page", resultPage).put("RoleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values())).put("roleList",roleList);
@@ -76,20 +78,6 @@ public class RoleManagementController {
 	 * @param request
 	 * @return com.ucar.combination.common.Result
 	 */
-
-	@ResponseBody
-	@RequestMapping("/queryEffectiveList.do_")
-	public Result effectiveList(HttpServletRequest request) {
-		String page = request.getParameter("page");
-		String limit = request.getParameter("limit");
-		String roleName = request.getParameter("roleName");
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("page", page);
-		params.put("limit", limit);
-		params.put("role_name", roleName);
-		ResultPage resultPage = roleManagementService.queryEffectiveList(new QueryParam(params));
-		return Result.ok().put("page", resultPage).put("RoleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values()));
-	}
 
 
 	/**
