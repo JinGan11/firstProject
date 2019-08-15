@@ -43,7 +43,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="modifyTime" label="修改时间" ></el-table-column>
-        <el-table-column prop="modifyName" label="修改人" width="120"></el-table-column>
+        <el-table-column prop="modifyName" label="修改人"></el-table-column>
       </el-table>
       <el-pagination background
                      @size-change="handleSizeChangeRel"
@@ -57,16 +57,17 @@
     </div>
     <div style="width:95%; margin-left: 10px">
     <el-dialog :title="title" :visible.sync="companyFlag" :close-on-click-modal="false" width="90%">
+      <div class="dialog-main" style="overflow: auto">
       <el-form ref="form" :model="form" label-width="100px">
         <el-row>
           <el-col :span="6">
             <el-form-item label="企业名称" label-width="70px">
-              <el-input style="width:200px;" v-model="form.companyName"></el-input>
+              <el-input style="width:200px;" clearable v-model="form.companyName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="统一社会信用代码" label-width="135px" style="margin-left: 20px" >
-              <el-input style="width:200px" v-model="form.creditCode"></el-input>
+              <el-input style="width:200px" clearable v-model="form.creditCode"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -134,8 +135,8 @@
       <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
     </div>
     <el-table ref="multipleTable2" :data="tableData" border @selection-change="handleSelectionChange" >
-      <el-table-column label="选择" width="45">
-        <el-table-column type="selection" width="35"></el-table-column>
+      <el-table-column label="选择" width="50px">
+        <el-table-column type="selection" width="50px"></el-table-column>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
       <el-table-column prop="id" label="编号" width="150">
@@ -144,7 +145,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="companyName" label="公司名称"width="150"></el-table-column>
-      <el-table-column prop="creditCode" label="统一社会信用代码" width="120"></el-table-column>
+      <el-table-column prop="creditCode" label="统一社会信用代码"></el-table-column>
       <el-table-column prop="companyType" label="类型" width="150" style="text-align: center">
         <template slot-scope="scope">
           {{CompanyTypeEnum[scope.row.companyType]}}
@@ -166,7 +167,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="modifyTime" label="修改时间" width="140"></el-table-column>
-      <el-table-column prop="modifyName" label="修改人" width="120"></el-table-column>
+      <el-table-column prop="modifyName" label="修改人"></el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
@@ -177,6 +178,7 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
+      </div>
     </el-dialog>
     </div>
     <el-dialog :title="title" :visible.sync="companyContentFlag" :close-on-click-modal="false" width="950px">
@@ -627,7 +629,10 @@
       },
       addCompanyBtn(){//添加公司
         this.companyFlag=true;
-        this.$refs.multipleTable2.clearSelection();
+        if(this.selection.length){
+          this.$refs.multipleTable2.clearSelection();
+        }
+
         this.selection=[];
       },
       removeCompanyBtn(){//移除公司
@@ -643,7 +648,6 @@
       },
       saveBtn(){//保存按钮，传送新旧关联公司信息
         var self = this;
-
         for(let i=0;i<this.companyChangesList.length;i++){
           self.newRelationList.push(String(this.companyChangesList[i].id));
         }
@@ -709,3 +713,8 @@
     },
   }
 </script>
+<style scoped>
+  .el-dialog__body{
+    height: 1000px;
+  }
+</style>

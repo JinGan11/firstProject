@@ -227,10 +227,6 @@ public class EmployeeManageController {
         String staffId = request.getParameter("staffId");
         long id = Long.parseLong(staffId);
         StaffAccountDTO staffAccountDTO = employeeManageService.getInfoByStaffId(id);
-        System.out.println(staffAccountDTO.getCreateEmpAccountName());
-        System.out.println(staffAccountDTO.getCreateEmpStaffName());
-        System.out.println(staffAccountDTO.getModifyEmpAccountName());
-        System.out.println(staffAccountDTO.getModifyEmpStaffName());
         return Result.ok().put("status","success").put("list",staffAccountDTO);
     }
 }

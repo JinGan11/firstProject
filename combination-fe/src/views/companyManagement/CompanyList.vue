@@ -105,14 +105,14 @@
           <el-button type="text" @click="companyIdBtn(scope.row.id)">{{scope.row.id}}</el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="companyName" label="公司名称"></el-table-column>
+      <el-table-column prop="companyName" label="公司名称" width="150"></el-table-column>
       <el-table-column prop="creditCode" label="统一社会信用代码" ></el-table-column>
-      <el-table-column prop="companyType" label="类型"  style="text-align: center">
+      <el-table-column prop="companyType" label="类型" width="150" style="text-align: center">
         <template slot-scope="scope">
           {{CompanyTypeEnum[scope.row.companyType]}}
         </template>
       </el-table-column>
-      <el-table-column prop="companyNature" label="公司性质"  width="110" style="text-align: center">
+      <el-table-column prop="companyNature" label="公司性质"  width="100" style="text-align: center">
         <template slot-scope="scope">
           {{CompanyNatureEnum[scope.row.companyNature]}}
         </template>
@@ -128,7 +128,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="modifyTime" label="修改时间" ></el-table-column>
-      <el-table-column prop="modifyName" label="修改人" width="120"></el-table-column>
+      <el-table-column prop="modifyName" label="修改人" width="100"></el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
