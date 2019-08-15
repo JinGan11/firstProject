@@ -129,7 +129,7 @@
         <if test="modifyTimeEnd!=null and modifyTimeEnd!=''">
             AND t1.modify_time<![CDATA[ <= ]]> #{modifyTimeEnd}
         </if>
-        order by t1.apply_time desc
+        order by t1.modify_time desc
     </select>
 
 
