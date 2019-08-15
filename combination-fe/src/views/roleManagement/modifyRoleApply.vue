@@ -664,6 +664,7 @@
       },
       handleSelectAccount(val) {
         this.multipleSelection = val;
+        this.disabledSelectAccount=false;
       },
       selectAccountConfirm() {//确定添加账户
 
@@ -802,10 +803,6 @@
       checkInput(self) {
         if (self.formRoleInfo.roleName == '') {
           self.$message.info("申请角色为必填项，不允许为空");
-          return false;
-        }
-        if(self.roleStatus==0){
-          self.$message.info("申请角色已失效，请重新选择");
           return false;
         }
         if(self.tableDataAccount.length==0){

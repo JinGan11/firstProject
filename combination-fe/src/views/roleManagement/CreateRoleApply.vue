@@ -299,12 +299,11 @@
           </el-form>
         </div>
         <div style="margin-bottom: 10px">
-          <el-button type="primary" @click="selectAccountConfirm" style="width:70px">确认选择</el-button>
+          <el-button type="primary" @click="selectAccountConfirm"  :disabled="disabledSelectAccount"  style="width:70px">确认选择</el-button>
           <el-button type="primary" @click="cancelSelectAccount" style="width:70px">取消</el-button>
         </div>
         <el-table ref="multipleTable" :data="tableData" border  @selection-change="handleSelectAccount" >
-          <el-table-column type="selection" width="35">
-          </el-table-column>
+          <el-table-column type="selection" width="35"></el-table-column>
           <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
           <el-table-column prop="accountName" label="登陆账号" style="width:auto"></el-table-column>
           <el-table-column prop="staffNum" label="员工编号" style="width:auto"></el-table-column>
@@ -671,6 +670,7 @@
         this.$router.replace('/roleManagement/apply')
       },
       handleSelectAccount(val) {
+        this.disabledSelectAccount=false;
         this.multipleSelection = val;
       },
 
@@ -768,10 +768,6 @@
       checkInput(self) {
         if (self.formRoleInfo.roleName == '') {
           self.$message.info("申请角色为必填项，不允许为空");
-          return false;
-        }
-        if(self.roleStatus==0){
-          self.$message.info("申请角色已失效，请重新选择");
           return false;
         }
         if(self.tableDataAccount.length==0){
