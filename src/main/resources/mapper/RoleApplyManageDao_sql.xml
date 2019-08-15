@@ -72,7 +72,7 @@
         t1.apply_account_name       applyAccountName,
         t1.apply_staff_num          applyStaffNum,
         t1.apply_staff_name         applyStaffName,
-        t5.department_name    applyDepartmentName,
+        t5.department_name          applyDepartmentName,
         t1.apply_time               applyTime,
         t1.status                   applyStatus,
         t3.account_name             modifyEmp,

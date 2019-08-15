@@ -750,15 +750,17 @@
         this.applyId= row.id;
         this.formRoleInfo.roleName = row.roleName;//角色名字
         this.formRoleInfo.roleApplyNum=row.roleApplyNum;//申请编号
-        this.formRoleInfo.approverStaffName = row.approverStaffName;//审批人
-        this.formRoleInfo.businessLine = row.businessLine;//业务线
         this.otherInfo.approverStaffName = row.approverStaffName;//审批人名字
+        this.formRoleInfo.businessLine = row.businessLine;//业务线
+        this.otherInfo.applyAccountName =row.applyAccountName;//申请人登录账号
+        this.otherInfo.applyStaffNum=row.applyStaffNum;//员工编号
+        this.otherInfo.applyStaffName=row.applyStaffName;//员工姓名
+        this.otherInfo.applyDepartmentName=row.applyDepartmentName;//部门
         this.otherInfo.applyTime = row.applyTime;//申请时间
         this.otherInfo.modifyTime = row.modifyTime;//修改时间
+        this.otherInfo.modifyStaffName =row.modifyEmp;//修改人员工姓名
         this.otherInfo.approveTime=row.approveTime;//审批时间
-        this.otherInfo.applyAccountName = sessionStorage.getItem('loginUsername');//申请人员工姓名
-        this.otherInfo.modifyStaffName = sessionStorage.getItem('modifyEmpFromApply');//修改人员工姓名
-
+        this.formRoleInfo.approverStaffName = row.approverStaffName;//审批人
         switch (row.applyStatus) {
           case 1: this.otherInfo.applyStatus='已新建'; break;
           case 2: this.otherInfo.applyStatus='待审批'; break;
@@ -768,7 +770,6 @@
           default: this.otherInfo.applyStatus=null;
         }
         this.showAccountListByApplyId();//查询改申请编号 包含的账号列表
-        this.queryLoginInRoleApply();//申请人  具体信息
       },
 
       showAccountListByApplyId() {
@@ -796,30 +797,10 @@
           self.$message.error("获取数据错误");
         });
       },
-      queryLoginInRoleApply() {// 修改页面进来  获取当前登录账号 部门 员工
-        var self = this;
-        var applyAccountName = sessionStorage.getItem('loginUsername');
-        var param = {
-          applyAccountName: applyAccountName,
-        };
-        self.$http.get('roleApply/queryLoginInRoleApply.do_', {
-          params: param
-        }).then((result) => {
-          self.otherInfo.applyAccountName = result.page.applyAccountName;
-          self.otherInfo.applyStaffNum = result.page.applyStaffNum;
-          self.otherInfo.applyStaffName = result.page.applyStaffName;
-          self.otherInfo.applyDepartmentName = result.page.applyDepartmentName;
-          self.otherInfo.modifyStaffName = result.page.modifyStaffName;
-        }).catch(function (error) {
-          commonUtils.Log("roleApply/queryLoginInRoleApply.do_" + error);
-          self.$message.error("获取数据错误");
-        });
-      },
 
       cancalShowApplyDetails(){
         this.dialogVisibleRoleApplyInfo=false;
       }
-
     }
 
   }
