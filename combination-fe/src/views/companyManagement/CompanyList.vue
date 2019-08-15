@@ -17,12 +17,12 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="企业名称" >
-              <el-input style="width:190px;" v-model="form.companyName"></el-input>
+              <el-input style="width:190px;" clearable v-model="form.companyName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="统一社会信用代码" style="margin-left: 20px" label-width="140px">
-              <el-input style="width:180px" v-model="form.creditCode"></el-input>
+              <el-input style="width:180px" clearable v-model="form.creditCode"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
