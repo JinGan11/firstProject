@@ -519,22 +519,43 @@
         // 校验部门编号 和 部门级别
         var pattern_deptNo;
         switch (_form.level) {
-          case 1:pattern_deptNo=/^Z[a-zA-Z0-9]{6}$/;break;
-          case 2:pattern_deptNo=/^F[a-zA-Z0-9]{6}$/;break;
-          case 3:pattern_deptNo=/^G[a-zA-Z0-9]{6}$/;break;
-          case 4:pattern_deptNo=/^Q[a-zA-Z0-9]{6}$/;break;
-          case 5:pattern_deptNo=/^B[a-zA-Z0-9]{6}$/;break;
-          default:self.$message.error("请选择【部门级别】！");return false;
-        }
-        if(!pattern_deptNo.test(_form.departmentNo)){
-          self.$message.error("【部门编号】不符合规范！\n" +
-            "要求：\n" +
-            "总部：7位数字或字母，以Z开头。\n" +
-            "分公司：7位数字或字母，以F开头。\n" +
-            "管理部：7位数字或字母，以G开头。\n" +
-            "区域：7位数字或字母，以F开头。\n" +
-            "办公点：7位数字或字母，以B开头。\n");
-          return false;
+          case 1:
+            pattern_deptNo=/^Z[a-zA-Z0-9]{6}$/;
+            if(!pattern_deptNo.test(_form.departmentNo)){
+              self.$message.error("【部门编号】不符合规范！总部：7位数字或字母，以Z开头。");
+              return false;
+            }
+            break;
+          case 2:
+            pattern_deptNo=/^F[a-zA-Z0-9]{6}$/;
+            if(!pattern_deptNo.test(_form.departmentNo)){
+              self.$message.error("【部门编号】不符合规范！分公司：7位数字或字母，以F开头。");
+              return false;
+            }
+            break;
+          case 3:
+            pattern_deptNo=/^G[a-zA-Z0-9]{6}$/;
+            if(!pattern_deptNo.test(_form.departmentNo)){
+              self.$message.error("【部门编号】不符合规范！管理部：7位数字或字母，以G开头。");
+              return false;
+            }
+            break;
+          case 4:
+            pattern_deptNo=/^Q[a-zA-Z0-9]{6}$/;
+            if(!pattern_deptNo.test(_form.departmentNo)){
+              self.$message.error("【部门编号】不符合规范！区域：7位数字或字母，以Q开头。");
+              return false;
+            }
+            break;
+          case 5:
+            pattern_deptNo=/^B[a-zA-Z0-9]{6}$/;
+            if(!pattern_deptNo.test(_form.departmentNo)){
+              self.$message.error("【部门编号】不符合规范！办公点：7位数字或字母，以B开头。");
+              return false;
+            }
+            break;
+          default:
+            self.$message.error("请选择【部门级别】！");return false;
         }
         // 办公点：部门类型 及 办公点标识 校验
         if(self.haveWorkplace){

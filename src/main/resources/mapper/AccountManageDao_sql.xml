@@ -127,10 +127,10 @@
         <if test="departmentId != null and departmentId.trim() != ''">
             and t3.id = #{departmentId}
         </if>
-        <if test="isRelStaff == 1 ">
+        <if test="isRelStaff!=null and isRelStaff.trim()!='' and isRelStaff == 1 ">
             and t1.staff_id != 0 and t1.staff_id is not null
         </if>
-        <if test="isRelStaff == 0 ">
+        <if test="isRelStaff!=null and isRelStaff.trim()!='' and isRelStaff == 0 ">
             and (t1.staff_id = 0 or t1.staff_id is null)
         </if>
         <if test="accountState != null and accountState.trim() != ''">

@@ -4,13 +4,13 @@
       <el-row>
         <el-col :span="6">
           <el-form-item label="登录账号">
-            <el-input v-model="accountForm.accountName">
+            <el-input v-model="accountForm.accountName" clearable>
             </el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="员工编号">
-            <el-input v-model="accountForm.staffNum"></el-input>
+            <el-input v-model="accountForm.staffNum" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -26,12 +26,13 @@
       <el-row>
         <el-col :span="6">
           <el-form-item label="员工姓名">
-            <el-input v-model="accountForm.staffName"></el-input>
+            <el-input v-model="accountForm.staffName" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="账号状态">
-            <el-select v-model="accountForm.accountState" value="0">
+            <el-select v-model="accountForm.accountState">
+              <el-option label="全部" value=""></el-option>
               <el-option label="无效" value="3"></el-option>
               <el-option label="正常" value="1"></el-option>
               <el-option label="冻结" value="2"></el-option>
@@ -40,7 +41,7 @@
         </el-col>
         <el-col :span="6">
           <el-form-item label="权限名称">
-            <el-input v-model="accountForm.path"></el-input>
+            <el-input v-model="accountForm.path" clearable></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -92,7 +93,7 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
-    <el-dialog title='excelTitle' :visible.sync="exportDialogVisible" :close-on-click-modal="false" width="600px">
+    <el-dialog title='请选择需要导出的字段' :visible.sync="exportDialogVisible" :close-on-click-modal="false" width="600px">
       <template>
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         <div style="margin: 15px 0;"></div>
@@ -257,8 +258,8 @@
         list: [],
         disabled: true,
         accountPowerList: [],
-        permissionEnum:[],
-        accountStatusEnum:[],
+        permissionEnum: [],
+        accountStatusEnum: [],
       }
     },
     methods: {
@@ -377,8 +378,8 @@
           params: param
         }).then((result) => {
           this.formDetail = result.account;
-          this.formDetail.premissions=result.permissionEnum[this.formDetail.premissions];
-          this.formDetail.accountState=result.accountStatusEnum[this.formDetail.accountState];
+          this.formDetail.premissions = result.permissionEnum[this.formDetail.premissions];
+          this.formDetail.accountState = result.accountStatusEnum[this.formDetail.accountState];
         })
         this.detailDialogVisible = true;
       },
@@ -387,7 +388,7 @@
         this.dialogVisibleDepartment = true;
       },
       clearDepartment() {//清除部门的值
-        this.form.applyDepartmentName = '';
+        this.accountForm.departmentName = '';
       },
       loadNode(node, resolve) {
         var self = this;
