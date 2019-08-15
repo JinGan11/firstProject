@@ -46,7 +46,7 @@ public class RoleManagementController {
 	private AccountManagerService accountManagerService;
 
 	/**
-	 * description:用于接收数据返回前端列表
+	 * description:用于接收所有数据返回前端列表
 	 *
 	 * @param request 前端请求
 	 * @return com.ucar.combination.common.Result 返回数据
@@ -68,6 +68,29 @@ public class RoleManagementController {
 		List<Role> roleList = roleManagementService.queryroleList();
 		return Result.ok().put("page", resultPage).put("RoleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values())).put("roleList",roleList);
 	}
+
+	/**
+	 * description:获取有效的角色信息
+	 * @author gan.jin@ucarinc.com
+	 * @date 2019/8/15 10:57
+	 * @param request
+	 * @return com.ucar.combination.common.Result
+	 */
+
+	@ResponseBody
+	@RequestMapping("/queryEffectiveList.do_")
+	public Result effectiveList(HttpServletRequest request) {
+		String page = request.getParameter("page");
+		String limit = request.getParameter("limit");
+		String roleName = request.getParameter("roleName");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("page", page);
+		params.put("limit", limit);
+		params.put("role_name", roleName);
+		ResultPage resultPage = roleManagementService.queryEffectiveList(new QueryParam(params));
+		return Result.ok().put("page", resultPage).put("RoleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values()));
+	}
+
 
 	/**
 	 * description:用于逻辑删除数据

@@ -24,7 +24,7 @@ import java.util.Map;
 public interface RoleManagementService {
 
     ResultPage queryList(QueryParam queryParam);
-
+    ResultPage queryEffectiveList(QueryParam queryParam);
     ResultPage getRoleList();
     void updateStatus(int id);
     void insertRole(RoleDto role);

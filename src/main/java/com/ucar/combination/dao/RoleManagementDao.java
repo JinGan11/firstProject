@@ -22,6 +22,7 @@ import java.util.Map;
 @Component
 public interface RoleManagementDao {
     List<Map<String, Object>> queryList(Map<String, Object> map);
+    List<Map<String, Object>> queryEffectiveList(Map<String, Object> map);
 
     /**
      * description: 获取所有角色数据

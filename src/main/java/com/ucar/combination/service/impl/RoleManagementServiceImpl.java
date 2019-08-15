@@ -46,6 +46,14 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
 
+    @Override
+    public ResultPage queryEffectiveList(QueryParam queryParam) {
+        Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
+        List<Map<String, Object>> list = roleManagementDao.queryEffectiveList(queryParam);
+        System.out.println(list);
+        return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
+    }
+
     /**
      * description:依据传入参数主键id逻辑删除
      * @author gan.jin@ucarinc.com
