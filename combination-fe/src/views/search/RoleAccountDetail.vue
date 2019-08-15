@@ -95,7 +95,11 @@
           :(scope.row.accountState=="4"?'专车':'保险')))}}
         </template>
       </el-table-column>
-      <el-table-column prop="accountName" label="登陆账号" width="150"></el-table-column>
+      <el-table-column prop="accountName" label="登陆账号" width="150">
+        <template slot-scope="scope">
+          <el-button type="text" @click="accountBtn(scope.row.accountId)">{{scope.row.accountName}}</el-button>
+        </template>
+      </el-table-column>
       <el-table-column prop="staffNum" label="员工编号" width="150"></el-table-column>
       <el-table-column prop="staffName" label="员工姓名" width="150"></el-table-column>
       <el-table-column prop="departmentName" label="所属部门" width="150"></el-table-column>
@@ -118,8 +122,6 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
-    <!--导出弹窗-->
-    </el-dialog>
     <el-dialog title='请选择需要导出的字段' :visible.sync="exportVisible" :close-on-click-modal="false" width="600px">
       <template>
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
@@ -149,12 +151,15 @@
         @check-change="handleClick1">
       </el-tree>
     </el-dialog>
+    <el-dialog :visible.sync="accounFlag" :close-on-click-modal="false" width="800px">
+      <account-view ref="c1" :accountId="accountId" ></account-view>
+    </el-dialog>
   </home>
 </template>
 
 <script>
   import commonUtils from '../../common/commonUtils'
-
+  import accountView from '../accountManagement/AccountView'
   export default {
     data() {
       return {
@@ -257,7 +262,8 @@
         selection: '',
         checkedRoleAccount:[], //导出选择的字段
         isIndeterminate:true,//修改全选复选框样式
-
+        accountId: '',
+        accounFlag: false
       }
     },
     // activated() {
@@ -266,6 +272,7 @@
     // mounted() {
     //   commonUtils.Log("页面进来");
     // },
+    components: {accountView},
     methods: {
       fetchData() { //根据查询条件获取数据
         var self = this;
@@ -412,6 +419,13 @@
         }
         this.chooseDepartmentFlag=false;
       },
+      //账户信息明细
+      accountBtn(val){
+        localStorage.setItem("accountId",val);
+        self.accountId = val;
+        this.accounFlag = true;
+        this.$refs.c1.fetchData(val);
+      }
     }
   }
 </script>

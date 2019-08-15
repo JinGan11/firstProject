@@ -2,6 +2,7 @@ package com.ucar.combination.model;
 
 public class RoleAccount {
     private Integer id;
+    private Long accountId;
     private String roleName;
     private String businessLine;
     private String accountName;
@@ -10,6 +11,14 @@ public class RoleAccount {
     private String departmentName;
     private Byte roleStatus;
     private String accountState;
+
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
 
     public Integer getId() { return id; }
 

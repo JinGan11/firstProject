@@ -165,10 +165,12 @@
         <result column="department_name" property="departmentName"/>
         <result column="role_status" property="roleStatus"/>
         <result column="account_state" property="accountState"/>
+        <result column="account_id" property="accountId"/>
     </resultMap>
     <select id="getRoleAccountList" resultMap="RoleAccount">
         select
         a.id,
+        c.id account_id,
         a.role_name,
         a.business_line,
         a.role_status,
