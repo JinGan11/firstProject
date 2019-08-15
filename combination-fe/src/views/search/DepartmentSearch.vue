@@ -61,9 +61,9 @@
              @click="">清空
            </el-button>
          </el-col>-->
-        <el-col style="width: 160px">
-          <el-button type="text" @click="selectDepartment" :span="4">选择</el-button>
-          <el-button type="text" @click="clearDepartment" :span="4">清空</el-button>
+        <el-col style="width: 100px">
+          <el-button type="text" @click="selectDepartment" :span="2">选择</el-button>
+          <el-button type="text" @click="clearDepartment" :span="2">清空</el-button>
         </el-col>
       </el-row>
       <el-row>
