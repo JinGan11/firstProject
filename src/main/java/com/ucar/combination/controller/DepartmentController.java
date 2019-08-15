@@ -212,7 +212,8 @@ public class DepartmentController {
         params.put("status", status);
         params.put("departmentType", departmentType);
         ResultPage resultPage = departmentService.searchDepartment(new QueryParam(params));
-        return new Result().ok().put("page", resultPage).put("DepartmentTypeEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentType.values())).put("StatusEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentStatus.values())).put("LevelEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentLevel.values()));
+        List<SearchDepartmentDto> listSearch=departmentService.searchDepartmentAll(new QueryParam(params));
+        return new Result().ok().put("page", resultPage).put("DepartmentTypeEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentType.values())).put("StatusEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentStatus.values())).put("LevelEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentLevel.values())).put("listSearch",listSearch);
     }
 
     /*

@@ -186,7 +186,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         return true;
     }
 
-    /*
+    /**
      * description: 访问DAO层得到DEPARTMENT数据库的信息
      * @author jing.luo01@ucarinc.com
      * @date   2019/8/6 10:13
@@ -197,5 +197,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public DepartmentDto getDepartmentDtoById(String id) {
         return departmentDao.getDepartmentDtoById(Long.valueOf(id));
+    }
+
+    @Override
+    public List<SearchDepartmentDto> searchDepartmentAll( QueryParam queryParam) {
+        return departmentDao.searchDepartment(queryParam);
     }
 }

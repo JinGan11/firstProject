@@ -516,7 +516,7 @@
           self.StatusEnum = result.StatusEnum;
           self.total = result.page.totalCount;
           self.LevelEnum = result.LevelEnum;
-          self.departmentList = self.tableData;
+          self.departmentList = result.listSearch;
         }).catch(function (error) {
           console.log('department/searchDepartment.do_' + error);
           self.$message.error("获取数据错误");
