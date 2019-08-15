@@ -175,6 +175,7 @@
         update t_role_apply
         set role_id=#{roleId},
             role_name=#{roleName},
+            status=#{applyStatus},
             apply_time=now(),
             modify_time=now()
         where id=#{id}

@@ -9,7 +9,7 @@
           <el-button type="primary" size="mini" @click="saveRoleApply">保存</el-button>
         </el-col>
         <el-col :span="3">
-          <el-button type="primary" size="mini" @click="">保存并提交</el-button>
+          <el-button type="primary" size="mini" @click="createSaveCommitRoleApply">保存并提交</el-button>
         </el-col>
         <el-col :span="2">
           <el-button type="primary" size="mini" @click="cancelRoleApply">取消</el-button>
@@ -705,6 +705,42 @@
           commonUtils.Log("/roleManagement/apply" + error);
           self.$message.error("角色申请新建保存失败");
         })
+      },
+
+      createSaveCommitRoleApply(){
+        for (let i = 0; i < this.tableDataAccount.length; i++) {//账号ID
+          this.accountIdList.push(this.tableDataAccount[i].id);
+        }
+        for (let i = 0; i < this.tableDataAccount.length; i++) {
+          this.applyOperationList.push(this.tableDataAccount[i].applyOperation)
+        }
+        var self = this;
+        self.forms.roleApplyNum = self.formRoleInfo.roleApplyNum;
+        self.forms.roleId = self.roleId;
+        self.forms.roleName = self.formRoleInfo.roleName;
+        self.forms.applyStatus = self.otherInfo.applyStatus;
+        self.forms.applyAccountName = self.otherInfo.applyAccountName;
+        self.forms.applyStaffNum = self.otherInfo.applyStaffNum;
+        self.forms.applyStaffName = self.otherInfo.applyStaffName;
+        self.forms.applyDepartmentName = self.otherInfo.applyDepartmentName;
+        self.forms.applyTime = self.otherInfo.applyTime;
+        self.forms.modifyStaffName = '';
+        self.forms.modifyTime = self.otherInfo.modifyTime;
+        self.forms.accountIdList = self.accountIdList;
+        self.forms.applyOperationList = self.applyOperationList;
+
+
+        if (!self.$options.methods.checkInput(self)) return;
+
+        self.$http.post("roleApply/createSaveCommitRoleApply.do_", self.forms)
+          .then(result => {
+            self.$message.info("角色申请保存并提交成功");
+            self.$router.replace("/roleManagement/apply");
+          }).catch(function (error) {
+          commonUtils.Log("/roleManagement/apply" + error);
+          self.$message.error("角色申请保存并提交保存失败");
+        })
+
       },
 
       checkInput(self) {

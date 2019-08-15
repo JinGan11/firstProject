@@ -114,17 +114,6 @@ public class RoleApplyManageController {
     * @Return
     * @Date  16:02 2019/8/8
     */
-//    @ResponseBody
-//    @RequestMapping(value = "/createRoleApply.do_",method = RequestMethod.POST)
-//    public void createRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto,HttpSession session){
-//        Long accountId = (Long) session.getAttribute("accountId");
-//        createRoleApplyDto.setModifyStaffName(accountId);
-//        createRoleApplyDto.setApplyStatus(1);
-//        roleApplyManageService.createRoleApply(createRoleApplyDto);
-//    }
-
-
-    //测试用的代码
     @ResponseBody
     @RequestMapping(value = "/createRoleApply.do_",method = RequestMethod.POST)
     public void createRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto,HttpSession session){
@@ -136,7 +125,6 @@ public class RoleApplyManageController {
         String roleApplyNum=roleApplyManageService.getApplyNum();
         createRoleApplyDto.setRoleApplyNum(roleApplyNum);
         roleApplyManageService.createRoleApply(createRoleApplyDto);
-
         //插入账号
         for(int i=0;i<createRoleApplyDto.getAccountIdList().length;i++){
             ApplyRoleAccountDto applyRoleAccountDto=new ApplyRoleAccountDto();
@@ -148,7 +136,37 @@ public class RoleApplyManageController {
             applyRoleAccountDto.setModifyEmp((Long) session.getAttribute("accountId"));//修改人
             roleApplyManageService.createApplyRoleAccount(applyRoleAccountDto);
         }
+    }
 
+    /**
+    * @Description:  角色申请  新建   保存并提交
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  8:38 2019/8/15
+    */
+    @ResponseBody
+    @RequestMapping(value = "/createSaveCommitRoleApply.do_",method = RequestMethod.POST)
+    public void createSaveCommitRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto,HttpSession session){
+        // 新建角色申请
+        Long accountId = (Long) session.getAttribute("accountId");
+        createRoleApplyDto.setModifyStaffName(accountId);//修改人ID
+        createRoleApplyDto.setApplyStatus(2);
+        //设置申请编号
+        String roleApplyNum=roleApplyManageService.getApplyNum();
+        createRoleApplyDto.setRoleApplyNum(roleApplyNum);
+        roleApplyManageService.createRoleApply(createRoleApplyDto);
+        //插入账号
+        for(int i=0;i<createRoleApplyDto.getAccountIdList().length;i++){
+            ApplyRoleAccountDto applyRoleAccountDto=new ApplyRoleAccountDto();
+            applyRoleAccountDto.setApplyId(createRoleApplyDto.getId());//申请编号id
+            applyRoleAccountDto.setRoleId(createRoleApplyDto.getRoleId());//角色id
+            applyRoleAccountDto.setAccountId(createRoleApplyDto.getAccountIdList()[i]);//账号id
+            applyRoleAccountDto.setApplyOperation(createRoleApplyDto.getApplyOperationList()[i]);//申请操作
+            applyRoleAccountDto.setCreateEmp((Long) session.getAttribute("accountId"));//新建人
+            applyRoleAccountDto.setModifyEmp((Long) session.getAttribute("accountId"));//修改人
+            roleApplyManageService.createApplyRoleAccount(applyRoleAccountDto);
+        }
     }
 
 
@@ -195,6 +213,31 @@ public class RoleApplyManageController {
     @RequestMapping(value = "/modifyRoleApply.do_",method = RequestMethod.POST)
     public void modifyRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto,HttpSession session){
         createRoleApplyDto.setApplyStatus(1);
+        roleApplyManageService.modifyRoleApply(createRoleApplyDto);
+        //修改之前先删除所有的账号
+        roleApplyManageService.deleteAccountListInModifyApply(createRoleApplyDto.getId());
+        //插入账号
+        for(int i=0;i<createRoleApplyDto.getAccountIdList().length;i++){
+            ApplyRoleAccountDto applyRoleAccountDto=new ApplyRoleAccountDto();
+            applyRoleAccountDto.setApplyId(createRoleApplyDto.getId());//申请id
+            applyRoleAccountDto.setRoleId(createRoleApplyDto.getRoleId());//角色id
+            applyRoleAccountDto.setAccountId(createRoleApplyDto.getAccountIdList()[i]);//账号id
+            applyRoleAccountDto.setApplyOperation(createRoleApplyDto.getApplyOperationList()[i]);//申请操作
+            roleApplyManageService.createApplyRoleAccount(applyRoleAccountDto);
+        }
+    }
+
+    /**
+    * @Description:  角色申请  修改  保存并提交
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  8:51 2019/8/15
+    */
+    @ResponseBody
+    @RequestMapping(value = "/modifySaveCommitRoleApply.do_",method = RequestMethod.POST)
+    public void modifySaveCommitRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto,HttpSession session){
+        createRoleApplyDto.setApplyStatus(2);
         roleApplyManageService.modifyRoleApply(createRoleApplyDto);
         //修改之前先删除所有的账号
         roleApplyManageService.deleteAccountListInModifyApply(createRoleApplyDto.getId());
