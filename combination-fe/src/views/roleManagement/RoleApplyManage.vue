@@ -103,7 +103,7 @@
           <el-radio v-model="selection" @change="selectRow(scope.row)" :label="scope.row.id" ><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
-      <el-table-column prop="id"  label="隐藏id"></el-table-column>
+      <!--      <el-table-column prop="id"  label="隐藏id"></el-table-column>-->
       <el-table-column prop="roleApplyNum" label="角色申请编号" width="150">
         <template slot-scope="scope">
           <el-button type="text" @click="roleApplyNumBtn(scope.row)">{{scope.row.roleApplyNum}}</el-button>
@@ -223,8 +223,8 @@
         </div>
         <div style="margin-left: 40px;">
           <el-table ref="multipleTable" :data="tableDataAccount" border>
-            <el-table-column type="selection" width="35"></el-table-column>
-            <el-table-column prop="id" label="隐藏id"></el-table-column>
+            <!--            <el-table-column type="selection" width="35"></el-table-column>-->
+            <!--            <el-table-column prop="id" label="隐藏id"></el-table-column>-->
             <el-table-column prop="accountName" label="申请账号" width="150"></el-table-column>
             <el-table-column prop="staffName" label="关联员工姓名"width="150"></el-table-column>
             <el-table-column prop="staffNum" label="关联员工编号"  width="150"></el-table-column>
@@ -622,6 +622,7 @@
           }).then(() => {
             self.$message.success("成功删除");
             self.fetchData();
+            self.disabledDelete=true;
             self.selection=[];
           }).catch(function (error) {
             commonUtils.Log("roleApply/deleteRoleApply.do_:" + error);
@@ -650,6 +651,7 @@
           }).then(() => {
             self.$message.success("提交角色申请成功");
             self.fetchData();
+            self.disabledDelete=true;
             self.selection=[];
           }).catch(function (error) {
             commonUtils.Log("roleApply/commitRoleApply.do_:" + error);

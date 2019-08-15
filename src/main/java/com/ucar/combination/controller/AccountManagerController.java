@@ -134,6 +134,7 @@ public class AccountManagerController {
         String isRelStaff = request.getParameter("isRelStaff");
         String accountState = request.getParameter("status");
         String filterId = request.getParameter("filterIds");
+        String flag = request.getParameter("flag");
         String[] filterIds = null;
         if(filterId!=null && filterId.length()>0) filterIds=filterId.split(",");
         Map<String, Object> params = new HashMap<String, Object>();
@@ -148,6 +149,7 @@ public class AccountManagerController {
         params.put("isRelStaff", isRelStaff);
         params.put("accountState", accountState);
         params.put("filterIds",filterIds);
+        params.put("flag",flag);
         ResultPage resultPage = accountManagerService.queryList(new QueryParam(params));
         return new Result().ok().put("page", resultPage)
                 .put("permissionList",CommonEnums.toJsonList(CommonEnums.Permission.values()))

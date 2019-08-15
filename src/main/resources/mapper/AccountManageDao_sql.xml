@@ -102,6 +102,9 @@
                  LEFT JOIN t_department t3
                            ON (t2.department_id = t3.id)
         WHERE t1.account_state != 0
+        <if test="flag == 1">
+            and t1.account_state != 3
+        </if>
         <if test="userPermission == 4">
             and t1.id = #{userId}
         </if>
