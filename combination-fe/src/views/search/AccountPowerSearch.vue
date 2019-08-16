@@ -322,8 +322,21 @@
             for (let i = 0; i < list.length; i++) {
               list[i].accountState = this.AccountStatusEnums[list[i].accountState];
             }
+            //获取当前时间
+            var date = new Date();
+            var seperator1 = "-";
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+              month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+              strDate = "0" + strDate;
+            }
+            var currentdate = year + seperator1 + month + seperator1 + strDate;
             const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '员工管理列表excel');
+            export_json_to_excel(tHeader, data, '账号功能权限'+currentdate);
             this.$message({
               showClose: true,
               message: '文件导出成功',

@@ -575,7 +575,7 @@
             }
             var currentdate = year + seperator1 + month + seperator1 + strDate;
             const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '角色管理 '+currentdate);
+            export_json_to_excel(tHeader, data, '部门查询 '+currentdate);
             this.$message({
               showClose: true,
               message: '文件导出成功',
