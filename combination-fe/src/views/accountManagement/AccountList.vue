@@ -86,7 +86,7 @@
       <el-button type="primary" v-if="!AccountButtonPermission.thawPermission" :disabled="deleteDisabled || thawDisabled" @click="unlock" style="width:70px">解冻</el-button>
       <el-button type="primary" v-if="!AccountButtonPermission.resetPermission" :disabled="deleteDisabled" @click="resetPass" style="width:80px">密码重置</el-button>
       <el-button type="primary" v-if="!AccountButtonPermission.assignAccountPermission" :disabled="deleteDisabled" @click="assignPermission" style="width:80px">分配权限</el-button>
-      <el-button type="primary" v-if="!AccountButtonPermission.historyPermission" :disabled="disabled" @click="" style="width:80px">历史记录</el-button>
+      <el-button type="primary" v-if="!AccountButtonPermission.historyPermission" :disabled="disabled" @click="getHistory" style="width:80px">历史记录</el-button>
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange" >
       <el-table-column label="选择" width="50px">
@@ -125,7 +125,6 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
-
     <el-dialog :title="accountAssignPermissionTitle" :visible.sync="accountAssignPermissionFlag" :close-on-click-modal="false" width="850px">
       <div class="dialog-main">
         <span style="font-size: 25px"></span>
@@ -212,6 +211,30 @@
         <el-button @click="cancel">取 消</el-button>
       </template>
     </el-dialog>
+
+
+
+
+
+    <el-dialog title="历史记录" :visible.sync="historyRecordsVisible">
+    <el-table ref="multipleTable" :data="historyRecords" border max-height="550px">
+      <el-table-column prop="staffNum" label="员工编号" width="150"></el-table-column>
+      <el-table-column prop="staffName" label="员工姓名" width="150"></el-table-column>
+      <el-table-column prop="permissions" label="数据权限类型" width="150">
+        <template slot-scope="scope">
+          {{form.permissionsEnum[scope.row.permissions]}}
+        </template>
+      </el-table-column>
+      <el-table-column prop="accountState" label="账号状态" width="150">
+        <template slot-scope="scope">
+          {{form.accountStatusEnum[scope.row.accountState]}}
+        </template>
+      </el-table-column>
+      <el-table-column prop="historyOperationType" label="操作类型" width="150"></el-table-column>
+      <el-table-column prop="accountName" label="操作人" width="150"></el-table-column>
+      <el-table-column prop="createTime" label="操作时间" width="150"></el-table-column>
+    </el-table>
+  </el-dialog>
   </home>
 </template>
 
@@ -298,7 +321,11 @@
           resetPermission: true,
           assignAccountPermission: true,
           historyPermission: true
-        }
+        },
+//控制历史记录对话框可见性
+        historyRecordsVisible:false,
+//历史记录表格数据
+        historyRecords:[]
       }
     },
      components: {accountView},
@@ -336,6 +363,16 @@
       });
     },
     methods: {
+      getHistory(){
+        let accountId  = {id:this.selection};
+        this.historyRecordsVisible=true;
+        this.$http.post("account/accountHistory",accountId).then((result) => {
+          console.log(result);
+          this.historyRecords=result.historyList;
+          console.log(this.form.permissionsEnum);
+
+        })
+      },
       test(){
         this.contentFormFlag = true;
       },
