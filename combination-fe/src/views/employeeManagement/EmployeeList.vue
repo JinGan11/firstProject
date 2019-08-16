@@ -1085,6 +1085,21 @@
         this.departmentVisible=false;
       },
       saveDepartment() {
+      /*  var param
+        self.$http.get('employee/updateDepartment.do_', {
+          params:
+        }).then((result) => {
+          if (result.status=="success"){
+            self.$message.success("恢复成功");
+            self.fetchData();
+          } else {
+            self.$message.error("恢复失败")
+          }
+
+        }).catch(function (error) {
+          commonUtils.Log("employee/recoverEmployee.do_" + error);
+          //self.$message.error("恢复失败");
+        });*/
         this.distributionDepartmentFlag=false;
       },
       cancelDepartment() {
