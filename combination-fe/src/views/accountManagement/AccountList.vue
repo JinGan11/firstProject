@@ -216,23 +216,23 @@
 
 
 
-    <el-dialog title="历史记录" :visible.sync="historyRecordsVisible">
+    <el-dialog title="历史记录" :visible.sync="historyRecordsVisible" width="1000px">
     <el-table ref="multipleTable" :data="historyRecords" border max-height="550px">
-      <el-table-column prop="staffNum" label="员工编号" width="150"></el-table-column>
-      <el-table-column prop="staffName" label="员工姓名" width="150"></el-table-column>
+      <el-table-column prop="staffNum" label="员工编号" width="130"></el-table-column>
+      <el-table-column prop="staffName" label="员工姓名" width="120"></el-table-column>
       <el-table-column prop="permissions" label="数据权限类型" width="150">
         <template slot-scope="scope">
           {{form.permissionsEnum[scope.row.permissions]}}
         </template>
       </el-table-column>
-      <el-table-column prop="accountState" label="账号状态" width="150">
+      <el-table-column prop="accountState" label="账号状态" width="120">
         <template slot-scope="scope">
           {{form.accountStatusEnum[scope.row.accountState]}}
         </template>
       </el-table-column>
-      <el-table-column prop="historyOperationType" label="操作类型" width="150"></el-table-column>
-      <el-table-column prop="accountName" label="操作人" width="150"></el-table-column>
-      <el-table-column prop="createTime" label="操作时间" width="150"></el-table-column>
+      <el-table-column prop="historyOperationType" label="操作类型" width="120"></el-table-column>
+      <el-table-column prop="accountName" label="操作人" width="130"></el-table-column>
+      <el-table-column prop="createTime" label="操作时间" width="200"></el-table-column>
     </el-table>
   </el-dialog>
   </home>
