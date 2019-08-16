@@ -255,14 +255,8 @@
                   <el-row>
                     <el-col :span="1">
                       <el-form-item label="状态">
-                        <el-select v-model="formInfo.roleStatus" :disabled="true" style="width:150px;">
-                          <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                          </el-option>
-                        </el-select>
+                        <el-input style="width:200px;" :disabled="true" v-model="formInfo.roleStatuss===1?'有效':'无效'"></el-input>
+
                       </el-form-item>
                     </el-col>
                   </el-row>
@@ -603,9 +597,12 @@
 
       //账户信息明细
       accountBtn(val){
-        this.$router.push({path: '/ModifyRole', query: {roleID: val}});
-        this.accounFlag = true;
-        this.$refs.c1.fetchData(val);
+        localStorage.setItem("accountId",val);
+        self.accountId = val;
+        this.accountFlag = true;
+        if(this.$refs.c1 != undefined){
+          this.$refs.c1.fetchData(val);
+        }
       }
     }
   }
