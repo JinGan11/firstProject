@@ -28,7 +28,7 @@ import java.util.Map;
  * @author jianan.shu@ucarinc.com
  * @version 1.0
  * @date: 2019/8/3 10:19
-*/
+ */
 @Service
 public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManageService {
     @Autowired(required = false)
@@ -49,9 +49,9 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      */
     @Override
     public ResultPage getCompanyList(QueryParam queryParam) {
-       Page<?> page=PageHelper.startPage(queryParam.getPage(),queryParam.getLimit());
-       List<Company> list=companyManageDao.getCompanyList(queryParam);
-       return new ResultPage(list,(int)page.getTotal(),queryParam.getLimit(),queryParam.getPage());
+        Page<?> page=PageHelper.startPage(queryParam.getPage(),queryParam.getLimit());
+        List<Company> list=companyManageDao.getCompanyList(queryParam);
+        return new ResultPage(list,(int)page.getTotal(),queryParam.getLimit(),queryParam.getPage());
     }
     /**
      * description: 插入公司信息
@@ -98,19 +98,33 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
 
     public Map getCompanyById(int companyId){
         Company company=companyManageDao.getCompanyById(companyId);
-        //String createEmp=companyManageDao.getEmpById(company.getCreateEmp());
-        //String modifyEmp=companyManageDao.getEmpById(company.getModifyEmp());
-        Map<String,Object>createMap=companyManageDao.getCreateInfo(companyId);
-        Map<String,Object>modifyMap=companyManageDao.getModifyInfo(companyId);
-        String createAccountName = null;
-        if(createMap.get("accountName") != null) {
-            createAccountName=(String)createMap.get("accountName");
+        Long createStaffId=companyManageDao.getCreateStaffId(companyId);
+        Long modifyStaffId=companyManageDao.getModifyStaffId(companyId);
+        Map<String,Object>createMap=new HashMap<>();
+        Map<String,Object>modifyMap=new HashMap<>();
+        String createEmp="";
+        String modifyEmp="";
+
+        //判断账号是否关联员工
+        if(createStaffId.intValue()==0){
+            String createAccountName=companyManageDao.getEmpById(company.getCreateEmp());
+            createEmp=createAccountName;
+        }else{
+            createMap=companyManageDao.getCreateInfo(companyId);
+            String createAccountName=(String)createMap.get("accountName");
+            String createStaffName=(String)createMap.get("staffName");
+            createEmp=createAccountName+"("+createStaffName+")";
         }
-        String createStaffName=(String)createMap.get("staffName");
-        String modifyAccountName=(String)modifyMap.get("accountName");
-        String modifyStaffName=(String)modifyMap.get("staffName");
-        String createEmp=createAccountName+"("+createStaffName+")";
-        String modifyEmp=modifyAccountName+"("+modifyStaffName+")";
+
+        if(modifyStaffId.intValue()==0){
+            String modifyAccountName=companyManageDao.getEmpById(company.getModifyEmp());
+            modifyEmp=modifyAccountName;
+        }else{
+            modifyMap=companyManageDao.getModifyInfo(companyId);
+            String modifyAccountName=(String)modifyMap.get("accountName");
+            String modifyStaffName=(String)modifyMap.get("staffName");
+            modifyEmp=modifyAccountName+"("+modifyStaffName+")";
+        }
         Map<String,Object> resultMap=new HashMap<String, Object>();
         resultMap.put("company",company);
         resultMap.put("createEmp",createEmp);
@@ -198,6 +212,7 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
                 if(count == 0){
                     map.put("createEmp",accountId);
                     map.put("modifyEmp",accountId);
+                    map.put("status",1);
                     companyManageDao.addRelationCompany(map);;
                 }else{
                     map.put("status",1);

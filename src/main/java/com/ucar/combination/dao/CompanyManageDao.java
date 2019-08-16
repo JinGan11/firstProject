@@ -14,7 +14,7 @@ import java.util.Map;
  * @author jianan.shu@ucarinc.com
  * @version 1.0
  * @date: 2019/8/3 9:32
-*/
+ */
 public interface CompanyManageDao<mcmt> {
     /**
      * description: 获取公司列表
@@ -135,5 +135,6 @@ public interface CompanyManageDao<mcmt> {
     String getFileUrlById(Long id);
 
     List<BusinessLicense> getIdsByCompanyId(int id);
-
+    Long getCreateStaffId(@Param("companyId")int id);
+    Long getModifyStaffId(@Param("companyId")int id);
 }
