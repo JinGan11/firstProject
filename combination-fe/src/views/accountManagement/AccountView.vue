@@ -8,7 +8,7 @@
       </div>
       <hr style="width: 70%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
       <div style="width:85%;">
-        <el-form  :model="modifyForm" status-icon :rules="rules" ref="modifyForm" size="medium" label-width="120px"
+        <el-form  :model="modifyForm" status-icon ref="modifyForm" size="medium" label-width="120px"
                   class="demo-ruleForm">
           <el-row>
             <el-col :span="9">
@@ -48,7 +48,7 @@
           <el-row>
             <el-col :span="9">
               <el-form-item label="数据权限类型" prop="permissions">
-                <el-select style="width:150px;" :disabled="true" v-model="modifyForm.permissions" clearable placeholder="请选择" @change="pressionChange">
+                <el-select style="width:150px;" :disabled="true" v-model="modifyForm.permissions" clearable placeholder="请选择">
                   <el-option
                     v-for="item in permissionsList"
                     :key="item.value"
@@ -65,20 +65,16 @@
             </el-col>
           </el-row>
           <el-row v-if="departmentVisible">
-            <el-col :span="9">
+            <el-col>
               <el-form-item label="手动选择部门" prop="permissions">
                 <el-tree :disabled="true"
-                         style="width:150px;"
                          ref="tree"
                          :props="defaultProps"
                          node-key="id"
                          :load="loadNode"
                          lazy="true"
                          show-checkbox
-                         check-strictly
-                         :default-expanded-keys="modifyForm.trees"
-                         :render-content="renderContent"
-                         @check-change="handleClick">
+                         check-strictly>
                 </el-tree>
               </el-form-item>
             </el-col>
@@ -121,7 +117,7 @@
           <el-row>
             <el-col :span="9">
               <el-form-item label="账号状态">
-                <el-select style="width:400px;" :disabled="true" v-model="modifyForm.accountState" clearable placeholder="请选择" @change="pressionChange">
+                <el-select style="width:400px;" :disabled="true" v-model="modifyForm.accountState" clearable placeholder="请选择" >
                   <el-option
                     v-for="item in statusList"
                     :key="item.value"
@@ -190,9 +186,9 @@
     },
     created() {
       const self = this;
-      self.fetchData(localStorage.getItem("accountId"));
+      var val = localStorage.getItem("accountId")
+      self.fetchData(val);
       self.fetchEnums();
-      self.fetchDeparentPower();
     },
     methods: {
       loadNode(node,resolve){//加载部门的树结构
@@ -201,20 +197,21 @@
           .then((result) => {
             resolve([result.departmentDto]);
             self.$refs.tree.setCheckedKeys(self.modifyForm.trees);
-            self.$refs.tree.setC
           }).catch(function (error) {
 
         });
       },
-      fetchDeparentPower(){
+      fetchDeparentPower(val){
         const self = this;
         var param = {
-          id: self.modifyForm.accountId
+          id: val
         }
         self.$http.get('account/selectDeparentPower.do_',{
           params: param
         }).then((result) => {
           self.modifyForm.trees = result.trees;
+          self.$refs.tree.setCheckedKeys(self.modifyForm.trees);
+          self.$refs.tree.setCheckedKeys(self.modifyForm.trees);
         }).catch(function (error) {
           commonUtils.Log("account/selectDeparentPower.do_:"+error);
           self.$message.error("获取数据错误")
@@ -236,6 +233,9 @@
           self.modifyForm.permissions = result.account.premissions;
           if ( self.modifyForm.permissions == 5 ){
             self.departmentVisible = true;
+            self.fetchDeparentPower(val);
+          }else{
+            self.departmentVisible = false;
           }
           self.modifyForm.secretEmail = result.account.secretEmail;
           if(self.modifyForm.secretEmail == '' || self.modifyForm.secretEmail == null){
@@ -262,15 +262,6 @@
           self.$message.error("获取数据错误")
         });
       },
-      pressionChange(){//当数据权限为手动选择是，选择部门框可见
-        const self = this;
-        if((self.modifyForm.staffNum == ''||self.modifyForm.staffNum == null) && self.modifyForm.permissions >= 2
-          && self.modifyForm.permissions <= 3){
-          self.modifyForm.permissions = '';
-          self.$message.error('未选择员工，不可选该权限');
-        }
-        self.departmentVisible = (self.modifyForm.permissions==5)?true:false;
-      }
     },
   }
 </script>

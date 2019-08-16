@@ -747,7 +747,9 @@
         localStorage.setItem("accountId",val);
         self.accountId = val;
         this.accounFlag = true;
-        this.$refs.c1.fetchData(val);
+        if(this.$refs.c1 != undefined){
+          this.$refs.c1.fetchData(val);
+        }
       },
       //打开导出弹窗
       add1() {
