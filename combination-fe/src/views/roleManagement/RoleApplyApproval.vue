@@ -41,7 +41,8 @@
           <el-col :span="6">
             <el-form-item label="申请人所属部门">
               <el-input placeholder="申请人所属部门" style="width:150px;" v-model="form.applyDepartmentName"></el-input>
-
+              <el-button type="text" @click="selectDepartment">选择</el-button>
+              <el-button type="text" @click="clearDepartment">清空</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -391,6 +392,25 @@
       </home>
     </el-dialog>
 
+    <el-dialog :title='titleDepartment' :visible.sync="dialogVisibleDepartment"  :close-on-click-modal="false" width="50%">
+      <div>
+        <span>选择要操作的部门</span>
+        <br><br>
+        <el-tree
+          ref="tree"
+          :props="defaultProps"
+          node-key="id"
+          :load="loadNode"
+          lazy="true"
+          check-strictly
+          show-checkbox
+          :render-content="renderContent"
+          @check-change="handleClick">
+        </el-tree>
+        <br>
+        <el-button type="primary" @click="getCheckedDepartment">确定</el-button>
+      </div>
+    </el-dialog>
   </home>
 </template>
 <script>
@@ -399,6 +419,16 @@
   export default {
     data() {
       return {
+        titleDepartment:'选择部门',
+        dialogVisibleDepartment:false,
+        selectedNodes: [],
+        checkStrictly: false,
+        defaultProps: {
+          label: 'departmentName',
+          children: 'children',
+          id: 'id',
+          status: 'status'
+        },
         total: 0,
         currentPage: 1,
         pageSize: 10,
@@ -699,6 +729,57 @@
           commonUtils.Log("roleApply/showAccountListByApplyId.do_:" + error);
           self.$message.error("获取数据错误");
         });
+      },
+      loadNode(node,resolve){
+        var self = this;
+        self.$http.get('department/buildTree.do_', {
+          params: null
+        }).then((result) => {
+          resolve([result.departmentDto]);
+        }).catch(function (error) {
+
+        });
+      },
+      renderContent(h, { node, data, store }) {
+        // 这里编译器有红色波浪线不影响运行...
+        if(data.status != 1){
+          return (
+            <span style="color:red">{node.label}</span>
+        );
+        }else{
+          return (
+            <span>{node.label}</span>
+        );
+        }
+      },
+      handleClick(data,checked,node){
+        // 手动设置单选
+        if(checked === true) {
+          this.checkedId = data.id;
+          this.$refs.tree.setCheckedKeys([data.id]);
+          // 设置按钮是否可选（选中节点后调用两次handleClick，第一次checked为true，所以设置按钮写在这）
+          if(data.status === 1){
+            this.operationBtnActive=false;
+          }else{
+            this.operationBtnActive=true;
+          }
+        } else {
+          if (this.checkedId == data.id) {
+            this.$refs.tree.setCheckedKeys([data.id]);
+          }
+        }
+      },
+      selectDepartment(){//选择部门
+        this.dialogVisibleDepartment=true;
+      },
+      clearDepartment(){//清除部门的值
+        this.form.applyDepartmentName='';
+      },
+      getCheckedDepartment() {
+        // 获取部门 回填到文本框中
+        // alert(this.$refs.tree.getCheckedNodes()[0].departmentName);
+        this.form.applyDepartmentName=this.$refs.tree.getCheckedNodes()[0].departmentName;
+        this.dialogVisibleDepartment=false;
       },
     }
   }
