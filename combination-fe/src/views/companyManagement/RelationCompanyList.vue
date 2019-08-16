@@ -290,13 +290,15 @@
             </el-col>
           </el-row>
           <div style="margin-bottom: 10px">
-            <br>
             <span style="font-size: 20px">附件信息</span>
-            <hr ><br>
           </div>
           <el-row>
             <el-col :span="10">
-              <p>附件照片</p>
+              <ul class="box">
+                <div v-for ="item in licenses" :key="item.id">
+                  <img :id="fileUrl+item.id" :src="fileUrl+item.id" height="150px" width="200px"/>
+                </div>
+              </ul>
             </el-col>
           </el-row>
           <div style="margin-bottom: 10px">
@@ -484,6 +486,8 @@
         CompanyStatusEnum:{},
         modifyTime: '',
         modifyEmp: '',
+        licenses:[],
+        fileUrl:"http://localhost:8081/combination/company/getLicense?id=",
         options1: [{
           value: '',
           label: '全部'
@@ -692,6 +696,7 @@
           self.companyForm=result.list.company;
           self.companyForm.createEmp=result.list.createEmp;
           self.companyForm.modifyEmp=result.list.modifyEmp;
+          self.licenses = result.licenses;
           //处理下拉框
           if(self.companyForm.companyType==null){
             self.companyForm.companyType="";

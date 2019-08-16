@@ -259,11 +259,6 @@
               </li>
             </ul>
           </div>
-          <el-row>
-            <el-col :span="10">
-              <p>附件照片</p>
-            </el-col>
-          </el-row>
           <div style="margin-bottom: 10px">
             <br>
             <span style="font-size: 20px">发票信息</span>

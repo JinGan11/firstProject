@@ -117,45 +117,11 @@
           </div>
           <el-row>
             <el-col :span="10">
-              <p>附件照片</p>
-              <!--<div class="demo-image__preview">-->
-                <!--<div v-for ="item in licenses" :key="item.id">-->
-                <!--<el-image-->
-                  <!--style="width: 200px; height: 200px"-->
-                  <!--:src="fileUrl+item.id"-->
-                  <!--@click="">-->
-                <!--</el-image>-->
-                <!--</div>-->
-              <!--</div>-->
-
-              <!--<div v-show="bigPic"  @click="small">-->
-                <!--<img :src=image >-->
-              <!--</div>-->
-
-
-
               <ul class="box">
                   <li v-for ="item in licenses" :key="item.id">
                     <img :id="fileUrl+item.id" :src="fileUrl+item.id" height="150px" width="200px"/>
                   </li>
               </ul>
-              <!--<div class="mask" v-show="bigP"  @click="">-->
-                <!--<img :src=img >-->
-              <!--</div>-->
-
-              <!--<el-upload-->
-                <!--action="#"-->
-                <!--list-type="picture-card"-->
-                <!--:multiple="true"-->
-                <!--:on-preview="handlePreview"-->
-                <!--:on-remove="handleRemove"-->
-                <!--:auto-upload="false"-->
-                <!--ref="upload"-->
-                <!--:http-request="uploadLicenses">-->
-                <!--<i class="el-icon-plus"></i>-->
-                <!--<div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件,且不超过2M,最多只能上传20张图片</div>-->
-              <!--</el-upload>-->
-
             </el-col>
           </el-row>
           <div style="margin-bottom: 10px">
