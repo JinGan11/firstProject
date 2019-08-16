@@ -148,6 +148,7 @@
         },
 
         RoleStatusEnum: {},
+        type:'',
         options: [
           {
             value: 0,
@@ -164,6 +165,7 @@
     mounted() {
       commonUtils.Log("页面进来");
       var roleid = this.$route.query.roleID;
+      this.type=this.$route.query.type;
       this.fetchData(roleid);
       this.fetchOtherData(roleid);
     },
@@ -188,7 +190,13 @@
       },
 
       cancel(){//关闭角色页面，返回角色管理列表页面
-        this.$router.replace('/roleManagement/roleManagement')
+        if(this.type ==='申请'){
+          this.$router.replace('/roleManagement/apply')
+        }else if(this.type ==='审核'){
+          this.$router.replace('/roleManagement/approval')
+        }else{
+          this.$router.replace('/roleManagement/roleManagement')
+        }
       },
 
       fetchData(roleid){

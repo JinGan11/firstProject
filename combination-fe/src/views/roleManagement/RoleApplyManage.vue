@@ -469,7 +469,7 @@
       },
 
       cellTrigger(val) {//角色详情页
-        this.$router.push({path: '/RoleInf', query: {roleID: val}});
+        this.$router.push({path: '/RoleInf', query: {roleID: val,type:'申请'}});
       },
 
       fetchData() { //获取数据
