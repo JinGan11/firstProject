@@ -42,7 +42,6 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     public ResultPage queryList(QueryParam queryParam) {
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
         List<Map<String, Object>> list = roleManagementDao.queryList(queryParam);
-        System.out.println(list);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
 

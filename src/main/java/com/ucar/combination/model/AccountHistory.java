@@ -7,6 +7,8 @@ public class AccountHistory {
 
     private Long accountId;
 
+    private String accountName;
+
     private String historyOperationType;
 
     private Date createTime;
@@ -91,5 +93,13 @@ public class AccountHistory {
 
     public void setAccountState(Byte accountState) {
         this.accountState = accountState;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 }

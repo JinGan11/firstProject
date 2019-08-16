@@ -192,6 +192,7 @@ public class AccountManagerController {
         ResultPage ownedRole = roleManagementService.getOwnedRoleList(account);
         return Result.ok().put("notOwnedRole" ,notOwnedRole).put("ownedRole", ownedRole);
     }
+
     //冻结账户信息
     @ResponseBody
     @RequestMapping(value = "/lock",method = RequestMethod.POST)
@@ -201,7 +202,7 @@ public class AccountManagerController {
         accountManagerService.lockAndUnlock(Integer.parseInt(accountId),status,"冻结",request);
         return null;
     }
-
+    //解冻账户信息
     @ResponseBody
     @RequestMapping(value = "/unLock",method = RequestMethod.POST)
     public Result unLockAccount(@RequestBody Map<String,String> map,HttpServletRequest request){
@@ -209,6 +210,15 @@ public class AccountManagerController {
         Integer status = 1;
         accountManagerService.lockAndUnlock(Integer.parseInt(accountId),status,"解冻",request);
         return null;
+    }
+
+    //历史记录
+    @ResponseBody
+    @RequestMapping("/accountHistory")
+        public Result getAccountHistoryList(@RequestBody Map<String,String> map ,HttpServletRequest request){
+        String accountId = map.get("id");
+        List historyList = accountManagerService.getHistoryList(accountId);
+        return Result.ok().put("historyList" ,historyList);
     }
 
     /*

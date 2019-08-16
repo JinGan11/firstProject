@@ -238,10 +238,33 @@
 
   export default {
     data() {
+      var validatePass = (rule, value, callback) => {
+        const self = this;
+        var roleid = this.$route.query.roleID;
+        var param = {
+          roleName: value
+        };
+        self.$http.get("roleManage/judgeExist.do_", {
+          params: param
+        }).then((result) => {
+          if (( result.page.roleStatus ===0||result.page.roleStatus===1 )&&(result.page.roleId !== roleid)) {
+            callback(new Error('角色名称已存在'));
+          }else{
+            if (self.form.checkPass !== '') {
+              self.$refs.form.validateField('checkPass');
+            }
+            callback();
+          }
+        }).catch(function (error) {
+          commonUtils.Log("roleManage/judgeExist.do_" + error);
+          self.$message.error("角色名称校验错误");
+        });
+      };
       return {
         isChoose: true,
         rules: {
-          roleName: [{required: true, message: '角色名不能为空', trigger: ['blur','change']}],
+          roleName: [{required: true, message: '角色名不能为空', trigger: ['blur','change']},
+                     {validator: validatePass, trigger: 'blur'}],
           accountNum: [{required: true, message: '账户不能为空', trigger: ['blur','change']}],
           businessLine: [{required: true, message: '支持业务线不能为空', trigger: ['blur','change']}]
         },
@@ -343,22 +366,12 @@
       },
       handleSelectionChange(val) {
         this.selection = val;
-        isChoose = false;
+        this.isChoose = false;
       },
       save(formName) {//保存修改角色信息
         const self = this;
         self.$refs[formName].validate((valid) => {
           if (valid) {
-            var roleid = this.$route.query.roleID;
-            var param = {
-              roleName: self.form.roleName,
-            };
-            self.$http.get("roleManage/judgeExist.do_", {
-              params: param
-            }).then((result) => {
-              if ((result.page.roleStatus === 0 || result.page.roleStatus === 1)&&(result.page.roleId !== roleid)) {
-                alert("角色名称已存在");
-              } else {
                 self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
                   confirmButtonText: '确定',
                   cancelButtonText: '取消',
@@ -384,11 +397,6 @@
                     message: '已取消保存'
                   });
                 });
-              }
-            }).catch(function (error) {
-              commonUtils.Log("roleManage/judgeExist.do_:" + error);
-              self.$message.error("获取数据错误sdfas")
-            });
           } else {
             console.log('error submit!!');
             return false;

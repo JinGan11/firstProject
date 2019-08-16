@@ -113,7 +113,7 @@ public class RoleManagementController {
 		result = roleManagementService.judgeExist(roleName);
 		if (result == null){
 			Role result1 = new Role();
-			result1.setRoleId(1);
+			result1.setRoleId(0);
 			return Result.ok().put("page",result1);
 		}
 		return Result.ok().put("page",result);

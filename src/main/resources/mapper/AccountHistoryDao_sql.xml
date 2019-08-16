@@ -9,4 +9,23 @@
         values
         (#{acc.accountId},#{acc.historyOperationType},#{acc.createTime},#{acc.createEmp},#{acc.staffName},#{acc.staffNum},#{acc.permissions},#{acc.accountState})
     </insert>
+    <select id="selectAccountHistoryByAccountId" parameterType="String" resultType="com.ucar.combination.model.AccountHistory">
+        select
+        t2.staff_num,
+        t2.staff_name,
+        t2.history_operation_type,
+        t2.permissions,
+        t2.account_state,
+        t2.create_emp,
+        t1.account_name,
+        t2.create_time,
+        t2.account_id
+        from
+        t_account t1,t_account_history t2
+        where t1.id = #{accountId}
+        and t2.account_id = t1.id
+
+
+
+    </select>
 </mapper>

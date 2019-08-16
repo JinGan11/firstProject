@@ -46,27 +46,27 @@
         FROM t_company t1,t_account t2
         <where>
             t1.modify_emp=t2.id
-        <if test="companyName != null and companyName.trim() != ''">
-            AND t1.company_name =#{companyName}
-        </if>
-        <if test="creditCode != null and creditCode.trim() != ''">
-            AND t1.credit_code =#{creditCode}
-        </if>
-        <if test="companyType != null and companyType.trim() != ''">
-            AND t1.company_type =#{companyType}
-        </if>
-        <if test="companyNature != null and companyNature.trim() != ''">
-            AND t1.company_nature =#{companyNature}
-        </if>
-        <if test="companyStatus != null and companyStatus.trim() != ''">
-            AND t1.status =#{companyStatus}
-        </if>
-        <if test="startTime != null and startTime.trim() != ''">
-            AND t1.modify_time&gt;#{startTime}
-        </if>
-        <if test="endTime !=null and endTime.trim()!=''">
-            AND t1.modify_time&lt;#{endTime}
-        </if>
+            <if test="companyName != null and companyName.trim() != ''">
+                AND t1.company_name =#{companyName}
+            </if>
+            <if test="creditCode != null and creditCode.trim() != ''">
+                AND t1.credit_code =#{creditCode}
+            </if>
+            <if test="companyType != null and companyType.trim() != ''">
+                AND t1.company_type =#{companyType}
+            </if>
+            <if test="companyNature != null and companyNature.trim() != ''">
+                AND t1.company_nature =#{companyNature}
+            </if>
+            <if test="companyStatus != null and companyStatus.trim() != ''">
+                AND t1.status =#{companyStatus}
+            </if>
+            <if test="startTime != null and startTime.trim() != ''">
+                AND t1.modify_time&gt;#{startTime}
+            </if>
+            <if test="endTime !=null and endTime.trim()!=''">
+                AND t1.modify_time&lt;#{endTime}
+            </if>
 
         </where>
         ORDER BY id DESC
@@ -93,62 +93,62 @@
         <selectKey resultType="_long" keyProperty="companyId" order="AFTER">
             select @@IDENTITY as id
         </selectKey>
-         insert into t_company(
-            company_name,
-            credit_code,
-            company_type,
-            business_start_time,
-            business_deadline,
-            company_address,
-            business_scope,
-            legal_person,
-            registered_capital,
-            establish_time,
-            registered_institution,
-            issue_date,
-            registered_status,
-            liscense_path,
-            company_nature,
-            registration_address,
-            bank_name,
-            bank_account,
-            telephone,
-            company_mark,
-            status,
-            create_emp,
-            create_time,
-            modify_emp,
-            modify_time,
-            remark
+        insert into t_company(
+        company_name,
+        credit_code,
+        company_type,
+        business_start_time,
+        business_deadline,
+        company_address,
+        business_scope,
+        legal_person,
+        registered_capital,
+        establish_time,
+        registered_institution,
+        issue_date,
+        registered_status,
+        liscense_path,
+        company_nature,
+        registration_address,
+        bank_name,
+        bank_account,
+        telephone,
+        company_mark,
+        status,
+        create_emp,
+        create_time,
+        modify_emp,
+        modify_time,
+        remark
 
         )
         values(
-            #{companyName},
-            #{creditCode},
-            #{companyType},
-            #{businessStartTime},
-            #{businessDeadline},
-            #{companyAddress},
-            #{businessScope},
-            #{legalPerson},
-            #{registeredCapital},
-            #{establishTime},
-            #{registeredInstitution},
-            #{causeTime},
-            #{registeredStatus},
-            #{liscensePath},
-            #{companyNature},
-            #{registrationAddress},
-            #{bankName},
-            #{bankAccount},
-            #{telephone},
-            #{companyMark},
-            #{companyStatus},
-            #{createEmp},
-            now(),
-            #{modifyEmp},
-            now(),
-            #{remark}
+        #{companyName},
+        #{creditCode},
+        #{companyType},
+        #{businessStartTime},
+        #{businessDeadline},
+        #{companyAddress},
+        #{businessScope},
+        #{legalPerson},
+        #{registeredCapital},
+        #{establishTime},
+        #{registeredInstitution},
+        #{causeTime},
+        #{registeredStatus},
+        #{liscensePath},
+        #{companyNature},
+        #{registrationAddress},
+        #{bankName},
+        #{bankAccount},
+        #{telephone},
+        #{companyMark},
+        #{companyStatus},
+        #{createEmp},
+        now(),
+        #{modifyEmp},
+        now(),
+        #{remark}
         )
     </insert>
 
@@ -176,14 +176,14 @@
         T.telephone,
         T.company_mark,
         T.status  companyStatus,
-        T.create_emp,
+        T.create_emp createEmp,
         T.create_time,
-        T.modify_emp,
+        T.modify_emp modifyEmp,
         T.modify_time,
         T.remark
         FROM t_company T
         <where>
-         T.id =#{companyId}
+            T.id =#{companyId}
         </where>
     </select>
 
@@ -232,7 +232,7 @@
     </select>
 
     <select id="queryRelationList" resultType="com.ucar.combination.model.dto.CompanyDto">
-    select
+        select
         T.id,
         T.company_name,
         T.credit_code,
@@ -242,7 +242,7 @@
         T.status companyStatus,
         t1.account_name modifyName,
         T.modify_time
-    from t_company T,t_account t1
+        from t_company T,t_account t1
         <where>
             T.id not in ( select t2.company_id from t_r_department_company t2 where t2.department_id = #{departmentId} and t2.status=1 )
 
@@ -267,7 +267,7 @@
             <if test="endTime !=null and endTime.trim()!=''">
                 AND T.modify_time&lt;#{endTime}
             </if>
-                and T.modify_emp=t1.id
+            and T.modify_emp=t1.id
 
         </where>
         ORDER BY id DESC
@@ -296,18 +296,18 @@
             company_id,
             create_time,
             modify_time,
-            status,
             create_emp,
-            modify_emp
+            modify_emp,
+            status
         )
         values(
             #{departmentId},
             #{companyId},
             now(),
             now(),
-            1,
             #{createEmp},
-            #{modifyEmp}
+            #{modifyEmp},
+            1
         )
     </insert>
     <update id="updateRelation" parameterType="java.util.Map">
@@ -317,12 +317,12 @@
         t1.modify_emp=#{modifyEmp},
         t1.modify_time=now()
         <where>
-        <if test="departmentId != null and departmentId.trim() != ''">
-            AND t1.department_id =#{departmentId}
-        </if>
-        <if test="companyId != null and companyId.trim() != ''">
-            AND t1.company_id =#{companyId}
-        </if>
+            <if test="departmentId != null and departmentId.trim() != ''">
+                AND t1.department_id =#{departmentId}
+            </if>
+            <if test="companyId != null and companyId.trim() != ''">
+                AND t1.company_id =#{companyId}
+            </if>
         </where>
 
     </update>
@@ -375,5 +375,17 @@
         companyId ,
         url fileLocation
         from t_license WHERE companyId=#{companyId}
+    </select>
+    <select id="getCreateStaffId" parameterType="int" resultType="Long">
+        SELECT
+        t2.staff_id staffId
+        from t_company t1,t_account t2
+        WHERE t1.id=#{companyId} and t1.create_emp=t2.id
+    </select>
+    <select id="getModifyStaffId" parameterType="int" resultType="Long">
+        SELECT
+        t2.staff_id staffId
+        from t_company t1,t_account t2
+        WHERE t1.id=#{companyId} and t1.modify_emp=t2.id
     </select>
 </mapper>

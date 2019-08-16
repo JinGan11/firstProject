@@ -1,16 +1,16 @@
 <template>
   <home>
-    <div style="width:85%; margin-left: 70px">
+    <div style="width:100%;">
       <el-form ref="form" :model="form" label-width="80px">
         <el-row>
           <el-col :span="6">
-            <el-form-item label="角色名称">
+            <el-form-item label="角色名称" label-width="150px;">
               <el-input placeholder="角色名称" style="width:200px;" v-model="form.roleName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="支持业务线">
-              <el-select v-model="form.businessLine" clearable style="width:150px;" placeholder="请选择">
+            <el-form-item label="支持业务线" label-width="150px;">
+              <el-select v-model="form.businessLine" clearable style="width:200px;" placeholder="请选择">
                 <el-option
                   v-for="item in businessLineOptions"
                   :key="item.value"
@@ -21,12 +21,12 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="登录账号">
+            <el-form-item label="登录账号" label-width="150px;">
               <el-input placeholder="登录账号" style="width:200px;" v-model="form.accountName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="员工编号">
+            <el-form-item label="员工编号" label-width="150px;">
               <el-input placeholder="员工编号" style="width:200px;" v-model="form.staffNum"></el-input>
             </el-form-item>
           </el-col>
@@ -34,13 +34,13 @@
 
         <el-row>
           <el-col :span="6">
-            <el-form-item label="员工姓名">
+            <el-form-item label="员工姓名" label-width="150px;">
               <el-input placeholder="员工姓名" style="width:200px;" v-model="form.staffName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="角色状态">
-              <el-select v-model="form.roleStatus" clearable style="width:200px;" placeholder="请选择">
+            <el-form-item label="角色状态" label-width="150px;">
+              <el-select v-model="form.roleStatus" clearable style="width:200px;margin-left: 15px;" placeholder="请选择">
                 <el-option
                   v-for="item in roleStatusOptions"
                   :key="item.value"
@@ -50,8 +50,8 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="5">
-            <el-form-item label="账号状态">
+          <el-col :span="6">
+            <el-form-item label="账号状态" label-width="150px;">
               <el-select v-model="form.accountState" clearable style="width:200px;" placeholder="请选择">
                 <el-option
                   v-for="item in accountStateOptions"
@@ -62,14 +62,12 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="5">
-            <el-form-item label="所属部门">
+          <el-col :span="6">
+            <el-form-item label="所属部门" label-width="150px;">
               <el-input :disabled="true" style="width:200px;" v-model="form.departmentName"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="2">
             <el-button type="text" @click="chooseDepartmentFlag=true">选择</el-button>
             <el-button type="text" @click="chooseDepartmentFlag=false">取消</el-button>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row>
@@ -157,7 +155,7 @@
     </el-dialog>
 <!--角色详情页弹窗-->
     <el-dialog title="角色详情信息" :visible.sync="roleInfoDetailFlag" :close-on-click-modal="false" width="900px">
-      <el-form ref="form" :model="formDetail" label-width="80px">
+<!--      <el-form ref="form" :model="formDetail" label-width="80px">-->
         <div>
           <div style="margin-bottom: 10px">
             <p>角色信息</p>
@@ -272,11 +270,7 @@
               </div>
             </div>
           </div>
-          <div style="text-align: center">
-            <el-button type="primary" @click="cancelRoleInfo" style="width:70px">取消</el-button>
-          </div>
         </div>
-      </el-form>
     </el-dialog>
 <!--账号详情页弹窗-->
     <el-dialog :visible.sync="accountFlag" :close-on-click-modal="false" width="800px">
@@ -605,9 +599,6 @@
           commonUtils.Log("roleManage/getOneInf.do_:" + error);
           self.$message.error("获取数据错误");
         });
-      },
-      cancelRoleInfo() {
-        this.roleInfoDetailFlag = false;
       },
 
       //账户信息明细

@@ -332,4 +332,9 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     public List<AccountPowerDto> getAllAccountPowerList(QueryParam queryParam) {
         return powerDao.getAccountPowerList(queryParam);
     }
+
+    @Override
+    public List<AccountHistory> getHistoryList(String accountId) {
+        return accountHistoryDao.selectAccountHistoryByAccountId(accountId);
+    }
 }
