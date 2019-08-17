@@ -58,16 +58,6 @@
                 <el-button type="primary" style="width: 100px" @click="exportVisible = true" :disabled="provinceBtnPermission.exportPermission" size="medium">导出</el-button>
               </el-form-item>
             </el-col>
-            <!--          <el-col :span="3" >-->
-            <!--            <el-form-item>-->
-            <!--              <el-button type="primary" style="width: 100px" @click="createFormVisible = true" :disabled="provinceBtnPermission.createPermission" size="medium">新建</el-button>-->
-            <!--            </el-form-item>-->
-            <!--          </el-col>-->
-            <!--          <el-col :span="3" >-->
-            <!--            <el-form-item>-->
-            <!--              <el-button type="primary" style="width: 100px" :disabled="provinceBtnPermission.modifyPermission" size="medium">修改</el-button>-->
-            <!--            </el-form-item>-->
-            <!--          </el-col>-->
           </el-row>
         </div>
 
@@ -97,75 +87,6 @@
                    layout="total, sizes, prev, pager, next, jumper"
                    :total="total">
     </el-pagination>
-
-    <!--新建窗口-->
-    <el-dialog title="新建省/直辖市" :visible.sync="createFormVisible" :close-on-click-modal="false" >
-      <el-form :model="createForm">
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="国际代码" >
-              <el-input v-model="createForm.regionCode" autocomplete="off" width="100px"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="省/直辖市名称" >
-              <el-input v-model="createForm.regionName" autocomplete="off" width="100px"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="名字拼音" >
-              <el-input v-model="createForm.regionPinyin" autocomplete="off" width="100px"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="上级区划" >
-              <el-input v-model="createForm.upperRegion" autocomplete="off" width="100px"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="类型" >
-              <el-input v-model="createForm.regionLevel" autocomplete="off" width="100px"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="状态" >
-              <el-select v-model="createForm.regionStatus" clearable style="width:100px;" placeholder="请选择" >
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="修改人" >
-              <el-input v-model="createForm.modifyEmp" autocomplete="off" disabled width="100px"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="修改时间" >
-              <el-input v-model="createForm.modifyTime" autocomplete="off" disabled width="100px"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="createFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="createRegion" >确 定</el-button>
-      </div>
-    </el-dialog>
 
     <!--导出弹窗-->
     <el-dialog :title='excelTitle' :visible.sync="exportVisible" :close-on-click-modal="false" width="600px">

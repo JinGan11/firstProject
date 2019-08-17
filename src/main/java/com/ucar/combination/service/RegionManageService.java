@@ -3,6 +3,7 @@ package com.ucar.combination.service;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Region;
+import com.ucar.combination.model.dto.RegionDto;
 
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,24 @@ public interface RegionManageService {
      */
     int createProvince(Region region);
 
-    String testSer();
+    /**
+     * description: 新建修改页面，树
+     * @author kailun.yang@ucarinc.com
+     * @date <2019-08-17>
+     * @param <[region]> <参数说明>
+     * @return <java.util.List<com.ucar.combination.model.dto.RegionDto>><返回值说明>
+     */
+    List<RegionDto> getRegionList(Region region);
+
+    /**
+     * description: 根据查询条件返回区划数据
+     * @author kailun.yang@ucarinc.com
+     * @date <2019-08-17>
+     * @param <[region]> <参数说明>
+     * @return <java.util.List<com.ucar.combination.model.Region>><返回值说明>
+     */
+    Region getRegionDetails(Region region);
+
     /**
      * description: 用于得到所有城市的信息
      * @author jing.luo01@ucarinc.com

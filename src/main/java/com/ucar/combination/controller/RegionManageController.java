@@ -6,6 +6,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Region;
+import com.ucar.combination.model.dto.RegionDto;
 import com.ucar.combination.service.RegionManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -171,19 +172,5 @@ public class RegionManageController {
             {return "success";}
         else
             {return "false";}
-    }
-    /**
-     * description: 查找部门及下属部门的城市
-     * @author jing.luo01@ucarinc.com
-     * @date   2019/8/17 1:27
-     * @params id 描述
-
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping("/citySearchListById")
-    public Result citySearchList(@RequestParam(defaultValue = "") String id){
-        List<String> cityList=regionManageService.citySearchListById(id);
-        return Result.ok().put("cityList",cityList.toString());
     }
 }

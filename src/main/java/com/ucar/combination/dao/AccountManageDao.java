@@ -42,7 +42,7 @@ public interface AccountManageDao {
     public Account selectAccountById(String id);
 
     /**
-     * description: 通过账户id查询账户数据
+     * description: 角色账号明细查询
      * @uthor： zhengyong.liao@ucarinc.com
      * @Date：  2019/8/8
      * @PArams： map

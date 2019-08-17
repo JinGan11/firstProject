@@ -28,6 +28,17 @@ public class Region extends BaseBean {
     private Integer regionStatus;
     private String remark;
     private String modifyEmpName;
+    private String createEmpName;
+
+
+
+    public String getCreateEmpName() {
+        return createEmpName;
+    }
+
+    public void setCreateEmpName(String createEmpName) {
+        this.createEmpName = createEmpName;
+    }
 
     public String getModifyEmpName() {
         return modifyEmpName;

@@ -4,128 +4,142 @@
 <mapper namespace="com.ucar.combination.dao.RegionManageDao">
     <select id="provinceSearchList" resultType="com.ucar.combination.model.Region">
         SELECT
-        t1.city_id cityID,
-        t1.international_code regionCode,
-        t1.country_code countryCode,
-        t1.area_code regionAreaCode,
-        t1.city_name_pinyin regionPinyin,
-        t1.city_name regionName,
-        t1.`level` regionLevel,
-        t1.upper_city_id upperRegionID,
-        t1.upper_city_name upperRegion,
-        t1.`status` regionStatus,
-        t1.create_emp createEmp,
-        t1.create_time createTime,
-        t1.modify_emp modifyEmp,
-        t1.modify_time modifyTime,
-        t2.account_name modifyEmpName,
-        t1.remark remark
+        	t1.city_id cityID,
+	        t1.international_code regionCode,
+	        t1.country_code countryCode,
+	        t1.area_code regionAreaCode,
+        	t1.city_name_pinyin regionPinyin,
+	        t1.city_name regionName,
+	        t1.`level` regionLevel,
+	        t1.upper_city_id upperRegionID,
+	        t1.upper_city_name upperRegion,
+	        t1.`status` regionStatus,
+	        t1.create_emp createEmp,
+	        t1.create_time createTime,
+	        t1.modify_emp modifyEmp,
+	        t1.modify_time modifyTime,
+	        t2.account_name modifyEmpName,
+	        t1.remark remark
         FROM
-        t_b_city t1,t_account t2
+        	t_b_city t1,t_account t2
         WHERE
-        t1.`level` = 1
-        AND t1.modify_emp = t2.id
-        <if test="regionCode != null and regionCode.trim() != ''">
-            AND t1.international_code LIKE #{regionCode}"%"
-        </if>
-        <if test="regionName != null and regionName.trim() != ''">
-            AND t1.city_name LIKE #{regionName}"%"
-        </if>
-        <if test="regionStatus != null and regionStatus.trim() != ''">
-            AND t1.status =#{regionStatus}
-        </if>
+	        t1.`level` = 1
+	        AND t1.modify_emp = t2.id
+		<if test="regionCode != null and regionCode.trim() != ''">
+			AND t1.international_code LIKE #{regionCode}"%"
+		</if>
+		<if test="regionName != null and regionName.trim() != ''">
+			AND t1.city_name LIKE #{regionName}"%"
+		</if>
+		<if test="regionStatus != null and regionStatus.trim() != ''">
+			AND t1.status =#{regionStatus}
+		</if>
 
     </select>
 
 
-    <select id="citySearchList" resultType="com.ucar.combination.model.Region">
-        SELECT
-        t1.city_id cityID,
-        t1.international_code regionCode,
-        t1.country_code countryCode,
-        t1.area_code regionAreaCode,
-        t1.city_name_pinyin regionPinyin,
-        t1.city_name regionName,
-        t1.`level` regionLevel,
-        t1.upper_city_id upperRegionID,
-        t1.upper_city_name upperRegion,
-        t1.`status` regionStatus,
-        t1.create_emp createEmp,
-        t1.create_time createTime,
-        t1.modify_emp modifyEmp,
-        t1.modify_time modifyTime,
-        t2.account_name modifyEmpName,
-        t1.remark remark
-        FROM
-        t_b_city t1,t_account t2
-        WHERE
-        t1.`level` = 2
-        AND t1.modify_emp=t2.id
-        <if test="regionCode != null and regionCode.trim() != ''">
-            AND t1.international_code LIKE #{regionCode}"%"
-        </if>
-        <if test="regionName != null and regionName.trim() != ''">
-            AND t1.city_name LIKE #{regionName}"%"
-        </if>
-        <if test="regionStatus != null and regionStatus.trim() != ''">
-            AND t1.status =#{regionStatus}
-        </if>
-        <if test="upperRegion != null and upperRegion.trim() != ''">
-            AND t1.upper_city_name LIKE #{upperRegion}"%"
-        </if>
-        <if test="upperRegionID != null and upperRegionID.trim() != ''">
-            AND t1.upper_city_id = #{upperRegionID}
-        </if>
+	<select id="citySearchList" resultType="com.ucar.combination.model.Region">
+		SELECT
+		t1.city_id cityID,
+		t1.international_code regionCode,
+		t1.country_code countryCode,
+		t1.area_code regionAreaCode,
+		t1.city_name_pinyin regionPinyin,
+		t1.city_name regionName,
+		t1.`level` regionLevel,
+		t1.upper_city_id upperRegionID,
+		t1.upper_city_name upperRegion,
+		t1.`status` regionStatus,
+		t1.create_emp createEmp,
+		t1.create_time createTime,
+		t1.modify_emp modifyEmp,
+		t1.modify_time modifyTime,
+		t2.account_name modifyEmpName,
+		t1.remark remark
+		FROM
+		t_b_city t1,t_account t2
+		WHERE
+		t1.`level` = 2
+		AND t1.modify_emp=t2.id
+		<if test="regionCode != null and regionCode.trim() != ''">
+			AND t1.international_code LIKE #{regionCode}"%"
+		</if>
+		<if test="regionName != null and regionName.trim() != ''">
+			AND t1.city_name LIKE #{regionName}"%"
+		</if>
+		<if test="regionStatus != null and regionStatus.trim() != ''">
+			AND t1.status =#{regionStatus}
+		</if>
+		<if test="upperRegion != null and upperRegion.trim() != ''">
+			AND t1.upper_city_name LIKE #{upperRegion}"%"
+		</if>
+		<if test="upperRegionID != null and upperRegionID.trim() != ''">
+			AND t1.upper_city_id = #{upperRegionID}
+		</if>
 
-    </select>
+	</select>
 
-    <select id="countySearchList" resultType="com.ucar.combination.model.Region">
-        SELECT
-        t1.city_id cityID,
-        t1.international_code regionCode,
-        t1.country_code countryCode,
-        t1.area_code regionAreaCode,
-        t1.city_name_pinyin regionPinyin,
-        t1.city_name regionName,
-        t1.`level` regionLevel,
-        t1.upper_city_name upperRegion,
-        t1.upper_city_id upperRegionID,
-        t2.upper_city_name upperRegionTwice ,
-        t1.`status` regionStatus,
-        t1.create_emp createEmp,
-        t1.create_time createTime,
-        t1.modify_emp modifyEmp,
-        t1.modify_time modifyTime,
-        t3.account_name modifyEmpName,
-        t1.remark remark
-        FROM
-        t_b_city t1 LEFT JOIN (SELECT city_id,upper_city_name FROM t_b_city ) t2 ON
-        t1.upper_city_id=t2.city_id,t_account t3
-        WHERE
-        t1.`level` = 3
-        AND t1.modify_emp=t3.id
-        <if test="regionCode != null and regionCode.trim() != ''">
-            AND t1.international_code LIKE #{regionCode}"%"
-        </if>
-        <if test="regionName != null and regionName.trim() != ''">
-            AND t1.city_name LIKE #{regionName}"%"
-        </if>
-        <if test="regionStatus != null and regionStatus.trim() != ''">
-            AND t1.status =#{regionStatus}
-        </if>
-        <if test="upperRegion != null and upperRegion.trim() != ''">
-            AND t1.upper_city_name LIKE #{upperRegion}"%"
-        </if>
-        <if test="upperRegionTwice != null and upperRegionTwice.trim() != ''">
-            AND t2.upper_city_name LIKE #{upperRegionTwice}"%"
-        </if>
-        <if test="upperRegionID != null and upperRegionID.trim() != ''">
-            AND t1.upper_city_id = #{upperRegionID}
-        </if>
+	<select id="countySearchList" resultType="com.ucar.combination.model.Region">
+		SELECT
+		t1.city_id cityID,
+		t1.international_code regionCode,
+		t1.country_code countryCode,
+		t1.area_code regionAreaCode,
+		t1.city_name_pinyin regionPinyin,
+		t1.city_name regionName,
+		t1.`level` regionLevel,
+		t1.upper_city_name upperRegion,
+		t1.upper_city_id upperRegionID,
+		t2.upper_city_name upperRegionTwice ,
+		t1.`status` regionStatus,
+		t1.create_emp createEmp,
+		t1.create_time createTime,
+		t1.modify_emp modifyEmp,
+		t1.modify_time modifyTime,
+		t3.account_name modifyEmpName,
+		t1.remark remark
+		FROM
+		t_b_city t1 LEFT JOIN (SELECT city_id,upper_city_name  FROM t_b_city ) t2 ON t1.upper_city_id=t2.city_id,t_account t3
+		WHERE
+		t1.`level` = 3
+		AND t1.modify_emp=t3.id
+		<if test="regionCode != null and regionCode.trim() != ''">
+			AND t1.international_code LIKE #{regionCode}"%"
+		</if>
+		<if test="regionName != null and regionName.trim() != ''">
+			AND t1.city_name LIKE #{regionName}"%"
+		</if>
+		<if test="regionStatus != null and regionStatus.trim() != ''">
+			AND t1.status =#{regionStatus}
+		</if>
+		<if test="upperRegion != null and upperRegion.trim() != ''">
+			AND t1.upper_city_name LIKE #{upperRegion}"%"
+		</if>
+		<if test="upperRegionTwice != null and upperRegionTwice.trim() != ''">
+			AND t2.upper_city_name LIKE #{upperRegionTwice}"%"
+		</if>
+		<if test="upperRegionID != null and upperRegionID.trim() != ''">
+			AND t1.upper_city_id = #{upperRegionID}
+		</if>
 
-    </select>
+	</select>
 
-    <select id="getProvinceList" resultType="com.ucar.combination.model.dto.RegionDto">
+	<select id="getProvinceList" resultType="com.ucar.combination.model.dto.RegionDto">
+		SELECT
+		t1.city_id cityID,
+		t1.international_code regionCode,
+		t1.city_name regionName
+		FROM
+		t_b_city t1
+		WHERE
+		t1.`level` = #{regionLevel}
+		<if test="regionCode != null and regionCode.trim() != ''">
+			AND t1.international_code LIKE #{regionCode}"%"
+		</if>
+
+	</select>
+
+    <select id="getRegionList" resultType="com.ucar.combination.model.dto.RegionDto">
         SELECT
         t1.city_id cityID,
         t1.international_code regionCode,
@@ -134,13 +148,16 @@
         t_b_city t1
         WHERE
         t1.`level` = #{regionLevel}
+        <if test="cityID != null ">
+            AND t1.upper_city_id = #{cityID}
+        </if>
         <if test="regionCode != null and regionCode.trim() != ''">
-            AND t1.international_code LIKE #{regionCode}"%"
+            AND t1.upper_international_code = #{regionCode}
         </if>
 
     </select>
 
-    <insert id="createProvince" parameterType="com.ucar.combination.model.Region">
+	<insert id="createProvince" parameterType="com.ucar.combination.model.Region">
 
         INSERT INTO t_b_city ( international_code, city_name_pinyin,city_name,upper_city_name ,`level`,status,create_emp,create_time,modify_emp,modify_time,remark)
         VALUES(#{regionCode}, #{regionPinyin},#{regionName}, #{upperRegion} ,#{regionLevel},#{regionStatus},#{createEmp},#{createTime},#{modifyEmp},#{modifyTime},'无')
@@ -149,6 +166,44 @@
     <select id="getCityList" resultType="java.lang.Object">
 		select T.city_name from t_b_city T;
 	</select>
+
+	<select id="getRegionDetails" resultType="com.ucar.combination.model.Region">
+		SELECT
+		t1.city_id cityID,
+		t1.international_code regionCode,
+		t1.country_code countryCode,
+		t1.area_code regionAreaCode,
+		t1.city_name_pinyin regionPinyin,
+		t1.city_name regionName,
+		t1.`level` regionLevel,
+		t1.upper_city_id upperRegionID,
+		t1.upper_city_name upperRegion,
+		t1.`status` regionStatus,
+		t1.create_emp createEmp,
+		t3.account_name createEmpName,
+		t1.create_time createTime,
+		t1.modify_emp modifyEmp,
+		t1.modify_time modifyTime,
+		t2.account_name modifyEmpName,
+		t1.remark remark
+		FROM
+		t_b_city t1,t_account t2,t_account t3
+		WHERE
+		t1.`level` = #{regionLevel}
+		AND t1.modify_emp = t2.id
+		AND t1.create_emp = t3.id
+		<if test="regionCode != null and regionCode.trim() != ''">
+			AND t1.international_code LIKE #{regionCode}"%"
+		</if>
+		<if test="regionName != null and regionName.trim() != ''">
+			AND t1.city_name LIKE #{regionName}"%"
+		</if>
+		<if test="regionStatus != null and regionStatus.trim() != ''">
+			AND t1.status =#{regionStatus}
+		</if>
+
+	</select>
+
 
     <select id="citySearchListById" resultType="java.lang.String">
 		SELECT T.city_name FROM t_b_city T JOIN t_department T1 on T.city_id=T1.city_id
