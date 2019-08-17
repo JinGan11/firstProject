@@ -206,4 +206,22 @@
 		      WHERE T2.id=#{id}
           );
 	</select>
+
+	<select id="matchRegionCode" resultType="com.ucar.combination.model.Region">
+		SELECT city_id cityID
+	 	FROM  t_b_city t1
+	 	WHERE t1.international_code=#{regionCode}
+	</select>
+
+	<select id="getRegionCodeByCityID" resultType="com.ucar.combination.model.Region">
+		SELECT international_code RegionCode
+	 	FROM  t_b_city t1
+	 	WHERE t1.city_id=#{cityID}
+	</select>
+
+	<select id="getRegionByUpperCityID" resultType="com.ucar.combination.model.Region">
+		SELECT city_id cityID
+	 	FROM  t_b_city t1
+	 	WHERE t1.upper_city_id=#{cityID} AND t1.`status`= 1
+	</select>
 </mapper>

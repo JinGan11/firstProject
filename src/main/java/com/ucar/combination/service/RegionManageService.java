@@ -75,6 +75,9 @@ public interface RegionManageService {
     Region getRegionDetails(Region region);
 
     int modifyRegion(Region region);
+    List<Region> matchRegionCode(Region region);
+    Region getRegionCodeByCityID(Region region);
+    List<Region> getRegionByUpperCityID(Region region);
 
     /**
      * description: 用于得到所有城市的信息

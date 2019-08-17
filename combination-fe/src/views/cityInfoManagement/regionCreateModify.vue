@@ -503,13 +503,6 @@
                     regionLevel =self.form.regionLevel;
                 }
 
-                var isRegionCodeChange;
-                if(self.form.regionCode===self.formTemp.regionCode)
-                    isRegionCodeChange=1;
-                else
-                    isRegionCodeChange=0;
-
-
                 var param={
                     cityID:self.form.cityID,
                     regionCode:self.form.regionCode,
@@ -517,7 +510,6 @@
                     regionPinyin:self.form.regionPinyin,
                     regionStatus: regionStatus,
                     modifyTime:self.form.modifyTime,
-                    isRegionCodeChange:isRegionCodeChange
                 };
                 console.log(param);
                 self.$http.get('/regionManage/modifyRegionSave',{

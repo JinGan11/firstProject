@@ -64,6 +64,11 @@ public interface RegionManageDao {
 
     int modifyRegion(Region region);
 
+    List<Region> matchRegionCode(Region region);
+    List<Region> getRegionByUpperCityID(Region region);
+
+    Region getRegionCodeByCityID(Region region);
+
     List<Object> getCityList() ;
     /**
      * description: 返回部门即下属部门所有城市

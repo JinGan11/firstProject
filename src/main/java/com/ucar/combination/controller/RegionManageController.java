@@ -238,6 +238,11 @@ public class RegionManageController {
         region.setModifyTime(modifyTime);
         region.setRemark("无情");
 
+        int matchRegionCode=regionManageService.matchRegionCode(region).size();
+        if(matchRegionCode>0)
+        {return "所填国际代码已存在";}
+
+
         int resultValue=regionManageService.createRegion(region);
         if(resultValue>0)
         {return "success";}
@@ -272,9 +277,21 @@ public class RegionManageController {
         region.setModifyTime(modifyTime);
 
         //校验国际代码唯一性
+        Region getRegionCodeByCityID=regionManageService.getRegionCodeByCityID(region);
+
+        if(!region.getRegionCode().equals(getRegionCodeByCityID.getRegionCode())){
+            int matchRegionCode=regionManageService.matchRegionCode(region).size();
+            if(matchRegionCode>0)
+            {return "所填国际代码已存在";}
+        }
 
 
         //校验下级是否存在
+        if(region.getRegionStatus()!=1 ){
+            List<Region> getRegionByUpperCityID=regionManageService.getRegionByUpperCityID(region);
+            if(getRegionByUpperCityID.size()>0)
+                {return "存在子节点有效，不能修改本节点为无效。";}
+        }
 
 
         //最终修改

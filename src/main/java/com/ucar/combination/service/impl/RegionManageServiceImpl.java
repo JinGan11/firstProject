@@ -75,6 +75,21 @@ public class RegionManageServiceImpl implements RegionManageService {
     }
 
     @Override
+    public List<Region> matchRegionCode(Region region) {
+        return regionManageDao.matchRegionCode(region);
+    }
+
+    @Override
+    public Region getRegionCodeByCityID(Region region) {
+        return regionManageDao.getRegionCodeByCityID(region);
+    }
+
+    @Override
+    public List<Region> getRegionByUpperCityID(Region region) {
+        return regionManageDao.getRegionByUpperCityID(region);
+    }
+
+    @Override
     public ResultPage citySearchList(QueryParam queryParam) {
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
         List<Object> list = regionManageDao.citySearchList(queryParam);
