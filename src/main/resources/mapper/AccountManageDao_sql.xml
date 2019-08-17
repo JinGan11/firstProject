@@ -196,7 +196,7 @@
             and role_name = #{roleName}
         </if>
         <if test="businessLine != null and businessLine.trim() != ''">
-            and business_line = #{businessLine}
+            and business_line like "%"#{businessLine,jdbcType=VARCHAR}"%"
         </if>
         <if test="accountName != null and accountName.trim() != ''">
             and account_name = #{accountName}
@@ -205,7 +205,7 @@
             and staff_num = #{staffNum}
         </if>
         <if test="staffName != null and staffName.trim() != ''">
-            and staff_name = #{staffName}
+            and d.staff_name = #{staffName}
         </if>
         <if test="roleStatus != null and roleStatus.trim() != ''">
             and role_status = #{roleStatus}
@@ -216,6 +216,7 @@
         <if test="departmentName != null and departmentName.trim() != ''">
         and  department_name = #{departmentName}
         </if>
+        ORDER BY role_id DESC
     </select>
 
     <update id="updateStatus">

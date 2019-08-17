@@ -66,7 +66,7 @@
             <el-form-item label="所属部门" label-width="150px;">
               <el-input :disabled="true" style="width:200px;" v-model="form.departmentName"></el-input>
             <el-button type="text" @click="chooseDepartmentFlag=true">选择</el-button>
-            <el-button type="text" @click="chooseDepartmentFlag=false">取消</el-button>
+            <el-button type="text" @click="clearDepartment">取消</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -90,12 +90,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="roleName" label="角色名称" width="150"></el-table-column>
-      <el-table-column prop="businessLine" label="支持业务线" width="150">
-        <template slot-scope="scope">
-          {{scope.row.businessLine=="1"?'买买车'
-          :(scope.row.accountState=="2"?'闪贷':(scope.row.accountState=="3"?'租车'
-          :(scope.row.accountState=="4"?'专车':'保险')))}}
-        </template>
+      <el-table-column prop="businessLine" label="支持业务线" >
       </el-table-column>
       <el-table-column prop="accountName" label="登陆账号" width="150">
         <template slot-scope="scope">
@@ -255,7 +250,7 @@
                   <el-row>
                     <el-col :span="1">
                       <el-form-item label="状态">
-                        <el-input style="width:200px;" :disabled="true" v-model="formInfo.roleStatuss===1?'有效':'无效'"></el-input>
+                        <el-input style="width:200px;" :disabled="true" v-model="formInfo.roleStatus===1?'有效':'无效'"></el-input>
 
                       </el-form-item>
                     </el-col>
@@ -324,19 +319,19 @@
             label: '全部'
           },
           {
-            value: '1',
+            value: '买买车',
             label: '买买车'
           }, {
-            value: '2',
+            value: '闪贷',
             label: '闪贷'
           }, {
-            value: '3',
+            value: '租车',
             label: '租车'
           }, {
-            value: '4',
+            value: '专车',
             label: '专车'
           }, {
-            value: '5',
+            value: '保险',
             label: '保险'
           }],
         accountStateOptions: [
@@ -539,13 +534,16 @@
       closeChooseDepartment() {
         this.chooseDepartmentFlag = false;
       },
+      clearDepartment(){
+        this.form.departmentId = '';
+        this.form.department = '';
+      },
       loadNodeDepartment(node, resolve) {
         var self = this;
         self.$http.get('department/buildTree2.do_')
           .then((result) => {
             resolve([result.departmentDto]);
           }).catch(function (error) {
-
         });
       },
       handleClick1(data, checked, node) {

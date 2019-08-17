@@ -28,7 +28,7 @@
                 </el-form-item>
               </div>
               <el-form-item label="密码" >
-                <el-input  style="width:150px " type="password" v-model="modifyForm.password" :disabled="true" ></el-input>
+                <el-input  style="width:200px " type="password" v-model="modifyForm.password" :disabled="true" ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -41,7 +41,7 @@
             </el-col>
             <el-col :span="8">
               <el-form-item label="员工姓名">
-                <el-input style="width: 150px" v-model="modifyForm.staffName" :disabled="true"></el-input>
+                <el-input style="width: 200px" v-model="modifyForm.staffName" :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -60,7 +60,7 @@
             </el-col>
             <el-col :span="8">
               <el-form-item label="密保邮箱" prop="secretEmail">
-                <el-input style="width:150px;" v-model="modifyForm.secretEmail" clearable :disabled="true"></el-input>
+                <el-input style="width:200px;" v-model="modifyForm.secretEmail" clearable :disabled="true"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -97,7 +97,7 @@
             </el-col>
             <el-col :span="8">
               <el-form-item label="新建时间">
-                <el-input style="width:150px;" :disabled="true" v-model="modifyForm.createTime"></el-input>
+                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.createTime"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -110,7 +110,7 @@
             </el-col>
             <el-col :span="8">
               <el-form-item label="修改时间">
-                <el-input style="width:150px;" :disabled="true" v-model="modifyForm.modifyTime"></el-input>
+                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.modifyTime"></el-input>
               </el-form-item>
             </el-col>
           </el-row>

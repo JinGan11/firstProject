@@ -6,15 +6,6 @@ public class RoleAccount {
     private String roleName;
     private String businessLine;
     private String accountName;
-
-    public String getStaffNum() {
-        return staffNum;
-    }
-
-    public void setStaffNum(String staffNum) {
-        this.staffNum = staffNum;
-    }
-
     private String staffNum;
     private String staffName;
     private String departmentName;
@@ -40,6 +31,10 @@ public class RoleAccount {
     public String getAccountName() {
         return accountName;
     }
+
+    public String getStaffNum() { return staffNum; }
+
+    public void setStaffNum(String staffNum) { this.staffNum = staffNum; }
 
     public String getStaffName() {
         return staffName;
