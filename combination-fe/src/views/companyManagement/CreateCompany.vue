@@ -480,28 +480,30 @@
       },
       beforeAvatarUpload(file) {
         var testmsg=file.name.substring(file.name.lastIndexOf('.')+1)
-        const extension = testmsg === 'jpg';
-        const extension2 = testmsg === 'png';
-        const extension3 = testmsg === 'gif';
-        const isLt2M = file.size / 1024 / 1024 /2;
+        const extension = testmsg === 'jpg'||testmsg === 'JPG';
+        const extension2 = testmsg === 'png'||testmsg === 'PNG';
+        const extension3 = testmsg === 'gif'||testmsg === 'GIF';
+        const isLt2M = file.size / 1024 / 1024 ;
         if(!extension && !extension2 && !extension3) {
           this.$message({
             message: '上传文件只能是jpg/png/gif格式!',
             type: 'warning'
           });
           this.iscommit=false;
+          this.formData=new FormData();
         }
-        if(!isLt2M) {
+        if(isLt2M >2) {
           this.$message({
             message: '上传文件大小不能超过 2MB!',
             type: 'warning'
           });
           this.iscommit=false;
+          this.formData=new FormData();
         }
-        if((extension || extension2 ||extension3)&& isLt2M){
+        if((extension || extension2 ||extension3)&& (isLt2M<2)){
           this.iscommit=true;
         }
-        return (extension || extension2 ||extension3)&& isLt2M
+        return (extension || extension2 ||extension3)&& (isLt2M<2)
       } ,
 
     },
