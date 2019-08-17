@@ -75,7 +75,8 @@
       <el-row>
         <el-col :span="16">
           <el-form-item label="详细地址">
-            <el-input style="width:500px;" v-model="form.address" maxlength="255"></el-input>
+            <div><span :hidden="!haveWorkplace" style="color: #FF0000;">*</span>
+            <el-input style="width:600px;" v-model="form.address" maxlength="255"></el-input></div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -605,6 +606,10 @@
               "要求：1-3位数字");
             return false;
           }
+          if(_form.address.trim()==""){
+            self.$message.error("请填写【详细地址】！");
+            return false;
+          }
         }
         // 部门名称
         if(_form.departmentName.trim()==""){
@@ -626,7 +631,7 @@
           }
         }
         // 经度
-        if(_form.longitudeNum!=""){
+        if(self.longitudeNum!=""){
           var pattern_longitudeNum = /^((0|1?[0-7]?[0-9]?)(([.][0-9]{1,10})?)|180(([.][0]{1,10})?))$/;
           if(!pattern_longitudeNum.test(self.longitudeNum)){
             self.$message.error("【纬度】有误！格式：70.1234567");
@@ -634,7 +639,7 @@
           }
         }
         // 纬度
-        if(_form.latitudeNum!=""){
+        if(self.latitudeNum!=""){
           var pattern_latitudeNum = /^([0-8]?\d{1}\.\d{1,10}|90\.0{1,10})$/;
           if(!pattern_latitudeNum.test(self.latitudeNum)){
             self.$message.error("【经度】有误！格式：120.1234567");
