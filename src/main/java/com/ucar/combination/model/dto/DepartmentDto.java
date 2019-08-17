@@ -10,6 +10,24 @@ import com.ucar.combination.model.Department;
  */
 public class DepartmentDto extends Department {
 	private String cityName;
+   	private String createEmpName;
+   	private String modifyEmpName;
+
+	public String getCreateEmpName() {
+		return createEmpName;
+	}
+
+	public void setCreateEmpName(String createEmpName) {
+		this.createEmpName = createEmpName;
+	}
+
+	public String getModifyEmpName() {
+		return modifyEmpName;
+	}
+
+	public void setModifyEmpName(String modifyEmpName) {
+		this.modifyEmpName = modifyEmpName;
+	}
 
 	public String getCityName() {
 		return cityName;

@@ -152,5 +152,10 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
            staffAccountDTO.setModifyEmpStaffName((String)modifyMap.get("staffName"));
         return staffAccountDTO;
     }
+
+    @Override
+    public Integer updateDepartmentByEmployee(Map<String, String> employeeMap) {
+        return employeeManageDao.updateDepartmentByEmployee(employeeMap);
+    }
 }
 

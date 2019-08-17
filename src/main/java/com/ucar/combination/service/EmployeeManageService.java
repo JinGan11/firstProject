@@ -6,6 +6,7 @@ import com.ucar.combination.model.Staff;
 import com.ucar.combination.model.dto.StaffAccountDTO;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -93,4 +94,14 @@ public interface EmployeeManageService {
      * @return：
      */
     public StaffAccountDTO getInfoByStaffId(long id);
+
+    /**
+     * description: 分配部门
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/17 3:01
+     * @params employeeMap 传入HASHMAP里面有ID,DEPARTMETNID
+
+     * @return 状态
+     */
+    public Integer updateDepartmentByEmployee(Map<String,String> employeeMap);
 }

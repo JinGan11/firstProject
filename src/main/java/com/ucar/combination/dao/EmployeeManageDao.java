@@ -122,4 +122,13 @@ public interface EmployeeManageDao {
     Map<String,Object>getCreateInfo(long staffId);
     Map<String,Object> getModifyInfo(long staffId);
 
+    /**
+     * description: 分配部门
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/17 3:03
+     * @params employeeMap 描述：MAP中存储着ID,DEPARTMENTID
+
+     * @return 状态
+     */
+    Integer updateDepartmentByEmployee(Map<String,String> employeeMap);
 }

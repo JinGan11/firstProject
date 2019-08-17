@@ -233,5 +233,22 @@ public class CompanyManageController {
             }
         }
     }
-
+    /**
+     * description: 返回COMPANY的分页查询语句
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/16 22:33
+     * @params page 起始页
+     * @param: limit 多少条数据
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/queryCompanyList.do_")
+    public Result queryCompanyList(@RequestParam(defaultValue = "") String id, @RequestParam(defaultValue = "") String page, @RequestParam(defaultValue = "") String limit){
+        Map<String, Object> params = new HashMap<>();
+        params.put("page", page);
+        params.put("limit", limit);
+        params.put("id", id);
+        ResultPage resultPage = companyManageService.getCompanyList(new QueryParam(params));
+        return Result.ok().put("page", resultPage);
+    }
 }

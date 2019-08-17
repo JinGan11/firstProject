@@ -83,7 +83,7 @@
         T.status,
         T.modify_emp,
         T.modify_time
-        FROM t_company T join t_r_department_company T1 on T.id = T1.department_id
+        FROM t_company T join t_r_department_company T1 on T.id = T1.company_id
         where T1.department_id=#{id}
     </select>
 

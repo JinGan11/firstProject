@@ -1085,21 +1085,24 @@
         this.departmentVisible=false;
       },
       saveDepartment() {
-      /*  var param
-        self.$http.get('employee/updateDepartment.do_', {
-          params:
+        var param
+        this.$http.get('employee/updateDepartmentByEmployee.do_', {
+          params:{
+            id:this.selection,
+            departmentId:this.formdiStributionDepartment.staffAfterDepartment,
+          }
         }).then((result) => {
           if (result.status=="success"){
-            self.$message.success("恢复成功");
-            self.fetchData();
+            this.$message.success(" 分配成功");
+            this.fetchData();
           } else {
-            self.$message.error("恢复失败")
+            this.$message.error("分配失败")
           }
 
         }).catch(function (error) {
-          commonUtils.Log("employee/recoverEmployee.do_" + error);
-          //self.$message.error("恢复失败");
-        });*/
+          commonUtils.Log("employee/updateDepartmentByEmployee.do_" + error);
+
+        });
         this.distributionDepartmentFlag=false;
       },
       cancelDepartment() {

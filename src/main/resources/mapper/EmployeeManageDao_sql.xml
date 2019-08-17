@@ -166,4 +166,7 @@
         from t_account t1,t_staff t2,t_staff t3
         WHERE t2.modify_emp=t1.id and t1.staff_id=t3.id and t2.id=#{staffId}
     </select>
+    <update id="updateDepartmentByEmployee">
+        update t_staff T set T.department_id=#{departmentId} where T.id=#{id}
+    </update>
 </mapper>

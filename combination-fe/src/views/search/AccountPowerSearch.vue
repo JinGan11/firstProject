@@ -113,24 +113,24 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="登录账号">
-              <el-input :readonly="true" v-model="formDetail.accountName"></el-input>
+              <el-input :disabled="true" v-model="formDetail.accountName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="密保邮箱">
-              <el-input :readonly="true" v-model="formDetail.secretEmail"></el-input>
+              <el-input :disabled="true" v-model="formDetail.secretEmail"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="10">
             <el-form-item label="员工编号">
-              <el-input :readonly="true" v-model="formDetail.staffNum"></el-input>
+              <el-input :disabled="true" v-model="formDetail.staffNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="员工姓名">
-              <el-input :readonly="true" v-model="formDetail.staffName">
+              <el-input :disabled="true" v-model="formDetail.staffName">
               </el-input>
             </el-form-item>
           </el-col>
@@ -138,12 +138,12 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="数据权限类型">
-              <el-input :readonly="true" v-model="formDetail.premissions"></el-input>
+              <el-input :disabled="true" v-model="formDetail.premissions"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="账号状态">
-              <el-input :readonly="true" v-model="formDetail.accountState"></el-input>
+              <el-input :disabled="true" v-model="formDetail.accountState"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -152,29 +152,29 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="新建人">
-              <el-input :readonly="true" v-model="formDetail.creatEmpName"></el-input>
+              <el-input :disabled="true" v-model="formDetail.creatEmpName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="新建时间">
-              <el-input :readonly="true" v-model="formDetail.createTime"></el-input>
+              <el-input :disabled="true" v-model="formDetail.createTime"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="10">
             <el-form-item label="修改人">
-              <el-input :readonly="true" v-model="formDetail.modifyEmpName"></el-input>
+              <el-input :disabled="true" v-model="formDetail.modifyEmpName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="修改时间">
-              <el-input :readonly="true" v-model="formDetail.modifyTime"></el-input>
+              <el-input :disabled="true" v-model="formDetail.modifyTime"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-form-item label="备注">
-          <el-input :readonly="true" v-model="formDetail.remark"></el-input>
+          <el-input :disabled="true" v-model="formDetail.remark"></el-input>
         </el-form-item>
 
       </el-form>
