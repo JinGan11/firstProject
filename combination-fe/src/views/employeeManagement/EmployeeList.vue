@@ -675,6 +675,7 @@
           departmentName:'',
           createTime:'',
           createEmp:'',
+          createEmpInit:'',
           remark:'',
         },
         rulesModify:{
@@ -966,10 +967,22 @@
       saveUpdate(){
         console.log("=========")
         const self=this;
+        let param = {
+          id:self.id,
+          accountId:self.modifyForm.accountId,
+          staffNum:self.modifyForm.staffNum,
+          staffName:self.modifyForm.staffName,
+          staffSex:self.modifyForm.staffSex,
+          staffEmail:self.modifyForm.staffEmail,
+          staffTelephone:self.modifyForm.staffTelephone,
+          departmentName:self.modifyForm.departmentName,
+          departmentId:self.modifyForm.departmentId,
+          remark:self.modifyForm.remark,
+        }
         self.$refs["modifyForm"].validate(function (valid) {
           //if(self.$options.methods.checkInput(self)==false) return;
           if (valid) {
-            self.$http.post("employee/updateStaff",self.modifyForm)
+            self.$http.post("employee/updateStaff",param)
               .then(result => {
 
               self.modifyDialogVisible=false;
@@ -1307,6 +1320,7 @@
         this.modifyForm.departmentId=val.departmentId;
         this.modifyForm.createTime=val.createTime;
         this.modifyForm.remark=val.remark;
+        this.modifyForm.createEmpInit=val.createEmp;
 
         this.formdiStributionDepartment.staffNum=val.staffNum;
         this.formdiStributionDepartment.staffAfterDepartment=val.staffAfterDepartment;
@@ -1319,6 +1333,7 @@
         var self = this;
         var param = {
           staffId:val.id,
+          createEmp:val.createEmp,
         };
         self.$http.get('employee/otherInfo.do_', {
           params: param

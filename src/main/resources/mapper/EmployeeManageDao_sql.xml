@@ -135,9 +135,6 @@
         t1.staff_telephone=#{staffTelephone},
         t1.staff_email=#{staffEmail},
         t1.department_id=#{departmentId},
-        t1.is_dimission=#{isDimission},
-        t1.create_time=#{createTime},
-        t1.create_emp=#{createEmp},
         t1.modify_time=NOW(),
         t1.modify_emp=#{modifyEmp},
         t1.remark=#{remark}
