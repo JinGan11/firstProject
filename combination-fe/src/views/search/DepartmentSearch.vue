@@ -27,7 +27,6 @@
         </el-col>
         <el-col :span="7">
           <el-form-item label="部门所在城市">
-            <!--<el-input v-model="formInline.cityName"></el-input>-->
             <el-select v-model="formInline.cityName"
                        remote
                        reserve-keyword
@@ -661,7 +660,7 @@
             }
             var currentdate = year + seperator1 + month + seperator1 + strDate;
             const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '部门查询 '+currentdate);
+            export_json_to_excel(tHeader, data, '部门管理 '+currentdate);
             this.$message({
               showClose: true,
               message: '文件导出成功',
