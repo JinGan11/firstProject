@@ -92,43 +92,43 @@
             <foreach collection="departmentIdList" item="item" open="(" separator="," close=")">#{item}</foreach>
         </if>
 
-        <if test="roleApplyNum!=null and roleApplyNum!=''">
+        <if test="roleApplyNum!=null and roleApplyNum.trim()!=''">
             AND t1.apply_num=#{roleApplyNum}
         </if>
-        <if test="roleId!=null and roleId!=''">
+        <if test="roleId!=null and roleId.trim()!=''">
             AND t1.role_id=#{roleId}
         </if>
-        <if test="roleName!=null and roleName!=''">
+        <if test="roleName!=null and roleName.trim()!=''">
             AND t2.role_name=#{roleName}
         </if>
-        <if test="applyAccountName!=null and applyAccountName!=''">
+        <if test="applyAccountName!=null and applyAccountName.trim()!=''">
             AND t1.apply_account_name=#{applyAccountName}
         </if>
-        <if test="applyStaffNum!=null and applyStaffNum!=''">
+        <if test="applyStaffNum!=null and applyStaffNum.trim()!=''">
             AND t1.apply_staff_num =#{applyStaffNum}
         </if>
-        <if test="applyStaffName!=null and applyStaffName!=''">
+        <if test="applyStaffName!=null and applyStaffName.trim()!=''">
             AND t1.apply_staff_name=#{applyStaffName}
         </if>
-        <if test="applyDepartmentName!=null and applyDepartmentName!=''">
+        <if test="applyDepartmentName!=null and applyDepartmentName.trim()!=''">
             AND t1.apply_department_name=#{applyDepartmentName}
         </if>
-        <if test="applyStatus!=null and applyStatus!=''">
+        <if test="applyStatus!=null and applyStatus.trim()!=''">
             AND t1.status=#{applyStatus}
         </if>
-        <if test="accountName!=null and accountName!=''">
+        <if test="accountName!=null and accountName.trim()!=''">
             AND t2.approver_account_name=#{accountName}
         </if>
-        <if test="applyTimeStart!=null and applyTimeStart!=''">
-            AND t1.apply_time<![CDATA[ <= ]]> #{applyTimeStart}
+        <if test="applyTimeStart!=null and applyTimeStart.trim()!=''">
+            AND t1.apply_time<![CDATA[ >= ]]> #{applyTimeStart}
         </if>
-        <if test="applyTimeEnd!=null and applyTimeEnd!=''">
+        <if test="applyTimeEnd!=null and applyTimeEnd.trim()!=''">
             AND t1.apply_time<![CDATA[ <= ]]> #{applyTimeEnd}
         </if>
-        <if test="modifyTimeStart!=null and modifyTimeStart!=''">
+        <if test="modifyTimeStart!=null and modifyTimeStart.trim()!=''">
             AND t1.modify_time<![CDATA[ >= ]]> #{modifyTimeStart}
         </if>
-        <if test="modifyTimeEnd!=null and modifyTimeEnd!=''">
+        <if test="modifyTimeEnd!=null and modifyTimeEnd.trim()!=''">
             AND t1.modify_time<![CDATA[ <= ]]> #{modifyTimeEnd}
         </if>
         order by t1.modify_time desc

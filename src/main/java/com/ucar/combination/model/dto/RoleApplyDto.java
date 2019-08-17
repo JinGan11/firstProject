@@ -1,5 +1,7 @@
 package com.ucar.combination.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -19,9 +21,11 @@ public class RoleApplyDto {
     private String applyStaffNum;
     private String applyStaffName;
     private String applyDepartmentName;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date applyTime;
     private Integer applyStatus;
     private String modifyEmp;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date modifyTime;
     private String rejectReason;
     private Date approveTime;

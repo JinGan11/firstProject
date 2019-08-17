@@ -5,22 +5,22 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="角色申请编号">
-              <el-input style="width:150px;" v-model="form.roleApplyNum"></el-input>
+              <el-input style="width:150px;" placeholder="角色申请编号" v-model="form.roleApplyNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请角色ID">
-              <el-input style="width:150px;" v-model="form.roleId"></el-input>
+              <el-input style="width:150px;" placeholder="申请角色ID" v-model="form.roleId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请角色名称">
-              <el-input style="width:150px;" v-model="form.roleName"></el-input>
+              <el-input style="width:150px;" placeholder="申请角色名称" v-model="form.roleName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请人登录账号">
-              <el-input style="width:150px;" v-model="form.applyAccountName"></el-input>
+              <el-input style="width:150px;" placeholder="申请人登录账号" v-model="form.applyAccountName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -28,26 +28,26 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="申请人员工编号">
-              <el-input style="width:150px;" v-model="form.applyStaffNum"></el-input>
+              <el-input style="width:150px;" placeholder="申请人员工编号"  v-model="form.applyStaffNum"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请人员工姓名">
-              <el-input style="width:150px;" v-model="form.applyStaffName">
+              <el-input style="width:150px;" placeholder="申请人员工姓名"  v-model="form.applyStaffName">
               </el-input>
 
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="申请人所属部门">
-              <el-input style="width:80px;" v-model="form.applyDepartmentName"></el-input>
+              <el-input style="width:80px;" placeholder="请选择"  v-model="form.applyDepartmentName"></el-input>
               <el-button type="text" @click="selectDepartment">选择</el-button>
               <el-button type="text" @click="clearDepartment">清空</el-button>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="状态">
-              <el-select v-model="form.applyStatus" clearable  style="width:150px;" placeholder="请选择">
+              <el-select v-model="form.applyStatus"  clearable  style="width:150px;" placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"

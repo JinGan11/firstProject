@@ -716,9 +716,11 @@
         self.forms.accountIdList = self.accountIdList;
         self.forms.applyOperationList = self.applyOperationList;
 
-
-        if (!self.$options.methods.checkInput(self)) return;
-
+        if (!self.$options.methods.checkInput(self)){
+          self.accountIdList=[];
+          self.applyOperationList=[];
+          return;
+        }
         self.$http.post("roleApply/createRoleApply.do_", self.forms)
           .then(result => {
             self.$message.info("新建角色申请成功");
@@ -730,10 +732,9 @@
       },
 
       createSaveCommitRoleApply(){
+
         for (let i = 0; i < this.tableDataAccount.length; i++) {//账号ID
           this.accountIdList.push(this.tableDataAccount[i].id);
-        }
-        for (let i = 0; i < this.tableDataAccount.length; i++) {
           this.applyOperationList.push(this.tableDataAccount[i].applyOperation)
         }
         var self = this;
@@ -751,9 +752,11 @@
         self.forms.accountIdList = self.accountIdList;
         self.forms.applyOperationList = self.applyOperationList;
 
-
-        if (!self.$options.methods.checkInput(self)) return;
-
+        if (!self.$options.methods.checkInput(self)){
+          self.accountIdList=[];
+          self.applyOperationList=[];
+          return;
+        }
         self.$http.post("roleApply/createSaveCommitRoleApply.do_", self.forms)
           .then(result => {
             self.$message.info("角色申请保存并提交成功");
@@ -762,7 +765,6 @@
           commonUtils.Log("/roleManagement/apply" + error);
           self.$message.error("角色申请保存并提交保存失败");
         })
-
       },
 
       checkInput(self) {
@@ -775,7 +777,8 @@
           return false;
         }
         for(let i=0;i<self.tableDataAccount.length;i++){
-          if(self.tableDataAccount[i].applyOperation!=1&&self.tableDataAccount[i].applyOperation!=2){
+          console.log(self.tableDataAccount[i].applyOperation);
+          if(self.tableDataAccount[i].applyOperation==null){
             self.$message.info('账号申请操作不允许为空');
             return false;
           }

@@ -755,7 +755,11 @@
         self.forms.accountIdList=self.accountIdList;
         self.forms.applyOperationList=self.applyOperationList;
 
-        if (!self.$options.methods.checkInput(self)) return;
+        if (!self.$options.methods.checkInput(self)){
+          self.accountIdList=[];
+          self.applyOperationList=[];
+          return;
+        }
         self.$http.post("roleApply/modifyRoleApply.do_",self.forms)
           .then(result => {
             self.$message.info("修改角色申请成功");
@@ -789,7 +793,11 @@
         self.forms.accountIdList=self.accountIdList;
         self.forms.applyOperationList=self.applyOperationList;
 
-        if (!self.$options.methods.checkInput(self)) return;
+        if (!self.$options.methods.checkInput(self)){
+          self.accountIdList=[];
+          self.applyOperationList=[];
+          return;
+        }
         self.$http.post("roleApply/modifySaveCommitRoleApply.do_",self.forms)
           .then(result => {
             self.$message.info("修改角色申请保存并提交成功");
