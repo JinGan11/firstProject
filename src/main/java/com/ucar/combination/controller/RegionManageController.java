@@ -284,5 +284,19 @@ public class RegionManageController {
         else
         {return "false";}
     }
+    /**
+     * description: 部门及部门下属城市列表展示
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/17 12:01
+     * @params id 描述departmentId
+
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/citySearchListById.do_")
+    public Result citySearchListById(@RequestParam String id){
+        List<String> cityList=regionManageService.citySearchListById(id);
+        return Result.ok().put("cityList",cityList);
+    }
 
 }

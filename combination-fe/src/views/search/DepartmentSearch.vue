@@ -22,19 +22,19 @@
       <el-row>
         <el-col :span="7">
           <el-form-item label="手机号">
-            <el-input v-model="formInline.telePhone" clearable></el-input>
+            <el-input v-model="formInline.telephone" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="7">
           <el-form-item label="部门所在城市">
-            <!--<el-input v-model="formInline.cityName"></el-input>-->
             <el-select v-model="formInline.cityName"
                        remote
                        reserve-keyword
                        filterable
-                       placeholder="全选"
+                       loading-text
                        :remote-method="remoteMethod"
                        :loading="loading">
+              <el-option value="" label="全部"></el-option>
               <el-option v-for="item in options"
                          :key="item.value"
                          :lable="item.label"
@@ -70,6 +70,7 @@
         <el-col :span="7">
           <el-form-item label="部门级别">
             <el-select v-model="formInline.level">
+              <el-option label="全部" value=""></el-option>
               <el-option label="总部" value="1"></el-option>
               <el-option label="分公司" value="2"></el-option>
               <el-option label="管理部" value="3"></el-option>
@@ -408,7 +409,6 @@
         value: [],
         list: [],
         loading: false,
-        states: [],
         total: 0,
         currentPage: 1,
         pageSize: 10,
@@ -447,7 +447,7 @@
           departmentName: '',
           staffId: '',
           staffName: '',
-          telePhone: '',
+          telephone: '',
           cityName: '',
           level: '',
           upperDepartmentName: '',
@@ -568,7 +568,7 @@
       var param={
         id:this.departmentId,
       }
-      this.$http.get('/regionManage/citySearchListById',{
+      this.$http.get('/regionManage/citySearchListById.do_',{
         params:param,
       }).then((result)=>{
         this.departmentListById=result.cityList;
@@ -587,7 +587,7 @@
           departmentName: self.formInline.departmentName,
           staffName: self.formInline.staffName,
           staffId: self.formInline.staffId,
-          telePhone: self.formInline.telePhone,
+          telephone: self.formInline.telephone,
           cityName: self.formInline.cityName,
           level: self.formInline.level,
           upperDepartmentNo: self.formInline.upperDepartmentNo,
@@ -660,7 +660,7 @@
             }
             var currentdate = year + seperator1 + month + seperator1 + strDate;
             const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '部门查询 '+currentdate);
+            export_json_to_excel(tHeader, data, '部门管理 '+currentdate);
             this.$message({
               showClose: true,
               message: '文件导出成功',
@@ -797,13 +797,13 @@
       }
     },
     mounted() {
-      this.Search();
       this.$http.get("/department/getCityList.do_").then((result) => {
-        this.states = result.cityList;
-        this.list = this.states.map(item => {
+        this.list = result.cityList.map(item => {
           return {value: item, label: item};
         });
-      })
+      });
+      this.Search();
+
     }
   }
 </script>

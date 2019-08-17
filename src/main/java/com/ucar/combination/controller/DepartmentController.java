@@ -201,7 +201,7 @@ public class DepartmentController {
      */
     @ResponseBody
     @RequestMapping("/searchDepartment.do_")
-    public Result searchDepartment(HttpServletRequest request, @RequestParam(defaultValue = "") String page, @RequestParam(defaultValue = "") String limit, @RequestParam(defaultValue = "") String departmentName, @RequestParam(defaultValue = "") String staffName, @RequestParam(defaultValue = "") String staffId, @RequestParam(defaultValue = "") String telePhone, @RequestParam(defaultValue = "") String cityName,
+    public Result searchDepartment(HttpServletRequest request, @RequestParam(defaultValue = "") String page, @RequestParam(defaultValue = "") String limit, @RequestParam(defaultValue = "") String departmentName, @RequestParam(defaultValue = "") String staffName, @RequestParam(defaultValue = "") String staffId, @RequestParam(defaultValue = "") String telephone, @RequestParam(defaultValue = "") String cityName,
                                    @RequestParam(defaultValue = "") String level, @RequestParam(defaultValue = "") String upperDepartmentNo, @RequestParam(defaultValue = "") String status, @RequestParam(defaultValue = "") String departmentType) {
         Map<String, Object> params = new HashMap<>();
         params.put("page", page);
@@ -209,7 +209,7 @@ public class DepartmentController {
         params.put("departmentName", departmentName);
         params.put("staffName", staffName);
         params.put("staffId", staffId);
-        params.put("telePhone", telePhone);
+        params.put("telephone", telephone);
         params.put("cityName", cityName);
         params.put("level", level);
         params.put("upperDepartmentNo", upperDepartmentNo);
@@ -246,7 +246,7 @@ public class DepartmentController {
      */
     @ResponseBody
     @RequestMapping("/getCityList.do_")
-    Result getCityList(){
+     public Result getCityList(){
         List<Object> cityList=regionManageService.getCityList();
         return Result.ok().put("cityList",cityList);
     }
