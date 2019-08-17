@@ -423,6 +423,7 @@
               .then((result) => {
               if(!(result.list.result)){
               self.$alert(result.list.msg);
+              self.formData=new FormData();
             }else{
               self.$alert("添加成功！");
               self.$router.replace("/CompanyManagement");
