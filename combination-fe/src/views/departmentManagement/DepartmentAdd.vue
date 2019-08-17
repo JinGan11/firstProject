@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <el-form style="margin-left: 10px; margin-top: 10px">
+    <el-form style="margin-left: 10px; padding-top: 10px">
 
       <span>基本信息</span>
       <hr><br>
@@ -60,7 +60,7 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="座机号">
-            <el-input style="width:200px;" v-model="form.landline" maxlength="12"></el-input>
+            <el-input style="width:200px;" v-model="form.landline" maxlength="13"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -91,7 +91,7 @@
                 :value="item.value">
               </el-option>
             </el-select>
-            <el-input style="width: 140px;" v-model="longitudeNum" maxlength="19"></el-input>
+            <el-input style="width: 140px;" v-model="longitudeNum" maxlength="14"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -104,7 +104,7 @@
                 :value="item.value">
               </el-option>
             </el-select>
-            <el-input style="width:140px;" v-model="latitudeNum" maxlength="19"></el-input>
+            <el-input style="width:140px;" v-model="latitudeNum" maxlength="14"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -581,6 +581,30 @@
           self.$message.error("请输入正确的11位【手机号】");
           return false;
         }
+        // 座机号
+        if(_form.landline!=""){
+          var pattern_landline = /^[0-9]{4}\-[0-9]{7,8}$/;
+          if(!pattern_landline.test(_form.landline)){
+            self.$message.error("请输入正确的【座机号】，格式为'0592-8888888'，或者不填写任何内容！");
+            return false;
+          }
+        }
+        // 经度
+        if(_form.longitudeNum!=""){
+          var pattern_longitudeNum = /^((0|1?[0-7]?[0-9]?)(([.][0-9]{1,10})?)|180(([.][0]{1,10})?))$/;
+          if(!pattern_longitudeNum.test(self.longitudeNum)){
+            self.$message.error("【纬度】有误！格式：70.1234567");
+            return false;
+          }
+        }
+        // 纬度
+        if(_form.latitudeNum!=""){
+          var pattern_latitudeNum = /^([0-8]?\d{1}\.\d{1,10}|90\.0{1,10})$/;
+          if(!pattern_latitudeNum.test(self.latitudeNum)){
+            self.$message.error("【经度】有误！格式：120.1234567");
+            return false;
+          }
+        }
         // 邮箱
         if(_form.email!=""){
           var pattern_email = /^\w+@[a-z0-9]+\.[a-z]+$/i;
@@ -594,7 +618,7 @@
           self.$message.error("请至少选择一个【支持业务线】！");
           return false;
         }
-        // 城市还没做！！！
+        // 城市校验
         if(_form.cityId==""){
           self.$message.error("请选择【城市】！");
           return false;
