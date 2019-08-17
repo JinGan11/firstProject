@@ -26,7 +26,7 @@ public class Company extends BaseBean {
 	private String companyAddress;
 	private String businessScope;
 	private String legalPerson;
-	private Long registeredCapital;
+	private String registeredCapital;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "GMT")
 	private Date establishTime;
 	private String registeredInstitution;
@@ -131,14 +131,6 @@ public class Company extends BaseBean {
 		this.legalPerson = legalPerson;
 	}
 
-	public Long getRegisteredCapital() {
-		return registeredCapital;
-	}
-
-	public void setRegisteredCapital(Long registeredCapital) {
-		this.registeredCapital = registeredCapital;
-	}
-
 	public Date getEstablishTime() {
 		return establishTime;
 	}
@@ -173,6 +165,14 @@ public class Company extends BaseBean {
 
 	public String getLiscensePath() {
 		return liscensePath;
+	}
+
+	public String getRegisteredCapital() {
+		return registeredCapital;
+	}
+
+	public void setRegisteredCapital(String registeredCapital) {
+		this.registeredCapital = registeredCapital;
 	}
 
 	public void setLiscensePath(String liscensePath) {

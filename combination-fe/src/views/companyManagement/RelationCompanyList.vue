@@ -20,7 +20,7 @@
             <el-button type="text" @click="companyIdBtn(scope.row.id)">{{scope.row.id}}</el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="companyName" label="公司名称"></el-table-column>
+        <el-table-column prop="companyName" label="公司名称" :show-overflow-tooltip='true' class="el-tooltip__popper"></el-table-column>
         <el-table-column prop="creditCode" label="统一社会信用代码" ></el-table-column>
         <el-table-column prop="companyType" label="类型"  style="text-align: center">
           <template slot-scope="scope">
@@ -144,7 +144,7 @@
                 <el-button type="text" @click="companyIdBtn(scope.row.id)">{{scope.row.id}}</el-button>
               </template>
             </el-table-column>
-            <el-table-column prop="companyName" label="公司名称"width="150"></el-table-column>
+            <el-table-column prop="companyName" label="公司名称"width="150" :show-overflow-tooltip='true' class="el-tooltip__popper"></el-table-column>
             <el-table-column prop="creditCode" label="统一社会信用代码"></el-table-column>
             <el-table-column prop="companyType" label="类型" width="150" style="text-align: center">
               <template slot-scope="scope">
@@ -729,4 +729,9 @@
   .el-dialog__body{
     height: 1000px;
   }
+</style>
+<style>
+  .el-tooltip__popper {
+    font-size: 14px; max-width:20%
+  } /*设置显示隐藏部分内容，按50%显示*/
 </style>

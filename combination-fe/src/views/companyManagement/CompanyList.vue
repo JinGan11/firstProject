@@ -21,7 +21,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="统一社会信用代码" style="margin-left: 20px" label-width="140px">
+            <el-form-item label="统一社会信用代码" style="margin-left: 20px" label-width="140px" >
               <el-input placeholder="统一社会信用代码"style="width:180px" clearable  v-model="form.creditCode"></el-input>
             </el-form-item>
           </el-col>
@@ -105,7 +105,7 @@
           <el-button type="text" @click="companyIdBtn(scope.row.id)">{{scope.row.id}}</el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="companyName" label="公司名称" width="150"></el-table-column>
+      <el-table-column prop="companyName" label="公司名称" width="150" :show-overflow-tooltip='true' class="el-tooltip__popper"></el-table-column>
       <el-table-column prop="creditCode" label="统一社会信用代码" ></el-table-column>
       <el-table-column prop="companyType" label="类型" width="150" style="text-align: center">
         <template slot-scope="scope">
@@ -597,4 +597,9 @@
   .box{ width:800px;}
   .box li{ float:left; width:200px; height:180px; margin-right:10px;}
 
+</style>
+<style>
+  .el-tooltip__popper {
+    font-size: 14px; max-width:20%
+  } /*设置显示隐藏部分内容，按50%显示*/
 </style>
