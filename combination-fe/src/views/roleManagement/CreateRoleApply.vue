@@ -254,7 +254,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="6">
-                <el-form-item label="数据权限类型">
+                <el-form-item label="数据权限类型" label-width="150px">
                   <el-select style="width:180px;" v-model="form.permissions" clearable placeholder="请选择">
                     <el-option
                       v-for="item in form.permissionsList"
