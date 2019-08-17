@@ -1338,7 +1338,7 @@
         self.$http.get('employee/otherInfo.do_', {
           params: param
         }).then((result) => {
-          self.modifyForm.createEmp = result.list.createEmpAccountName+"("+result.list.createEmpStaffName+")";
+          self.modifyForm.createEmp = result.list.createEmpName;
 
       }).catch(function (error) {
           commonUtils.Log("employee/otherInfo.do_:"+error);
