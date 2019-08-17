@@ -72,7 +72,7 @@
                     AND T.account_state=#{accountState}
                 </if>
             </where>
-        GROUP BY T2.account_id
+        GROUP BY T2.account_id DESC
     </select>
     <select id ="queryRolePowerList" parameterType="com.ucar.combination.model.dto.RolePowerDto" resultType="com.ucar.combination.model.dto.RolePowerDto">
         SELECT
@@ -105,7 +105,7 @@
                 t1.approver_department_name=#{approverDepartmentName}</if>
             <if test="powerName!=null and powerName.trim()!=''">and t3.power_id=#{powerId}</if>
         </where>
-        GROUP BY t1.id
+        GROUP BY t1.id DESC
     </select>
 
 </mapper>
