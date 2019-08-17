@@ -159,5 +159,10 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
         }
         return staffAccountDTO;
     }
+
+    @Override
+    public Integer updateDepartmentByEmployee(Map<String, String> employeeMap) {
+        return employeeManageDao.updateDepartmentByEmployee(employeeMap);
+    }
 }
 

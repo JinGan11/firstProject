@@ -64,4 +64,14 @@ public interface RegionManageService {
      * @return 返回一个城市的STRING集合
      */
     List<Object> getCityList();
+
+    /**
+     * description: 返回一个城市的集合
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/17 1:29
+     * @params id 部门ID
+
+     * @return
+     */
+    List<String> citySearchListById(String id);
 }

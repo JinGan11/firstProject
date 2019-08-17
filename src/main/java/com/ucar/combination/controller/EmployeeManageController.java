@@ -228,4 +228,25 @@ public class EmployeeManageController {
         StaffAccountDTO staffAccountDTO = employeeManageService.getInfoByStaffId(id);
         return Result.ok().put("status","success").put("list",staffAccountDTO);
     }
+    /**
+     * description: 分配部门
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/17 2:56
+     * @params id 员工ID
+     * @param: departmentId 部门ID
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/updateDepartmentByEmployee.do_")
+    public Result updateDepartmentByEmployee(@RequestParam(defaultValue = "")String id,@RequestParam(defaultValue = "")String departmentId){
+        Map<String,String> employeeMap=new HashMap<>();
+        employeeMap.put("id",id);
+        employeeMap.put("departmentId",departmentId);
+        Integer status=employeeManageService.updateDepartmentByEmployee(employeeMap);
+        if (status!=0){
+            return Result.ok().put("status","success");
+        }else {
+            return Result.ok().put("status","error");
+        }
+    }
 }

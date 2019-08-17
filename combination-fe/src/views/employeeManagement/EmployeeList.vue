@@ -1098,6 +1098,24 @@
         this.departmentVisible=false;
       },
       saveDepartment() {
+        var param
+        this.$http.get('employee/updateDepartmentByEmployee.do_', {
+          params:{
+            id:this.selection,
+            departmentId:this.formdiStributionDepartment.staffAfterDepartment,
+          }
+        }).then((result) => {
+          if (result.status=="success"){
+            this.$message.success(" 分配成功");
+            this.fetchData();
+          } else {
+            this.$message.error("分配失败")
+          }
+
+        }).catch(function (error) {
+          commonUtils.Log("employee/updateDepartmentByEmployee.do_" + error);
+
+        });
         this.distributionDepartmentFlag=false;
       },
       cancelDepartment() {

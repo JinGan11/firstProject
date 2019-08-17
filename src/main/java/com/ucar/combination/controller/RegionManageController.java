@@ -9,10 +9,7 @@ import com.ucar.combination.model.Region;
 import com.ucar.combination.service.RegionManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -174,5 +171,19 @@ public class RegionManageController {
             {return "success";}
         else
             {return "false";}
+    }
+    /**
+     * description: 查找部门及下属部门的城市
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/17 1:27
+     * @params id 描述
+
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/citySearchListById")
+    public Result citySearchList(@RequestParam(defaultValue = "") String id){
+        List<String> cityList=regionManageService.citySearchListById(id);
+        return Result.ok().put("cityList",cityList.toString());
     }
 }

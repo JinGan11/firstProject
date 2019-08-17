@@ -32,7 +32,7 @@
                        remote
                        reserve-keyword
                        filterable
-                       placeholder="请输入关键字"
+                       placeholder="全选"
                        :remote-method="remoteMethod"
                        :loading="loading">
               <el-option v-for="item in options"
@@ -151,7 +151,17 @@
         </template>
       </el-table-column>
       <el-table-column prop="cityName" label="所在城市" width="140"></el-table-column>
-      <el-table-column prop="companyName" label="关联公司名称" width="140"></el-table-column>
+      <el-table-column prop="companyName" label="关联公司名称" width="140">
+        <template slot-scope="scope">
+          <el-popover
+            placement="bottom"
+            width="200"
+            trigger="hover"
+            :content="scope.row.companyName">
+            <el-button slot="reference" type="text">{{scope.row.companyName|ellipsis}}</el-button>
+          </el-popover>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
@@ -170,57 +180,57 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="部门编号" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.departmentNo" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.departmentNo" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="部门名称" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.departmentName" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.departmentName" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="负责人ID" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.staffId" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.staffId" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="负责人姓名" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.staffName" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.staffName" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="手机号" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.telephone" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.telephone" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="邮箱" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.email" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.email" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="座机号" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.landline" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.landline" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="所在城市" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.cityName" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.cityName" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="详细地址" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.address" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.address" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="经度" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.longitude" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.longitude" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="纬度" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.latitude" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.latitude" disabled></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -231,28 +241,28 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="部门级别" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.level" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.level" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="上级部门" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.upperDepartmentNo" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.upperDepartmentNo" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="支持业务线" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.supportBusiness" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.supportBusiness" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="部门类型" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.departmentType" placeholder="">
+                <el-input style="width: 200px;" v-model="formDetail.departmentType" disabled>
                 </el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="办公点标识" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.workplace" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.workplace" disabled></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -295,40 +305,57 @@
                          :total="totalCompany">
           </el-pagination>
         </div>
-
+        <br>
+        <br>
+        <br>
+        <hr style="height: 1px">
         <div>
-          <hr style="height: 1px">
+          <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">部门及部门下属所在城市</div>
+           <el-form-item>
+             <template>
+            <el-popover
+              placement="bottom"
+              width="200"
+              trigger="hover"
+              :content=>
+              <el-input style="width: 700px;" v-model="this.departmentListById.toString()" disabled></el-input>
+            </el-popover>
+             </template>
+           </el-form-item>
+        </div>
+        <hr style="height: 1px">
+        <div>
           <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">其他信息</div>
           <el-row>
             <el-col :span="12">
               <el-form-item label="新建时间" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.createTime" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.createTime" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="新建人" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.createEmp" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.createEmpName" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="修改时间" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.modifyTime" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.modifyTime" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="修改人" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.modifyEmp" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.modifyEmpName" disabled></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="状态" label-width="150px">
-                <el-input style="width: 200px;" v-model="formDetail.status" placeholder=""></el-input>
+                <el-input style="width: 200px;" v-model="formDetail.status" disabled></el-input>
               </el-form-item>
             </el-col>
             <br>
             <el-col :span="12">
               <el-form-item label="备注" label-width="150px">
-                <el-input style="width: 300px;" v-model="formDetail.remark" placeholder=""></el-input>
+                <el-input style="width: 300px;" v-model="formDetail.remark" disabled></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -388,6 +415,8 @@
         totalCompany: 0,
         currentPageCompany: 1,
         pageSizeCompany: 5,
+        companyId:'',
+        departmentId:'',
         formDetail: {
           departmentNo: '',
           departmentName: '',
@@ -405,8 +434,10 @@
           workplace: '',
           createTime: '',
           createEmp: '',
+          createEmpName:'',
           modifyTime: '',
           modifyEmp: '',
+          modifyEmpName:'',
           status: '',
           remark: '',
           longitude: '',
@@ -456,12 +487,37 @@
         list: [],
         disabled: true,
         departmentList: [],
+        departmentListById:'',
       }
     },
+    /*这里在关联部门多出两个的时候用'...'表示，现在还不能实现此功能
+    filters:{
+      ellipsis(value){
+      if(!value) return '';
+      else {
+        this.values=value.split(';');
+        if (this.values.length>2){
+        return this.values[0]+';'+this.values[1]+'...';
+         }else {
+        return value;
+        }
+      }
+    }
+      },*/
+    filters:{
+    ellipsis(value){
+      if(value&& value.length > 10) {
+        value= value.substring(0,10)+ '...';
+      }
+      return value;
+    }
+  },
     methods: {
       //编号点击开始详情页
       ChooseOnDetail(val) {
         // alert(this.row.tableData[0].departmentNo);
+        this.departmentListById='';
+        this.departmentId=val;
         var param = {
           //id: this.selection,
           id: val,
@@ -473,8 +529,6 @@
           params: param
         }).then((resultss) => {
           this.formDetail = resultss.department;
-          this.totalCompany = resultss.totalCount;
-          this.tableCity = resultss.page.list;
           this.CompanyStatusEnum = resultss.CompanyStatusEnum;
           this.CompanyTypeEnum = resultss.CompanyTypeEnum;
           this.CompanyMarkEnum = resultss.CompanyMarkEnum;
@@ -488,12 +542,44 @@
 
           this.$message.error("获取数据错误");
         });
+        this.SearchCompany();
+        this.SearchCityList();
+        this.departmentId='';
         this.dialogVisibleDetail = true;
       },
+
+      //查找公司的集合，用于分页
+      SearchCompany(){
+        var param={
+        id:this.departmentId,
+        page:this.currentPageCompany,
+        limit:this.pageSizeCompany,
+       }
+       this.$http.get('/company/queryCompanyList.do_',{
+       params:param,
+      }).then((result)=>{
+         this.totalCompany = result.page.totalCount;
+         this.tableCity = result.page.list;
+      });
+      },
+
+      //查找本部门即下属部门所在城市
+      SearchCityList(){
+      var param={
+        id:this.departmentId,
+      }
+      this.$http.get('/regionManage/citySearchListById',{
+        params:param,
+      }).then((result)=>{
+        this.departmentListById=result.cityList;
+      })
+
+    },
       handleSelectionChange(val) {
         this.selection = val;
       },
       Search() {
+        //this.formInline.cityName='全部';
         var self = this;
         var param = {
           page: self.currentPage,
@@ -518,7 +604,6 @@
           self.LevelEnum = result.LevelEnum;
           self.departmentList = result.listSearch;
         }).catch(function (error) {
-
           self.$message.error("获取数据错误");
         });
       },
@@ -714,7 +799,6 @@
     mounted() {
       this.Search();
       this.$http.get("/department/getCityList.do_").then((result) => {
-
         this.states = result.cityList;
         this.list = this.states.map(item => {
           return {value: item, label: item};

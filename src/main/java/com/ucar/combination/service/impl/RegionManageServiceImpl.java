@@ -73,4 +73,9 @@ public class RegionManageServiceImpl implements RegionManageService {
     public List<Object> getCityList() {
         return regionManageDao.getCityList();
     }
+
+    @Override
+    public List<String> citySearchListById(String id) {
+        return regionManageDao.citySearchListById(id);
+    }
 }

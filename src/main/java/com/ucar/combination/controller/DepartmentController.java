@@ -227,16 +227,10 @@ public class DepartmentController {
      * @return
      */
     @ResponseBody
-    @RequestMapping("selectDepartment.do_")
-    public Result selectDepartment(HttpServletRequest request, @RequestParam(defaultValue = "") String id, @RequestParam(defaultValue = "") String page, @RequestParam(defaultValue = "") String limit) {
-        Map<String, Object> params = new HashMap<>();
-        params.put("page", page);
-        params.put("limit", limit);
-        params.put("id", id);
+    @RequestMapping("/selectDepartment.do_")
+    public Result selectDepartment(HttpServletRequest request, @RequestParam(defaultValue = "") String id) {
         DepartmentDto departmentDto = departmentService.getDepartmentDtoById(id);
-        ResultPage resultPage = companyManageService.getCompanyList(new QueryParam(params));
-        //return new Result().ok().put("page", resultPage).put("department", departmentDto);
-        return new Result().ok().put("page", resultPage).put("department", departmentDto).put("CompanyTypeEnum", CommonEnums.toEnumMap(CommonEnums.CompanyType.values())).put("CompanyStatusEnum", CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values())).put("CompanyMarkEnum", CommonEnums.toEnumMap(CommonEnums.CompanyMark.values())).put("CompanyNatureEnum", CommonEnums.toEnumMap(CommonEnums.CompanyNature.values())).put("DepartmentTypeEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentType.values())).put("LevelEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentLevel.values())).put("DepartmentStatusEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentStatus.values()));
+        return new Result().ok().put("department", departmentDto).put("CompanyTypeEnum", CommonEnums.toEnumMap(CommonEnums.CompanyType.values())).put("CompanyStatusEnum", CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values())).put("CompanyMarkEnum", CommonEnums.toEnumMap(CommonEnums.CompanyMark.values())).put("CompanyNatureEnum", CommonEnums.toEnumMap(CommonEnums.CompanyNature.values())).put("DepartmentTypeEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentType.values())).put("LevelEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentLevel.values())).put("DepartmentStatusEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentStatus.values()));
     }
 
     /**

@@ -45,5 +45,13 @@ public interface RegionManageDao {
 
 
     List<Object> getCityList() ;
+    /**
+     * description: 返回部门即下属部门所有城市
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/17 1:32
+     * @params id 部门ID
 
+     * @return
+     */
+    List<String> citySearchListById(String id);
 }
