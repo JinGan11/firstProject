@@ -120,6 +120,12 @@ public class CompanyManageController {
     public Result updateCompanyById(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
                                     @RequestParam("company") String data ,HttpSession session){
         Company company = JSON.parseObject(data, Company.class);
+        Long companyId = company.getCompanyId();
+        List<BusinessLicense> licenses = companyManageService.getIdsByCompanyId(companyId.intValue());
+        if(businessLicenses.length+licenses.size() > 20) {
+            return new Result().ok().put("error","outLimit");
+        }
+
         //信用代码唯一性校验,先判断是否更改，如更改则需判断唯一性，否则直接更新公司
         Map<String,Object>map=new HashMap<>();
         if(company.getOldCreditCode().equals(company.getCreditCode())) {
