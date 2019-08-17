@@ -118,6 +118,7 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         accountStaff.setPassword(DigestUtils.md5DigestAsHex((accountStaff.getPassword()).getBytes()));
         accountManageDao.insertAccount(accountStaff);
         accountStaff.setOperationType("新建账号");
+        accountStaff.setAccountState(1);
         accountStaff.setAccountId(accountManageDao.selectIdByNum(accountStaff.getAccountName()));
         insertAccountHistory(accountStaff);
     }

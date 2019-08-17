@@ -188,10 +188,10 @@
         :props="defaultPropsTree"
         node-key="id"
         :load="loadNodeDepartment"
-        lazy="true"
+        lazy
         check-strictly
         show-checkbox
-        default-expanded-keys="[1]"
+
         @check-change="handleClickChange">
       </el-tree>
     </el-dialog>
@@ -312,6 +312,7 @@
         checkStrictly: false,
         row: {},
         accountId: '',
+        departmentDto:[],
         AccountButtonPermission: {
           createPermission: true,
           modifyPermission: true,
@@ -349,6 +350,12 @@
     created() {
       const self = this;
       self.judgmentAuthority();
+      self.$http.get('department/buildTree2.do_')
+        .then((result) => {
+          self.departmentDto = result.departmentDto;
+        }).catch(function (error) {
+
+      });
       self.$http.get('account/querylist.do_').then((result) => {
         self.tableData = result.page.list;
         self.accountDtoList = result.accountDtoList;
@@ -378,13 +385,61 @@
       },
       loadNodeDepartment(node,resolve){
         var self = this;
-        self.$http.get('department/buildTree2.do_')
-          .then((result) => {
-            resolve([result.departmentDto]);
-          }).catch(function (error) {
-
-        });
+        var departmentDto = [self.departmentDto];
+        if (node.level === 0) {
+          resolve(departmentDto);
+        }
+        if (node.level === 1) {
+          resolve(self.departmentDto.children);
+        }
+        if (node.level > 1){
+            var id = node.data.id;
+            resolve(getChilder(id,departmentDto));
+        }
+        function getChilder(id,datas) {
+          var d = null;
+          for(var i = 0;i<datas.length;i++){
+            var data = datas[i];
+            if (data.id != id && data.nodeIsLeaf == false){
+              d = getChilder(id,data.children);
+              if (d != null ){
+                return d;
+              }
+            }else if(data.id==id){
+              return data.children;
+            }
+          }
+          return d;
+        }
       },
+
+      // loadNode(node, resolve) {nodeIsLeaf
+      //   if (node.level === 0) {
+      //     return resolve(this.data1);
+      //   }
+      //   if (node.level > 1){
+      //     var id = node.data.id;
+      //     resolve(tt(id,this.data));
+      //   }
+      //   if (node.level === 1){
+      //     resolve(this.data);
+      //   }
+      //   function tt(id,datas) {
+      //     var d = null;
+      //     for(var i = 0;i<datas.length;i++){
+      //       var data = datas[i];
+      //       if (data.id != id && data.leaf == false){
+      //         d = tt(id,data.children);
+      //         if (d != null ){
+      //           return d;
+      //         }
+      //       }else if(data.id==id){
+      //         return data.children;
+      //       }
+      //     }
+      //     return d;
+      //   }
+      // },
       handleClickChange(data,checked,node){
         // 手动设置单选
         if(checked === true) {
