@@ -49,8 +49,8 @@ public class RegionManageServiceImpl implements RegionManageService {
     }
 
     @Override
-    public int createProvince(Region region) {
-        return regionManageDao.createProvince(region);
+    public int createRegion(Region region) {
+        return regionManageDao.createRegion(region);
     }
 
     @Override
@@ -67,6 +67,11 @@ public class RegionManageServiceImpl implements RegionManageService {
     @Override
     public Region getRegionDetails(Region region) {
         return regionManageDao.getRegionDetails(region);
+    }
+
+    @Override
+    public int modifyRegion(Region region) {
+        return regionManageDao.modifyRegion(region);
     }
 
     @Override

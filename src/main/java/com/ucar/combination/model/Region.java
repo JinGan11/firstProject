@@ -24,6 +24,7 @@ public class Region extends BaseBean {
     private Integer regionLevel;
     private Long upperRegionID;
     private String upperRegion;
+    private String upperRegionCode;
     private String upperRegionTwice;
     private Integer regionStatus;
     private String remark;
@@ -31,6 +32,13 @@ public class Region extends BaseBean {
     private String createEmpName;
 
 
+    public String getUpperRegionCode() {
+        return upperRegionCode;
+    }
+
+    public void setUpperRegionCode(String upperRegionCode) {
+        this.upperRegionCode = upperRegionCode;
+    }
 
     public String getCreateEmpName() {
         return createEmpName;

@@ -12,12 +12,30 @@ public class RegionDto {
     private String regionCode;
     private String regionName;
     private boolean regionLeaf=false;
+    private Integer regionStatus;
+    private Integer regionLevel;
 
-    public Boolean getRegionLeaf() {
+    public Integer getRegionStatus() {
+        return regionStatus;
+    }
+
+    public void setRegionStatus(Integer regionStatus) {
+        this.regionStatus = regionStatus;
+    }
+
+    public Integer getRegionLevel() {
+        return regionLevel;
+    }
+
+    public void setRegionLevel(Integer regionLevel) {
+        this.regionLevel = regionLevel;
+    }
+
+    public boolean getRegionLeaf() {
         return regionLeaf;
     }
 
-    public void setRegionLeaf(Boolean regionLeaf) {
+    public void setRegionLeaf(boolean regionLeaf) {
         this.regionLeaf = regionLeaf;
     }
 

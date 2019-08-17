@@ -54,7 +54,7 @@ public interface RegionManageService {
      * @param <[params]> <参数说明>
      * @return <java.lang.String><返回值说明>
      */
-    int createProvince(Region region);
+    int createRegion(Region region);
 
     /**
      * description: 新建修改页面，树
@@ -73,6 +73,8 @@ public interface RegionManageService {
      * @return <java.util.List<com.ucar.combination.model.Region>><返回值说明>
      */
     Region getRegionDetails(Region region);
+
+    int modifyRegion(Region region);
 
     /**
      * description: 用于得到所有城市的信息

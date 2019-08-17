@@ -2,29 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ucar.combination.dao.RegionManageDao">
-    <select id="provinceSearchList" resultType="com.ucar.combination.model.Region">
-        SELECT
-        	t1.city_id cityID,
-	        t1.international_code regionCode,
-	        t1.country_code countryCode,
-	        t1.area_code regionAreaCode,
-        	t1.city_name_pinyin regionPinyin,
-	        t1.city_name regionName,
-	        t1.`level` regionLevel,
-	        t1.upper_city_id upperRegionID,
-	        t1.upper_city_name upperRegion,
-	        t1.`status` regionStatus,
-	        t1.create_emp createEmp,
-	        t1.create_time createTime,
-	        t1.modify_emp modifyEmp,
-	        t1.modify_time modifyTime,
-	        t2.account_name modifyEmpName,
-	        t1.remark remark
-        FROM
-        	t_b_city t1,t_account t2
-        WHERE
-	        t1.`level` = 1
-	        AND t1.modify_emp = t2.id
+	<select id="provinceSearchList" resultType="com.ucar.combination.model.Region">
+		SELECT
+		t1.city_id cityID,
+		t1.international_code regionCode,
+		t1.country_code countryCode,
+		t1.area_code regionAreaCode,
+		t1.city_name_pinyin regionPinyin,
+		t1.city_name regionName,
+		t1.`level` regionLevel,
+		t1.upper_city_id upperRegionID,
+		t1.upper_city_name upperRegion,
+		t1.`status` regionStatus,
+		t1.create_emp createEmp,
+		t1.create_time createTime,
+		t1.modify_emp modifyEmp,
+		t1.modify_time modifyTime,
+		t2.account_name modifyEmpName,
+		t1.remark remark
+		FROM
+		t_b_city t1,t_account t2
+		WHERE
+		t1.`level` = 1
+		AND t1.modify_emp = t2.id
 		<if test="regionCode != null and regionCode.trim() != ''">
 			AND t1.international_code LIKE #{regionCode}"%"
 		</if>
@@ -124,46 +124,35 @@
 
 	</select>
 
-	<select id="getProvinceList" resultType="com.ucar.combination.model.dto.RegionDto">
+	<select id="getRegionList" resultType="com.ucar.combination.model.dto.RegionDto">
 		SELECT
 		t1.city_id cityID,
 		t1.international_code regionCode,
-		t1.city_name regionName
+		t1.city_name regionName,
+		t1.`level` regionLevel,
+		t1.`status` regionStatus
 		FROM
 		t_b_city t1
 		WHERE
 		t1.`level` = #{regionLevel}
+		<if test="cityID != null ">
+			AND t1.upper_city_id = #{cityID}
+		</if>
 		<if test="regionCode != null and regionCode.trim() != ''">
-			AND t1.international_code LIKE #{regionCode}"%"
+			AND t1.upper_international_code = #{regionCode}
 		</if>
 
 	</select>
 
-    <select id="getRegionList" resultType="com.ucar.combination.model.dto.RegionDto">
-        SELECT
-        t1.city_id cityID,
-        t1.international_code regionCode,
-        t1.city_name regionName
-        FROM
-        t_b_city t1
-        WHERE
-        t1.`level` = #{regionLevel}
-        <if test="cityID != null ">
-            AND t1.upper_city_id = #{cityID}
-        </if>
-        <if test="regionCode != null and regionCode.trim() != ''">
-            AND t1.upper_international_code = #{regionCode}
-        </if>
+	<insert id="createRegion" parameterType="com.ucar.combination.model.Region">
 
-    </select>
-
-	<insert id="createProvince" parameterType="com.ucar.combination.model.Region">
-
-        INSERT INTO t_b_city ( international_code, city_name_pinyin,city_name,upper_city_name ,`level`,status,create_emp,create_time,modify_emp,modify_time,remark)
-        VALUES(#{regionCode}, #{regionPinyin},#{regionName}, #{upperRegion} ,#{regionLevel},#{regionStatus},#{createEmp},#{createTime},#{modifyEmp},#{modifyTime},'无')
+        INSERT INTO t_b_city ( international_code, city_name_pinyin,city_name,upper_city_name ,`level`,status,create_emp,create_time,modify_emp,modify_time,remark,
+        area_code,country_code,upper_city_id,city_id,upper_international_code)
+        VALUES(#{regionCode}, #{regionPinyin},#{regionName}, #{upperRegion} ,#{regionLevel},#{regionStatus},#{createEmp},#{createTime},#{modifyEmp},#{modifyTime},'无',
+        #{regionAreaCode},#{countryCode},#{upperRegionID},#{cityID},#{upperRegionCode})
 
 	</insert>
-    <select id="getCityList" resultType="java.lang.Object">
+	<select id="getCityList" resultType="java.lang.Object">
 		select T.city_name from t_b_city T;
 	</select>
 
@@ -204,13 +193,17 @@
 
 	</select>
 
+	<update id="modifyRegion" parameterType="com.ucar.combination.model.Region">
+        update t_b_city t1
+        set t1.international_code=#{regionCode},t1.city_name=#{regionName},t1.city_name_pinyin=#{regionPinyin},t1.status=#{regionStatus},t1.modify_emp=#{modifyEmp},t1.modify_time=#{modifyTime}
+        where t1.city_id = #{cityID}
+    </update>
 
-    <select id="citySearchListById" resultType="java.lang.String">
+	<select id="citySearchListById" resultType="java.lang.String">
 		SELECT T.city_name FROM t_b_city T JOIN t_department T1 on T.city_id=T1.city_id
          WHERE T1.id=#{id} OR T1.upper_department_no =(
 	        SELECT T2.department_no FROM t_department T2
 		      WHERE T2.id=#{id}
           );
 	</select>
-
 </mapper>

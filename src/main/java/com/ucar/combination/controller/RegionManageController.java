@@ -129,6 +129,65 @@ public class RegionManageController {
         return new Result().ok().put("page",resultPage).put("countySearchList",countySearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
     }
 
+    /**
+     * description: 树节点数据
+     * @author kailun.yang@ucarinc.com
+     * @date <2019-08-17>
+     * @param <[request]> <参数说明>
+     * @return <com.ucar.combination.common.Result><返回值说明>
+     */
+    @ResponseBody
+    @RequestMapping("/getRegionList")
+    public Result getRegionList(HttpServletRequest request) throws IllegalAccessException{
+        String cityID = request.getParameter("cityID");
+        String regionCode = request.getParameter("regionCode");
+        String regionLevel = request.getParameter("regionLevel");
+        Region param= new Region();
+        param.setRegionLevel(Integer.valueOf(regionLevel));
+        param.setRegionCode(regionCode);
+        if(cityID != null && cityID.trim() != ""){
+            int id=Integer.parseInt(cityID);
+            Long cityId=(long) id;
+            param.setCityID(cityId);
+        }else{
+            param.setCityID(null);
+        }
+
+        List<RegionDto> regionList = regionManageService.getRegionList(param);
+
+        return new Result().ok().put("regionList",regionList);
+    }
+
+    /**
+     * description: 被选中的区划详细数据
+     * @author kailun.yang@ucarinc.com
+     * @date <2019-08-17>
+     * @param <[request]> <参数说明>
+     * @return <com.ucar.combination.common.Result><返回值说明>
+     */
+    @ResponseBody
+    @RequestMapping("/getRegionDetails")
+    public Result getRegionDetails(HttpServletRequest request) throws IllegalAccessException{
+        String cityID = request.getParameter("cityID");
+        String regionCode = request.getParameter("regionCode");
+        String regionLevel = request.getParameter("regionLevel");
+        String regionName = request.getParameter("regionName");
+        Region param= new Region();
+        param.setRegionLevel(Integer.valueOf(regionLevel));
+        param.setRegionCode(regionCode);
+        param.setRegionName(regionName);
+        if(cityID != null && cityID.trim() != ""){
+            int id=Integer.parseInt(cityID);
+            Long cityId=(long) id;
+            param.setCityID(cityId);
+        }else{
+            param.setCityID(null);
+        }
+
+        Region regionDetails = regionManageService.getRegionDetails(param);
+
+        return new Result().ok().put("regionDetails",regionDetails);
+    }
 
     /**
      * description: 新建省/直辖市
@@ -138,39 +197,92 @@ public class RegionManageController {
      * @return <com.ucar.combination.common.Result><返回值说明>
      */
     @ResponseBody
-    @RequestMapping("/createProvince")
+    @RequestMapping("/createRegion")
     public String createProvince(HttpServletRequest request, HttpSession session) throws IllegalAccessException, ParseException {
         String mTime =request.getParameter("modifyTime");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         Date modifyTime = formatter.parse(mTime);
 //        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-
         Long accountId = (Long) session.getAttribute("accountId");
         Region region=new Region();
 
-
+        String cityID=request.getParameter("cityID");
+        if(cityID != null && cityID.trim() != ""){
+            int id=Integer.parseInt(cityID);
+            Long cityId=(long) id;
+            region.setCityID(cityId);
+        }else{
+            region.setCityID(null);
+        }
+        String upperRegionID=request.getParameter("upperRegionID");
+        if(upperRegionID != null && upperRegionID.trim() != ""){
+            int id=Integer.parseInt(upperRegionID);
+            Long upperRegionId=(long) id;
+            region.setUpperRegionID(upperRegionId);
+        }else{
+            region.setUpperRegionID(null);
+        }
+        region.setCountryCode(request.getParameter("countryCode"));
+        region.setRegionAreaCode(request.getParameter("regionAreaCode"));
         region.setRegionCode(request.getParameter("regionCode"));
         region.setRegionName(request.getParameter("regionName"));
         region.setRegionPinyin(request.getParameter("regionPinyin"));
         region.setRegionLevel(Integer.valueOf(request.getParameter("regionLevel")));
         region.setRegionStatus(Integer.valueOf(request.getParameter("regionStatus")));
         region.setUpperRegion(request.getParameter("upperRegion"));
-
-
+        region.setUpperRegionCode(request.getParameter("upperRegionCode"));
         region.setCreateEmp(accountId);
         region.setCreateTime(modifyTime);
         region.setModifyEmp(accountId);
         region.setModifyTime(modifyTime);
         region.setRemark("无情");
 
-//        regionManageService.createProvince(region);
-
-        int resultValue=regionManageService.createProvince(region);
-//        System.out.println("resultValue : "+resultValue);
-        if(resultValue==1)
-            {return "success";}
+        int resultValue=regionManageService.createRegion(region);
+        if(resultValue>0)
+        {return "success";}
         else
-            {return "false";}
+        {return "false";}
     }
+
+
+    @ResponseBody
+    @RequestMapping("/modifyRegionSave")
+    public String modifyRegionDetails(HttpServletRequest request, HttpSession session) throws IllegalAccessException,ParseException {
+        String mTime =request.getParameter("modifyTime");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        Date modifyTime = formatter.parse(mTime);
+//        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Long accountId = (Long) session.getAttribute("accountId");
+        Region region=new Region();
+
+        String cityID=request.getParameter("cityID");
+        if(cityID != null && cityID.trim() != ""){
+            int id=Integer.parseInt(cityID);
+            Long cityId=(long) id;
+            region.setCityID(cityId);
+        }else{
+            region.setCityID(null);
+        }
+        region.setRegionCode(request.getParameter("regionCode"));
+        region.setRegionName(request.getParameter("regionName"));
+        region.setRegionPinyin(request.getParameter("regionPinyin"));
+        region.setRegionStatus(Integer.valueOf(request.getParameter("regionStatus")));
+        region.setModifyEmp(accountId);
+        region.setModifyTime(modifyTime);
+
+        //校验国际代码唯一性
+
+
+        //校验下级是否存在
+
+
+        //最终修改
+        int resultValue=regionManageService.modifyRegion(region);
+        if(resultValue>0)
+        {return "success";}
+        else
+        {return "false";}
+    }
+
 }

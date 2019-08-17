@@ -42,7 +42,7 @@ public interface RegionManageDao {
      */
     List<Object> countySearchList(Map<String, Object> map);
 
-    int createProvince(Region region);
+    int createRegion(Region region);
 
     /**
      * description: 新建修改页面树节点数据获取
@@ -61,6 +61,8 @@ public interface RegionManageDao {
      * @return <java.util.List<com.ucar.combination.model.Region>><返回值说明>
      */
     Region getRegionDetails(Region region);
+
+    int modifyRegion(Region region);
 
     List<Object> getCityList() ;
     /**
