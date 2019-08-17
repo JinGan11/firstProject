@@ -11,7 +11,7 @@
           <el-col :span="6">
             <el-form-item label="支持业务线">
               <el-select placeholder="请选择" v-model="form.businessLine" >
-                <el-option label="所有" value=" "></el-option>
+                <el-option label="全部" value=" "></el-option>
                 <el-option label="买买车" value="买买车"></el-option>
                 <el-option label="闪贷" value="闪贷"></el-option>
                 <el-option label="租车" value="租车"></el-option>
@@ -47,7 +47,7 @@
           <el-col :span="6">
             <el-form-item label="角色状态">
               <el-select placeholder="请选择" v-model="form.roleStatus" >
-                <el-option label="所有" value=" "></el-option>
+                <el-option label="全部" value=" "></el-option>
                 <el-option label="无效" value="0"></el-option>
                 <el-option label="有效" value="1"></el-option>
               </el-select>

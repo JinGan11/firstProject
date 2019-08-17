@@ -608,9 +608,9 @@
       var checkphone = (rule, value, callback) => {
         // let phoneReg = /(^1[3|4|5|6|7|8|9]\d{9}$)|(^09\d{8}$)/;
         if (value == "") {
-          callback(new Error("请输入手机号"));
+          callback(new Error("手机号为必填项，不允许为空"));
         } else if (!this.isCellPhone(value)) {//引入methods中封装的检查手机格式的方法
-          callback(new Error("请输入正确的手机号!"));
+          callback(new Error("手机号不满足录入条件"));
         } else {
           callback();
         }
@@ -653,15 +653,15 @@
           remark:'',
         },
         rulesCreate:{
-          staffNum: [{ required: true, message: '请输入员工编号', trigger: 'blur' },
-            { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }],
-          staffName:[{ required: true, message: '请输入员工姓名', trigger: 'blur' },
-            { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }],
+          staffNum: [{ required: true, message: '员工编号为必填项，不允许为空', trigger: 'blur' },
+            { min: 1, max: 20, message: '员工编号不满足录入条件', trigger: 'blur' }],
+          staffName:[{ required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur' },
+            { min: 1, max: 30, message: '员工姓名不满足录入条件', trigger: 'blur' }],
 
           staffTelephone:[{ required: true, validator: checkphone, trigger: "blur" }],
           staffEmail:[
-            { type: 'email', message: '请录入正确的邮箱地址', trigger: ['blur', 'change'] }],
-          departmentName:[{required: true}],
+            { type: 'email', message: '邮箱不满足录入条件', trigger: ['blur', 'change'] }],
+          departmentName:[{required: true,message: '归属部门为必填项，不允许为空'}],
 
         },
         modifyForm:{
@@ -680,13 +680,14 @@
         },
         rulesModify:{
           staffNum: [{ required: true, message: '员工编号为必填项，不允许为空', trigger: 'blur' },
-            { min: 1, max: 20, message: '员工编号不满足录入条件，仅支持长度在 1 到 20 位字符', trigger: 'blur' }],
+            { min: 1, max: 20, message: '员工编号不满足录入条件', trigger: 'blur' }],
           staffName:[{ required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur' },
-            { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }],
+            { min: 1, max: 30, message: '员工姓名不满足录入条件', trigger: 'blur' }],
+
           staffTelephone:[{ required: true, validator: checkphone, trigger: "blur" }],
           staffEmail:[
-            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
-          departmentName:[{required: true}],
+            { type: 'email', message: '邮箱不满足录入条件', trigger: ['blur', 'change'] }],
+          departmentName:[{required: true,message: '归属部门为必填项，不允许为空'}],
         },
 
         tableData: [],
@@ -943,7 +944,7 @@
             self.$http.post("employee/insertStaff",self.createForm)
               .then((result) => {
               if (result.code === 300) {
-              self.$message.error('员工编号已存在，不允许重复');
+              self.$message.error('员工已存在，不允许重复创建');
             } else {
               self.createDialogVisible=false;
               self.$message.success("新建用户成功");
