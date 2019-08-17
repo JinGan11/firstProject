@@ -219,6 +219,12 @@
         department_no=#{departmentNo} and status=1
     </select>
 
+    <select id="selectEmployeeNameByAccountId" resultType="String">
+        select T.staff_name from t_staff T
+        left join t_account T2 on T2.staff_id=T.id
+		where T2.id=#{accountId}
+    </select>
+
     <select id="searchDepartment" resultType="com.ucar.combination.model.dto.SearchDepartmentDto">
         SELECT A.id,
         A.department_no,

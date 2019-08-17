@@ -65,7 +65,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Boolean updateUpperDepartment(Long id, String upperDepartmentNo) {
-        if (departmentDao.checkStatusById(id) > 0 && departmentDao.checkStatusByNo(upperDepartmentNo) > 0){
+        if (departmentDao.checkStatusById(id) > 0 && departmentDao.checkStatusByNo(upperDepartmentNo) > 0) {
             departmentDao.updateUpperDepartment(id, upperDepartmentNo);
             return true;
         }
@@ -79,7 +79,12 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentEditDto selectDepartmentForEdit(Long id) {
-        return departmentDao.selectDepartmentForEdit(id);
+        DepartmentEditDto editDto = departmentDao.selectDepartmentForEdit(id);
+        String staffCreate = departmentDao.selectEmployeeNameByAccountId(editDto.getCreateEmp());
+        String staffModify = departmentDao.selectEmployeeNameByAccountId(editDto.getModifyEmp());
+        if (staffCreate != null) editDto.setCreateName(editDto.getCreateName() + "（" + staffCreate + "）");
+        if (staffModify != null) editDto.setModifyName(editDto.getModifyName() + "（" + staffModify + "）");
+        return editDto;
     }
 
     @Override

@@ -195,21 +195,22 @@ public interface DepartmentDao {
     DepartmentDto getDepartmentDtoById(Long id);
 
     /**
-     * description: 校验是否更改
+     * description: 校验有效性是否更改
      * @author 郑开添（kaitian.zheng@ucarinc.com）
      * @date 2019/8/17 16:06
      * @params
-     * @return
+     * @return 返回值大于0：成功
      */
     Integer checkStatusById(Long departmentId);
 
     /**
-     * description: 校验是否更改
+     * description: 校验有效性是否更改
      * @author 郑开添（kaitian.zheng@ucarinc.com）
      * @date 2019/8/17 16:06
      * @params
-     * @return
+     * @return 返回值大于0：成功
      */
     Integer checkStatusByNo(String departmentNo);
 
+    String selectEmployeeNameByAccountId(Long accountId);
 }
