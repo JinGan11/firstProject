@@ -116,7 +116,20 @@ public class CompanyManageController {
     @RequestMapping(value = "/modifyCompany",method = RequestMethod.POST)
     public Result updateCompanyById(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
                                     @RequestParam("company") String data ,HttpSession session){
-        companyManageService.updateCompanyById(businessLicenses, data,session);
+        Company company = JSON.parseObject(data, Company.class);
+        //信用代码唯一性校验,先判断是否更改，如更改则需判断唯一性，否则直接更新公司
+        Map<String,Object>map=new HashMap<>();
+        if(company.getOldCreditCode().equals(company.getCreditCode())) {
+            companyManageService.updateCompanyById(businessLicenses, data, session);
+        }else{
+            map = companyManageService.creditCodeValidate(company.getCreditCode());
+            if((Boolean) map.get("result")){
+                companyManageService.updateCompanyById(businessLicenses, data, session);
+            }else{
+                return new Result().ok().put("msg", "fail");
+            }
+        }
+
         return new Result().ok().put("msg", "success");
     }
     /**

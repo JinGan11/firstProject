@@ -461,7 +461,7 @@
                   .then((result) => {
                     console.log(result.msg)
                     if (result.msg !="success") {
-                      self.$alert("修改失败！");
+                      self.$alert("统一社会信用代码已存在，请重新修改！");
                     }else{
                       self.$alert("修改成功！");
                       self.$router.replace("/CompanyManagement");
