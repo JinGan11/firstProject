@@ -116,6 +116,7 @@
       </el-table-column>
       <el-table-column prop="roleName" label="申请角色名称"  width="150"></el-table-column>
       <el-table-column prop="approverStaffName" label="审批负责人" width="150"></el-table-column>
+      <el-table-column prop="approverAccountName" v-if="false" label="审批负责人账号" width="150"></el-table-column>
       <el-table-column prop="businessLine" label="角色支持业务线" width="150"></el-table-column>
       <el-table-column prop="applyAccountName" label="申请人登录账号" width="150"></el-table-column>
       <el-table-column prop="applyStaffNum" label="申请人员工编号" width="150"></el-table-column>
@@ -489,6 +490,7 @@
           applyTimeEnd:self.form.applyTime[1],
           modifyTimeStart: self.form.modifyTime[0],
           modifyTimeEnd: self.form.modifyTime[1],
+          loginAccountName: sessionStorage.getItem('loginUsername'),
           type:'角色申请'
         };
         self.$http.get('roleApply/querylist.do_', {

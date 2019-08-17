@@ -50,6 +50,7 @@ public class RoleApplyManageController {
         String applyTimeEnd = request.getParameter("applyTimeEnd");
         String modifyTimeStart = request.getParameter("modifyTimeStart");
         String modifyTimeEnd = request.getParameter("modifyTimeEnd");
+        String loginAccountName = request.getParameter("loginAccountName");
         Long accountId = (Long) session.getAttribute("accountId");
 
         Map<String, Object> params = new HashMap<String, Object>();
@@ -70,6 +71,7 @@ public class RoleApplyManageController {
         params.put("modifyTimeEnd", modifyTimeEnd);
 
         params.put("accountId",accountId);
+        params.put("loginAccountName",loginAccountName);
 
         if (request.getParameter("type").equals("角色审核")) {
             String accountName = (String) session.getAttribute("accountName");
