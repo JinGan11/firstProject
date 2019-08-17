@@ -123,7 +123,16 @@
           regionStatus:''
         },
         //返回数据表格
-        tableData:[],
+          options:[{
+              value:'',
+              label:'全部'
+          },{
+              value:'1',
+              label:'有效'
+          },{
+              value:'0',
+              label:'无效'
+          }],
         //返回的数据
         provinceSearchList:[],
         //表格每列的初始数据
@@ -132,36 +141,9 @@
         regionPinyin:'',
         upperRegion:'',
         regionStatus:'',
-        modifyEmp:'',
+        modifyEmpName:'',
         modifyTime:'',
         RegionStatus:{},
-        //新建页面的表单
-        createFormVisible:false,
-        createForm:{
-            countryCode:'CN',
-            regionAreaCode:'',
-            upperRegionID:'',
-            remark:'无',
-            createEmp:'',
-            createTime:'',
-
-            regionCode:'',
-            regionName:'',
-            regionPinyin:'',
-            regionLevel:'',
-            regionStatus:'',
-            upperRegion:'',
-            modifyEmp:'',
-            modifyTime:''
-        },
-        //表单 form 中的下拉栏
-        options:[ {
-          value: '1',
-          label: '有效'
-        },{
-          value:'0',
-          label:'无效'
-        }],
         //导出文件
           exportVisible:false,
           isIndeterminate: true,
@@ -193,14 +175,6 @@
       this.judgmentAuthority();
       commonUtils.Log("页面进来");
       this.fetchData();
-        this.createForm.modifyEmp=window.sessionStorage.getItem("loginUsername");
-        // 页面加载完显示当前时间
-        this.createForm.modifyTime = this.dealWithTime(new Date());
-        // 定时器，定时修改显示的时间
-        let _this = this;
-        this.timer = setInterval(function () {
-            _this.createForm.modifyTime = _this.dealWithTime(new Date())
-        }, 1000);
     },
     methods: {
       judgmentAuthority() {
@@ -340,7 +314,7 @@
                 } else if (this.checkedRegionProps[i] === '状态') {
                     this.filterVal.push('regionStatus')
                 } else if (this.checkedRegionProps[i] === '修改人') {
-                    this.filterVal.push('modifyEmp')
+                    this.filterVal.push('modifyEmpName')
                 } else if (this.checkedRegionProps[i] === '修改时间') {
                     this.filterVal.push('modifyTime')
                 }
@@ -389,54 +363,6 @@
         //限制输入特殊字符
         btKeyUp(e) {
             e.target.value = e.target.value.replace(/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/g,"");
-        },
-
-
-      //创建新的区域
-      createRegion(){
-          var self=this;
-          self.createFormVisible=false;
-          var param={
-              regionCode:self.createForm.regionCode,
-              regionName:self.createForm.regionName,
-              regionPinyin:self.createForm.regionPinyin,
-              regionLevel:self.createForm.regionLevel,
-              upperRegion:self.createForm.upperRegion,
-              regionStatus: self.createForm.regionStatus,
-              modifyTime:self.createForm.modifyTime
-          };
-          self.$http.get('/regionManage/createProvince',{
-              params:param
-          }).then((result)=>{
-              //对取回来的数据进行处理
-              console.log(result);
-
-          }).catch(function (error) {
-              commonUtils.Log("/regionManage/createProvince:" + error);
-              self.$message.error("获取数据错误");
-          });
-      },
-        //其他信息栏：获取时间
-        dealWithTime (data) {
-            let formatDateTime;
-            let Y = data.getFullYear();
-            let M = data.getMonth() + 1;
-            let D = data.getDate();
-            let H = data.getHours();
-            let Min = data.getMinutes();
-            let S = data.getSeconds();
-            let W = data.getDay();
-            H = H < 10 ? ('0' + H) : H;
-            Min = Min < 10 ? ('0' + Min) : Min;
-            S = S < 10 ? ('0' + S) : S;
-            formatDateTime = Y + '年' + M + '月' + D + '日 ' + H + ':' + Min + ':' + S;
-            return formatDateTime;
-        },
-        destroyed () {
-            // 结束时清除定时器
-            if (this.timer) {
-                clearInterval(this.timer);
-            }
         },
 
 

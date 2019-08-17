@@ -137,7 +137,7 @@
 </template>
 <script>
   import commonUtils from '../../common/commonUtils'
-  const regionPropsEnums = ['国际代码','区号','区/县名称','名字拼音', '所属城市','所属省市', '状态', '修改人', '修改时间'];
+  const regionPropsEnums = ['国际代码','区号','区县名称','名字拼音', '所属城市','所属省市', '状态', '修改人', '修改时间'];
   export default {
     data(){
       return{
@@ -254,6 +254,8 @@
               });
 
           },
+
+          //导出文件
           cancel() {
               this.exportVisible = false;
           },
@@ -289,6 +291,8 @@
                               list[i].regionStatus = '有效'
                           }
                       }
+                      console.log("this is list : ");
+                      console.log(list);
                     //获取当前时间
                     var date = new Date();
                     var seperator1 = "-";
@@ -302,6 +306,7 @@
                       strDate = "0" + strDate;
                     }
                     var currentdate = year + seperator1 + month + seperator1 + strDate;
+
                     const data = this.formatJson(filterVal, list);
                       export_json_to_excel(tHeader, data, '区县查询'+currentdate);
                       this.$message({
@@ -319,13 +324,12 @@
               return jsonData.map(v => filterVal.map(j => v[j]))
           },
           exportField(val) {
-              const regionPropsEnums = ['国际代码','区号','区/县名称','名字拼音', '所属城市','所属省市', '状态', '修改人', '修改时间'];
               for (let i = 0; i < val.length; i++) {
                   if (this.checkedRegionProps[i] === '国际代码') {
                       this.filterVal.push('regionCode')
                   }else if (this.checkedRegionProps[i] === '区号') {
                       this.filterVal.push('regionAreaCode')
-                  } else if (this.checkedRegionProps[i] === '区/县名字') {
+                  } else if (this.checkedRegionProps[i] === '区县名字') {
                       this.filterVal.push('regionName')
                   } else if (this.checkedRegionProps[i] === '名字拼音') {
                       this.filterVal.push('regionPinyin')
@@ -336,7 +340,7 @@
                   }else if (this.checkedRegionProps[i] === '状态') {
                       this.filterVal.push('regionStatus')
                   } else if (this.checkedRegionProps[i] === '修改人') {
-                      this.filterVal.push('modifyEmp')
+                      this.filterVal.push('modifyEmpName')
                   } else if (this.checkedRegionProps[i] === '修改时间') {
                       this.filterVal.push('modifyTime')
                   }
