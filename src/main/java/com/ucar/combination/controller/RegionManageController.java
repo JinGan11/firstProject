@@ -6,6 +6,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Region;
+import com.ucar.combination.model.dto.RegionDto;
 import com.ucar.combination.service.RegionManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -175,4 +176,51 @@ public class RegionManageController {
         else
             {return "false";}
     }
+
+    @ResponseBody
+    @RequestMapping("/getRegionList")
+    public Result getRegionList(HttpServletRequest request) throws IllegalAccessException{
+        String cityID = request.getParameter("cityID");
+        String regionCode = request.getParameter("regionCode");
+        String regionLevel = request.getParameter("regionLevel");
+        Region param= new Region();
+        param.setRegionLevel(Integer.valueOf(regionLevel));
+        param.setRegionCode(regionCode);
+        if(cityID != null && cityID.trim() != ""){
+            int id=Integer.parseInt(cityID);
+            Long cityId=(long) id;
+            param.setCityID(cityId);
+        }else{
+            param.setCityID(null);
+        }
+
+        List<RegionDto> regionList = regionManageService.getRegionList(param);
+
+        return new Result().ok().put("regionList",regionList);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getRegionDetails")
+    public Result getRegionDetails(HttpServletRequest request) throws IllegalAccessException{
+        String cityID = request.getParameter("cityID");
+        String regionCode = request.getParameter("regionCode");
+        String regionLevel = request.getParameter("regionLevel");
+        String regionName = request.getParameter("regionName");
+        Region param= new Region();
+        param.setRegionLevel(Integer.valueOf(regionLevel));
+        param.setRegionCode(regionCode);
+        param.setRegionName(regionName);
+        if(cityID != null && cityID.trim() != ""){
+            int id=Integer.parseInt(cityID);
+            Long cityId=(long) id;
+            param.setCityID(cityId);
+        }else{
+            param.setCityID(null);
+        }
+
+        Region regionDetails = regionManageService.getRegionDetails(param);
+
+        return new Result().ok().put("regionDetails",regionDetails);
+    }
+
 }

@@ -124,7 +124,7 @@
 
 	</select>
 
-	<select id="getProvinceList" resultType="com.ucar.combination.model.dto.RegionDto">
+	<select id="getRegionList" resultType="com.ucar.combination.model.dto.RegionDto">
 		SELECT
 		t1.city_id cityID,
 		t1.international_code regionCode,
@@ -133,8 +133,11 @@
 		t_b_city t1
 		WHERE
 		t1.`level` = #{regionLevel}
+		<if test="cityID != null ">
+			AND t1.upper_city_id = #{cityID}
+		</if>
 		<if test="regionCode != null and regionCode.trim() != ''">
-			AND t1.international_code LIKE #{regionCode}"%"
+			AND t1.upper_international_code = #{regionCode}
 		</if>
 
 	</select>
@@ -148,6 +151,44 @@
 	<select id="getCityList" resultType="java.lang.Object">
 		select T.city_name from t_b_city T;
 	</select>
+
+	<select id="getRegionDetails" resultType="com.ucar.combination.model.Region">
+		SELECT
+		t1.city_id cityID,
+		t1.international_code regionCode,
+		t1.country_code countryCode,
+		t1.area_code regionAreaCode,
+		t1.city_name_pinyin regionPinyin,
+		t1.city_name regionName,
+		t1.`level` regionLevel,
+		t1.upper_city_id upperRegionID,
+		t1.upper_city_name upperRegion,
+		t1.`status` regionStatus,
+		t1.create_emp createEmp,
+		t3.account_name createEmpName,
+		t1.create_time createTime,
+		t1.modify_emp modifyEmp,
+		t1.modify_time modifyTime,
+		t2.account_name modifyEmpName,
+		t1.remark remark
+		FROM
+		t_b_city t1,t_account t2,t_account t3
+		WHERE
+		t1.`level` = #{regionLevel}
+		AND t1.modify_emp = t2.id
+		AND t1.create_emp = t3.id
+		<if test="regionCode != null and regionCode.trim() != ''">
+			AND t1.international_code LIKE #{regionCode}"%"
+		</if>
+		<if test="regionName != null and regionName.trim() != ''">
+			AND t1.city_name LIKE #{regionName}"%"
+		</if>
+		<if test="regionStatus != null and regionStatus.trim() != ''">
+			AND t1.status =#{regionStatus}
+		</if>
+
+	</select>
+
 
 
 

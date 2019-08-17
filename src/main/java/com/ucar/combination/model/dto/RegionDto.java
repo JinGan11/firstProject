@@ -11,6 +11,15 @@ public class RegionDto {
     private Long cityID;
     private String regionCode;
     private String regionName;
+    private boolean regionLeaf=false;
+
+    public Boolean getRegionLeaf() {
+        return regionLeaf;
+    }
+
+    public void setRegionLeaf(Boolean regionLeaf) {
+        this.regionLeaf = regionLeaf;
+    }
 
     public Long getCityID() {
         return cityID;
