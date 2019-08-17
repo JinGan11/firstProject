@@ -60,7 +60,7 @@ public interface CompanyManageService {
      * @date: 2019/8/8 9:05
      * @return：
      */
-    void updateCompanyById(Company company);
+    void updateCompanyById(MultipartFile[] file, String str, HttpSession session);
     /**
      * description: 校验统一社会信用代码
      * @author: jianan.shu@ucarinc.com

@@ -29,7 +29,7 @@ import java.util.*;
  * @author jianan.shu@ucarinc.com
  * @version 1.0
  * @date: 2019/8/3 10:23
- */
+*/
 @Controller
 @RequestMapping("/company")
 public class CompanyManageController {
@@ -114,21 +114,10 @@ public class CompanyManageController {
      */
     @ResponseBody
     @RequestMapping(value = "/modifyCompany",method = RequestMethod.POST)
-    public Result updateCompanyById(@RequestBody Company company, HttpSession session){
-        Long accountId = (Long) session.getAttribute("accountId");
-        company.setModifyEmp(accountId);
-        //信用代码唯一性校验,先判断是否更改，如更改则需判断唯一性，否则直接更新公司
-        Map<String,Object>map=new HashMap<>();
-        if(company.getOldCreditCode().equals(company.getCreditCode())){
-            companyManageService.updateCompanyById(company);
-            map.put("result",true);
-        }else{
-            map = companyManageService.creditCodeValidate(company.getCreditCode());
-            if((Boolean) map.get("result")){
-                companyManageService.updateCompanyById(company);
-            }
-        }
-        return new Result().ok().put("list",map);
+    public Result updateCompanyById(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
+                                    @RequestParam("company") String data ,HttpSession session){
+        companyManageService.updateCompanyById(businessLicenses, data,session);
+        return new Result().ok().put("msg", "success");
     }
     /**
      * description: 查询未关联公司列表

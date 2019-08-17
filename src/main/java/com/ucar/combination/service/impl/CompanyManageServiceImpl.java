@@ -142,8 +142,31 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      * @return：
      */
 
-    public void updateCompanyById(Company company){
+    public void updateCompanyById(MultipartFile[] file, String str, HttpSession session){
+        Company company = JSON.parseObject(str, Company.class);
+        Long accountId = (Long) session.getAttribute("accountId");
+        company.setModifyEmp(accountId);
         companyManageDao.updateCompanyById(company);
+        Long id =company.getCompanyId();
+        if (file.length != 0) {
+            List<BusinessLicense> list = new ArrayList<>();
+            for (int i = 0; i < file.length; i++) {
+                String url = FileUrlGenUtils.generateUrl(file[i]);
+                BusinessLicense businessLicense = new BusinessLicense();
+                businessLicense.setCompanyId(id);
+                businessLicense.setFileLocation(url);
+                list.add(businessLicense);
+            }
+            companyManageDao.insertLicenses(list);
+            for (int i = 0; i < file.length; i++) {
+                File license = new File(list.get(i).getFileLocation());
+                try {
+                    file[i].transferTo(license);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
     /**
      * description: 校验统一社会信用代码

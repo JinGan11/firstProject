@@ -116,14 +116,27 @@
             <hr ><br>
           </div>
           <el-row>
-            <el-col :span="10">
+            <el-col>
               <ul class="box">
-                <li v-for ="item in licenses" :key="item.id">
-                  <img :id="fileUrl+item.id" :src="fileUrl+item.id" height="150px" width="200px"/>
-                </li>
+                  <li v-for ="item in licenses" :key="item.id">
+                    <img :id="fileUrl+item.id" :src="fileUrl+item.id" height="150px" width="200px"/>
+                  </li>
               </ul>
             </el-col>
           </el-row>
+          <el-upload
+            action="#"
+            list-type="picture-card"
+            :multiple="true"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :onChange="getFileList"
+            :auto-upload="false"
+            ref="upload"
+            :http-request="uploadLicenses">
+            <i class="el-icon-plus"></i>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png/gif文件,且不超过2M,最多只能上传20张图片</div>
+          </el-upload>
           <div style="margin-bottom: 10px">
             <br>
             <span style="font-size: 20px">发票信息</span>
@@ -361,7 +374,8 @@
         licenses:[],
         fileUrl:"http://localhost:8081/combination/company/getLicense?id=",
         img:'',
-        bigP:false
+        bigP:false,
+        formData: new FormData()
       }
     },
     activated() {
@@ -422,55 +436,61 @@
         });
       },
       save() {//保存修改公司信息
+        this.$refs.upload.submit();
         const self = this;
-        console.log(self.form.registeredCapital)
+    //    console.log(self.form.registeredCapital)
         self.$refs["ruleForm"].validate(function (valid) {
           if (valid) {
-            console.log(self.form.registeredCapital)
-            //if(self.$options.methods.checkInput(self)==false) return;
-            self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }).then(() => {
-              var companyId=window.localStorage.getItem('companyId');
-            self.form.companyId=companyId;
-            self.form.businessStartTime=self.businessTerm[0];
-            self.form.businessDeadline=self.businessTerm[1];
-            self.form.liscensePath='dfs';
-            self.form.createEmp='';
-            self.form.modifyEmp='';
-            self.$http.post("company/modifyCompany",self.form)
-              .then((result) => {
-              if (!result.list.result) {
-              alert(result.msg);
-            }else{
-              self.$alert("修改成功！");
-              self.$router.replace("/CompanyManagement");
-            }
-          })
-          .catch(function (error) {
-              commonUtils.Log("company/modifyCompany:"+error);
-              self.$message.error("修改公司失败");
-            });
-            this.$message({
-              type: 'success',
-              message: '保存成功!'
-            });
-          }).catch(() => {
-              this.$message({
-                type: 'info',
-                message: '已取消保存'
+           // console.log(self.form.registeredCapital)
+              //if(self.$options.methods.checkInput(self)==false) return;
+              self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                var companyId=window.localStorage.getItem('companyId');
+                self.form.companyId=companyId;
+                self.form.businessStartTime=self.businessTerm[0];
+                self.form.businessDeadline=self.businessTerm[1];
+                self.form.liscensePath='dfs';
+                self.form.createEmp='';
+                self.form.modifyEmp='';
+                self.formData.append("company", JSON.stringify(self.form));
+           //     console.log(self.formData.get("businessLicenses"));
+                self.$http.post("company/modifyCompany",self.formData)
+                  .then((result) => {
+                    console.log(result.msg)
+                    if (result.msg !="success") {
+                      self.$alert("修改失败！");
+                    }else{
+                      self.$alert("修改成功！");
+                      self.$router.replace("/CompanyManagement");
+                    }
+                    self.formData=new FormData();
+                  })
+                  .catch(function (error) {
+                    self.formData=new FormData();
+                    commonUtils.Log("company/modifyCompany:"+error);
+                    self.$message.error("修改公司失败");
+                  });
+                this.$message({
+                  type: 'success',
+                  message: '保存成功!'
+                });
+              }).catch(() => {
+                this.$message({
+                  type: 'info',
+                  message: '已取消保存'
+                });
               });
-          });
           } else {
-            console.log('error submit!!');
+        //    console.log('error submit!!');
             return false;
           }
         })
 
 
-      },
+          },
       cancel(){//关闭新建公司页面，返回公司管理列表页面
         this.$router.replace('/CompanyManagement')
       },
