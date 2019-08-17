@@ -113,6 +113,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (departmentDao.checkDepartmentNo(department) > 0) {
             map.put("result", false);
             map.put("msg", "部门编号已存在！");
+            return map;
         }
         if (department.getLevel().equals(5)) {
             if (department.getWorkplace().equals(0)) {
