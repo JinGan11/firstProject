@@ -82,6 +82,9 @@ public class CompanyManageController {
     public Result createCompany(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
                                 @RequestParam("company") String data ,HttpSession session){
         Company company = JSON.parseObject(data, Company.class);
+        if(businessLicenses.length > 20) {
+             return new Result().ok().put("msg","outLimit");
+        }
         //信用代码唯一性校验
         Map<String,Object>map=companyManageService.creditCodeValidate(company.getCreditCode());
         if((Boolean)map.get("result")){

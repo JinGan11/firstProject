@@ -421,9 +421,14 @@
                 self.form.liscensePath = 'dfs';
                 self.form.createEmp = '';
                 self.form.modifyEmp = '';
-                self.formData.append("company", JSON.stringify(self.form))
+                self.formData.append("company", JSON.stringify(self.form));
                 self.$http.post("company/createCompany", self.formData)
                   .then((result) => {
+                    if(result.msg=="outLimit"){
+                      self.$message.error("最多只能上传20张图片!");
+                      self.formData=new FormData();
+                      return ;
+                    }
                     if(!(result.list.result)){
                       //self.$message.error('统一社会信用代码已存在，不允许重复');
                       self.$alert(result.list.msg);
