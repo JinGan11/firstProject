@@ -122,6 +122,7 @@
             :on-remove="handleRemove"
             :onChange="getFileList"
             :auto-upload="false"
+            :beforeUpload="beforeAvatarUpload"
             ref="upload"
             :http-request="uploadLicenses">
             <i class="el-icon-plus"></i>
@@ -246,6 +247,7 @@
         dialogImageUrl: '',
         disabled: false,
         unUploadFile:[],
+        iscommit:true,
         form: {
           businessStartTime:'',
           businessDeadline:'',
@@ -405,44 +407,46 @@
       save: function () {//保存新建公司信息
         this.$refs.upload.submit();
         const self = this;
-        self.$refs["ruleForm"].validate(function (valid) {
-          //if(self.$options.methods.checkInput(self)==false) return;
-          if (valid) {
-            self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }).then(() => {
-              self.form.businessStartTime = self.businessTerm[0];
-            self.form.businessDeadline = self.businessTerm[1];
-            self.form.liscensePath = 'dfs';
-            self.form.createEmp = '';
-            self.form.modifyEmp = '';
-            self.formData.append("company", JSON.stringify(self.form))
-            self.$http.post("company/createCompany", self.formData)
-              .then((result) => {
-              if(!(result.list.result)){
-              //self.$message.error('统一社会信用代码已存在，不允许重复');
-              self.$alert(result.list.msg);
-              self.formData=new FormData();
-            }else{
-              self.$alert("添加成功！");
-              self.$router.replace("/CompanyManagement");
-              self.formData=new FormData();
+        if(this.iscommit){
+          self.$refs["ruleForm"].validate(function (valid) {
+            //if(self.$options.methods.checkInput(self)==false) return;
+            if (valid) {
+              self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                self.form.businessStartTime = self.businessTerm[0];
+                self.form.businessDeadline = self.businessTerm[1];
+                self.form.liscensePath = 'dfs';
+                self.form.createEmp = '';
+                self.form.modifyEmp = '';
+                self.formData.append("company", JSON.stringify(self.form))
+                self.$http.post("company/createCompany", self.formData)
+                  .then((result) => {
+                    if(!(result.list.result)){
+                      //self.$message.error('统一社会信用代码已存在，不允许重复');
+                      self.$alert(result.list.msg);
+                      self.formData=new FormData();
+                    }else{
+                      self.$alert("添加成功！");
+                      self.$router.replace("/CompanyManagement");
+                      self.formData=new FormData();
+                    }
+                  })
+                  .catch(function (error) {
+                    commonUtils.Log("company/createCompany:" + error);
+                    self.$message.error("新建公司失败");
+                    self.formData=new FormData();
+                  });
+              });
+            } else {
+              console.log('error submit!!');
+              return false;
             }
-          })
-          .catch(function (error) {
-              commonUtils.Log("company/createCompany:" + error);
-              self.$message.error("新建公司失败");
-              self.formData=new FormData();
-            });
-          });
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
 
-        })
+          })
+        }
       },
       cancel(){//关闭新建公司页面，返回公司管理列表页面
         this.$router.replace('/CompanyManagement')
@@ -474,7 +478,31 @@
         formatDateTime = Y + '年' + M + '月' + D + '日 ' + H + ':' + Min + ':' + S;
         return formatDateTime;
       },
-
+      beforeAvatarUpload(file) {
+        var testmsg=file.name.substring(file.name.lastIndexOf('.')+1)
+        const extension = testmsg === 'jpg';
+        const extension2 = testmsg === 'png';
+        const extension3 = testmsg === 'gif';
+        const isLt2M = file.size / 1024 / 1024 /2;
+        if(!extension && !extension2 && !extension3) {
+          this.$message({
+            message: '上传文件只能是jpg/png/gif格式!',
+            type: 'warning'
+          });
+          this.iscommit=false;
+        }
+        if(!isLt2M) {
+          this.$message({
+            message: '上传文件大小不能超过 2MB!',
+            type: 'warning'
+          });
+          this.iscommit=false;
+        }
+        if((extension || extension2 ||extension3)&& isLt2M){
+          this.iscommit=true;
+        }
+        return (extension || extension2 ||extension3)&& isLt2M
+      } ,
 
     },
   }
