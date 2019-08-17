@@ -127,32 +127,8 @@ public class PowerController {
 
     @RequestMapping(value = "/queryRolePowerlist.do_" ,method = RequestMethod.POST)
     public Result queryRolePowerList(@RequestBody RolePowerDto rolePowerDto, HttpServletRequest request) {
-////
-////
- //         Long=role_id = Long.parseLong(request.getParameter("roleId"));
- //     String role_name = request.getParameter("roleName");
-////        String business_line = request.getParameter("businessLine");
-////  int role_status = Integer.parseInt(request.getParameter("roleStatus"));
-////        String approver_account_name = request.getParameter("approverAccountName");
-////        String approver_staff_num = request.getParameter("approverStaffNum");
-////        String approver_staff_name = request.getParameter("approverStaffName");
-////        String approver_department_name = request.getParameter("approverDepartmentName");
-////        String power_name = request.getParameter("powerName");
-////        Map<String, Object> params = new HashMap<String, Object>();
-////        params.put("role_id", role_id);
-////        params.put("role_name", role_name);
-////        params.put("business_line", business_line);
-////        params.put("role_status", role_status);
-////        params.put("approver_account_name", approver_account_name);
-////        params.put("approver_staff_num", approver_staff_num);
-////        params.put("approver_staff_name", approver_staff_name);
-////        params.put("approver_department_name", approver_department_name);
-////        params.put("power_name",power_name);
-//        ResultPage resultPage = powerService.queryRolePowerList(new QueryParam(params));
             ResultPage resultPage = powerService.queryRolePowerList(rolePowerDto);
             List<RolePowerDto> rolePowerDtoList = powerService.getRolePowerDtoList(rolePowerDto);
-
-
         return new Result().ok().put("page", resultPage).put("RoleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values()))
                 .put("rolePowerDtoList",rolePowerDtoList);
 
