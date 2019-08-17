@@ -360,6 +360,9 @@
                     type: 'warning'
                   }).then(() => {
                     utils.$emit("clearLoginSession");
+                    self.ruleForm.newPass='';
+                    self.ruleForm.oldPass='';
+                    self.ruleForm.checkPass='';
                     self.resetPasswordFlag = false;
                     self.$router.replace("/")
                   })
@@ -385,6 +388,9 @@
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
+        this.ruleForm.newPass='';
+        this.ruleForm.oldPass='';
+        this.ruleForm.checkPass='';
       },
     },
     watch: {
