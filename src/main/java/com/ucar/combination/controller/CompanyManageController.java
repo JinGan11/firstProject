@@ -256,12 +256,14 @@ public class CompanyManageController {
     }
      /**
      * 删除文件
-     * @param request
+     * @param
      * @param id
      */
     @RequestMapping("/deleteLicense.do_")
-    public void deleteLicense (HttpServletRequest request, @RequestParam("id") Long id) {
+    @ResponseBody
+    public Result deleteLicense (@RequestParam("id") Long id) {
         companyManageService.deleteLicense(id);
+        return Result.ok().put("msg", "success");
     }
         /**
      * description: 返回COMPANY的分页查询语句

@@ -114,13 +114,16 @@
             <br>
             <span style="font-size: 20px">附件信息</span>
             <hr ><br>
+            营业执照附件：
           </div>
           <el-row>
             <el-col>
               <ul class="box">
-                  <li v-for ="item in licenses" :key="item.id">
-                    <img :id="fileUrl+item.id" :src="fileUrl+item.id" height="150px" width="200px"/>
-                  </li>
+                <license v-for="license in licenses" :license="license" :key="license.id"
+                         @delete-license="deleteLicense"></license>
+                  <!--<li v-for ="item in licenses" :key="item.id">-->
+                    <!--<img :id="fileUrl+item.id" :src="fileUrl+item.id" height="150px" width="200px"/>-->
+                  <!--</li>-->
               </ul>
             </el-col>
           </el-row>
@@ -244,7 +247,10 @@
 
 <script>
   import commonUtils from '../../common/commonUtils'
+  import license from './component/license';
   export default {
+    name:"ModifyCompany",
+    components: {license},
     data() {
       return {
         businessTerm:[],
@@ -497,6 +503,28 @@
           },
       cancel(){//关闭新建公司页面，返回公司管理列表页面
         this.$router.replace('/CompanyManagement')
+      },
+      //删除执照
+      deleteLicense(id) {
+        var self=this;
+        self.$confirm("是否确认删除此执照附件?", '温馨提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }).then(() => {
+          let param={
+            id:id
+          }
+          self.$http.get('company/deleteLicense.do_', {
+            params: param
+          }).then((result) => {
+            self.$message.success("删除成功");
+            self.fetchData();
+          }).catch(function (error) {
+            commonUtils.Log("company/deleteLicense.do_:" + error);
+            self.$message.error("获取数据错误");
+          })
+        })
       },
 
     },

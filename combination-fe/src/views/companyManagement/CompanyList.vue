@@ -252,7 +252,7 @@
           <div style="margin-bottom: 10px">
             <br>
             <span style="font-size: 20px">附件信息</span>
-            <hr ><br>
+            <hr >营业执照附件：<br><br>
             <ul class="box">
               <li v-for ="item in licenses" :key="item.id">
                 <img :id="fileUrl+item.id" :src="fileUrl+item.id" height="150px" width="200px"/>

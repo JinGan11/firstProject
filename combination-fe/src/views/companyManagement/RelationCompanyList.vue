@@ -292,22 +292,14 @@
           <div style="margin-bottom: 10px">
             <br>
             <span style="font-size: 20px">附件信息</span>
+            <hr >营业执照附件：<br><br>
+            <ul class="box">
+              <li v-for ="item in licenses" :key="item.id">
+                <img :id="fileUrl+item.id" :src="fileUrl+item.id" height="150px" width="200px"/>
+              </li>
+            </ul>
           </div>
-          <hr>
-          <el-row>
-            <el-col :span="10" style="font-weight: bold">
-              <p>营业执照附件：</p>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="10">
-              <ul class="box">
-                <div v-for ="item in licenses" :key="item.id">
-                  <img :id="fileUrl+item.id" :src="fileUrl+item.id" height="150px" width="200px"/>
-                </div>
-              </ul>
-            </el-col>
-          </el-row>
+
           <div style="margin-bottom: 10px">
             <br>
             <span style="font-size: 20px">发票信息</span>
@@ -726,9 +718,12 @@
   }
 </script>
 <style scoped>
-  .el-dialog__body{
-    height: 1000px;
-  }
+  ul,li{ padding:0; margin:0; overflow:hidden;}
+  li{ list-style:none;}
+  img{ border:0;}
+  .box{ width:800px;}
+  .box li{ float:left; width:200px; height:180px; margin-right:10px;}
+
 </style>
 <style>
   .el-tooltip__popper {
