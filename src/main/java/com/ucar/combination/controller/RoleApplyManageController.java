@@ -46,7 +46,7 @@ public class RoleApplyManageController {
         String applyStaffName = request.getParameter("applyStaffName");
         String applyDepartmentName = request.getParameter("applyDepartmentName");
         String applyStatus = request.getParameter("applyStatus");
-        String applyTimeStart = request.getParameter("applyTimeSatrt");
+        String applyTimeStart = request.getParameter("applyTimeStart");
         String applyTimeEnd = request.getParameter("applyTimeEnd");
         String modifyTimeStart = request.getParameter("modifyTimeStart");
         String modifyTimeEnd = request.getParameter("modifyTimeEnd");
