@@ -282,6 +282,8 @@
                       // 上面设置Excel的表格第一行的标题
 
                       const filterVal = this.exportField(this.checkedRegionProps);
+                      console.log("this is filterVal : ");
+                      console.log(filterVal);
                       // 上面的staffNum、accountId、staffName是tableData里对象的属性
                       const list = this.countySearchList;  //把data里的tableData存到list
                       for (let i = 0; i < list.length; i++) {
@@ -329,8 +331,6 @@
                       this.filterVal.push('regionCode')
                   }else if (this.checkedRegionProps[i] === '区号') {
                       this.filterVal.push('regionAreaCode')
-                  } else if (this.checkedRegionProps[i] === '区县名字') {
-                      this.filterVal.push('regionName')
                   } else if (this.checkedRegionProps[i] === '名字拼音') {
                       this.filterVal.push('regionPinyin')
                   } else if (this.checkedRegionProps[i] === '所属城市') {
@@ -343,6 +343,8 @@
                       this.filterVal.push('modifyEmpName')
                   } else if (this.checkedRegionProps[i] === '修改时间') {
                       this.filterVal.push('modifyTime')
+                  } else if (this.checkedRegionProps[i] === '区县名称') {
+                      this.filterVal.push('regionName')
                   }
               }
               return this.filterVal;
