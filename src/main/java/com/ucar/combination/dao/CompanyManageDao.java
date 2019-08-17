@@ -137,4 +137,6 @@ public interface CompanyManageDao<mcmt> {
     List<BusinessLicense> getIdsByCompanyId(int id);
     Long getCreateStaffId(@Param("companyId")int id);
     Long getModifyStaffId(@Param("companyId")int id);
+
+    void deleteLicenseById(Long id);
 }

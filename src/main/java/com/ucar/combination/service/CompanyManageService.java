@@ -105,4 +105,6 @@ public interface CompanyManageService {
 
     List<BusinessLicense> getIdsByCompanyId(int id);
 
+    void deleteLicense(Long id);
+
 }

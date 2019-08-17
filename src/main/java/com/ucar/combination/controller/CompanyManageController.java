@@ -208,6 +208,11 @@ public class CompanyManageController {
         return "success";
     }
 
+    /**
+     * 输出文件流
+     * @param response
+     * @param id
+     */
     @RequestMapping("/getLicense")
     public void getLicenseById(HttpServletResponse response, @RequestParam("id") long id)  {
         String fileUrl = companyManageService.getFileUrlById(id);
@@ -232,6 +237,16 @@ public class CompanyManageController {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 删除文件
+     * @param request
+     * @param id
+     */
+    @RequestMapping("/deleteLicense.do_")
+    public void deleteLicense (HttpServletRequest request, @RequestParam("id") Long id) {
+        companyManageService.deleteLicense(id);
     }
 
 }

@@ -12,6 +12,7 @@ import com.ucar.combination.service.CompanyManageService;
 import com.ucar.combination.utils.FileUrlGenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -249,6 +250,21 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
     @Override
     public List<BusinessLicense> getIdsByCompanyId(int id) {
         return companyManageDao.getIdsByCompanyId(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteLicense(Long id){
+        String fileUrl = companyManageDao.getFileUrlById(id);
+        try {
+            companyManageDao.deleteLicenseById(id);
+            File file = new File(fileUrl);
+            if (file.exists() && file.isFile()) {
+                file.delete();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

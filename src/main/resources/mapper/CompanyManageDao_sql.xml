@@ -388,4 +388,9 @@
         from t_company t1,t_account t2
         WHERE t1.id=#{companyId} and t1.modify_emp=t2.id
     </select>
+
+    <delete id="deleteLicenseById" parameterType="Long">
+        delete from t_license
+        WHERE id =#{id}
+    </delete>
 </mapper>
