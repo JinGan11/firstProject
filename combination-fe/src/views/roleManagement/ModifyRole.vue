@@ -148,10 +148,14 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="11">
+            <el-col :span="6">
               <el-form-item label="员工所属部门">
-                <el-input style="width:180px;" placeholder="员工所属部门" v-model="accountForm.departmentId"></el-input>
+                <el-input style="width:140px;" placeholder="员工所属部门" v-model="accountForm.department"></el-input>
               </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-button type="text" @click="chooseDepartment">选择</el-button>
+              <el-button type="text" @click="clearDepartment">取消</el-button>
             </el-col>
             <el-col :span="6">
               <el-form-item label="是否关联员工">
@@ -228,6 +232,19 @@
       </el-pagination>
       </div>
     </el-dialog>
+    <el-dialog title="选择部门" :visible.sync="chooseDepartmentFlag" width="300px">
+      <el-tree
+        ref="tree"
+        :props="defaultPropsTree"
+        node-key="id"
+        :load="loadNodeDepartment"
+        lazy="true"
+        check-strictly
+        show-checkbox
+        default-expanded-keys="[1]"
+        @check-change="handleClickChange">
+      </el-tree>
+    </el-dialog>
   </div>
 
 
@@ -261,6 +278,14 @@
         });
       };
       return {
+        defaultPropsTree: {
+          label: 'departmentName',
+          children: 'children',
+          isLeaf: 'nodeIsLeaf',
+          id: 'id',
+          no: 'departmentNo',
+        },
+        chooseDepartmentFlag: false,
         isChoose: true,
         rules: {
           roleName: [{required: true, message: '角色名不能为空', trigger: ['blur','change']},
@@ -313,6 +338,7 @@
           accountStatusEnum:{},
           permissions: null,
           department:null,
+          departmentId:'',
           isRelStaffoptions:[{
             value: '1',
             label: '是'
@@ -336,6 +362,43 @@
       this.fetchOtherData();
     },
     methods: {
+
+      chooseDepartment(){
+        this.chooseDepartmentFlag = true;
+      },
+      clearDepartment(){
+        this.accountForm.departmentId = '';
+        this.accountForm.department = '';
+      },
+      closeChooseDepartment(){
+        this.chooseDepartmentFlag = false;
+      },
+
+      loadNodeDepartment(node,resolve){
+        var self = this;
+        self.$http.get('department/buildTree2.do_')
+          .then((result) => {
+            resolve([result.departmentDto]);
+          }).catch(function (error) {
+
+        });
+      },
+
+      handleClickChange(data,checked,node){
+        // 手动设置单选
+        if(checked === true) {
+          this.checkedId = data.id;
+          this.$refs.tree.setCheckedKeys([data.id]);
+          this.accountForm.departmentId = data.id;
+          this.accountForm.department = data.departmentName;
+        } else {
+          if (this.checkedId == data.id) {
+            this.$refs.tree.setCheckedKeys([data.id]);
+          }
+        }
+        this.closeChooseDepartment();
+      },
+
       fetchOtherData() {
         var roleid;
         var self = this;
@@ -438,7 +501,8 @@
           permissions: self.accountForm.permissions,
           department: self.accountForm.departmentId,
           isRelStaff: self.accountForm.isRelStaff,
-          status: self.accountForm.status
+          status: self.accountForm.status,
+          flag:1
         };
         self.$http.get('account/querylist.do_', {
           params: param
