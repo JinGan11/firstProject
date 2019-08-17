@@ -34,6 +34,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
     private DepartmentDao departmentDao;
+    @Autowired
+    DepartmentService departmentService;
     @Autowired(required = false)
     private AccountManageDao accountManageDao;
     @Autowired(required = false)
@@ -65,7 +67,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Boolean updateUpperDepartment(Long id, String upperDepartmentNo) {
-        if (departmentDao.checkStatusById(id) > 0 && departmentDao.checkStatusByNo(upperDepartmentNo) > 0) {
+        if (departmentService.checkStatusChange(id, upperDepartmentNo)) {
             departmentDao.updateUpperDepartment(id, upperDepartmentNo);
             return true;
         }
@@ -154,6 +156,26 @@ public class DepartmentServiceImpl implements DepartmentService {
             }
         }
         return map;
+    }
+
+    @Override
+    public Boolean checkStatusChange(List<Long> departmentId, List<String> departmentNo) {
+        if (departmentId != null)
+            for (Long tmpId : departmentId)
+                if (departmentDao.checkStatusById(tmpId) < 1) return false;
+        if (departmentNo != null)
+            for (String tmpNo : departmentNo)
+                if (departmentDao.checkStatusByNo(tmpNo) < 1) return false;
+        return true;
+    }
+
+    @Override
+    public Boolean checkStatusChange(Long departmentId, String departmentNo) {
+        if (departmentId != null)
+            if (departmentDao.checkStatusById(departmentId) < 1) return false;
+        if (departmentNo != null)
+            if (departmentDao.checkStatusByNo(departmentNo) < 1) return false;
+        return true;
     }
 
     @Override
