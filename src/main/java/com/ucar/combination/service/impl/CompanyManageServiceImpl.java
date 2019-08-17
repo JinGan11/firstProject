@@ -8,6 +8,7 @@ import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.CompanyManageDao;
 import com.ucar.combination.model.Company;
 import com.ucar.combination.model.dto.BusinessLicense;
+import com.ucar.combination.model.dto.CompanyDto;
 import com.ucar.combination.service.CompanyManageService;
 import com.ucar.combination.utils.FileUrlGenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +38,15 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
     @Override
     public ResultPage queryList(QueryParam queryParam) {
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
-        List<Company> list = companyManageDao.queryList(queryParam);
+        List<CompanyDto> list = companyManageDao.queryList(queryParam);
         //修改人格式
-
+        for(int i=0;i<list.size();i++)
+            if (companyManageDao.getModifyStaffId(list.get(i).getModifyEmp().intValue()) > 0) {
+                Map<String, Object> map = new HashMap<>();
+                //int long格式不对
+                map = companyManageDao.getModifyInfo(list.get(i).getId().intValue());
+                list.get(i).setModifyName(map.get("accountName") + "(" + map.get("staffName") + ")");
+            }
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
     /**
