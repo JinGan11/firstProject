@@ -85,7 +85,6 @@
         LEFT JOIN t_staff t4 on t1.apply_staff_num = t4.staff_num
         LEFT JOIN t_department t5 on t5.id = t4.department_id
         where  t1.apply_account_name=#{loginAccountName}
-        or t2.approver_account_name=#{loginAccountName}
         <if test="userPermission == 4">
             and t3.id = #{accountId}
         </if>

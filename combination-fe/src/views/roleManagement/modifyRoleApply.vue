@@ -97,37 +97,13 @@
       <el-form ref="form" :model="otherInfo" label-width="110px">
         <el-row>
           <el-col :span="10">
-            <el-form-item label="申请人登录账号">
-              <el-input style="width:300px;" v-model="otherInfo.applyAccountName" :disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label="申请人员工编号">
-              <el-input style="width:300px;" v-model="otherInfo.applyStaffNum" :disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="10">
-            <el-form-item label="申请人员工姓名">
-              <el-input style="width:300px;" v-model="otherInfo.applyStaffName" :disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label="申请人所属部门">
-              <el-input style="width:300px;" v-model="otherInfo.applyDepartmentName" :disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="10">
             <el-form-item label="申请时间">
               <el-input style="width:300px;" v-model="otherInfo.applyTime" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="申请状态">
-              <el-input style="width:300px;" v-model="otherInfo.applyStatus" :disabled="true"></el-input>
+            <el-form-item label="申请人">
+              <el-input style="width:300px;" v-model="otherInfo.applyStaffName" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -155,6 +131,39 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="状态">
+              <el-input style="width:300px;" v-model="otherInfo.applyStatus" :disabled="true"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <div v-if="false">
+          <el-row>
+            <el-col :span="10">
+              <el-form-item label="申请人登录账号">
+                <el-input style="width:300px;" v-model="otherInfo.applyAccountName" :disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="申请人员工编号">
+                <el-input style="width:300px;" v-model="otherInfo.applyStaffNum" :disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="10">
+              <el-form-item label="申请人员工姓名">
+                <el-input style="width:300px;" v-model="otherInfo.applyStaffName" :disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="申请人所属部门">
+                <el-input style="width:300px;" v-model="otherInfo.applyDepartmentName" :disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
       </el-form>
     </div>
 
@@ -812,6 +821,10 @@
       checkInput(self) {
         if (self.formRoleInfo.roleName == '') {
           self.$message.info("申请角色为必填项，不允许为空");
+          return false;
+        }
+        if(self.roleStatus==0){
+          self.$message.info("申请角色已失效，请重新选择");
           return false;
         }
         if(self.tableDataAccount.length==0){

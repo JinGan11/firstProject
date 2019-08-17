@@ -98,37 +98,13 @@
       <el-form ref="form" :model="otherInfo" label-width="110px">
         <el-row>
           <el-col :span="10">
-            <el-form-item label="申请人登录账号">
-              <el-input style="width:300px;" v-model="otherInfo.applyAccountName" :disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label="申请人员工编号">
-              <el-input style="width:300px;" v-model="otherInfo.applyStaffNum" :disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="10">
-            <el-form-item label="申请人员工姓名">
-              <el-input style="width:300px;" v-model="otherInfo.applyStaffName" :disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <el-form-item label="申请人所属部门">
-              <el-input style="width:300px;" v-model="otherInfo.applyDepartmentName" :disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="10">
             <el-form-item label="申请时间">
               <el-input style="width:300px;" v-model="otherInfo.applyTime" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
-            <el-form-item label="申请状态">
-              <el-input style="width:300px;" v-model="otherInfo.applyStatus" :disabled="true"></el-input>
+            <el-form-item label="申请人">
+              <el-input style="width:300px;" v-model="otherInfo.applyStaffName" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -156,6 +132,39 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <el-row>
+          <el-col :span="10">
+            <el-form-item label="状态">
+              <el-input style="width:300px;" v-model="otherInfo.applyStatus" :disabled="true"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <div v-if="false">
+          <el-row>
+            <el-col :span="10">
+              <el-form-item label="申请人登录账号">
+                <el-input style="width:300px;" v-model="otherInfo.applyAccountName" :disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="申请人员工编号">
+                <el-input style="width:300px;" v-model="otherInfo.applyStaffNum" :disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="10">
+              <el-form-item label="申请人员工姓名">
+                <el-input style="width:300px;" v-model="otherInfo.applyStaffName" :disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="10">
+              <el-form-item label="申请人所属部门">
+                <el-input style="width:300px;" v-model="otherInfo.applyDepartmentName" :disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
       </el-form>
     </div>
 
@@ -193,7 +202,7 @@
           <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
           <el-table-column prop="roleId" label="角色ID" width="150"></el-table-column>
           <el-table-column prop="roleName" label="角色名称"width="150"></el-table-column>
-          <el-table-column prop="businessLine"  label="支持业务线"></el-table-column>
+          <el-table-column prop="businessLine"  v-if="false" label="支持业务线"></el-table-column>
           <el-table-column prop="accountNum" label="审批人账号" width="120"></el-table-column>
           <el-table-column prop="staffNum" label="审批人员工编号" ></el-table-column>
           <el-table-column prop="staffName" label="审批人姓名" width="200"></el-table-column>
@@ -396,7 +405,12 @@
         disabledSelectRole:true,
         disabledSelectAccount:true,
 
-        accountStatusList: [ {
+        accountStatusList: [
+          {
+            value: '',
+            label: '全部',
+          },
+          {
           value: '1',
           label: '正常'
         }, {
@@ -770,6 +784,10 @@
       checkInput(self) {
         if (self.formRoleInfo.roleName == '') {
           self.$message.info("申请角色为必填项，不允许为空");
+          return false;
+        }
+        if(self.roleStatus==0){
+          self.$message.info("申请角色已失效，请重新选择");
           return false;
         }
         if(self.tableDataAccount.length==0){
