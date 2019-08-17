@@ -125,7 +125,7 @@
       deleteDept(){
         var check_node = this.$refs.tree.getCheckedNodes()[0];
         if( this.$options.methods.checkHaveChildren(check_node) ){
-          self.$message.error("删除失败，请先删除该部门的下级部门");
+          this.$message.error("删除失败，请先删除该部门的下级部门");
           return;
         }
         var params = {
