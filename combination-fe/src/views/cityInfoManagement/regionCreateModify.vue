@@ -516,7 +516,8 @@
                     params:param
                 }).then((result)=>{
                     //对取回来的数据进行处理
-                    console.log(result);
+                    // console.log(result);
+                    alert(result);
 
                 }).catch(function (error) {
                     commonUtils.Log("/regionManage/modifyRegionSave:" + error);
@@ -545,7 +546,8 @@
                     params:param
                 }).then((result)=>{
                     //对取回来的数据进行处理
-                    console.log(result);
+                    // console.log(result);
+                    alert(result);
 
                 }).catch(function (error) {
                     commonUtils.Log("/regionManage/createRegion:" + error);
