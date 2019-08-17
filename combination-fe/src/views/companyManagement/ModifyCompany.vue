@@ -118,9 +118,9 @@
           <el-row>
             <el-col :span="10">
               <ul class="box">
-                  <li v-for ="item in licenses" :key="item.id">
-                    <img :id="fileUrl+item.id" :src="fileUrl+item.id" height="150px" width="200px"/>
-                  </li>
+                <li v-for ="item in licenses" :key="item.id">
+                  <img :id="fileUrl+item.id" :src="fileUrl+item.id" height="150px" width="200px"/>
+                </li>
               </ul>
             </el-col>
           </el-row>
@@ -301,7 +301,7 @@
           ],
           registeredCapital:[
             { required: false, message: '请选择数据类型'},
-           //{ min: 1, max: 20, message: '长度在 1 到 20 位数字', trigger: 'blur' },
+            //{ min: 1, max: 20, message: '长度在 1 到 20 位数字', trigger: 'blur' },
             { pattern:/^\d{1,20}$/,message: '长度在 1 到 20 位数字，请勿输入其他字符', trigger: 'blur' }
 
           ],
@@ -398,25 +398,25 @@
           params: param
         }).then((result) => {
           self.form=result.list.company;
-          self.form.createEmp=result.list.createEmp;
-          self.form.modifyEmp=result.list.modifyEmp;
-          self.form.registeredCapital=parseInt(self.form.registeredCapital);
-          self.businessTerm=[result.list.company.businessStartTime,result.list.company.businessDeadline];
-          self.form.oldCreditCode=result.list.company.creditCode;
-          self.licenses = result.licenses;
-          //下拉框处理
-          if(self.form.companyType==null){
-            self.form.companyType="";
-          }else{
-            self.form.companyType=String(self.form.companyType);
-          }
+        self.form.createEmp=result.list.createEmp;
+        self.form.modifyEmp=result.list.modifyEmp;
+        self.form.registeredCapital=parseInt(self.form.registeredCapital);
+        self.businessTerm=[result.list.company.businessStartTime,result.list.company.businessDeadline];
+        self.form.oldCreditCode=result.list.company.creditCode;
+        self.licenses = result.licenses;
+        //下拉框处理
+        if(self.form.companyType==null){
+          self.form.companyType="";
+        }else{
+          self.form.companyType=String(self.form.companyType);
+        }
 
-          if(self.form.companyStatus==null){
-            self.form.companyStatus="";
-          }else{
-            self.form.companyStatus=String(self.form.companyStatus);
-          }
-        }).catch(function (error) {
+        if(self.form.companyStatus==null){
+          self.form.companyStatus="";
+        }else{
+          self.form.companyStatus=String(self.form.companyStatus);
+        }
+      }).catch(function (error) {
           commonUtils.Log("company/getCompanyById.do_:" + error);
           self.$message.error("获取数据错误");
         });
@@ -427,43 +427,42 @@
         self.$refs["ruleForm"].validate(function (valid) {
           if (valid) {
             console.log(self.form.registeredCapital)
-              //if(self.$options.methods.checkInput(self)==false) return;
-              self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-              }).then(() => {
-                var companyId=window.localStorage.getItem('companyId');
-                self.form.companyId=companyId;
-                self.form.businessStartTime=self.businessTerm[0];
-                self.form.businessDeadline=self.businessTerm[1];
-                self.form.liscensePath='dfs';
-                self.form.createEmp='';
-                self.form.modifyEmp='';
-                self.$http.post("company/modifyCompany",self.form)
-                  .then((result) => {
-                    if (!result.result) {
-                      alert(result.msg);
-                      return false;
-                    }else{
-                      self.$alert("修改成功！");
-                      self.$router.replace("/CompanyManagement");
-                    }
-                  })
-                  .catch(function (error) {
-                    commonUtils.Log("company/modifyCompany:"+error);
-                    self.$message.error("修改公司失败");
-                  });
-                this.$message({
-                  type: 'success',
-                  message: '保存成功!'
-                });
-              }).catch(() => {
-                this.$message({
-                  type: 'info',
-                  message: '已取消保存'
-                });
+            //if(self.$options.methods.checkInput(self)==false) return;
+            self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              var companyId=window.localStorage.getItem('companyId');
+            self.form.companyId=companyId;
+            self.form.businessStartTime=self.businessTerm[0];
+            self.form.businessDeadline=self.businessTerm[1];
+            self.form.liscensePath='dfs';
+            self.form.createEmp='';
+            self.form.modifyEmp='';
+            self.$http.post("company/modifyCompany",self.form)
+              .then((result) => {
+              if (!result.list.result) {
+              alert(result.msg);
+            }else{
+              self.$alert("修改成功！");
+              self.$router.replace("/CompanyManagement");
+            }
+          })
+          .catch(function (error) {
+              commonUtils.Log("company/modifyCompany:"+error);
+              self.$message.error("修改公司失败");
+            });
+            this.$message({
+              type: 'success',
+              message: '保存成功!'
+            });
+          }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消保存'
               });
+          });
           } else {
             console.log('error submit!!');
             return false;
@@ -471,7 +470,7 @@
         })
 
 
-          },
+      },
       cancel(){//关闭新建公司页面，返回公司管理列表页面
         this.$router.replace('/CompanyManagement')
       },

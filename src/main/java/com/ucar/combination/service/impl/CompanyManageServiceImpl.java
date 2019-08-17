@@ -38,6 +38,8 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
     public ResultPage queryList(QueryParam queryParam) {
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
         List<Company> list = companyManageDao.queryList(queryParam);
+        //修改人格式
+
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
     /**
@@ -150,13 +152,24 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      * @date: 2019/8/8 15:36
      * @return：
      */
-    public int creditCodeValidate(String creditCode){
+    /*public int creditCodeValidate(String creditCode){
         Integer validate ;
         validate = companyManageDao.creditCodeValidate(creditCode);
         if(validate == null){
             return 0;
         }
         return validate.intValue();
+    }*/
+    public Map<String, Object> creditCodeValidate(String creditCode){
+        Map<String, Object> map = new HashMap<>();
+        map.put("result", true);
+        Integer validate ;
+        validate = companyManageDao.creditCodeValidate(creditCode);
+        if(validate>0){
+            map.put("result", false);
+            map.put("msg", "统一社会信用代码已存在！");
+        }
+        return map;
     }
     /**
      * description: 查询未关联公司

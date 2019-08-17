@@ -29,7 +29,7 @@ import java.util.*;
  * @author jianan.shu@ucarinc.com
  * @version 1.0
  * @date: 2019/8/3 10:23
-*/
+ */
 @Controller
 @RequestMapping("/company")
 public class CompanyManageController {
@@ -79,10 +79,15 @@ public class CompanyManageController {
      */
     @ResponseBody
     @RequestMapping(value = "/createCompany",method = RequestMethod.POST)
-    public String createCompany(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
+    public Result createCompany(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
                                 @RequestParam("company") String data ,HttpSession session){
-        companyManageService.insertCompany(businessLicenses, data,session);
-        return "success";
+        Company company = JSON.parseObject(data, Company.class);
+        //信用代码唯一性校验
+        Map<String,Object>map=companyManageService.creditCodeValidate(company.getCreditCode());
+        if((Boolean)map.get("result")){
+            companyManageService.insertCompany(businessLicenses, data,session);
+        }
+        return new Result().ok().put("list",map);
     }
     /**
      * description: 获取单一公司信息
@@ -109,11 +114,21 @@ public class CompanyManageController {
      */
     @ResponseBody
     @RequestMapping(value = "/modifyCompany",method = RequestMethod.POST)
-    public String updateCompanyById(@RequestBody Company company, HttpSession session){
+    public Result updateCompanyById(@RequestBody Company company, HttpSession session){
         Long accountId = (Long) session.getAttribute("accountId");
         company.setModifyEmp(accountId);
-        companyManageService.updateCompanyById(company);
-        return "success";
+        //信用代码唯一性校验,先判断是否更改，如更改则需判断唯一性，否则直接更新公司
+        Map<String,Object>map=new HashMap<>();
+        if(company.getOldCreditCode().equals(company.getCreditCode())){
+            companyManageService.updateCompanyById(company);
+            map.put("result",true);
+        }else{
+            map = companyManageService.creditCodeValidate(company.getCreditCode());
+            if((Boolean) map.get("result")){
+                companyManageService.updateCompanyById(company);
+            }
+        }
+        return new Result().ok().put("list",map);
     }
     /**
      * description: 查询未关联公司列表
@@ -207,7 +222,6 @@ public class CompanyManageController {
         companyManageService.saveRelations(params);
         return "success";
     }
-
     /**
      * 输出文件流
      * @param response
@@ -238,7 +252,6 @@ public class CompanyManageController {
             }
         }
     }
-
     /**
      * 删除文件
      * @param request
@@ -248,5 +261,4 @@ public class CompanyManageController {
     public void deleteLicense (HttpServletRequest request, @RequestParam("id") Long id) {
         companyManageService.deleteLicense(id);
     }
-
 }

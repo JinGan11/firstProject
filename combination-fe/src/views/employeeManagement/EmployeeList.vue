@@ -835,11 +835,11 @@
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
-          self.total = result.page.totalCount;
-          self.SexEnum = result.SexEnum;
-          self.isDimissionEnum = result.isDismissionEnum;
-          self.staffDtoList = result.staffDtoList;
-        }).catch(function (error) {
+        self.total = result.page.totalCount;
+        self.SexEnum = result.SexEnum;
+        self.isDimissionEnum = result.isDismissionEnum;
+        self.staffDtoList = result.staffDtoList;
+      }).catch(function (error) {
           commonUtils.Log("employee/querylist.do_:" + error);
           self.$message.error("获取数据错误");
         })
@@ -854,27 +854,27 @@
         let permission = self.$store.state.powerList;
         permission.forEach(item=>{
           if (item === 15) {
-            self.empButtonPermission.createPermission = false
-          }
-          if (item === 16) {
-            self.empButtonPermission.modifyPermission = false
-          }
-          if (item === 17) {
-            self.empButtonPermission.deletePermission = false
-          }
-          if (item === 18) {
-            self.empButtonPermission.quitPermission = false
-          }
-          if (item === 19) {
-            self.empButtonPermission.recoveryPermission = false
-          }
-          if (item === 20) {
-            self.empButtonPermission.assignDepPermission = false
-          }
-          if (item === 66) {
-            self.empButtonPermission.exportPermission = false
-          }
-        });
+          self.empButtonPermission.createPermission = false
+        }
+        if (item === 16) {
+          self.empButtonPermission.modifyPermission = false
+        }
+        if (item === 17) {
+          self.empButtonPermission.deletePermission = false
+        }
+        if (item === 18) {
+          self.empButtonPermission.quitPermission = false
+        }
+        if (item === 19) {
+          self.empButtonPermission.recoveryPermission = false
+        }
+        if (item === 20) {
+          self.empButtonPermission.assignDepPermission = false
+        }
+        if (item === 66) {
+          self.empButtonPermission.exportPermission = false
+        }
+      });
       },
       handleSizeChange(val) {
         this.pageSize = val;
@@ -905,11 +905,11 @@
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
-          self.total = result.page.totalCount;
-          self.SexEnum = result.SexEnum;
-          self.isDimissionEnum = result.isDismissionEnum;
-          self.staffDtoList = result.staffDtoList;
-        }).catch(function (error) {
+        self.total = result.page.totalCount;
+        self.SexEnum = result.SexEnum;
+        self.isDimissionEnum = result.isDismissionEnum;
+        self.staffDtoList = result.staffDtoList;
+      }).catch(function (error) {
           commonUtils.Log("employee/querylist.do_:" + error);
           self.$message.error("获取数据错误");
         });
@@ -939,9 +939,9 @@
         self.$refs["createForm"].validate(function (valid) {
           //if(self.$options.methods.checkInput(self)==false) return;
           if (valid) {
-        self.$http.post("employee/insertStaff",self.createForm)
-          .then((result) => {
-            if (result.code === 300) {
+            self.$http.post("employee/insertStaff",self.createForm)
+              .then((result) => {
+              if (result.code === 300) {
               self.$message.error('员工编号已存在，不允许重复');
             } else {
               self.createDialogVisible=false;
@@ -950,9 +950,9 @@
             }
           })
           .catch(function (error) {
-            commonUtils.Log("employee/insertStaff:"+error);
-            self.$message.error("新建用户失败");
-          })} else {
+              commonUtils.Log("employee/insertStaff:"+error);
+              self.$message.error("新建用户失败");
+            })} else {
             console.log('error submit!!');
             return false;
           }
@@ -972,14 +972,14 @@
             self.$http.post("employee/updateStaff",self.modifyForm)
               .then(result => {
 
-            self.modifyDialogVisible=false;
+              self.modifyDialogVisible=false;
             self.$message.success("修改成功");
-                self.fetchData();
+            self.fetchData();
           })
           .catch(function (error) {
-            commonUtils.Log("employee/updateStaff:"+error);
-            self.$message.error("修改用户信息失败");
-          })} else {
+              commonUtils.Log("employee/updateStaff:"+error);
+              self.$message.error("修改用户信息失败");
+            })} else {
             console.log('error submit!!');
             return false;
           }
@@ -999,25 +999,25 @@
           type: 'warning'
         }).then(() => {
           var self = this;
-          var param = {
-            id:self.id,
-            accountId:self.accountId,
-          };
-          self.$http.get('employee/deleteEmployee', {
-            params: param
-          }).then((result) => {
-            self.$message.success("成功删除");
-            self.fetchData();
-          }).catch(function (error) {
-            commonUtils.Log("employee/deleteEmployee" + error);
-           self.$message.error("获取数据错误");
-          });
-        }).catch(() => {
+        var param = {
+          id:self.id,
+          accountId:self.accountId,
+        };
+        self.$http.get('employee/deleteEmployee', {
+          params: param
+        }).then((result) => {
+          self.$message.success("成功删除");
+        self.fetchData();
+      }).catch(function (error) {
+          commonUtils.Log("employee/deleteEmployee" + error);
+          self.$message.error("获取数据错误");
+        });
+      }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消删除'
           });
-        });
+      });
       },
       quitEmployee(){
         this.$confirm('此操作将离职该员工, 是否继续?', '提示', {
@@ -1026,28 +1026,28 @@
           type: 'warning'
         }).then(() => {
           var self = this;
-          var param = {
-            id:self.selection,
-          };
-          self.$http.get('employee/quitEmployee.do_', {
-            params: param
-          }).then((result) => {
-            if (result.status=="success"){
-              self.$message.success("成功离职");
-              self.fetchData();
-            } else {
-              self.$message.error("离职失败")
-            }
-          }).catch(function (error) {
-            commonUtils.Log("employee/quitEmployee.do_" + error);
-            self.$message.error("获取数据错误");
-          });
-        }).catch(() => {
+        var param = {
+          id:self.selection,
+        };
+        self.$http.get('employee/quitEmployee.do_', {
+          params: param
+        }).then((result) => {
+          if (result.status=="success"){
+          self.$message.success("成功离职");
+          self.fetchData();
+        } else {
+          self.$message.error("离职失败")
+        }
+      }).catch(function (error) {
+          commonUtils.Log("employee/quitEmployee.do_" + error);
+          self.$message.error("获取数据错误");
+        });
+      }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消离职'
           });
-        });
+      });
       },
       recovery(){
         this.$confirm('此操作将恢复该员工, 是否继续?', '提示', {
@@ -1056,29 +1056,29 @@
           type: 'warning'
         }).then(() => {
           var self = this;
-          var param = {
-            id:self.selection,
-          };
-          self.$http.get('employee/recoverEmployee.do_', {
-            params: param
-          }).then((result) => {
-            if (result.status=="success"){
-              self.$message.success("恢复成功");
-              self.fetchData();
-            } else {
-              self.$message.error("恢复失败")
-            }
+        var param = {
+          id:self.selection,
+        };
+        self.$http.get('employee/recoverEmployee.do_', {
+          params: param
+        }).then((result) => {
+          if (result.status=="success"){
+          self.$message.success("恢复成功");
+          self.fetchData();
+        } else {
+          self.$message.error("恢复失败")
+        }
 
-          }).catch(function (error) {
-            commonUtils.Log("employee/recoverEmployee.do_" + error);
-            //self.$message.error("恢复失败");
-          });
-        }).catch(() => {
+      }).catch(function (error) {
+          commonUtils.Log("employee/recoverEmployee.do_" + error);
+          //self.$message.error("恢复失败");
+        });
+      }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消恢复'
           });
-        });
+      });
       },
       distributionDepartment() {
         this.distributionDepartmentFlag = true;
@@ -1121,48 +1121,48 @@
         } else {
           require.ensure([], () => {
             const {export_json_to_excel} = require('../../excel/Export2Excel');
-            const tHeader = this.checkedemployees;
-            // 上面设置Excel的表格第一行的标题
+          const tHeader = this.checkedemployees;
+          // 上面设置Excel的表格第一行的标题
 
-            const filterVal = this.exportField(this.checkedemployees);
-            // 上面的staffNum、accountId、staffName是tableData里对象的属性
-            const list = this.staffDtoList;  //把data里的tableData存到list
-            for (let i = 0; i < list.length; i++) {
-              if (list[i].isDimission === 0) {
-                list[i].isDimission = '在职'
-              } else if (list[i].isDimission === 1) {
-                list[i].isDimission = '离职'
-              }
-              if (list[i].staffSex === 1) {
-                list[i].staffSex = '男'
-              } else if (list[i].staffSex === 2) {
-                list[i].staffSex = '女'
-              }
+          const filterVal = this.exportField(this.checkedemployees);
+          // 上面的staffNum、accountId、staffName是tableData里对象的属性
+          const list = this.staffDtoList;  //把data里的tableData存到list
+          for (let i = 0; i < list.length; i++) {
+            if (list[i].isDimission === 0) {
+              list[i].isDimission = '在职'
+            } else if (list[i].isDimission === 1) {
+              list[i].isDimission = '离职'
             }
-            //获取当前时间
-            var date = new Date();
-            var seperator1 = "-";
-            var year = date.getFullYear();
-            var month = date.getMonth() + 1;
-            var strDate = date.getDate();
-            if (month >= 1 && month <= 9) {
-              month = "0" + month;
+            if (list[i].staffSex === 1) {
+              list[i].staffSex = '男'
+            } else if (list[i].staffSex === 2) {
+              list[i].staffSex = '女'
             }
-            if (strDate >= 0 && strDate <= 9) {
-              strDate = "0" + strDate;
-            }
-            var currentdate = year + seperator1 + month + seperator1 + strDate;
-            const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '员工管理'+currentdate);
-            this.$message({
-              showClose: true,
-              message: '文件导出成功',
-              type: 'success'
-            });
-            this.dialogVisible = false;
-            this.checkedemployees = [];
-            this.filterVal = [];
-          })
+          }
+          //获取当前时间
+          var date = new Date();
+          var seperator1 = "-";
+          var year = date.getFullYear();
+          var month = date.getMonth() + 1;
+          var strDate = date.getDate();
+          if (month >= 1 && month <= 9) {
+            month = "0" + month;
+          }
+          if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+          }
+          var currentdate = year + seperator1 + month + seperator1 + strDate;
+          const data = this.formatJson(filterVal, list);
+          export_json_to_excel(tHeader, data, '员工管理'+currentdate);
+          this.$message({
+            showClose: true,
+            message: '文件导出成功',
+            type: 'success'
+          });
+          this.dialogVisible = false;
+          this.checkedemployees = [];
+          this.filterVal = [];
+        })
         }
       },
       formatJson(filterVal, jsonData) {
@@ -1201,18 +1201,18 @@
         }
         return this.filterVal;
       },
-    /*  approvalInfo(val){
-        this.disabled = false;
-        this.id = val.id;
-        this.accountId = val.accountId;
-      },*/
+      /*  approvalInfo(val){
+          this.disabled = false;
+          this.id = val.id;
+          this.accountId = val.accountId;
+        },*/
       loadNode(node,resolve){
         var self = this;
         self.$http.get('department/buildTree2.do_', {
           params: null
         }).then((result) => {
           resolve([result.departmentDto]);
-        }).catch(function (error) {
+      }).catch(function (error) {
 
         });
       },
@@ -1325,7 +1325,7 @@
         }).then((result) => {
           self.modifyForm.createEmp = result.list.createEmpAccountName+"("+result.list.createEmpStaffName+")";
 
-        }).catch(function (error) {
+      }).catch(function (error) {
           commonUtils.Log("employee/otherInfo.do_:"+error);
           //self.$message.error("获取数据错误");
         });
@@ -1350,7 +1350,7 @@
           params: null
         }).then((result) => {
           resolve([result.departmentDto]);
-        }).catch(function (error) {
+      }).catch(function (error) {
 
         });
       },renderContent(h, { node, data, store }) {
@@ -1434,10 +1434,9 @@
         self.$http.get('employee/otherInfo.do_', {
           params: param
         }).then((result) => {
-          self.contentForm.createEmp = result.list.createEmpAccountName+"("+result.list.createEmpStaffName+")";
-          self.contentForm.modifyEmp = result.list.modifyEmpAccountName+"("+result.list.modifyEmpStaffName+")";
-
-        }).catch(function (error) {
+          self.contentForm.createEmp = result.list.createEmpName;
+        self.contentForm.modifyEmp = result.list.modifyEmpName;
+      }).catch(function (error) {
           commonUtils.Log("employee/otherInfo.do_:"+error);
           self.$message.error("获取数据错误");
         });
@@ -1449,8 +1448,8 @@
         var self = this;
         self.$http.get('department/buildTree2.do_')
           .then((result) => {
-            resolve([result.departmentDto]);
-          }).catch(function (error) {
+          resolve([result.departmentDto]);
+      }).catch(function (error) {
 
         });
       },

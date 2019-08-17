@@ -17,17 +17,17 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="企业名称" >
-              <el-input style="width:190px;" clearable v-model="form.companyName"></el-input>
+              <el-input placeholder="企业名称" style="width:190px;" clearable v-model="form.companyName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="统一社会信用代码" style="margin-left: 20px" label-width="140px">
-              <el-input style="width:180px" clearable v-model="form.creditCode"></el-input>
+              <el-input placeholder="统一社会信用代码"style="width:180px" clearable  v-model="form.creditCode"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="类型" style="margin-left: 60px">
-              <el-select v-model="form.companyType" clearable  style="width:130px;" placeholder="请选择">
+              <el-select v-model="form.companyType"  clearable  style="width:130px;" placeholder="请选择">
                 <el-option
                   v-for="item in options1"
                   :key="item.value"
@@ -40,7 +40,7 @@
 
           <el-col :span="6">
             <el-form-item label="公司性质" style="margin-left: 20px">
-              <el-select v-model="form.companyNature" clearable  style="width:150px;" placeholder="请选择">
+              <el-select v-model="form.companyNature"  clearable  style="width:150px;" placeholder="请选择">
                 <el-option
                   v-for="item in options2"
                   :key="item.value"
@@ -54,7 +54,7 @@
         <el-row>
           <el-col :span="13">
             <el-form-item label="状态" >
-              <el-select v-model="form.companyStatus" clearable  style="width:190px;" placeholder="请选择">
+              <el-select v-model="form.companyStatus"  clearable  style="width:190px;" placeholder="请选择">
                 <el-option
                   v-for="item in options3"
                   :key="item.value"
@@ -143,7 +143,7 @@
     <el-dialog :title="title" :visible.sync="companyFlag" :close-on-click-modal="false" width="950px">
       <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
         <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">基本信息</div>
-<!--      <div class="dialog-main">-->
+        <!--      <div class="dialog-main">-->
         <hr><br>
         <el-form :inline="true" :model="companyForm" class="demo-form-inline" :disabled="true" label-width="100px">
           <el-row>
@@ -222,17 +222,17 @@
             </el-col>
           </el-row>
           <el-row>
-          <el-col :span="9">
-            <el-form-item label="成立日期:">
-              <el-date-picker
-                v-model="companyForm.establishTime"
-                type="date"
-                format="yyyy-MM-dd"
-                value-format="yyyy-MM-dd"
-                placeholder="选择日期">
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
+            <el-col :span="9">
+              <el-form-item label="成立日期:">
+                <el-date-picker
+                  v-model="companyForm.establishTime"
+                  type="date"
+                  format="yyyy-MM-dd"
+                  value-format="yyyy-MM-dd"
+                  placeholder="选择日期">
+                </el-date-picker>
+              </el-form-item>
+            </el-col>
           </el-row>
           <el-row>
             <el-col>
@@ -363,7 +363,7 @@
       </div>
       <template slot="footer" >
         <div align="center">
-        <el-button type="primary" @click="checkCompanyInfoBtn">确定</el-button>
+          <el-button type="primary" @click="checkCompanyInfoBtn">确定</el-button>
         </div>
       </template>
     </el-dialog>
@@ -491,12 +491,12 @@
         let permission = self.$store.state.powerList;
         permission.forEach(item=>{
           if (item === 46) {
-            self.companyButtonPermission.createPermission = false
-          }
-          if (item === 47) {
-            self.companyButtonPermission.modifyPermission = false
-          }
-        });
+          self.companyButtonPermission.createPermission = false
+        }
+        if (item === 47) {
+          self.companyButtonPermission.modifyPermission = false
+        }
+      });
       },
       handleSizeChange(val) {
         this.pageSize = val;
@@ -528,13 +528,13 @@
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
-          self.total = result.page.totalCount;
-          self.CompanyTypeEnum = result.CompanyTypeEnum;
-          self.CompanyNatureEnum = result.CompanyNatureEnum;
-          self.CompanyMarkEnum = result.CompanyMarkEnum;
-          self.CompanyStatusEnum = result.CompanyStatusEnum;
-          commonUtils.Log(self.tableData);
-        }).catch(function (error) {
+        self.total = result.page.totalCount;
+        self.CompanyTypeEnum = result.CompanyTypeEnum;
+        self.CompanyNatureEnum = result.CompanyNatureEnum;
+        self.CompanyMarkEnum = result.CompanyMarkEnum;
+        self.CompanyStatusEnum = result.CompanyStatusEnum;
+        commonUtils.Log(self.tableData);
+      }).catch(function (error) {
           commonUtils.Log("company/querylist.do_:"+error);
           self.$message.error("获取数据错误");
         });
@@ -561,23 +561,23 @@
           params: param
         }).then((result) => {
           self.companyForm=result.list.company;
-          self.companyForm.createEmp=result.list.createEmp;
-          self.companyForm.modifyEmp=result.list.modifyEmp;
-          self.licenses = result.licenses;
-          if(self.companyForm.companyType==null){
-            self.companyForm.companyType="";
-          }else{
-            self.companyForm.companyType=String(self.companyForm.companyType);
-          }
+        self.companyForm.createEmp=result.list.createEmp;
+        self.companyForm.modifyEmp=result.list.modifyEmp;
+        self.licenses = result.licenses;
+        if(self.companyForm.companyType==null){
+          self.companyForm.companyType="";
+        }else{
+          self.companyForm.companyType=String(self.companyForm.companyType);
+        }
 
-          if(self.companyForm.companyStatus==null){
-            self.companyForm.companyStatus="";
-          }else{
-            self.companyForm.companyStatus=String(self.companyForm.companyStatus);
-          }
-          self.companyForm.businessTerm=[result.list.company.businessStartTime,result.list.company.businessDeadline];
-          console.log( self.businessTerm)
-        }).catch(function (error) {
+        if(self.companyForm.companyStatus==null){
+          self.companyForm.companyStatus="";
+        }else{
+          self.companyForm.companyStatus=String(self.companyForm.companyStatus);
+        }
+        self.companyForm.businessTerm=[result.list.company.businessStartTime,result.list.company.businessDeadline];
+        console.log( self.businessTerm)
+      }).catch(function (error) {
           commonUtils.Log("company/getCompanyById.do_:" + error);
           self.$message.error("获取数据错误");
         });

@@ -3,7 +3,7 @@
 
 <mapper namespace="com.ucar.combination.dao.EmployeeManageDao">
 
-<!--修改员工的账户信息-->
+    <!--修改员工的账户信息-->
     <update id="updateAccount" parameterType="com.ucar.combination.model.AccountStaff">
         UPDATE t_staff
         SET account_id = #{accountId}
@@ -165,5 +165,33 @@
         t3.staff_name staffName
         from t_account t1,t_staff t2,t_staff t3
         WHERE t2.modify_emp=t1.id and t1.staff_id=t3.id and t2.id=#{staffId}
+    </select>
+    <select id="getCreateEmpById" parameterType="long" resultType="string">
+        SELECT
+        t1.account_name
+        FROM  t_account t1,t_staff t2
+        <where>
+            t2.id =#{staffId} and t2.create_emp=t1.id
+        </where>
+    </select>
+    <select id="getModifyEmpById" parameterType="long" resultType="string">
+        SELECT
+        t1.account_name
+        FROM  t_account t1,t_staff t2
+        <where>
+            t2.id =#{staffId} and t2.modify_emp=t1.id
+        </where>
+    </select>
+    <select id="getCreateStaffId" parameterType="long" resultType="Long">
+        SELECT
+        t2.staff_id staffId
+        from t_staff t1,t_account t2
+        WHERE t1.id=#{staffId} and t1.create_emp=t2.id
+    </select>
+    <select id="getModifyStaffId" parameterType="long" resultType="Long">
+        SELECT
+        t2.staff_id staffId
+        from t_staff t1,t_account t2
+        WHERE t1.id=#{staffId} and t1.modify_emp=t2.id
     </select>
 </mapper>

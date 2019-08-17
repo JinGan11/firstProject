@@ -1,7 +1,7 @@
 <template>
   <home>
     <div>
-      <div style="margin-bottom: 10px;margin-left: 70px">
+      <div style="margin-bottom: 10px;margin-left:0px">
         <el-button type="primary" @click="addCompanyBtn" style="width:70px">添加</el-button>
         <el-button type="primary" @click="removeCompanyBtn" style="width:70px">移除</el-button>
         <span style="margin-left: 700px">
@@ -11,9 +11,9 @@
         <hr ><br>
       </div>
       <el-table ref="multipleTable" :data="tableRelationData" border @selection-change="handleRelationChange" >
-        <el-table-column label="选择"  width="100px">
-          <el-table-column type="selection" width="50"></el-table-column>
-        </el-table-column>
+
+        <el-table-column type="selection" width="50"></el-table-column>
+
         <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
         <el-table-column prop="id" label="编号" width="100px">
           <template slot-scope="scope">

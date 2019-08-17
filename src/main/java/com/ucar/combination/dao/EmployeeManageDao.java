@@ -121,5 +121,8 @@ public interface EmployeeManageDao {
      */
     Map<String,Object>getCreateInfo(long staffId);
     Map<String,Object> getModifyInfo(long staffId);
-
+    Long getCreateStaffId(@Param("staffId")long id);
+    Long getModifyStaffId(@Param("staffId")long id);
+    String getCreateEmpById(long accountId);
+    String getModifyEmpById(long accountId);
 }

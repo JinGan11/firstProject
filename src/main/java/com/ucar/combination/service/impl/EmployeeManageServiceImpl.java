@@ -31,7 +31,7 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
     private EmployeeManageDao employeeManageDao;
     @Autowired(required = false)
     private CompanyManageDao companyManageDao;
-    @Autowired
+    @Autowired(required = false)
     private AccountManageDao accountManageDao;
 
     /**
@@ -66,8 +66,8 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
      * @param staff:员工对象
      * @return
      */
-     public void insertStaff(Staff staff){
-         employeeManageDao.insertStaff(staff);
+    public void insertStaff(Staff staff){
+        employeeManageDao.insertStaff(staff);
     }
     /**
      * description:由员工id将员工状态设置为无效
@@ -143,13 +143,20 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
      * @return：
      */
     public StaffAccountDTO getInfoByStaffId(long staffId){
-           StaffAccountDTO staffAccountDTO=new StaffAccountDTO();
-           Map<String,Object> createMap=employeeManageDao.getCreateInfo(staffId);
-           Map<String,Object> modifyMap=employeeManageDao.getModifyInfo(staffId);
-           staffAccountDTO.setCreateEmpAccountName((String)createMap.get("accountName"));
-           staffAccountDTO.setCreateEmpStaffName((String)createMap.get("staffName"));
-           staffAccountDTO.setModifyEmpAccountName((String)modifyMap.get("accountName"));
-           staffAccountDTO.setModifyEmpStaffName((String)modifyMap.get("staffName"));
+        StaffAccountDTO staffAccountDTO=new StaffAccountDTO();
+        if(employeeManageDao.getCreateStaffId(staffId).longValue()==0){
+            staffAccountDTO.setCreateEmpName((String)employeeManageDao.getCreateEmpById(staffId));
+        }else{
+            Map<String,Object> createMap=employeeManageDao.getCreateInfo(staffId);
+            staffAccountDTO.setCreateEmpName((String)createMap.get("accountName")+"("+(String)createMap.get("staffName")+")");
+        }
+
+        if(employeeManageDao.getModifyStaffId(staffId).longValue()==0){
+            staffAccountDTO.setModifyEmpName((String)employeeManageDao.getModifyEmpById(staffId));
+        }else{
+            Map<String,Object> modifyMap=employeeManageDao.getModifyInfo(staffId);
+            staffAccountDTO.setModifyEmpName((String)modifyMap.get("accountName")+"("+(String)modifyMap.get("staffName")+")");
+        }
         return staffAccountDTO;
     }
 }

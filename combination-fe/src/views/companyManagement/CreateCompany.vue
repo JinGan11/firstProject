@@ -6,7 +6,7 @@
         <span style="margin-left: 800px"><el-button type="primary" @click="save" style="width:70px">保存</el-button>
         <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
         </span>
-       <hr ><br>
+        <hr ><br>
       </div>
       <div style="width:90%; margin-left: 70px">
         <el-form ref="ruleForm" :model="form" :rules="rules" label-width="90px">
@@ -113,7 +113,7 @@
           <div style="margin-bottom: 10px">
             <span style="font-size: 20px">附件信息</span>
           </div>
-            营业执照附件：
+          营业执照附件：
           <el-upload
             action="#"
             list-type="picture-card"
@@ -299,7 +299,7 @@
             { required: true, message: '请输入公司名称', trigger: 'blur' },
             { min: 2, max: 60, message: '长度在 2 到 60 个字符', trigger: 'blur' },
           ],
-           creditCode: [
+          creditCode: [
             { required: true, message: '请输入统一社会信用代码', trigger: 'blur' },
             { min: 15, max: 18, message: '长度在 15 到 18 个字符或数字', trigger: 'blur' },
             { pattern:/^([\da-zA-Z]+$)/,message: '只支持字母和数字，请勿输入其他字符', trigger: 'blur' }
@@ -414,23 +414,27 @@
               type: 'warning'
             }).then(() => {
               self.form.businessStartTime = self.businessTerm[0];
-              self.form.businessDeadline = self.businessTerm[1];
-              self.form.liscensePath = 'dfs';
-              self.form.createEmp = '';
-              self.form.modifyEmp = '';
-              self.formData.append("company", JSON.stringify(self.form))
-              self.$http.post("company/createCompany", self.formData)
-                .then((result) => {
-                  self.$alert("添加成功！");
-                  self.$router.replace("/CompanyManagement");
-                  self.formData=new FormData();
-                })
-                .catch(function (error) {
-                  commonUtils.Log("company/createCompany:" + error);
-                  self.$message.error("新建公司失败");
-                  self.formData=new FormData();
-                });
+            self.form.businessDeadline = self.businessTerm[1];
+            self.form.liscensePath = 'dfs';
+            self.form.createEmp = '';
+            self.form.modifyEmp = '';
+            self.formData.append("company", JSON.stringify(self.form))
+            self.$http.post("company/createCompany", self.formData)
+              .then((result) => {
+              if(!(result.list.result)){
+              self.$alert(result.list.msg);
+            }else{
+              self.$alert("添加成功！");
+              self.$router.replace("/CompanyManagement");
+              self.formData=new FormData();
+            }
+          })
+          .catch(function (error) {
+              commonUtils.Log("company/createCompany:" + error);
+              self.$message.error("新建公司失败");
+              self.formData=new FormData();
             });
+          });
           } else {
             console.log('error submit!!');
             return false;

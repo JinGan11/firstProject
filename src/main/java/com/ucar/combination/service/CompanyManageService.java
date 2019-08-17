@@ -16,7 +16,7 @@ import java.util.Map;
  * @author jianan.shu@ucarinc.com
  * @version 1.0
  * @date: 2019/8/3 10:17
-*/
+ */
 public interface CompanyManageService {
     /**
      * description: 获取公司列表
@@ -68,7 +68,8 @@ public interface CompanyManageService {
      * @date: 2019/8/8 15:31
      * @return：
      */
-    int creditCodeValidate(String creditCode);
+    //int creditCodeValidate(String creditCode);
+    public Map<String, Object> creditCodeValidate(String creditCode);
     /**
      * description: 查询未关联公司
      * @author: jianan.shu@ucarinc.com

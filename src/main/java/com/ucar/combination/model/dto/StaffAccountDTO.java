@@ -5,12 +5,30 @@ package com.ucar.combination.model.dto;
  * @author jianan.shu@ucarinc.com
  * @version 1.0
  * @date: 2019/8/14 16:31
-*/
+ */
 public class StaffAccountDTO {
+    private String createEmpName;
+    private String modifyEmpName;
     private String createEmpAccountName;
     private String createEmpStaffName;
     private String modifyEmpAccountName;
     private String modifyEmpStaffName;
+
+    public String getCreateEmpName() {
+        return createEmpName;
+    }
+
+    public void setCreateEmpName(String createEmpName) {
+        this.createEmpName = createEmpName;
+    }
+
+    public String getModifyEmpName() {
+        return modifyEmpName;
+    }
+
+    public void setModifyEmpName(String modifyEmpName) {
+        this.modifyEmpName = modifyEmpName;
+    }
 
     public String getCreateEmpAccountName() {
         return createEmpAccountName;
