@@ -535,8 +535,9 @@
         this.chooseDepartmentFlag = false;
       },
       clearDepartment(){
-        this.form.departmentId = '';
-        this.form.department = '';
+        //this.form.departmentId = '';
+        this.form.departmentName = '';
+        this.$refs.tree.setCheckedKeys([]);
       },
       loadNodeDepartment(node, resolve) {
         var self = this;
