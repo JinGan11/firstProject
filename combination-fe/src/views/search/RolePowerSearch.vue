@@ -11,17 +11,17 @@
           <el-col :span="6">
             <el-form-item label="支持业务线">
               <el-select placeholder="请选择" v-model="form.businessLine" value="0">
-                <el-option label="买买车" value="0"></el-option>
-                <el-option label="闪贷" value="1"></el-option>
-                <el-option label="租车" value="2"></el-option>
-                <el-option label="专车" value="3"></el-option>
-                <el-option label="保险" value="4"></el-option>
+                <el-option label="买买车" value="买买车"></el-option>
+                <el-option label="闪贷" value="闪贷"></el-option>
+                <el-option label="租车" value="租车"></el-option>
+                <el-option label="专车" value="专车"></el-option>
+                <el-option label="保险" value="保险"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="审批人账号">
-              <el-input placeholder="审批人账号"  v-model="form.approverAccount"></el-input>
+              <el-input placeholder="审批人账号"  v-model="form.approverAccountName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -45,9 +45,9 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="角色状态">
-              <el-select placeholder="请选择" v-model="form.roleStatus" value="0">
-                <el-option label="有效" value="0"></el-option>
-                <el-option label="无效" value="1"></el-option>
+              <el-select placeholder="请选择" v-model="form.roleStatus" >
+                <el-option label="无效" value="0"></el-option>
+                <el-option label="有效" value="1"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -166,7 +166,7 @@
     </el-dialog>
 
     <el-dialog title="角色详情信息" :visible.sync="roleInfoDetailFlag" :close-on-click-modal="false" width="900px">
-      <el-form ref="form" :model="formDetail" label-width="80px">
+      <!--<el-form ref="form" :model="formDetail" label-width="80px">-->
         <div>
           <div style="margin-bottom: 10px">
             <p>角色信息</p>
@@ -285,7 +285,7 @@
             <el-button type="primary" @click="cancelRoleInfo" style="width:70px">取消</el-button>
           </div>
         </div>
-      </el-form>
+     <!-- </el-form>-->
     </el-dialog>
     <el-dialog :title='excelTitle' :visible.sync="rolePowerDialogVisible" :close-on-click-modal="false" width="600px">
       <template>
@@ -317,7 +317,7 @@
           roleId:'',
           roleName:'',
           businessLine:'',
-          approverAccount:'',
+          approverAccountName:'',
           approverStaffNum:'',
           approverStaffName:'',
           approverDepartmentName:'',
@@ -443,7 +443,7 @@
           roleId:self.form.roleId,
           roleName:self.form.roleName,
           businessLine:self.form.businessLine,
-          approverAccount:self.form.approverAccount,
+          approverAccountName:self.form.approverAccountName,
           approverStaffNum:self.form.approverStaffNum,
           approverStaffName:self.form.approverStaffName,
           approverDepartmentName:self.form.approverDepartmentName,

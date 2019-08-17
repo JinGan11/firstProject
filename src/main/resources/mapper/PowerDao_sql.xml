@@ -88,12 +88,17 @@
         from t_role_info t1 left join t_r_role_power t2 on t1.id=t2.role_info_id
           LEFT JOIN t_power t3 on t2.power_id=t3.power_id
         <where>
+            1 = 1
             <if test="roleId!=null and roleId.trim()!=''">and t1.id=#{roleId}</if>
             <if test="roleName!=null and roleName.trim()!=''">and t1.role_name=#{roleName}</if>
-            <if test="businessLine!=null and businessLine.trim()!=''">and t1.business_line=#{businessLine}</if>
-            <if test="roleStatus!=null and roleStatus.trim()!=''">and t1.role_status=#{roleStatus}</if>
+            <if test="businessLine!=null and businessLine.trim()!=''">and
+                t1.business_line like '%${businessLine}%'</if>
+                <!--t1.business_line=#{businessLine}</if>-->
+            <if test="roleStatus!=null">and t1.role_status=#{roleStatus}</if>
             <if test="approverAccountName!=null and approverAccountName.trim()!=''">and
                 t1.approver_account_name=#{approverAccountName}</if>
+            <if test="approverStaffName!=null and approverStaffName.trim()!=''">and
+                t1.approver_staff_name=#{approverStaffName}</if>
             <if test="approverStaffNum!=null and approverStaffNum.trim()!=''" >and
                 t1.approver_staff_num=#{approverStaffNum}</if>
             <if test="approverDepartmentName!=null and approverDepartmentName.trim()!=''">and
