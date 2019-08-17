@@ -163,6 +163,11 @@ public class RoleManagementController {
 		String strid = request.getParameter("roleID");
 		int id = Integer.parseInt(strid);
 		RoleAccountStaffDto roleAccountStaffDto = roleManagementService.getOtherOneInf(id);
+		RoleAccountStaffDto roleAccountStaffDto1 = roleManagementService.getOtherOneInf1(id);
+		roleAccountStaffDto.setModifyEmp(roleAccountStaffDto1.getModifyEmp());
+		roleAccountStaffDto.setModifyEmpName(roleAccountStaffDto1.getModifyEmpName());
+		roleAccountStaffDto.setModifyEmpNum(roleAccountStaffDto1.getModifyEmpNum());
+		roleAccountStaffDto.setModifyTime(roleAccountStaffDto1.getModifyTime());
 		//System.out.println("ASDFA");
 		return Result.ok().put("page", roleAccountStaffDto);
 	}

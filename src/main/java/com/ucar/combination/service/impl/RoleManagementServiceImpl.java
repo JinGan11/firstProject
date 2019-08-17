@@ -148,6 +148,12 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         return roleAccountStaffDto;
     }
 
+    @Override
+    public RoleAccountStaffDto getOtherOneInf1(int id) {
+        RoleAccountStaffDto roleAccountStaffDto = roleManagementDao.getOtherOneInf1(id);
+        return roleAccountStaffDto;
+    }
+
     /**
      * description:修改数据
      * @author gan.jin@ucarinc.com

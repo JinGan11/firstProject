@@ -124,7 +124,25 @@
         t1.modify_time modifyTime
         from t_role_info t1
         LEFT JOIN t_account t2 on
-        t1.approver_account_name=t2.account_name
+        t1.create_emp=t2.id
+        LEFT JOIN t_staff t3 on
+        t2.staff_id=t3.id
+        where t1.id= #{id}
+    </select>
+
+    <select id="getOtherOneInf1" resultType="com.ucar.combination.model.dto.RoleAccountStaffDto" parameterType="int">
+        select
+        t2.account_name createEmp,
+        t2.account_name createEmpNum,
+        t3.staff_name createEmpName,
+        t1.create_time createTime,
+        t2.account_name modifyEmp,
+        t2.account_name modifyEmpNum,
+        t3.staff_name modifyEmpName,
+        t1.modify_time modifyTime
+        from t_role_info t1
+        LEFT JOIN t_account t2 on
+        t1.modify_emp=t2.id
         LEFT JOIN t_staff t3 on
         t2.staff_id=t3.id
         where t1.id= #{id}

@@ -100,6 +100,7 @@ public interface RoleManagementDao {
     void insertAccountRole(AccountRole accountRole);
     RoleDto getOneInf(int id);
     RoleAccountStaffDto getOtherOneInf(int id);
+    RoleAccountStaffDto getOtherOneInf1(int id);
     void updateByModify(RoleDto role);
 
     /**

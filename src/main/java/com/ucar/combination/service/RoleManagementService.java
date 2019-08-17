@@ -32,6 +32,7 @@ public interface RoleManagementService {
     ResultPage getnotOwnedRoleList(Account account);
     RoleDto getOneInf(int id);
     RoleAccountStaffDto getOtherOneInf(int id);
+    RoleAccountStaffDto getOtherOneInf1(int id);
     Result assignPermission(AssignPermission assignPermission, Long accountId);
     Result getRolePower(RolePower rolePower);
     void updateByModify(RoleDto role);
