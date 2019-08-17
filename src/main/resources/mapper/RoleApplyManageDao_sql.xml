@@ -68,6 +68,7 @@
         t1.role_id                  roleId,
         t2.role_name                roleName,
         t2.approver_staff_name      approverStaffName,
+        t2.approver_account_name    approverAccountName,
         t2.business_line            businessLine,
         t1.apply_account_name       applyAccountName,
         t1.apply_staff_num          applyStaffNum,
@@ -83,7 +84,8 @@
         LEFT JOIN t_account t3 on t3.id = t1.modify_emp
         LEFT JOIN t_staff t4 on t1.apply_staff_num = t4.staff_num
         LEFT JOIN t_department t5 on t5.id = t4.department_id
-        WHERE 1=1
+        where  t1.apply_account_name=#{loginAccountName}
+        or t2.approver_account_name=#{loginAccountName}
         <if test="userPermission == 4">
             and t3.id = #{accountId}
         </if>
