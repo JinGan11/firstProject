@@ -88,8 +88,7 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
      */
     @Override
     public int updateDimission(String id) {
-        employeeManageDao.updateDimission(id);
-        return 0;
+        return employeeManageDao.updateDimission(id);
     }
     /**
      * description: 按ID选择员工信息

@@ -1032,6 +1032,7 @@
           });
       });
       },
+      //进行员工的离职操作
       quitEmployee(){
         this.$confirm('此操作将离职该员工, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -1048,6 +1049,8 @@
           if (result.status=="success"){
           self.$message.success("成功离职");
           self.fetchData();
+          self.quitDisabled=true;
+          self.recoveryDisabled=false;
         } else {
           self.$message.error("离职失败")
         }
@@ -1062,6 +1065,7 @@
           });
       });
       },
+      //进行员工的恢复操作
       recovery(){
         this.$confirm('此操作将恢复该员工, 是否继续?', '提示', {
           confirmButtonText: '确定',
@@ -1078,6 +1082,8 @@
           if (result.status=="success"){
           self.$message.success("恢复成功");
           self.fetchData();
+          self.recoveryDisabled=true;
+          self.quitDisabled=false;
         } else {
           self.$message.error("恢复失败")
         }
