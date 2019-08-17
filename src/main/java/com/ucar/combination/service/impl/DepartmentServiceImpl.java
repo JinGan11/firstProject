@@ -65,8 +65,11 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Boolean updateUpperDepartment(Long id, String upperDepartmentNo) {
-        departmentDao.updateUpperDepartment(id, upperDepartmentNo);
-        return null;
+        if (departmentDao.checkStatusById(id) > 0 && departmentDao.checkStatusByNo(upperDepartmentNo) > 0){
+            departmentDao.updateUpperDepartment(id, upperDepartmentNo);
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -133,8 +133,12 @@ public class DepartmentController {
     @RequestMapping("/updateUpperDepartment.do_")
     public Map<String, Object> changeUpper(@RequestBody Department department) {
         Map<String, Object> map = departmentService.checkWorkplaceForUpper(department.getId(), department.getUpperDepartmentNo());
-        if ((Boolean) map.get("result"))
-            departmentService.updateUpperDepartment(department.getId(), department.getUpperDepartmentNo());
+        if ((Boolean) map.get("result")){
+            if(!departmentService.updateUpperDepartment(department.getId(), department.getUpperDepartmentNo())){
+                map.put("result",false);
+                map.put("msg","部门的有效性发生变更，修改失败，请返回查看！");
+            }
+        }
         return map;
     }
 

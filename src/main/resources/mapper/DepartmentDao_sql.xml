@@ -207,6 +207,17 @@
         select support_business from t_department where upper_department_no=#{departmentNo} and status=1
     </select>
 
+    <select id="checkStatusById" resultType="Integer">
+        select count(*) from t_department
+        where
+        id=#{departmentId} and status=1
+    </select>
+
+    <select id="checkStatusByNo" resultType="Integer">
+        select count(*) from t_department
+        where
+        department_no=#{departmentNo} and status=1
+    </select>
 
     <select id="searchDepartment" resultType="com.ucar.combination.model.dto.SearchDepartmentDto">
         SELECT A.id,

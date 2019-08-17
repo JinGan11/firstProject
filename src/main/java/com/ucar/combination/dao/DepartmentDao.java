@@ -193,4 +193,23 @@ public interface DepartmentDao {
      * @return Department返回一个部门类。
      */
     DepartmentDto getDepartmentDtoById(Long id);
+
+    /**
+     * description: 校验是否更改
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/17 16:06
+     * @params
+     * @return
+     */
+    Integer checkStatusById(Long departmentId);
+
+    /**
+     * description: 校验是否更改
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/17 16:06
+     * @params
+     * @return
+     */
+    Integer checkStatusByNo(String departmentNo);
+
 }
