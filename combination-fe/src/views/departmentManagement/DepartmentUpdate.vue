@@ -329,6 +329,7 @@
   let amapManager = new AMapManager()
   export default {
     data() {
+      let self = this;
       return {
         address: null,
         searchKey: '',
@@ -380,30 +381,30 @@
         },
         // 一些工具插件
         plugin: [
-          {
-            // 定位
-            pName: 'Geolocation',
-            events: {
-              init (o) {
-                // o是高德地图定位插件实例
-                o.getCurrentPosition((status, result) => {
-                  if (result && result.position) {
-                    // 设置经度
-                    self.lng = result.position.lng
-                    // 设置维度
-                    self.lat = result.position.lat
-                    // 设置坐标
-                    self.center = [self.lng, self.lat]
-                    self.markers.push([self.lng, self.lat])
-                    // load
-                    self.loaded = true
-                    // 页面渲染好后
-                    self.$nextTick()
-                  }
-                })
-              }
-            }
-          },
+          // {
+          //   // 定位
+          //   pName: 'Geolocation',
+          //   events: {
+          //     init (o) {
+          //       // o是高德地图定位插件实例
+          //       o.getCurrentPosition((status, result) => {
+          //         if (result && result.position) {
+          //           // 设置经度
+          //           self.lng = result.position.lng
+          //           // 设置维度
+          //           self.lat = result.position.lat
+          //           // 设置坐标
+          //           self.center = [self.lng, self.lat]
+          //           self.markers.push([self.lng, self.lat])
+          //           // load
+          //           self.loaded = true
+          //           // 页面渲染好后
+          //           self.$nextTick()
+          //         }
+          //       })
+          //     }
+          //   }
+          // },
           {
             // 搜索
             pName: 'PlaceSearch',
