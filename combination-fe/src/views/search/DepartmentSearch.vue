@@ -354,9 +354,11 @@
               </el-form-item>
             </el-col>
             <br>
-            <el-col :span="12">
-              <el-form-item label="备注" label-width="150px">
-                <el-input style="width: 300px;" v-model="formDetail.remark" disabled></el-input>
+          </el-row>
+          <el-row >
+            <el-col >
+              <el-form-item label="备注" >
+                <el-input type="textarea"  v-model="formDetail.remark" disabled></el-input>
               </el-form-item>
             </el-col>
           </el-row>
