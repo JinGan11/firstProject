@@ -132,9 +132,9 @@ public class EmployeeManageController {
             Date date = new Date();
             Account account1 = new Account();
             account1.setModifyEmpId(Long.parseLong(currentAccountId));
+            account1.setModifierId(accountManagerService.selectStaffIdById(account1.getModifyEmpId()));
             account1.setModifyTime(date);
             account1.setId(Long.parseLong(String.valueOf(id)));
-          /*  accountManagerService.updateModifyTimeAndModifyName(account1);*/
             accountManagerService.updateStatus(accountID,3);
             Account account=accountManagerService.selectAccountById(accountId);
             /*accountStaff.setAccountId(Long.valueOf(accountId));*/

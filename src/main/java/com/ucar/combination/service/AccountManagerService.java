@@ -7,6 +7,7 @@ import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.model.Staff;
 import com.ucar.combination.model.dto.AccountPowerDto;
+import org.apache.ibatis.annotations.Param;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -205,4 +206,6 @@ public interface AccountManagerService {
     List<AccountPowerDto> getAllAccountPowerList(QueryParam queryParam);
 
     List<AccountHistory> getHistoryList(String accountId);
+    void updateModifyTimeAndModifyName(@Param("a") Account account);
+    public Long selectStaffIdById(Long accountID);
 }

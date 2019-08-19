@@ -13,6 +13,7 @@ import com.ucar.combination.model.dto.AccountPowerDto;
 import com.ucar.combination.service.AccountManagerService;
 import com.ucar.combination.service.DepartmentService;
 import com.ucar.combination.service.EmployeeManageService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
@@ -343,5 +344,11 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     @Override
     public List<AccountHistory> getHistoryList(String accountId) {
         return accountHistoryDao.selectAccountHistoryByAccountId(accountId);
+    }
+    public void updateModifyTimeAndModifyName(@Param("a") Account account){
+        accountManageDao.updateModifyTimeAndModifyName(account);
+    }
+    public Long selectStaffIdById(Long accountID){
+        return accountManageDao.selectStaffIdById(accountID);
     }
 }
