@@ -418,11 +418,29 @@
         });
       },
       selectionConfirm() {
-        this.form.accountNum = this.selection.accountName;
-        this.form.staffNum = this.selection.staffNum;
-        this.form.staffName = this.selection.staffName;
-        this.form.departmentName = this.selection.department;
-        this.dialogVisibleAccount = false;
+        const self = this;
+        var param = {
+          id: self.selection.id,
+        };
+        self.$http.get('account/selectAccountById.do_',{
+          params: param
+        }).then((result) => {
+          if (result.account.accountState === 3){
+            alert("该账户已被删除，不可选择");
+            this.isChoose = true;
+            this.fetchAccountData();
+          }
+          else{
+            this.form.accountNum = this.selection.accountName;
+            this.form.staffNum = this.selection.staffNum;
+            this.form.staffName = this.selection.staffName;
+            this.form.departmentName = this.selection.department;
+            this.dialogVisibleAccount=false;
+          }
+        }).catch(function (error) {
+          commonUtils.Log("account/selectAccountById.do_:"+error);
+          self.$message.error("获取数据错误")
+        });
       },
       selectionCancel() {
         this.dialogVisibleAccount = false;
