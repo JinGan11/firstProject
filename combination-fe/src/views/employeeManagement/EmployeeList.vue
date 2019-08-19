@@ -89,7 +89,7 @@
         新建
       </el-button>
       <el-button type="primary" @click="modifyEmployee" v-if="!empButtonPermission.modifyPermission"
-                 :disabled="disabled" style="width:70px">修改
+                 :disabled="isDiss" style="width:70px">修改
       </el-button>
       <el-button type="primary" @click="deleteEmployee" v-if="!empButtonPermission.deletePermission"
                  :disabled="disabled" style="width:70px">删除
@@ -646,6 +646,7 @@
       };
 
       return {
+        isDiss:true,
         total: 0,
         currentPage: 1,
         pageSize: 10,
@@ -1381,6 +1382,11 @@
       },
       approvalInfo(val) {
         this.disabled = false;
+        if(val.isDimission===0) {
+          this.isDiss = false;
+        }else if(val.isDimission===1){
+          this.isDiss = true;
+        }
         this.id = val.id;
         this.accountId = val.accountId;
         this.modifyForm.id = val.id;
