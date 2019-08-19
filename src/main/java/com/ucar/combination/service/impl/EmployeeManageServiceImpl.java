@@ -57,6 +57,7 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
      * @param queryParam
      * @return
      */
+    @Override
     public List<Object> getStaffList(QueryParam queryParam){
         return employeeManageDao.queryList(queryParam);
     }
@@ -66,6 +67,7 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
      * @param staff:员工对象
      * @return
      */
+    @Override
     public void insertStaff(Staff staff){
         employeeManageDao.insertStaff(staff);
     }
@@ -76,6 +78,7 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
      * @params id 员工id
      * @return 无
      */
+    @Override
     public void updateStatus(int id){
         employeeManageDao.updateStatus(id);
     }
