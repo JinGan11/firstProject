@@ -5,12 +5,12 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="角色名称" label-width="150px;">
-              <el-input placeholder="角色名称" style="width:200px;" v-model="form.roleName"></el-input>
+              <el-input placeholder="角色名称" style="width:150px;" v-model="form.roleName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="支持业务线" label-width="150px;">
-              <el-select v-model="form.businessLine" clearable style="width:200px;" placeholder="请选择">
+              <el-select v-model="form.businessLine" clearable style="width:150px;" placeholder="请选择">
                 <el-option
                   v-for="item in businessLineOptions"
                   :key="item.value"
@@ -22,12 +22,12 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="登录账号" label-width="150px;">
-              <el-input placeholder="登录账号" style="width:200px;" v-model="form.accountName"></el-input>
+              <el-input placeholder="登录账号" style="width:150px;" v-model="form.accountName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="员工编号" label-width="150px;">
-              <el-input placeholder="员工编号" style="width:200px;" v-model="form.staffNum"></el-input>
+              <el-input placeholder="员工编号" style="width:140px;" v-model="form.staffNum"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -35,12 +35,12 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="员工姓名" label-width="150px;">
-              <el-input placeholder="员工姓名" style="width:200px;" v-model="form.staffName"></el-input>
+              <el-input placeholder="员工姓名" style="width:150px;" v-model="form.staffName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="角色状态" label-width="150px;">
-              <el-select v-model="form.roleStatus" clearable style="width:200px;margin-left: 15px;" placeholder="请选择">
+              <el-select v-model="form.roleStatus" clearable style="width:150px;margin-left: 15px;" placeholder="请选择">
                 <el-option
                   v-for="item in roleStatusOptions"
                   :key="item.value"
@@ -52,7 +52,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="账号状态" label-width="150px;">
-              <el-select v-model="form.accountState" clearable style="width:200px;" placeholder="请选择">
+              <el-select v-model="form.accountState" clearable style="width:150px;" placeholder="请选择">
                 <el-option
                   v-for="item in accountStateOptions"
                   :key="item.value"
@@ -64,7 +64,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="所属部门" label-width="150px;">
-              <el-input :disabled="true" style="width:200px;" v-model="form.departmentName"></el-input>
+              <el-input :disabled="true" style="width:140px;" v-model="form.departmentName"></el-input>
             <el-button type="text" @click="chooseDepartmentFlag=true">选择</el-button>
             <el-button type="text" @click="clearDepartment">取消</el-button>
             </el-form-item>
@@ -84,28 +84,27 @@
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <!--      <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>-->
-      <el-table-column prop="roleId" label="角色ID" width="120">
+      <el-table-column prop="roleId" label="角色ID" >
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="ChooseOnDetail(scope.row.roleId)">{{scope.row.roleId}}</el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="roleName" label="角色名称" width="150"></el-table-column>
-      <el-table-column prop="businessLine" label="支持业务线" >
-      </el-table-column>
-      <el-table-column prop="accountName" label="登陆账号" width="150">
+      <el-table-column prop="roleName" label="角色名称" ></el-table-column>
+      <el-table-column prop="businessLine" label="支持业务线" width="170" ></el-table-column>
+      <el-table-column prop="accountName" label="登陆账号" width="130">
         <template slot-scope="scope">
           <el-button type="text" @click="accountBtn(scope.row.accountId)">{{scope.row.accountName}}</el-button>
         </template>
       </el-table-column>
-      <el-table-column prop="staffNum" label="员工编号" width="150"></el-table-column>
-      <el-table-column prop="staffName" label="员工姓名" width="150"></el-table-column>
+      <el-table-column prop="staffNum" label="员工编号" width="120"></el-table-column>
+      <el-table-column prop="staffName" label="员工姓名" width="120"></el-table-column>
       <el-table-column prop="departmentName" label="所属部门" width="150"></el-table-column>
-      <el-table-column prop="roleStatus" label="角色状态" width="150">
+      <el-table-column prop="roleStatus" label="角色状态" >
         <template slot-scope="scope">
           {{scope.row.roleStatus===1?'有效':'无效'}}
         </template>
       </el-table-column>
-      <el-table-column prop="accountState" label="账号状态" width="150">
+      <el-table-column prop="accountState" label="账号状态">
         <template slot-scope="scope">
           {{scope.row.accountState=="1"?'正常':(scope.row.accountState=="2"?'冻结':'无效')}}
         </template>

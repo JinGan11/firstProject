@@ -178,8 +178,6 @@ public interface AccountManagerService {
     //冻结和解冻的历史记录
     void lockAndUnlock(int id, int status, String historyOperationType, HttpServletRequest request);
 
-    //返回历史记录
-
     /**
      * description: 查询账户名是否存在
      * @author junqiang.zhang@ucarinc.com
@@ -206,6 +204,7 @@ public interface AccountManagerService {
      */
     List<AccountPowerDto> getAllAccountPowerList(QueryParam queryParam);
 
+    //返回历史记录
     List<AccountHistory> getHistoryList(String accountId);
     void updateModifyTimeAndModifyName(@Param("a") Account account);
     public Long selectStaffIdById(Long accountID);
