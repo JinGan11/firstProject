@@ -203,6 +203,9 @@ public class RoleManagementController {
 	public Result assignPermission(@RequestBody AssignPermission assignPermission, HttpSession session) {
 		Long accountId = (Long) session.getAttribute("accountId");
 		Result result = roleManagementService.assignPermission(assignPermission, accountId);
+		RoleDto roleDto = roleManagementService.getOneInf(Math.toIntExact(assignPermission.getRoleInfoId()));
+		roleDto.setModifyEmp(accountId);
+		roleManagementService.updateByModify(roleDto);
 		Account account = accountManagerService.selectAccountById(String.valueOf(accountId));
 		AccountStaff accountStaff = new AccountStaff();
 		if (account != null ) {

@@ -758,9 +758,12 @@
         };
         self.$http.post("roleManage/assignPermission", param)
           .then((result) => {
-            console.log("success!")
+            self.$message.info("权限分配成功！")
           })
           .catch(function (error) {
+            self.$alert("系统错误，请稍后再试！", '消息提醒', {
+              confirmButtonText: '确定',
+            });
           });
         self.roleAssignPermissionFlag = false;
       },
