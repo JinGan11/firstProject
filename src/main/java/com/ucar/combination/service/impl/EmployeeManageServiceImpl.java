@@ -120,6 +120,7 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
      * @params
      * @return
      */
+    @Override
     public void updateStaff(Staff staff){
         employeeManageDao.updateStaff(staff);
     }
@@ -130,6 +131,7 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
      * @params
      * @return
      */
+    @Override
     public List<String> selectAllStaffName(){
         List<String> list=employeeManageDao.selectAllStaffName();
         return list;
@@ -141,6 +143,7 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
      * @date: 2019/8/14 16:40
      * @return：
      */
+    @Override
     public StaffAccountDTO getInfoByStaffId(long staffId){
         StaffAccountDTO staffAccountDTO=new StaffAccountDTO();
         if(employeeManageDao.getCreateStaffId(staffId).longValue()==0){
