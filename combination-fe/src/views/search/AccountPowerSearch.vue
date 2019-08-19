@@ -43,10 +43,10 @@
           <el-form-item label="权限名称">
             <el-input v-model="accountForm.path" :disabled="true"></el-input>
           </el-form-item>
-          <el-col :span="2">
-            <el-button type="text" @click="selectPower">选择</el-button>
-            <el-button type="text" @click="clearPower">清空</el-button>
-          </el-col>
+        </el-col>
+        <el-col :span="2">
+          <el-button type="text" @click="selectPower">选择</el-button>
+          <el-button type="text" @click="clearPower">清空</el-button>
         </el-col>
       </el-row>
       <el-row style="text-align: center">
@@ -202,7 +202,7 @@
     <!--选择权限-->
     <el-dialog :title="roleAssignPermissionTitle" :visible.sync="roleAssignPermissionFlag" :close-on-click-modal="false"
                width="700px">
-      <div class="dialog-main" >
+      <div class="dialog-main">
         <el-form>
           <el-row type="flex" justify="center" style="width: 100%;">
             <el-col :span="11">
@@ -249,7 +249,7 @@
           path: '',
           accountState: '',
           status: '',
-          powerId:'',
+          powerId: '',
         },
         formDetail: {
           accountName: '',
@@ -459,7 +459,7 @@
 
       //权限树的获得
       //获取树数据
-      loadNode(node,resolve){
+      loadNode(node, resolve) {
         var self = this;
         self.$http.get('department/buildTree2.do_', {
           params: null
@@ -509,8 +509,8 @@
       },
 
       getCheckedPermission() {
-        this.accountForm.path=this.$refs.permTree.getCheckedNodes()[0].powerName;
-        this.roleAssignPermissionFlag=false;
+        this.accountForm.path = this.$refs.permTree.getCheckedNodes()[0].powerName;
+        this.roleAssignPermissionFlag = false;
       },
       //获取树数据
       loadNodePermTree(node, resolve) {
@@ -525,9 +525,9 @@
         });
 
       },
-      handleCheckChange (data,checked,node) {
+      handleCheckChange(data, checked, node) {
         // 手动设置单选
-        if(checked === true) {
+        if (checked === true) {
           this.accountForm.powerId = data.powerId;
           this.checkedId = data.powerId;
           this.$refs.permTree.setCheckedKeys([data.powerId]);
@@ -537,8 +537,8 @@
           }
         }
       },
-      clearPermission(){//清除权限的值
-        this.form.powerName='';
+      clearPermission() {//清除权限的值
+        this.form.powerName = '';
       },
     },
     filters: {
