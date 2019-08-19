@@ -176,7 +176,7 @@ public class RegionManageController {
         param.setRegionLevel(Integer.valueOf(regionLevel));
         param.setRegionCode(regionCode);
         param.setRegionName(regionName);
-        if(cityID != null && cityID.trim() != ""){
+        if(cityID != null ){
             int id=Integer.parseInt(cityID);
             Long cityId=(long) id;
             param.setCityID(cityId);
@@ -245,9 +245,9 @@ public class RegionManageController {
 
         int resultValue=regionManageService.createRegion(region);
         if(resultValue>0)
-        {return "success";}
+        {return "创建成功";}
         else
-        {return "false";}
+        {return "创建失败";}
     }
 
 
@@ -297,9 +297,9 @@ public class RegionManageController {
         //最终修改
         int resultValue=regionManageService.modifyRegion(region);
         if(resultValue>0)
-        {return "success";}
+        {return "修改成功";}
         else
-        {return "false";}
+        {return "修改失败";}
     }
     /**
      * description: 部门及部门下属城市列表展示

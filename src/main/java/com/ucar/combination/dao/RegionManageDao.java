@@ -63,6 +63,7 @@ public interface RegionManageDao {
     Region getRegionDetails(Region region);
 
     int modifyRegion(Region region);
+    int modifySubRegion(Region region);
 
     List<Region> matchRegionCode(Region region);
     List<Region> getRegionByUpperCityID(Region region);

@@ -138,10 +138,6 @@
 		<if test="cityID != null ">
 			AND t1.upper_city_id = #{cityID}
 		</if>
-		<if test="regionCode != null and regionCode.trim() != ''">
-			AND t1.upper_international_code = #{regionCode}
-		</if>
-
 	</select>
 
 	<insert id="createRegion" parameterType="com.ucar.combination.model.Region">
@@ -181,6 +177,9 @@
 		t1.`level` = #{regionLevel}
 		AND t1.modify_emp = t2.id
 		AND t1.create_emp = t3.id
+		<if test="cityID != null ">
+			AND t1.city_id = #{cityID}
+		</if>
 		<if test="regionCode != null and regionCode.trim() != ''">
 			AND t1.international_code LIKE #{regionCode}"%"
 		</if>
@@ -197,6 +196,12 @@
         update t_b_city t1
         set t1.international_code=#{regionCode},t1.city_name=#{regionName},t1.city_name_pinyin=#{regionPinyin},t1.status=#{regionStatus},t1.modify_emp=#{modifyEmp},t1.modify_time=#{modifyTime}
         where t1.city_id = #{cityID}
+    </update>
+
+	<update id="modifySubRegion" parameterType="com.ucar.combination.model.Region">
+        update t_b_city t1
+        set t1.upper_international_code=#{regionCode},t1.upper_city_name=#{regionName},t1.modify_emp=#{modifyEmp},t1.modify_time=#{modifyTime}
+        where t1.upper_city_id = #{cityID}
     </update>
 
 	<select id="citySearchListById" resultType="java.lang.String">

@@ -382,7 +382,7 @@
                     //对取回来的数据进行处理
                     self.form=result.regionDetails;
                     self.regionStatus=self.form.regionStatus;
-                    this.formTemp=this.form;
+                    this.formTemp=result.regionDetails;
 
                     if (self.form.regionStatus === 0) {
                         self.form.regionStatus = '无效'
@@ -478,7 +478,7 @@
 
             },
 
-            //修改区域信息
+            //修改区域信息(修改保存)
             modifyRegionSave(){
 
                 var self=this;
@@ -511,13 +511,13 @@
                     regionStatus: regionStatus,
                     modifyTime:self.form.modifyTime,
                 };
-                console.log(param);
+                // console.log(param);
                 self.$http.get('/regionManage/modifyRegionSave',{
                     params:param
                 }).then((result)=>{
                     //对取回来的数据进行处理
                     // console.log(result);
-                    alert(result);
+                    self.$alert(result);
 
                 }).catch(function (error) {
                     commonUtils.Log("/regionManage/modifyRegionSave:" + error);
@@ -525,7 +525,7 @@
                 });
             },
 
-            //创建新的区域
+            //创建新的区域（新建保存）
             createRegionSave(){
                 var self=this;
                 console.log(self.formTemp);
@@ -547,7 +547,7 @@
                 }).then((result)=>{
                     //对取回来的数据进行处理
                     // console.log(result);
-                    alert(result);
+                    self.$alert(result);
 
                 }).catch(function (error) {
                     commonUtils.Log("/regionManage/createRegion:" + error);

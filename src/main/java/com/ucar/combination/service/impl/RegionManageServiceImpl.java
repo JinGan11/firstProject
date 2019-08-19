@@ -71,6 +71,7 @@ public class RegionManageServiceImpl implements RegionManageService {
 
     @Override
     public int modifyRegion(Region region) {
+        regionManageDao.modifySubRegion(region);
         return regionManageDao.modifyRegion(region);
     }
 
