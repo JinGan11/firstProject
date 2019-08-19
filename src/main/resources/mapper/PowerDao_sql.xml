@@ -48,31 +48,52 @@
         T.modify_time,
         T.account_remark remark,
         T.account_secret_email email
+        from t_account T LEFT JOIN t_staff T1 ON T.staff_id=T1.id
+        LEFT JOIN t_r_account_power T2 ON T.id=T2.account_id
+        LEFT JOIN t_power T3 on T2.power_id=T3.power_id
+        LEFT JOIN t_department T4 on T1.department_id=T4.id
+        <where>
+            <if test="accountName!=null and accountName.trim()!=''">
+                AND T.account_name=#{accountName}
+            </if>
+            <if test="staffNum!=null and staffNum.trim()!=''">
+                AND T1.staff_num=#{staffNum}
+            </if>
+            <if test="staffName!=null and staffName.trim()!=''">
+                AND T1.staff_name=#{staffName}
+            </if>
+            <if test="departmentName!=null and departmentName.trim()!=''">
+                AND T4.department_name=#{departmentName}
+            </if>
+            <if test="powerId!=null and powerId.trim()!=''">
+                AND T3.power_id=#{powerId}
+            </if>
+            <if test="accountState!=null and accountState.trim()!=''">
+                AND T.account_state=#{accountState}
+            </if>
+        </where>
+        GROUP BY T.id ORDER BY T.create_time DESC
+
+     /*   select
+        T.id accountId,
+        T.account_name,
+        T.staff_id,
+        T1.staff_num,
+        T1.staff_name,
+        T4.department_name,
+        GROUP_CONCAT(T3.path  SEPARATOR ';') AS path,
+        T.account_state,
+        T.create_emp,
+        T.create_time,
+        T.modify_emp,
+        T.modify_time,
+        T.account_remark remark,
+        T.account_secret_email email
         from t_account T JOIN t_staff T1 ON T.staff_id=T1.id
         JOIN t_r_account_power T2 ON T.id=T2.account_id
         JOIN t_power T3 on T2.power_id=T3.power_id
         JOIN t_department T4 on T1.department_id=T4.id
-            <where>
-                <if test="accountName!=null and accountName.trim()!=''">
-                    AND T.account_name=#{accountName}
-                </if>
-                <if test="staffNum!=null and staffNum.trim()!=''">
-                    AND T1.staff_num=#{staffNum}
-                </if>
-                <if test="staffName!=null and staffName.trim()!=''">
-                    AND T1.staff_name=#{staffName}
-                </if>
-                <if test="departmentName!=null and departmentName.trim()!=''">
-                    AND T4.department_name=#{departmentName}
-                </if>
-                <if test="powerId!=null and powerId.trim()!=''">
-                    AND T3.power_id=#{powerId}
-                </if>
-                <if test="accountState!=null and accountState.trim()!=''">
-                    AND T.account_state=#{accountState}
-                </if>
-            </where>
-        GROUP BY T2.account_id DESC
+        GROUP BY T2.account_id DESC*/
     </select>
     <select id ="queryRolePowerList" parameterType="com.ucar.combination.model.dto.RolePowerDto" resultType="com.ucar.combination.model.dto.RolePowerDto">
         SELECT

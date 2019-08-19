@@ -173,7 +173,7 @@
           </el-col>
         </el-row>
         <el-form-item label="备注">
-          <el-input :disabled="true" v-model="formDetail.remark"></el-input>
+          <el-input type="textarea" :disabled="true" v-model="formDetail.remark"></el-input>
         </el-form-item>
 
       </el-form>
