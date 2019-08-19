@@ -217,6 +217,5 @@ export default new Router({
     component: ResetPass,
     meta:{requireAuth:false}
   }
-
   ]
 })

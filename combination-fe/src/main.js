@@ -25,6 +25,16 @@ import utils from './common/util'
 // })
 
 // Vue.use(Vuex);
+import VueAMap from 'vue-amap';
+
+Vue.use(VueAMap);
+VueAMap.initAMapApiLoader({
+  key: 'b2551e2e478785561d5d88081a58dfb3',
+  plugin: ['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PlaceSearch', 'AMap.Geolocation', 'AMap.Geocoder'],
+  v: '1.4.4',
+  uiVersion: '1.0'
+});
+
 
 Date.prototype.Format = function (fmt) { //日期格式化
   var o = {
