@@ -27,6 +27,8 @@ public interface PowerDao {
     void insertAccountPower(AccountPower accountPower);
 
     void removeAccountPowerById(AccountPower accountPower);
+
+    void removeAllAccountPowerById(Long accountId);
     /**
      * description: 账户权限明细查询
      * @author jing.luo01@ucarinc.com

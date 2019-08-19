@@ -178,6 +178,9 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     public Result assignPermission(AssignPermission assignPermission, Long accountId) {
         //  1.查询该账户已拥有的特殊权限，如果powerList中有而数据库中没有，则表示删除该权限
         //  2.然后插入powerList中有的，而数据库中没有的
+        if (assignPermission.getPowerList().size() == 0) {
+            roleManagementDao.removeAllRolePowerById(assignPermission.getRoleInfoId());
+        }
         List<RolePower> list = roleManagementDao.getRolePowerListById(assignPermission.getRoleInfoId());
         RolePower rolePower = new RolePower();
         // 如果该角色没有权限，则全部插入

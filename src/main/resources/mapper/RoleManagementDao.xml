@@ -178,6 +178,12 @@
         and power_id = #{powerId}
     </delete>
 
+    <delete id="removeAllRolePowerById" parameterType="com.ucar.combination.model.RolePower">
+        delete from t_r_role_power
+        where 1=1
+        and role_info_id = #{roleInfoId}
+    </delete>
+
     <insert id="insertRolePower" parameterType="com.ucar.combination.model.RolePower">
         insert into t_r_role_power(role_info_id, power_id)
         value(#{roleInfoId}, #{powerId})

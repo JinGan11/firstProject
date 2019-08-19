@@ -127,6 +127,9 @@ public class PowerServiceImpl implements PowerService {
     public Result modifySpecialPower(PowerList powerList, Long accountId) {
         //  1.查询该账户已拥有的特殊权限，如果powerList中有而数据库中没有，则表示删除该权限
         //  2.然后插入powerList中有的，而数据库中没有的
+        if (powerList.getPowerList().size() == 0) {
+            powerDao.removeAllAccountPowerById(powerList.getId());
+        }
         List<AccountPower> list = powerDao.getAccountPowerListById(powerList.getId());
         AccountPower accountPower = new AccountPower();
         // 如果该账户没有权限，则全部插入

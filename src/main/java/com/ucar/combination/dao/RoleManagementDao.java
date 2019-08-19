@@ -130,6 +130,7 @@ public interface RoleManagementDao {
      * @return
      */
     void removeRolePowerById(RolePower rolePower);
+    void removeAllRolePowerById(Long roleInfoId);
 
     /**
      * description: 选择所有角色信息

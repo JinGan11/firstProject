@@ -729,6 +729,7 @@
         }
         self.$http.post('roleManage/getRolePower.do_', param).then((result) => {
           self.selectedNodes = result.rolePowerList;
+          self.checkStrictly = false;
         }).catch(function (error) {
           commonUtils.Log("roleManage/getRolePower.do_" + error);
           self.$message.error("获取数据错误")

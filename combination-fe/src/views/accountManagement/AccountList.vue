@@ -340,7 +340,6 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
-      this.checkStrictly = true;
     },
     computed: {
       leftButtonDisable()
@@ -666,6 +665,7 @@
         };
         self.$http.post('power/getAccountPower.do_',param).then((result) => {
           self.selectedNodes = result.accountPower;
+          self.checkStrictly = false;
         }).catch(function (error) {
           commonUtils.Log("power/getAccountPower.do_" + error);
           self.$message.error("获取数据错误")

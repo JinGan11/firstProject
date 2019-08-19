@@ -28,6 +28,13 @@
         and power_id = #{powerId}
     </delete>
 
+    <delete id="removeAllAccountPowerById" parameterType="Long">
+        delete from t_r_account_power
+        where 1=1
+        and account_id = #{accountId}
+    </delete>
+
+
     <insert id="insertAccountPower" parameterType="com.ucar.combination.model.AccountPower">
         insert into t_r_account_power(account_id, power_id)
         value(#{accountId}, #{powerId})
