@@ -1,5 +1,7 @@
 package com.ucar.combination.utils;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.ucar.combination.model.Department;
 import com.ucar.combination.model.dto.DepartmentTree2Dto;
 
 import java.util.ArrayList;
@@ -115,5 +117,42 @@ public class DepartmentTree2Builder {
         return node;
     }
 
+    // 判断该上级节点是否合法
+    public Boolean checkUpperLegal(Long id, String upperDepartmentNo) {
+        DepartmentTree2Dto currentNode = findCurrentNode(id, rootNode);
+        if (currentNode == null) return false;
+        DepartmentTree2Dto upperNode = findChildNode(upperDepartmentNo, currentNode);
+        if (upperNode == null) return true;
+        else return false;
+    }
+
+    private DepartmentTree2Dto findCurrentNode(Long id, DepartmentTree2Dto currentTree) {
+        if (currentTree.getId().equals(id)) {
+            return currentTree;
+        } else {
+            for (int i = 0; i < currentTree.getChildren().size(); i++) {
+                DepartmentTree2Dto tmpTree = findCurrentNode(id, currentTree.getChildren().get(i));
+                if (tmpTree != null && tmpTree.getId().equals(id)) {
+                    return tmpTree;
+                }
+            }
+        }
+        return null;
+    }
+
+    private DepartmentTree2Dto findChildNode(String no, DepartmentTree2Dto currentTree) {
+        if (currentTree == null) return null;
+        if (currentTree.getDepartmentNo().equals(no)) {
+            return currentTree;
+        } else {
+            for (int i = 0; i < currentTree.getChildren().size(); i++) {
+                DepartmentTree2Dto tmpTree = findChildNode(no, currentTree.getChildren().get(i));
+                if (tmpTree != null && tmpTree.getDepartmentNo().equals(no)) {
+                    return tmpTree;
+                }
+            }
+        }
+        return null;
+    }
 
 }

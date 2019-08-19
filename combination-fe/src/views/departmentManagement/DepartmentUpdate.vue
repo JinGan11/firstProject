@@ -230,10 +230,6 @@
     </el-form>
 
     <br>
-
-    <el-button type="primary" @click="save" style="margin-left: 200px">修改</el-button>
-
-    <br>
     <br>
     <br>
 
@@ -290,7 +286,7 @@
 
 
     <el-dialog fullscreen :visible.sync="dialogEmployee" :close-on-click-modal="false" width="700px">
-      <employee-list :relAccount="relAccount" ></employee-list>
+      <employee-list  :relAccount=2 ></employee-list>
     </el-dialog>
 
     <el-dialog :visible.sync="baiduMapFlag" width="700px" :show-close="false">

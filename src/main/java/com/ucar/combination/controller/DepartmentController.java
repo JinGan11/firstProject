@@ -71,9 +71,16 @@ public class DepartmentController {
         Long accountId = (Long) session.getAttribute("accountId");
         department.setCreateEmp(accountId);
         department.setModifyEmp(accountId);
-        Map<String, Object> map = departmentService.checkInput(department);
-        if ((Boolean) map.get("result"))
-            departmentService.insertDepartment(department);
+        Map<String, Object> map = new HashMap<>();
+        if (departmentService.checkStatusChange(null, department.getUpperDepartmentNo())) {
+            map = departmentService.checkInput(department);
+            if ((Boolean) map.get("result")) {
+                departmentService.insertDepartment(department);
+            }
+        } else {
+            map.put("result", false);
+            map.put("msg", "部门状态发生改变，新建部门失败！");
+        }
         return map;
     }
 
@@ -101,9 +108,11 @@ public class DepartmentController {
      */
     @ResponseBody
     @RequestMapping("/deleteDepartment.do_")
-    public String deleteDepartment(@RequestBody Department department) {
-        departmentService.deleteDepartment(department.getId());
-        return "success";
+    public Map<String, Object> deleteDepartment(HttpServletRequest request) {
+        String sid = (String) request.getParameter("id");
+        Long id = Long.parseLong(sid);
+        Map<String, Object> map = departmentService.deleteDepartment(id);
+        return map;
     }
 
     /**
@@ -132,13 +141,7 @@ public class DepartmentController {
     @ResponseBody
     @RequestMapping("/updateUpperDepartment.do_")
     public Map<String, Object> changeUpper(@RequestBody Department department) {
-        Map<String, Object> map = departmentService.checkWorkplaceForUpper(department.getId(), department.getUpperDepartmentNo());
-        if ((Boolean) map.get("result")){
-            if(!departmentService.updateUpperDepartment(department.getId(), department.getUpperDepartmentNo())){
-                map.put("result",false);
-                map.put("msg","部门的有效性发生变更，修改失败，请返回查看！");
-            }
-        }
+        Map<String, Object> map = departmentService.updateUpperDepartment(department.getId(), department.getUpperDepartmentNo());
         return map;
     }
 

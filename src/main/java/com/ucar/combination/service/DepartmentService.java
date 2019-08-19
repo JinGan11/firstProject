@@ -46,7 +46,7 @@ public interface DepartmentService {
      * @date 2019/8/6 16:59
      * @params
      */
-    void deleteDepartment(Long departmentId);
+    Map<String,Object> deleteDepartment(Long departmentId);
 
     /**
      * description: 修改上级部门使用的树结构部门
@@ -66,7 +66,7 @@ public interface DepartmentService {
      * @date 2019/8/8 10:50
      * @params
      */
-    Boolean updateUpperDepartment(Long id, String upperDepartmentNo);
+    Map<String,Object> updateUpperDepartment(Long id, String upperDepartmentNo);
 
     /**
      * description: 获取支持的业务线

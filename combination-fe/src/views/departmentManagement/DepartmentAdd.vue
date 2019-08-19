@@ -75,7 +75,8 @@
       <el-row>
         <el-col :span="16">
           <el-form-item label="详细地址">
-            <el-input style="width:500px;" v-model="form.address" maxlength="255" @focus="baiduMapFlag=true"></el-input>
+            <div><span :hidden="!haveWorkplace" style="color: #FF0000;">*</span>
+            <el-input style="width:500px;" v-model="form.address" maxlength="255" @focus="baiduMapFlag=true"></el-input></div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -229,10 +230,6 @@
     </el-form>
 
     <br>
-
-    <el-button type="primary" @click="save" style="margin-left: 200px">添加</el-button>
-
-    <br>
     <br>
     <br>
 
@@ -292,7 +289,7 @@
 
 
     <el-dialog fullscreen :visible.sync="dialogEmployee" :close-on-click-modal="false" width="700px">
-      <employee-list :relAccount="relAccount" ></employee-list>
+      <employee-list :relAccount=2></employee-list>
     </el-dialog>
 
     <el-dialog :visible.sync="baiduMapFlag" width="700px" :show-close="false">

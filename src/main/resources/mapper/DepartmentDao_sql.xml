@@ -206,7 +206,18 @@
     <select id="selectLowerDepartmentBusiness" resultType="String">
         select support_business from t_department where upper_department_no=#{departmentNo} and status=1
     </select>
-
+    <select id="selectUpperDepartmentBusiness" resultType="String">
+        select support_business from t_department where department_no=#{upprtDepartmentNo} and status=1
+    </select>
+    <select id="checkLowerDepartmentsStatus" resultType="Integer">
+        select count(*) from t_department where upper_department_no=#{departmentNo} and status=1
+    </select>
+    <select id="selectUpperDepartmentNo" resultType="String">
+        select upper_department_no from t_department where id=#{id} limit 1
+    </select>
+    <select id="selectDepartmentNoById" resultType="String">
+        select department_no from t_department where id=#{id} limit 1
+    </select>
     <select id="checkStatusById" resultType="Integer">
         select count(*) from t_department
         where

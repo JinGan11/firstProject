@@ -865,10 +865,12 @@
     created() {
       var self = this;
       self.judgmentAuthority();
-      if (self.relAccount == 1) {
-        self.form.isDimission = '0';
+      if (self.relAccount > 0) {
+        if(self.relAccount==1) {
+          self.form.isDimission = '0';
+          self.cloumnDisabled = true;
+        }
         self.buttonDisabled = true;
-        self.cloumnDisabled = true;
         var param = {
           page: self.currentPage,
           limit: self.pageSize,

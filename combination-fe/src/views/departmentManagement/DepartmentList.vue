@@ -123,6 +123,7 @@
         }
       },
       deleteDept(){
+        var self = this;
         var check_node = this.$refs.tree.getCheckedNodes()[0];
         if( this.$options.methods.checkHaveChildren(check_node) ){
           this.$message.error("删除失败，请先删除该部门的下级部门");
@@ -131,7 +132,17 @@
         var params = {
           id: check_node.id
         };
-        this.$http.post('department/deleteDepartment.do_',params);
+        self.$http.get('department/deleteDepartment.do_', {
+          params: params
+        }).then((result) => {
+          if(!result.result){
+            self.$message.error(result.msg);
+          }else{
+            self.$message.success("删除成功！");
+         }
+        }).catch(function (error) {
+
+        });
         this.dialogVisible = false;
         // 删除节点后前端显示跟着修改，避免刷新整个页面
         check_node.status = 0;
@@ -146,7 +157,6 @@
         this.$refs.tree.insertAfter(check_node,tmpNode.id);
         this.$refs.tree.remove(tmpNode.id);
         this.operationBtnActive=true;
-        self.$message.success("部门删除成功");
       },
       checkHaveChildren (data) {
         for(var i = 0;i<data.children.length;i++){

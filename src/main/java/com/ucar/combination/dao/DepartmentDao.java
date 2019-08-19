@@ -212,5 +212,41 @@ public interface DepartmentDao {
      */
     Integer checkStatusByNo(String departmentNo);
 
+    /**
+     * description: 获取上级部门业务线
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/19 14:02
+     * @params
+     * @return
+     */
+    String selectUpperDepartmentBusiness(String upperDepartmentNo);
+
+    /**
+     * description: 检查下级部门是否有有效的
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/19 14:45
+     * @params
+     * @return
+     */
+    Integer checkLowerDepartmentsStatus(String departmentNo);
+
+    /**
+     * description: 查找该部门的上级部门
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/19 15:22
+     * @params
+     * @return
+     */
+    String selectUpperDepartmentNo(Long id);
+
+    /**
+     * description: 获取部门编号
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/19 14:48
+     * @params 部门id
+     * @return
+     */
+    String selectDepartmentNoById(Long id);
+
     String selectEmployeeNameByAccountId(Long accountId);
 }

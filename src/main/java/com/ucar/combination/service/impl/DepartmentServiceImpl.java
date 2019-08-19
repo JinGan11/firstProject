@@ -17,10 +17,7 @@ import com.ucar.combination.utils.SupportBusinessUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * description:部门管理
@@ -53,8 +50,22 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public void deleteDepartment(Long departmentId) {
+    public Map<String, Object> deleteDepartment(Long departmentId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("result", true);
+        String no = departmentDao.selectDepartmentNoById(departmentId);
+        if (no == null) {
+            map.put("result", false);
+            map.put("msg", "未知错误！");
+            return map;
+        }
+        if (departmentDao.checkLowerDepartmentsStatus(no) > 0) {
+            map.put("result", false);
+            map.put("msg", "删除失败，下级部门存在有效部门！");
+            return map;
+        }
         departmentDao.deleteDepartment(departmentId);
+        return map;
     }
 
     @Override
@@ -66,12 +77,40 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Boolean updateUpperDepartment(Long id, String upperDepartmentNo) {
-        if (departmentService.checkStatusChange(id, upperDepartmentNo)) {
-            departmentDao.updateUpperDepartment(id, upperDepartmentNo);
-            return true;
+    public Map<String, Object> updateUpperDepartment(Long id, String upperDepartmentNo) {
+        Map<String, Object> map = new HashMap<>();
+        // 办公点校验
+        Map<String, Object> map2 = departmentService.checkWorkplaceForUpper(id, upperDepartmentNo);
+        map.putAll(map2);
+        // 状态校验
+        if (!departmentService.checkStatusChange(id, upperDepartmentNo)) {
+            map.put("result", false);
+            String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
+            map.put("msg", tmp + "部门状态发生改变！");
+            return map;
         }
-        return false;
+        // 该上级部门在自己下方
+        List<DepartmentTree2Dto> listDto = departmentDao.selectDepartmentTree2Dto();
+        DepartmentTree2Builder builder = new DepartmentTree2Builder(listDto);
+        if(!builder.checkUpperLegal(id,upperDepartmentNo)){
+            map.put("result", false);
+            String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
+            map.put("msg", tmp + "上级部门发生改变！");
+            return map;
+        }
+        // 业务线校验
+        String upperSupport = departmentDao.selectUpperDepartmentBusiness(upperDepartmentNo);
+        String support = departmentDao.selectSupportBusinessByNo(departmentDao.selectDepartmentNoById(id));
+        if(support==null || upperSupport==null || SupportBusinessUtil.compareSups(upperSupport,support)<0){
+            map.put("result", false);
+            String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
+            map.put("msg", tmp + "上级部门支持业务线发生更改！");
+        }
+        // 更新
+        if ((Boolean) map.get("result")) {
+            departmentDao.updateUpperDepartment(id, upperDepartmentNo);
+        }
+        return map;
     }
 
     @Override
@@ -136,6 +175,9 @@ public class DepartmentServiceImpl implements DepartmentService {
                 map.put("msg", tmp + "办公点标识已存在！");
             }
         }
+
+        /*
+        //由于已经无法修改状态了，所以这两行没用了
         if (departmentDao.checkUpperDepartment(department) < 1 && !department.getDepartmentNo().equals("Z000001")) {
             map.put("result", false);
             String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
@@ -146,6 +188,8 @@ public class DepartmentServiceImpl implements DepartmentService {
             String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
             map.put("msg", tmp + "下级部门包含状态为有效的部门，无法将当前部门改为无效！");
         }
+        */
+
         // 业务线判断
         List<String> supports = departmentDao.selectLowerDepartmentBusiness(department.getDepartmentNo());
         if (supports != null && supports.size() > 0) {
@@ -154,6 +198,12 @@ public class DepartmentServiceImpl implements DepartmentService {
                 String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
                 map.put("msg", tmp + "下级部门的业务线不能拥有本部门没有的，请修改或删除下级部门！");
             }
+        }
+        String support = departmentDao.selectUpperDepartmentBusiness(department.getUpperDepartmentNo());
+        if (support == null || SupportBusinessUtil.compareSups(support, department.getSupportBusiness()) < 0) {
+            map.put("result", false);
+            String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
+            map.put("msg", tmp + "上级部门的业务线发生更改，你选中的业务线中含有上级部门已取消的！");
         }
         return map;
     }
