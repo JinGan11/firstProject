@@ -397,7 +397,6 @@
         <el-button type="primary" @click="getCheckedDepartment">确定</el-button>
       </div>
     </el-dialog>
-
   </home>
 </template>
 <script>

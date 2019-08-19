@@ -325,7 +325,7 @@
                       this.filterVal.push('regionCode')
                   }else if (this.checkedRegionProps[i] === '区号') {
                       this.filterVal.push('regionAreaCode')
-                  } else if (this.checkedRegionProps[i] === '区/县名字') {
+                  } else if (this.checkedRegionProps[i] === '区/县名称') {
                       this.filterVal.push('regionName')
                   } else if (this.checkedRegionProps[i] === '名字拼音') {
                       this.filterVal.push('regionPinyin')

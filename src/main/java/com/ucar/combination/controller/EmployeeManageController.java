@@ -236,9 +236,13 @@ public class EmployeeManageController {
      * @param: departmentId 部门ID
      * @return
      */
+
+    //@RequestParam(defaultValue = "")String id,@RequestParam(defaultValue = "")String departmentId
     @ResponseBody
     @RequestMapping("/updateDepartmentByEmployee.do_")
-    public Result updateDepartmentByEmployee(@RequestParam(defaultValue = "")String id,@RequestParam(defaultValue = "")String departmentId){
+    public Result updateDepartmentByEmployee(HttpServletRequest request){
+        String id=request.getParameter("id");
+        String departmentId=request.getParameter("departmentId");
         Map<String,String> employeeMap=new HashMap<>();
         employeeMap.put("id",id);
         employeeMap.put("departmentId",departmentId);

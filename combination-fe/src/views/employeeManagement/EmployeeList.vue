@@ -139,9 +139,9 @@
                    :total="total">
     </el-pagination>
 
-    <el-dialog :title="title" :visible.sync="distributionDepartmentFlag" :close-on-click-modal="false" width="700px">
+    <el-dialog :title="title" :visible.sync="distributionDepartmentFlag" :close-on-click-modal="false" width="800px">
       <div class="dialog-main">
-        <el-form :inline="true" :model="formdiStributionDepartment" class="demo-form-inline" label-width="100px">
+        <el-form :inline="true" :rules="ruleDepartment" ref="formdiStributionDepartment" :model="formdiStributionDepartment" class="demo-form-inline" label-width="130px">
           <el-form-item label="分配部门"></el-form-item>
           <br>
           <el-form-item label="员工编号">
@@ -159,7 +159,7 @@
           <el-form-item label="当前归属部门">
             <el-input v-model="formdiStributionDepartment.staffBeforeDepartment" disabled></el-input>
           </el-form-item>
-          <el-form-item label="调整后部门">
+          <el-form-item label="调整后部门" prop="staffAfterDepartmentName">
             <el-input style="width: 170px;" v-model="formdiStributionDepartment.staffAfterDepartmentName" disabled></el-input><el-button style="width: 40px" typ="primary" @click="departmentVisible=true">选择</el-button>
           </el-form-item>
         </el-form>
@@ -733,6 +733,11 @@
           staffAfterDepartment: '',
           staffAfterDepartmentName:'',
         },
+        ruleDepartment:{
+          staffAfterDepartmentName:[
+            {required:true}
+          ]
+        },
         distributionDepartmentFlag: false,
         deleteEmployeeFlag: false,
         options: [{
@@ -1104,24 +1109,23 @@
         this.departmentVisible=false;
       },
       saveDepartment() {
-        var param
-        this.$http.get('employee/updateDepartmentByEmployee.do_', {
-          params:{
-            id:this.selection,
-            departmentId:this.formdiStributionDepartment.staffAfterDepartment,
-          }
-        }).then((result) => {
-          if (result.status=="success"){
-            this.$message.success(" 分配成功");
-            this.fetchData();
-          } else {
-            this.$message.error("分配失败")
-          }
-
-        }).catch(function (error) {
-          commonUtils.Log("employee/updateDepartmentByEmployee.do_" + error);
-
-        });
+        //$refs是父组件与表单中的REF属性相结合
+            var param;
+            this.$http.get('employee/updateDepartmentByEmployee.do_', {
+              params:{
+                id:this.selection,
+                departmentId:this.formdiStributionDepartment.staffAfterDepartment,
+              }
+            }).then((result) => {
+              if (result.status=="success"){
+                this.$message.success(" 分配成功");
+                this.fetchData();
+              } else {
+                this.$message.error("分配失败")
+              }
+            }).catch(function (error) {
+              commonUtils.Log("employee/updateDepartmentByEmployee.do_" + error);
+            });
         this.distributionDepartmentFlag=false;
       },
       cancelDepartment() {
