@@ -181,7 +181,8 @@
       relationCompanyBtn(){
         window.localStorage.setItem("departmentRelId",this.$refs.tree.getCheckedNodes()[0].id);
         this.$router.replace('/relationCompanyList');
-      }
+      },
+
     }
   };
 </script>

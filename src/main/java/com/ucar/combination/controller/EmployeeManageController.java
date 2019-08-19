@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,6 +127,14 @@ public class EmployeeManageController {
         employeeManageService.updateStatus(id);
         AccountStaff accountStaff=new AccountStaff();
         if(accountId!=null){
+            HttpSession session = request.getSession();
+            String currentAccountId = session.getAttribute("accountId").toString();
+            Date date = new Date();
+            Account account1 = new Account();
+            account1.setModifyEmpId(Long.parseLong(currentAccountId));
+            account1.setModifierId(accountManagerService.selectStaffIdById(account1.getModifyEmpId()));
+            account1.setModifyTime(date);
+            account1.setId(Long.parseLong(String.valueOf(id)));
             accountManagerService.updateStatus(accountID,3);
             Account account=accountManagerService.selectAccountById(accountId);
             /*accountStaff.setAccountId(Long.valueOf(accountId));*/

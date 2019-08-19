@@ -13,6 +13,7 @@ import com.ucar.combination.model.dto.AccountPowerDto;
 import com.ucar.combination.service.AccountManagerService;
 import com.ucar.combination.service.DepartmentService;
 import com.ucar.combination.service.EmployeeManageService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
@@ -116,9 +117,11 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     @Override
     public void insertAccount(AccountStaff accountStaff) {
         accountStaff.setPassword(DigestUtils.md5DigestAsHex((accountStaff.getPassword()).getBytes()));
-        accountManageDao.insertAccount(accountStaff);
         accountStaff.setOperationType("新建账号");
         accountStaff.setAccountState(1);
+        accountStaff.setCreater(accountManageDao.selectStaffIdById(accountStaff.getCreateEmp()));
+        accountStaff.setModifier(accountManageDao.selectStaffIdById(accountStaff.getModifyEmp()));
+        accountManageDao.insertAccount(accountStaff);
         accountStaff.setAccountId(accountManageDao.selectIdByNum(accountStaff.getAccountName()));
         insertAccountHistory(accountStaff);
     }
@@ -191,6 +194,7 @@ public class AccountManagerServiceImpl implements AccountManagerService {
      */
     @Override
     public int modifyAccount(AccountStaff accountStaff) {
+        accountStaff.setModifier(accountManageDao.selectStaffIdById(accountStaff.getModifyEmp()));
         return accountManageDao.modifyAccount(accountStaff);
     }
 
@@ -204,6 +208,7 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     @Override
     public int updateStaffAccount(AccountStaff accountStaff) {
         accountStaff.setOperationType("修改账号");
+        accountStaff.setModifier(accountManageDao.selectStaffIdById(accountStaff.getModifyEmp()));
         insertAccountHistory(accountStaff);
         return employeeManageDao.updateAccount(accountStaff);
     }
@@ -276,6 +281,7 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     public int deleteAccountById(AccountStaff accountStaff) {
         accountStaff.setOperationType("删除账号");
         insertAccountHistory(accountStaff);
+        accountStaff.setModifier(accountManageDao.selectStaffIdById(accountStaff.getModifyEmp()));
         return accountManageDao.deleteAccountById(accountStaff);
     }
 
@@ -288,6 +294,7 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         Date date = new Date();
         Account account = new Account();
         account.setModifyEmpId(Long.parseLong(currentAccountId));
+        account.setModifierId(accountManageDao.selectStaffIdById(account.getModifyEmpId()));
         account.setModifyTime(date);
         account.setId(Long.parseLong(String.valueOf(id)));
          //拼装一条历史记录
@@ -337,5 +344,11 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     @Override
     public List<AccountHistory> getHistoryList(String accountId) {
         return accountHistoryDao.selectAccountHistoryByAccountId(accountId);
+    }
+    public void updateModifyTimeAndModifyName(@Param("a") Account account){
+        accountManageDao.updateModifyTimeAndModifyName(account);
+    }
+    public Long selectStaffIdById(Long accountID){
+        return accountManageDao.selectStaffIdById(accountID);
     }
 }

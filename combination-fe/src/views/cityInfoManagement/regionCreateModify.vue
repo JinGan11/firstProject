@@ -3,8 +3,8 @@
 
     <div style="width: 20%; margin-left: 70px ; float: left;height: 100%"  >
       <div  style="width:100%; margin-left: 70px;height: 10%">
-        <el-button type="primary" :disabled="createDisable" @click="createRegionBtn" >新建</el-button>
-        <el-button type="primary" :disabled="modifyDisable" @click="modifyRegionBtn" >修改</el-button>
+        <el-button type="primary" v-if="!BtnPermission.newPermission" :disabled="createDisable" @click="createRegionBtn" >新建</el-button>
+        <el-button type="primary" v-if="!BtnPermission.modifyPermission" :disabled="modifyDisable" @click="modifyRegionBtn" >修改</el-button>
       </div>
       <el-tree
         ref="regionTree"
@@ -175,7 +175,10 @@
                 isCreate:false,
                 formTemp:{},
 
-
+                BtnPermission: {
+                  newPermission: true,
+                  modifyPermission: true,
+                },
 
             }
         },
@@ -183,12 +186,23 @@
             commonUtils.Log("页面激活");
         },
         mounted() {
-
+            this.judgmentAuthority();
             commonUtils.Log("页面进来");
             this.getCurrentTime();
         },
         methods: {
-
+          judgmentAuthority() {
+            const self = this;
+            let permission = self.$store.state.powerList;
+            permission.forEach(item=>{
+              if (item === 71) {
+                self.BtnPermission.newPermission = false
+              }
+              if (item === 72) {
+                self.BtnPermission.modifyPermission = false
+              }
+            });
+          },
             //树
             loadNode(node, resolve) {
                 var self=this;
@@ -382,7 +396,7 @@
                     //对取回来的数据进行处理
                     self.form=result.regionDetails;
                     self.regionStatus=self.form.regionStatus;
-                    this.formTemp=this.form;
+                    this.formTemp=result.regionDetails;
 
                     if (self.form.regionStatus === 0) {
                         self.form.regionStatus = '无效'
@@ -478,7 +492,7 @@
 
             },
 
-            //修改区域信息
+            //修改区域信息(修改保存)
             modifyRegionSave(){
 
                 var self=this;
@@ -503,22 +517,21 @@
                     regionLevel =self.form.regionLevel;
                 }
 
-
-
                 var param={
                     cityID:self.form.cityID,
                     regionCode:self.form.regionCode,
                     regionName:self.form.regionName,
                     regionPinyin:self.form.regionPinyin,
                     regionStatus: regionStatus,
-                    modifyTime:self.form.modifyTime
+                    modifyTime:self.form.modifyTime,
                 };
-                console.log(param);
+                // console.log(param);
                 self.$http.get('/regionManage/modifyRegionSave',{
                     params:param
                 }).then((result)=>{
                     //对取回来的数据进行处理
-                    console.log(result);
+                    // console.log(result);
+                    self.$alert(result);
 
                 }).catch(function (error) {
                     commonUtils.Log("/regionManage/modifyRegionSave:" + error);
@@ -526,7 +539,7 @@
                 });
             },
 
-            //创建新的区域
+            //创建新的区域（新建保存）
             createRegionSave(){
                 var self=this;
                 console.log(self.formTemp);
@@ -547,7 +560,8 @@
                     params:param
                 }).then((result)=>{
                     //对取回来的数据进行处理
-                    console.log(result);
+                    // console.log(result);
+                    self.$alert(result);
 
                 }).catch(function (error) {
                     commonUtils.Log("/regionManage/createRegion:" + error);

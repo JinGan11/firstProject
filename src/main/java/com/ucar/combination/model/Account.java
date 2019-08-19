@@ -54,6 +54,35 @@ public class Account {
     //备注
     private String remark;
 
+    private String creater;
+
+    private String modifier;
+
+    private Long modifierId;
+
+    public Long getModifierId() {
+        return modifierId;
+    }
+
+    public void setModifierId(Long modifierId) {
+        this.modifierId = modifierId;
+    }
+
+    public String getCreater() {
+        return creater;
+    }
+
+    public void setCreater(String creater) {
+        this.creater = creater;
+    }
+
+    public String getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
+    }
 
     public Long getId() {
         return id;

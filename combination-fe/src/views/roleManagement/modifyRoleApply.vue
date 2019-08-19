@@ -654,6 +654,7 @@
       console.log(this.applyId);
 
       this.roleId=sessionStorage.getItem('roleIdFromApply');
+      this.roleStatus=sessionStorage.getItem('roleStatusFromApply');//角色状态
       this.formRoleInfo.roleName = sessionStorage.getItem('roleNameFromApply');//角色名字
       this.formRoleInfo.roleApplyNum=sessionStorage.getItem('applyNumFromApply');//申请编号
       this.formRoleInfo.approverStaffName = sessionStorage.getItem('approverStaffNameFromApply');//审批人

@@ -71,7 +71,23 @@ public class RegionManageServiceImpl implements RegionManageService {
 
     @Override
     public int modifyRegion(Region region) {
+        regionManageDao.modifySubRegion(region);
         return regionManageDao.modifyRegion(region);
+    }
+
+    @Override
+    public List<Region> matchRegionCode(Region region) {
+        return regionManageDao.matchRegionCode(region);
+    }
+
+    @Override
+    public Region getRegionCodeByCityID(Region region) {
+        return regionManageDao.getRegionCodeByCityID(region);
+    }
+
+    @Override
+    public List<Region> getRegionByUpperCityID(Region region) {
+        return regionManageDao.getRegionByUpperCityID(region);
     }
 
     @Override

@@ -82,7 +82,7 @@
                   :props="defaultProps"
                   node-key="id"
                   :load="loadNode"
-                  lazy="true"
+                  lazy
                   show-checkbox
                   check-strictly
                   @check-change="handleClick">
@@ -198,6 +198,7 @@
           remark:'',
           tree: '',
         },
+        departmentDto: [],
         emailDisabled: false,
         rules: {
           password: [
@@ -234,19 +235,44 @@
       self.$http.get('account/enums.do_').then((result) => {
         self.permissionsList = result.permissionList;
       }).catch(function (error) {
-        commonUtils.Log("account/premission.do_:"+error);
         self.$message.error("获取数据错误")
+      });
+      self.$http.get('department/buildTree2.do_')
+        .then((result) => {
+          self.departmentDto = result.departmentDto;
+        }).catch(function (error) {
+        self.$message.error("获取部门数据错误")
       });
     },
     methods: {
       loadNode(node,resolve){
         var self = this;
-        self.$http.get('department/buildTree2.do_')
-          .then((result) => {
-            resolve([result.departmentDto]);
-          }).catch(function (error) {
-
-        });
+        var departmentDto = [self.departmentDto];
+        if (node.level === 0) {
+          resolve(departmentDto);
+        }
+        if (node.level === 1) {
+          resolve(self.departmentDto.children);
+        }
+        if (node.level > 1){
+          var id = node.data.id;
+          resolve(getChilder(id,departmentDto));
+        }
+        function getChilder(id,datas) {
+          var d = null;
+          for(var i = 0;i<datas.length;i++){
+            var data = datas[i];
+            if (data.id != id && data.nodeIsLeaf == false){
+              d = getChilder(id,data.children);
+              if (d != null ){
+                return d;
+              }
+            }else if(data.id==id){
+              return data.children;
+            }
+          }
+          return d;
+        }
       },
       handleClick(data, sel) {
         if (sel) {
@@ -307,6 +333,7 @@
       },
       clearStaffInf(){//清除选择关联的员工
         const self = this;
+        self.newForm.staffId = '';
         self.newForm.staffName = '';
         self.newForm.staffNum = '';
         self.newForm.secretEmail = '';

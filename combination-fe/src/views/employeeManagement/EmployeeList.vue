@@ -102,6 +102,8 @@
       <el-table-column prop="accountId" v-if="false" label="隐藏账户id"></el-table-column>
       <el-table-column prop="createTime" v-if="false" label="隐藏创建时间"></el-table-column>
       <el-table-column prop="createEmp" v-if="false" label="隐藏创建人"></el-table-column>
+      <el-table-column prop="modifyTime" v-if="false" label="隐藏修改时间"></el-table-column>
+      <el-table-column prop="modifyEmp" v-if="false" label="隐藏修改人"></el-table-column>
       <el-table-column prop="remark" v-if="false" label="隐藏备注"></el-table-column>
       <el-table-column prop="staffNum" label="员工编号" width="150">
         <template slot-scope="scope">
@@ -358,7 +360,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="登录账号:" label-width="150px">
-                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.accountId"></el-input>
+                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.accountName"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -608,9 +610,9 @@
       var checkphone = (rule, value, callback) => {
         // let phoneReg = /(^1[3|4|5|6|7|8|9]\d{9}$)|(^09\d{8}$)/;
         if (value == "") {
-          callback(new Error("请输入手机号"));
+          callback(new Error("手机号为必填项，不允许为空"));
         } else if (!this.isCellPhone(value)) {//引入methods中封装的检查手机格式的方法
-          callback(new Error("请输入正确的手机号!"));
+          callback(new Error("手机号不满足录入条件"));
         } else {
           callback();
         }
@@ -653,19 +655,20 @@
           remark:'',
         },
         rulesCreate:{
-          staffNum: [{ required: true, message: '请输入员工编号', trigger: 'blur' },
-            { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }],
-          staffName:[{ required: true, message: '请输入员工姓名', trigger: 'blur' },
-            { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }],
+          staffNum: [{ required: true, message: '员工编号为必填项，不允许为空', trigger: 'blur' },
+            { min: 1, max: 20, message: '员工编号不满足录入条件', trigger: 'blur' }],
+          staffName:[{ required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur' },
+            { min: 1, max: 30, message: '员工姓名不满足录入条件', trigger: 'blur' }],
 
           staffTelephone:[{ required: true, validator: checkphone, trigger: "blur" }],
           staffEmail:[
-            { type: 'email', message: '请录入正确的邮箱地址', trigger: ['blur', 'change'] }],
-          departmentName:[{required: true}],
+            { type: 'email', message: '邮箱不满足录入条件', trigger: ['blur', 'change'] }],
+          departmentName:[{required: true,message: '归属部门为必填项，不允许为空'}],
 
         },
         modifyForm:{
-          accountId:'',
+         /* accountId:'',*/
+          accountName:'',
           staffNum:'',
           staffName:'',
           staffSex:'',
@@ -680,13 +683,14 @@
         },
         rulesModify:{
           staffNum: [{ required: true, message: '员工编号为必填项，不允许为空', trigger: 'blur' },
-            { min: 1, max: 20, message: '员工编号不满足录入条件，仅支持长度在 1 到 20 位字符', trigger: 'blur' }],
+            { min: 1, max: 20, message: '员工编号不满足录入条件', trigger: 'blur' }],
           staffName:[{ required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur' },
-            { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }],
+            { min: 1, max: 30, message: '员工姓名不满足录入条件', trigger: 'blur' }],
+
           staffTelephone:[{ required: true, validator: checkphone, trigger: "blur" }],
           staffEmail:[
-            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }],
-          departmentName:[{required: true}],
+            { type: 'email', message: '邮箱不满足录入条件', trigger: ['blur', 'change'] }],
+          departmentName:[{required: true,message: '归属部门为必填项，不允许为空'}],
         },
 
         tableData: [],
@@ -948,7 +952,7 @@
             self.$http.post("employee/insertStaff",self.createForm)
               .then((result) => {
               if (result.code === 300) {
-              self.$message.error('员工编号已存在，不允许重复');
+              self.$message.error('员工已存在，不允许重复创建');
             } else {
               self.createDialogVisible=false;
               self.$message.success("新建用户成功");
@@ -1338,6 +1342,7 @@
         this.accountId = val.accountId;
         this.modifyForm.id=val.id;
         this.modifyForm.accountId=val.accountId;
+        this.modifyForm.accountName=val.accountName;
         this.modifyForm.staffNum=val.staffNum;
         this.modifyForm.staffName=val.staffName;
         this.modifyForm.staffSex=val.staffSex;
@@ -1349,6 +1354,8 @@
         this.modifyForm.createTime=val.createTime;
         this.modifyForm.remark=val.remark;
         this.modifyForm.createEmpInit=val.createEmp;
+        this.modifyForm.modifyTime=val.modifyTime;
+
 
         this.formdiStributionDepartment.staffNum=val.staffNum;
         this.formdiStributionDepartment.staffAfterDepartment=val.staffAfterDepartment;
@@ -1362,11 +1369,13 @@
         var param = {
           staffId:val.id,
           createEmp:val.createEmp,
+          modifyEmp:val.modifyEmp
         };
         self.$http.get('employee/otherInfo.do_', {
           params: param
         }).then((result) => {
           self.modifyForm.createEmp = result.list.createEmpName;
+          self.modifyForm.modifyEmp = result.list.modifyEmpName;
 
       }).catch(function (error) {
           commonUtils.Log("employee/otherInfo.do_:"+error);

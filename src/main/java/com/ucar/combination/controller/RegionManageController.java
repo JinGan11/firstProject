@@ -176,7 +176,7 @@ public class RegionManageController {
         param.setRegionLevel(Integer.valueOf(regionLevel));
         param.setRegionCode(regionCode);
         param.setRegionName(regionName);
-        if(cityID != null && cityID.trim() != ""){
+        if(cityID != null ){
             int id=Integer.parseInt(cityID);
             Long cityId=(long) id;
             param.setCityID(cityId);
@@ -238,11 +238,16 @@ public class RegionManageController {
         region.setModifyTime(modifyTime);
         region.setRemark("无情");
 
+        int matchRegionCode=regionManageService.matchRegionCode(region).size();
+        if(matchRegionCode>0)
+        {return "所填国际代码已存在";}
+
+
         int resultValue=regionManageService.createRegion(region);
         if(resultValue>0)
-        {return "success";}
+        {return "创建成功";}
         else
-        {return "false";}
+        {return "创建失败";}
     }
 
 
@@ -272,17 +277,29 @@ public class RegionManageController {
         region.setModifyTime(modifyTime);
 
         //校验国际代码唯一性
+        Region getRegionCodeByCityID=regionManageService.getRegionCodeByCityID(region);
+
+        if(!region.getRegionCode().equals(getRegionCodeByCityID.getRegionCode())){
+            int matchRegionCode=regionManageService.matchRegionCode(region).size();
+            if(matchRegionCode>0)
+            {return "所填国际代码已存在";}
+        }
 
 
         //校验下级是否存在
+        if(region.getRegionStatus()!=1 ){
+            List<Region> getRegionByUpperCityID=regionManageService.getRegionByUpperCityID(region);
+            if(getRegionByUpperCityID.size()>0)
+                {return "存在子节点有效，不能修改本节点为无效。";}
+        }
 
 
         //最终修改
         int resultValue=regionManageService.modifyRegion(region);
         if(resultValue>0)
-        {return "success";}
+        {return "修改成功";}
         else
-        {return "false";}
+        {return "修改失败";}
     }
     /**
      * description: 部门及部门下属城市列表展示

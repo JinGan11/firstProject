@@ -341,6 +341,7 @@
         pageAddSize: 10,
         addTotal: 0,
         addSelection:[],
+        accountNameList:[],
         form: {
           accountNo: '',
           staffNo: '',
@@ -428,8 +429,10 @@
         }
         this.selectionAccount = val;
         this.list=[];
+        this.accountNameList=[];
         for (let i = 0; i <this.selectionAccount.length ; i++) {
-          this.list.push(val[i].id)
+          this.list.push(val[i].id);
+          this.accountNameList.push(val[i].accountName)
         }
       },
       handleAddSizeChange(val) {
@@ -726,10 +729,18 @@
         this.roleAssignPermissionFlag = false;
       },
       removeRoleAccount(){
-        this.$confirm('确定将下列账号从'+this.myRole.roleName+'角色中移除么？', '提示', {
+        let acccountName='';
+        for (let i = 0; i <this.accountNameList.length ; i++) {
+          acccountName+=this.accountNameList[i];
+          if(i !=(this.accountNameList.length-1)){
+            acccountName+=',';
+          }
+        }
+        this.$confirm('确定将下列账号从'+this.myRole.roleName+'角色中移除么？<br><br>'+acccountName, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
-          type: 'warning'
+          type: 'warning',
+          dangerouslyUseHTMLString: true
         }).then(() => {
           var self = this;
           var param = {

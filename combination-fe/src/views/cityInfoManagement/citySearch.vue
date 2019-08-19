@@ -309,7 +309,7 @@
                 } else if (this.checkedRegionProps[i] === '状态') {
                     this.filterVal.push('regionStatus')
                 } else if (this.checkedRegionProps[i] === '修改人') {
-                    this.filterVal.push('modifyEmp')
+                    this.filterVal.push('modifyEmpName')
                 } else if (this.checkedRegionProps[i] === '修改时间') {
                     this.filterVal.push('modifyTime')
                 }

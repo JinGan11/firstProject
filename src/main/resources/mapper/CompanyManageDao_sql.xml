@@ -242,6 +242,7 @@
         T.company_nature,
         T.company_mark,
         T.status companyStatus,
+        T.modify_emp modifyEmp,
         t1.account_name modifyName,
         T.modify_time
         from t_company T,t_account t1
@@ -284,10 +285,11 @@
         T.company_nature,
         T.company_mark,
         T.status companyStatus,
+        T.modify_emp modifyEmp,
         t1.account_name modifyName,
         T.modify_time
     from t_company T,t_account t1
-    where T.id in (select t.company_id from t_r_department_company t where t.department_id = #{departmentId} AND t.status=1)
+    where T.id in (select t2.company_id from t_r_department_company t2 where t2.department_id = #{departmentId} AND t2.status=1)
           and T.modify_emp=t1.id
     order by T.id desc
     </select>
@@ -298,18 +300,18 @@
             company_id,
             create_time,
             modify_time,
+            status,
             create_emp,
-            modify_emp,
-            status
+            modify_emp
         )
         values(
             #{departmentId},
             #{companyId},
             now(),
             now(),
+            1,
             #{createEmp},
-            #{modifyEmp},
-            1
+            #{modifyEmp}
         )
     </insert>
     <update id="updateRelation" parameterType="java.util.Map">

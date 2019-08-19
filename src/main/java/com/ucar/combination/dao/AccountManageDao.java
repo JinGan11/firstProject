@@ -167,4 +167,13 @@ public interface AccountManageDao {
      * @return:
      */
      void updateAccountSecretEmailById(String secretEmail,String id);
+
+    /**
+     * description: 根据账户id查询员工id
+     * @author junqiang.zhang@ucarinc.com
+     * @date: 2019/8/18
+     * @params: accountId 账户id
+     * @return: Long 员工id
+     */
+    public Long selectStaffIdById(Long accountID);
 }

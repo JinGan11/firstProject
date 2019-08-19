@@ -24,6 +24,24 @@ public class AccountStaff extends BaseBean {
     String remark;
     String tree;
     String []departmentIds;
+    Long creater;
+    Long modifier;
+
+    public Long getCreater() {
+        return creater;
+    }
+
+    public void setCreater(Long creater) {
+        this.creater = creater;
+    }
+
+    public Long getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(Long modifier) {
+        this.modifier = modifier;
+    }
 
     public String[] getDepartmentIds() {
         return departmentIds;

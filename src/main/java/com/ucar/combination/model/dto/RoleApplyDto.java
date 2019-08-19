@@ -15,6 +15,7 @@ public class RoleApplyDto {
     private String roleApplyNum;
     private Long roleId;
     private String roleName;
+    private Integer roleStatus;
     private String approverStaffName;
     private String approverAccountName;
     private String businessLine;
@@ -71,6 +72,14 @@ public class RoleApplyDto {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public Integer getRoleStatus() {
+        return roleStatus;
+    }
+
+    public void setRoleStatus(Integer roleStatus) {
+        this.roleStatus = roleStatus;
     }
 
     public String getApproverStaffName() {

@@ -14,6 +14,7 @@ import AccountManagement from '@/views/accountManagement/AccountList'
 import RoleManagement from '@/views/roleManagement/RoleManagement'
 import CompanyManagement from '@/views/companyManagement/CompanyList'
 import CreateAccount from '@/views/accountManagement/CreateAccount'
+import Test1 from '@/views/accountManagement/test'
 import ModifyAccount from '@/views/accountManagement/ModifyAccount'
 import CreateRole from '@/views/roleManagement/CreateRole'
 import CreateRoleApply from '@/views/roleManagement/CreateRoleApply'
@@ -138,7 +139,7 @@ export default new Router({
     meta:{requireAuth:true}
   },{
     path:'/modifyAccount',
-    name:'新建账户',
+    name:'修改账户',
     component:ModifyAccount,
     meta:{requireAuth:true}
   },{
@@ -216,7 +217,11 @@ export default new Router({
     name: "重置密码",
     component: ResetPass,
     meta:{requireAuth:false}
+  }, {
+      path:'/test1',
+      name: "测试",
+      component: Test1,
+      meta:{requireAuth:true}
   }
-
   ]
 })

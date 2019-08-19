@@ -138,10 +138,6 @@
 		<if test="cityID != null ">
 			AND t1.upper_city_id = #{cityID}
 		</if>
-		<if test="regionCode != null and regionCode.trim() != ''">
-			AND t1.upper_international_code = #{regionCode}
-		</if>
-
 	</select>
 
 	<insert id="createRegion" parameterType="com.ucar.combination.model.Region">
@@ -181,6 +177,9 @@
 		t1.`level` = #{regionLevel}
 		AND t1.modify_emp = t2.id
 		AND t1.create_emp = t3.id
+		<if test="cityID != null ">
+			AND t1.city_id = #{cityID}
+		</if>
 		<if test="regionCode != null and regionCode.trim() != ''">
 			AND t1.international_code LIKE #{regionCode}"%"
 		</if>
@@ -199,11 +198,35 @@
         where t1.city_id = #{cityID}
     </update>
 
+	<update id="modifySubRegion" parameterType="com.ucar.combination.model.Region">
+        update t_b_city t1
+        set t1.upper_international_code=#{regionCode},t1.upper_city_name=#{regionName},t1.modify_emp=#{modifyEmp},t1.modify_time=#{modifyTime}
+        where t1.upper_city_id = #{cityID}
+    </update>
+
 	<select id="citySearchListById" resultType="java.lang.String">
 		SELECT T.city_name FROM t_b_city T JOIN t_department T1 on T.city_id=T1.city_id
          WHERE T1.id=#{id} OR T1.upper_department_no =(
 	        SELECT T2.department_no FROM t_department T2
 		      WHERE T2.id=#{id}
           );
+	</select>
+
+	<select id="matchRegionCode" resultType="com.ucar.combination.model.Region">
+		SELECT city_id cityID
+	 	FROM  t_b_city t1
+	 	WHERE t1.international_code=#{regionCode}
+	</select>
+
+	<select id="getRegionCodeByCityID" resultType="com.ucar.combination.model.Region">
+		SELECT international_code RegionCode
+	 	FROM  t_b_city t1
+	 	WHERE t1.city_id=#{cityID}
+	</select>
+
+	<select id="getRegionByUpperCityID" resultType="com.ucar.combination.model.Region">
+		SELECT city_id cityID
+	 	FROM  t_b_city t1
+	 	WHERE t1.upper_city_id=#{cityID} AND t1.`status`= 1
 	</select>
 </mapper>

@@ -134,6 +134,7 @@
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :onChange="getFileList"
+            :beforeUpload="beforeAvatarUpload"
             :auto-upload="false"
             ref="upload"
             :http-request="uploadLicenses">
@@ -254,6 +255,7 @@
     data() {
       return {
         businessTerm:[],
+        iscommit:true,
         form: {
           oldCreditCode:'',
           businessStartTime:'',
@@ -363,9 +365,13 @@
           ],
           bankAccount:[
             { min: 7, max: 20, message: '长度在 7 到 20 位数字', trigger: 'blur' },
+            { pattern:/(^[\d]+$)/,message: '只支持 7 到 20 位数字，请勿输入其他字符', trigger: 'blur' }
+
           ],
           telephone:[
             { min: 11, max: 12, message: '长度在 11 到 12 位数字', trigger: 'blur' },
+            { pattern:/(^[\d]+$)/,message: '只支持 11 到 12 位数字，请勿输入其他字符', trigger: 'blur' }
+
           ],
           companyStatus:[
             { required: false, message: '状态'},
@@ -449,9 +455,10 @@
         this.$refs.upload.submit();
         const self = this;
     //    console.log(self.form.registeredCapital)
-        self.$refs["ruleForm"].validate(function (valid) {
-          if (valid) {
-           // console.log(self.form.registeredCapital)
+        if(this.iscommit){
+          self.$refs["ruleForm"].validate(function (valid) {
+            if (valid) {
+              // console.log(self.form.registeredCapital)
               //if(self.$options.methods.checkInput(self)==false) return;
               self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -466,10 +473,15 @@
                 self.form.createEmp='';
                 self.form.modifyEmp='';
                 self.formData.append("company", JSON.stringify(self.form));
-           //     console.log(self.formData.get("businessLicenses"));
+                //     console.log(self.formData.get("businessLicenses"));
                 self.$http.post("company/modifyCompany",self.formData)
                   .then((result) => {
                     console.log(result.msg)
+                    if(result.error ==="outLimit"){
+                      self.$message.error("最多只能上传20张图片!");
+                      self.formData=new FormData();
+                      return ;
+                    }
                     if (result.msg !="success") {
                       self.$alert("统一社会信用代码已存在，请重新修改！");
                     }else{
@@ -493,13 +505,12 @@
                   message: '已取消保存'
                 });
               });
-          } else {
-        //    console.log('error submit!!');
-            return false;
-          }
-        })
-
-
+            } else {
+              //    console.log('error submit!!');
+              return false;
+            }
+          })
+        }
           },
       cancel(){//关闭新建公司页面，返回公司管理列表页面
         this.$router.replace('/CompanyManagement')
@@ -526,6 +537,33 @@
           })
         })
       },
+      beforeAvatarUpload(file) {
+        var testmsg=file.name.substring(file.name.lastIndexOf('.')+1)
+        const extension = testmsg === 'jpg'||testmsg === 'JPG';
+        const extension2 = testmsg === 'png'||testmsg === 'PNG';
+        const extension3 = testmsg === 'gif'||testmsg === 'GIF';
+        const isLt2M = file.size / 1024 / 1024 ;
+        if(!extension && !extension2 && !extension3) {
+          this.$message({
+            message: '上传文件只能是jpg/png/gif格式!',
+            type: 'warning'
+          });
+          this.iscommit=false;
+          this.formData=new FormData();
+        }
+        if(isLt2M >2) {
+          this.$message({
+            message: '上传文件大小不能超过 2MB!',
+            type: 'warning'
+          });
+          this.iscommit=false;
+          this.formData=new FormData();
+        }
+        if((extension || extension2 ||extension3)&& (isLt2M<2)){
+          this.iscommit=true;
+        }
+        return (extension || extension2 ||extension3)&& (isLt2M<2)
+      } ,
 
     },
   }

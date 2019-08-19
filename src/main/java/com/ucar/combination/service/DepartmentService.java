@@ -110,28 +110,31 @@ public interface DepartmentService {
 
     /**
      * description: 校验
+     *
+     * @return result(true, false), msg(错误的时候返回错误信息)
      * @author 郑开添（kaitian.zheng@ucarinc.com）
      * @date 2019/8/12 10:30
      * @params
-     * @return result(true,false),msg(错误的时候返回错误信息)
      */
     Map<String, Object> checkInput(Department department);
 
     /**
      * description: 修改上级部门时判断是否工作点相同
+     *
+     * @return
      * @author 郑开添（kaitian.zheng@ucarinc.com）
      * @date 2019/8/12 15:25
      * @params id，上级部门编号
-     * @return
      */
     Map<String, Object> checkWorkplaceForUpper(Long id, String upperDepartment);
 
     /**
      * description: 建立部门树用于其他模块选择
+     *
+     * @return
      * @author 郑开添（kaitian.zheng@ucarinc.com）
      * @date 2019/8/12 17:09
      * @params
-     * @return
      */
     DepartmentTree2Dto buildTree2();
 
@@ -139,20 +142,42 @@ public interface DepartmentService {
 
     /**
      * description:
-     * @author jing.luo01@ucarinc.com
-     * @date   2019/8/6 10:11
-     * @params id  部门ID
-
+     *
      * @return 得到部门信息
+     * @author jing.luo01@ucarinc.com
+     * @date 2019/8/6 10:11
+     * @params id  部门ID
      */
     DepartmentDto getDepartmentDtoById(String id);
 
     /**
      * description: 得到SearchDepartmentDto的所有信息
-     * @author jing.luo01@ucarinc.com
-     * @date   2019/8/15 9:36
-     * @params
+     *
      * @return 返回SearchDepartmentDto的集合
+     * @author jing.luo01@ucarinc.com
+     * @date 2019/8/15 9:36
+     * @params
      */
     List<SearchDepartmentDto> searchDepartmentAll(QueryParam queryParam);
+
+
+    /**
+     * description: 确认所有部门是否有效
+     *
+     * @return true：所有部门均有效，false：有一个或以上部门无效
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/17 16:50
+     * @params 多个部门id或多个部门编号，没有的传null
+     */
+    Boolean checkStatusChange(List<Long> departmentId, List<String> departmentNo);
+
+    /**
+     * description: 确认所有部门是否有效
+     *
+     * @return true：所有部门均有效，false：有一个或以上部门无效
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/17 16:50
+     * @params 部门id或部门编号，没有的传null
+     */
+    Boolean checkStatusChange(Long departmentId, String departmentNo);
 }

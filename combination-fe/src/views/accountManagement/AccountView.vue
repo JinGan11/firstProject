@@ -72,7 +72,7 @@
                          :props="defaultProps"
                          node-key="id"
                          :load="loadNode"
-                         lazy="true"
+                         lazy
                          show-checkbox
                          check-strictly>
                 </el-tree>
@@ -154,8 +154,10 @@
           children: 'children',
           isLeaf: 'nodeIsLeaf',
           id: 'id',
+          disabled:'canChoose',
           no: 'departmentNo',
         },
+        departmentDto: [],
         dialogEmployee: false,
         departmentVisible :false,
         relAccount: 1,
@@ -186,20 +188,57 @@
     },
     created() {
       const self = this;
+      self.$http.get('department/buildTree2.do_')
+        .then((result) => {
+          self.departmentDto = result.departmentDto;
+          self.setDisable([self.departmentDto ]);
+        }).catch(function (error) {
+        self.$message.error("获取部门数据错误")
+      });
       var val = localStorage.getItem("accountId")
       self.fetchData(val);
       self.fetchEnums();
     },
     methods: {
-      loadNode(node,resolve){//加载部门的树结构
+      loadNode(node,resolve){
         var self = this;
-        self.$http.get('department/buildTree2.do_')
-          .then((result) => {
-            resolve([result.departmentDto]);
-            self.$refs.tree.setCheckedKeys(self.modifyForm.trees);
-          }).catch(function (error) {
-
-        });
+        var departmentDto = [self.departmentDto];
+        if (node.level === 0) {
+          resolve(departmentDto);
+        }
+        if (node.level === 1) {
+          resolve(self.departmentDto.children);
+        }
+        if (node.level > 1){
+          var id = node.data.id;
+          resolve(getChilder(id,departmentDto));
+        }
+        function getChilder(id,datas) {
+          var d = null;
+          for(var i = 0;i<datas.length;i++){
+            var data = datas[i];
+            if (data.id != id && data.nodeIsLeaf == false){
+              d = getChilder(id,data.children);
+              if (d != null ){
+                return d;
+              }
+            }else if(data.id==id){
+              return data.children;
+            }
+          }
+          return d;
+        }
+      },
+      setDisable(departmentDto) {
+        for(var i = 0;i<datas.length;i++){
+          var data = datas[i];
+          if (data.nodeIsLeaf == false){
+            data.canChoose = true;
+            setDisable(data.children);
+          }else{
+            data.canChoose = true;
+          }
+        }
       },
       fetchDeparentPower(val){
         const self = this;
@@ -213,7 +252,6 @@
           self.$refs.tree.setCheckedKeys(self.modifyForm.trees);
           self.$refs.tree.setCheckedKeys(self.modifyForm.trees);
         }).catch(function (error) {
-          commonUtils.Log("account/selectDeparentPower.do_:"+error);
           self.$message.error("获取数据错误")
         });
       },
@@ -243,12 +281,17 @@
           }
           self.modifyForm.remark = result.account.remark;
           self.modifyForm.creatEmpName = result.account.creatEmpName;
+          if(result.account.createrName !=null ){
+            self.modifyForm.creatEmpName =self.modifyForm.creatEmpName + '(' + result.account.createrName + ')';
+          }
           self.modifyForm.createTime = result.account.createTime;
           self.modifyForm.modifyEmpName = result.account.modifyEmpName;
+          if(result.account.modifier != null ){
+            self.modifyForm.modifyEmpName =self.modifyForm.modifyEmpName + '(' + result.account.modifier + ')';
+          }
           self.modifyForm.modifyTime = result.account.modifyTime;
           self.modifyForm.accountState = result.account.accountState;
         }).catch(function (error) {
-          commonUtils.Log("account/selectAccountById.do_:"+error);
           self.$message.error("获取数据错误")
         });
       },
@@ -258,7 +301,6 @@
           self.permissionsList = result.permissionList;
           self.statusList = result.accountStatusList;
         }).catch(function (error) {
-          commonUtils.Log("account/enums.do_:"+error);
           self.$message.error("获取数据错误")
         });
       },

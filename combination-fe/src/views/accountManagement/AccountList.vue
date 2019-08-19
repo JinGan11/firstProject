@@ -114,7 +114,12 @@
         </template>
       </el-table-column>
       <el-table-column prop="modifyTime" label="操作时间" width=""></el-table-column>
-      <el-table-column prop="modifyEmpName" label="操作人" width="120px"></el-table-column>
+      <el-table-column prop="modifyEmpName" label="操作人" width="180px">
+        <template slot-scope="scope">
+          <p v-if="scope.row.modifier!=null">{{scope.row.modifyEmpName}}({{scope.row.modifier}})</p>
+          <p v-else>{{scope.row.modifyEmpName}}</p>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"

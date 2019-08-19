@@ -67,6 +67,7 @@
         t1.apply_num                roleApplyNum,
         t1.role_id                  roleId,
         t2.role_name                roleName,
+        t2.role_status              roleStatus,
         t2.approver_staff_name      approverStaffName,
         t2.approver_account_name    approverAccountName,
         t2.business_line            businessLine,
