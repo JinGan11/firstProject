@@ -521,15 +521,15 @@
           params: param
         }).then((result) => {
           self.tableRelationData = result.list;
-        for(let i=0;i<self.tableRelationData.length;i++){
-          self.relationCompany.push(self.tableRelationData[i].id);
-        }
-        self.companyChangesList=result.list;
-        self.CompanyTypeEnum = result.CompanyTypeEnum;
-        self.CompanyNatureEnum = result.CompanyNatureEnum;
-        self.CompanyMarkEnum = result.CompanyMarkEnum;
-        self.CompanyStatusEnum = result.CompanyStatusEnum;
-      }).catch(function (error) {
+          for(let i=0;i<self.tableRelationData.length;i++){
+            self.relationCompany.push(self.tableRelationData[i].id);
+          }
+          self.companyChangesList=result.list;
+          self.CompanyTypeEnum = result.CompanyTypeEnum;
+          self.CompanyNatureEnum = result.CompanyNatureEnum;
+          self.CompanyMarkEnum = result.CompanyMarkEnum;
+          self.CompanyStatusEnum = result.CompanyStatusEnum;
+        }).catch(function (error) {
           commonUtils.Log("company/querylistRel.do_:"+error);
           self.$message.error("获取数据错误");
         });
@@ -561,14 +561,14 @@
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
-        //判断是0还是Null
-        self.total = result.page.totalCount;
-        self.CompanyTypeEnum = result.CompanyTypeEnum;
-        self.CompanyNatureEnum = result.CompanyNatureEnum;
-        self.CompanyMarkEnum = result.CompanyMarkEnum;
-        self.CompanyStatusEnum = result.CompanyStatusEnum;
-        commonUtils.Log(self.tableData);
-      }).catch(function (error) {
+          //判断是0还是Null
+          self.total = result.page.totalCount;
+          self.CompanyTypeEnum = result.CompanyTypeEnum;
+          self.CompanyNatureEnum = result.CompanyNatureEnum;
+          self.CompanyMarkEnum = result.CompanyMarkEnum;
+          self.CompanyStatusEnum = result.CompanyStatusEnum;
+          commonUtils.Log(self.tableData);
+        }).catch(function (error) {
           commonUtils.Log("company/queryRelationList.do_:"+error);
           self.$message.error("获取数据错误");
         });
@@ -610,15 +610,21 @@
         this.selection=[];
       },
       removeCompanyBtn(){//移除公司
-        for(let i=0;i<this.relationSelection.length;i++){
-          for(let j=0;j<this.companyChangesList.length;j++){
-            if(this.relationSelection[i].id==this.companyChangesList[j].id){
-              this.companyChangesList.splice(j,1);
+        this.$confirm('此操作将移除关联公司, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          for(let i=0;i<this.relationSelection.length;i++){
+            for(let j=0;j<this.companyChangesList.length;j++){
+              if(this.relationSelection[i].id==this.companyChangesList[j].id){
+                this.companyChangesList.splice(j,1);
+              }
             }
           }
-        }
-        //前端关联公司表动态变化
-        this.tableRelationData=this.companyChangesList;
+          //前端关联公司表动态变化
+          this.tableRelationData=this.companyChangesList;
+        });
       },
       saveBtn(){//保存按钮，传送新旧关联公司信息
         var self = this;
@@ -639,8 +645,8 @@
           params: param
         }).then((result) => {
           self.$alert("保存成功！");
-        this.$router.replace("/departmentManagement/showDepartment");
-      }).catch(function (error) {
+          this.$router.replace("/departmentManagement/showDepartment");
+        }).catch(function (error) {
           commonUtils.Log("company/querylist.do_:"+error);
           self.$message.error("获取数据错误");
         });
@@ -664,23 +670,23 @@
           params: param
         }).then((result) => {
           self.companyForm=result.list.company;
-        self.companyForm.createEmp=result.list.createEmp;
-        self.companyForm.modifyEmp=result.list.modifyEmp;
-        self.licenses = result.licenses;
-        //处理下拉框
-        if(self.companyForm.companyType==null){
-          self.companyForm.companyType="";
-        }else{
-          self.companyForm.companyType=String(self.companyForm.companyType);
-        }
+          self.companyForm.createEmp=result.list.createEmp;
+          self.companyForm.modifyEmp=result.list.modifyEmp;
+          self.licenses = result.licenses;
+          //处理下拉框
+          if(self.companyForm.companyType==null){
+            self.companyForm.companyType="";
+          }else{
+            self.companyForm.companyType=String(self.companyForm.companyType);
+          }
 
-        if(self.companyForm.companyStatus==null){
-          self.companyForm.companyStatus="";
-        }else{
-          self.companyForm.companyStatus=String(self.companyForm.companyStatus);
-        }
-        self.businessTerm=[result.list.company.businessStartTime,result.list.company.businessDeadline];
-      }).catch(function (error) {
+          if(self.companyForm.companyStatus==null){
+            self.companyForm.companyStatus="";
+          }else{
+            self.companyForm.companyStatus=String(self.companyForm.companyStatus);
+          }
+          self.businessTerm=[result.list.company.businessStartTime,result.list.company.businessDeadline];
+        }).catch(function (error) {
           commonUtils.Log("company/getCompanyById.do_:" + error);
           self.$message.error("获取数据错误");
         });

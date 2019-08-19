@@ -120,10 +120,8 @@
             <el-col>
               <ul class="box">
                 <license v-for="license in licenses" :license="license" :key="license.id"
-                         @delete-license="deleteLicense"></license>
-                  <!--<li v-for ="item in licenses" :key="item.id">-->
-                    <!--<img :id="fileUrl+item.id" :src="fileUrl+item.id" height="150px" width="200px"/>-->
-                  <!--</li>-->
+                         @delete-license="deleteLicense" @preview-license="previewLicense"
+                      ></license>
               </ul>
             </el-col>
           </el-row>
@@ -243,6 +241,13 @@
         </el-form>
       </div>
     </div>
+    <el-dialog
+      :visible.sync="preview"
+      width="720px">
+      <div class="dialog-main" style="overflow: auto;height: 670px">
+        <img :id="fileUrl+previewId" :src="fileUrl+previewId" height="650px" width="700px"/>
+        </div>
+    </el-dialog>
   </home>
 </template>
 
@@ -256,6 +261,8 @@
       return {
         businessTerm:[],
         iscommit:true,
+        previewId:'',
+        preview:false,
         form: {
           oldCreditCode:'',
           businessStartTime:'',
@@ -564,7 +571,10 @@
         }
         return (extension || extension2 ||extension3)&& (isLt2M<2)
       } ,
-
+      previewLicense(id){
+        this.preview=true;
+        this.previewId=id;
+      },
     },
   }
 

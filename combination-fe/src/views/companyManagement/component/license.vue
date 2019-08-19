@@ -6,6 +6,7 @@
       </div>
       <div class="actions">
         <el-button type="danger" @click="deleteLicense" size="small">删除</el-button>
+        <el-button type="info" @click="previewLicense" size="small">预览</el-button>
       </div>
     </div>
   </div>
@@ -24,7 +25,10 @@
     methods: {
       deleteLicense() {
         this.$emit('delete-license', this.license.id);
-      }
+      },
+      previewLicense() {
+        this.$emit('preview-license', this.license.id);
+      },
     }
   }
 </script>
@@ -39,7 +43,7 @@
     .license-img {
     }
     .actions {
-        padding-left:50px ;
+     padding-left: 30px;
     }
   }
 
