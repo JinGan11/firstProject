@@ -307,6 +307,7 @@
       },
       clearStaffInf(){//清除选择关联的员工
         const self = this;
+        self.newForm.staffId = '';
         self.newForm.staffName = '';
         self.newForm.staffNum = '';
         self.newForm.secretEmail = '';

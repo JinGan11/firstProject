@@ -116,10 +116,12 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     @Override
     public void insertAccount(AccountStaff accountStaff) {
         accountStaff.setPassword(DigestUtils.md5DigestAsHex((accountStaff.getPassword()).getBytes()));
-        accountManageDao.insertAccount(accountStaff);
         accountStaff.setOperationType("新建账号");
         accountStaff.setAccountState(1);
+        accountStaff.setCreater(accountManageDao.selectStaffIdById(accountStaff.getCreateEmp()));
+        accountStaff.setModifier(accountManageDao.selectStaffIdById(accountStaff.getModifyEmp()));
         accountStaff.setAccountId(accountManageDao.selectIdByNum(accountStaff.getAccountName()));
+        accountManageDao.insertAccount(accountStaff);
         insertAccountHistory(accountStaff);
     }
 
@@ -191,6 +193,7 @@ public class AccountManagerServiceImpl implements AccountManagerService {
      */
     @Override
     public int modifyAccount(AccountStaff accountStaff) {
+        accountStaff.setModifier(accountManageDao.selectStaffIdById(accountStaff.getModifyEmp()));
         return accountManageDao.modifyAccount(accountStaff);
     }
 
@@ -204,6 +207,7 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     @Override
     public int updateStaffAccount(AccountStaff accountStaff) {
         accountStaff.setOperationType("修改账号");
+        accountStaff.setModifier(accountManageDao.selectStaffIdById(accountStaff.getModifyEmp()));
         insertAccountHistory(accountStaff);
         return employeeManageDao.updateAccount(accountStaff);
     }
@@ -276,6 +280,7 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     public int deleteAccountById(AccountStaff accountStaff) {
         accountStaff.setOperationType("删除账号");
         insertAccountHistory(accountStaff);
+        accountStaff.setModifier(accountManageDao.selectStaffIdById(accountStaff.getModifyEmp()));
         return accountManageDao.deleteAccountById(accountStaff);
     }
 
@@ -288,6 +293,7 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         Date date = new Date();
         Account account = new Account();
         account.setModifyEmpId(Long.parseLong(currentAccountId));
+        account.setModifierId(accountManageDao.selectStaffIdById(account.getModifyEmpId()));
         account.setModifyTime(date);
         account.setId(Long.parseLong(String.valueOf(id)));
          //拼装一条历史记录

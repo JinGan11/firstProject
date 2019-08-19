@@ -16,3 +16,4 @@ public interface AccountHistoryDao {
     int insert(@Param("acc") AccountHistory accountHistory);
     List<AccountHistory> selectAccountHistoryByAccountId(String accountId);
 }
+

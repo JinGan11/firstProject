@@ -24,6 +24,8 @@
         <result column="modify_emp_name" property="modifyEmpName"/>
         <result column="modify_time" property="modifyTime"/>
         <result column="account_state" property="accountState"/>
+        <result column="modifier" property="modifier"/>
+        <result column="creater" property="creater"/>
         <result column="account_remark" property="remark"/>
     </resultMap>
 
@@ -39,8 +41,10 @@
                t2.staff_email,
                t1.create_time,
                t3.account_name creat_emp_name,
+               t5.staff_name creater,
                t1.modify_time,
                t4.account_name modify_emp_name,
+               t6.staff_name modifier,
                t1.account_remark
         from t_account t1
                  LEFT JOIN t_staff t2
@@ -49,6 +53,10 @@
                            ON t1.create_emp = t3.id
                  LEFT JOIN t_account t4
                            ON t1.modify_emp = t4.id
+                 LEFT JOIN t_staff t5
+                           ON t1.creater = t5.id
+                 LEFT JOIN t_staff t6
+                           ON t1.modifier = t6.id
         WHERE t1.id = #{id}
     </select>
 
@@ -69,7 +77,9 @@
             create_emp,
             modify_time,
             modify_emp,
-            account_remark
+            account_remark,
+            creater,
+            modifier
         )VALUES(
                 #{accountName},
                 #{password},
@@ -80,7 +90,9 @@
                 #{createEmp},
                 NOW(),
                 #{modifyEmp},
-                #{remark}
+                #{remark},
+                #{creater},
+                #{modifier}
         )
     </insert>
     <select id="queryList" resultMap="account">
@@ -92,6 +104,7 @@
                t3.department_name,
                t1.permissions,
                t4.account_name modify_emp_name,
+               t5.staff_name modifier,
                t1.modify_time,
                t1.account_state
         FROM t_account t1
@@ -101,6 +114,8 @@
                            ON (t1.modify_emp = t4.id)
                  LEFT JOIN t_department t3
                            ON (t2.department_id = t3.id)
+                 LEFT JOIN t_staff t5
+                           ON t1.modifier = t5.id
         WHERE t1.account_state != 0
         <if test="flag == 1">
             and t1.account_state != 3
@@ -260,6 +275,7 @@
             permissions = #{permissions},
             account_secret_email = #{secretEmail},
             modify_emp = #{modifyEmp},
+            modifier = #{modifier},
             modify_time = NOW(),
             account_remark = #{remark}
         where id = #{accountId};
@@ -294,6 +310,7 @@
         UPDATE t_account
         SET account_state = 3,
             modify_emp = #{modifyEmp},
+            modifier = #{modifier},
             modify_time = NOW()
         WHERE id = #{accountId}
     </update>
@@ -316,7 +333,7 @@
 
     <update id="updateModifyTimeAndModifyName" parameterType="com.ucar.combination.model.Account">
         update t_account t1
-        set t1.modify_emp=#{a.modifyEmpId},t1.modify_time=#{a.modifyTime}
+        set t1.modify_emp=#{a.modifyEmpId},t1.modify_time=#{a.modifyTime},t1.modifier=#{a.modifierId}
         where t1.id = #{a.id}
     </update>
     <!-- description: 查询账户名是否存在-->
@@ -331,6 +348,10 @@
          set t1.account_secret_email=#{secretEmail}
          where t1.id=#{id}
     </update>
+
+    <select id="selectStaffIdById" parameterType="Long" resultType="Long">
+        SELECT staff_id from t_account where id = #{accountId}
+    </select>
 </mapper>
 
 

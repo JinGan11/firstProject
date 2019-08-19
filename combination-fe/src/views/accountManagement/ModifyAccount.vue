@@ -292,8 +292,14 @@
           }
           self.modifyForm.remark = result.account.remark;
           self.modifyForm.creatEmpName = result.account.creatEmpName;
+          if(result.account.createrName !=null ){
+            self.modifyForm.creatEmpName =self.modifyForm.creatEmpName + '(' + result.account.createrName + ')';
+          }
           self.modifyForm.createTime = result.account.createTime;
           self.modifyForm.modifyEmpName = result.account.modifyEmpName;
+          if(result.account.modifier != null ){
+            self.modifyForm.modifyEmpName =self.modifyForm.modifyEmpName + '(' + result.account.modifier + ')';
+          }
           self.modifyForm.modifyTime = result.account.modifyTime;
           self.modifyForm.accountState = result.account.accountState;
         }).catch(function (error) {
@@ -348,6 +354,7 @@
       },
       clearStaffInf(){//清除选择关联的员工
         const self = this;
+        self.modifyForm.staffId = '';
         self.modifyForm.staffName = '';
         self.modifyForm.staffNum = '';
         self.modifyForm.secretEmail = '';
