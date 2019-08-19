@@ -193,7 +193,7 @@
           self.departmentDto = result.departmentDto;
           self.setDisable([self.departmentDto ]);
         }).catch(function (error) {
-
+        self.$message.error("获取部门数据错误")
       });
       var val = localStorage.getItem("accountId")
       self.fetchData(val);
@@ -252,7 +252,6 @@
           self.$refs.tree.setCheckedKeys(self.modifyForm.trees);
           self.$refs.tree.setCheckedKeys(self.modifyForm.trees);
         }).catch(function (error) {
-          commonUtils.Log("account/selectDeparentPower.do_:"+error);
           self.$message.error("获取数据错误")
         });
       },
@@ -293,7 +292,6 @@
           self.modifyForm.modifyTime = result.account.modifyTime;
           self.modifyForm.accountState = result.account.accountState;
         }).catch(function (error) {
-          commonUtils.Log("account/selectAccountById.do_:"+error);
           self.$message.error("获取数据错误")
         });
       },
@@ -303,7 +301,6 @@
           self.permissionsList = result.permissionList;
           self.statusList = result.accountStatusList;
         }).catch(function (error) {
-          commonUtils.Log("account/enums.do_:"+error);
           self.$message.error("获取数据错误")
         });
       },

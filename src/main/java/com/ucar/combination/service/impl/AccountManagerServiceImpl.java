@@ -120,8 +120,8 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         accountStaff.setAccountState(1);
         accountStaff.setCreater(accountManageDao.selectStaffIdById(accountStaff.getCreateEmp()));
         accountStaff.setModifier(accountManageDao.selectStaffIdById(accountStaff.getModifyEmp()));
-        accountStaff.setAccountId(accountManageDao.selectIdByNum(accountStaff.getAccountName()));
         accountManageDao.insertAccount(accountStaff);
+        accountStaff.setAccountId(accountManageDao.selectIdByNum(accountStaff.getAccountName()));
         insertAccountHistory(accountStaff);
     }
 
