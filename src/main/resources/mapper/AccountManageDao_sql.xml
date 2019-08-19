@@ -324,10 +324,10 @@
     <select id="selectAccountInfoById" parameterType="Integer" resultType="com.ucar.combination.model.AccountHistory">
         select ac.id as account_id,ac.create_emp,ac.create_time,ac.permissions,st.staff_name,st.staff_num
         from
-        t_account ac, t_staff st
+        t_account ac
+        LEFT JOIN  t_staff st
+        on ac.staff_id=st.id
         WHERE
-        ac.staff_id=st.id
-        And
         ac.id=#{id}
     </select>
 
