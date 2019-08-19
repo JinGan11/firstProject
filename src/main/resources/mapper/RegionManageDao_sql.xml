@@ -143,11 +143,12 @@
 	<insert id="createRegion" parameterType="com.ucar.combination.model.Region">
 
         INSERT INTO t_b_city ( international_code, city_name_pinyin,city_name,upper_city_name ,`level`,status,create_emp,create_time,modify_emp,modify_time,remark,
-        area_code,country_code,upper_city_id,city_id,upper_international_code)
+        area_code,country_code,upper_city_id,upper_international_code)
         VALUES(#{regionCode}, #{regionPinyin},#{regionName}, #{upperRegion} ,#{regionLevel},#{regionStatus},#{createEmp},#{createTime},#{modifyEmp},#{modifyTime},'无',
-        #{regionAreaCode},#{countryCode},#{upperRegionID},#{cityID},#{upperRegionCode})
+        #{regionAreaCode},#{countryCode},#{upperRegionID},#{upperRegionCode})
 
 	</insert>
+
 	<select id="getCityList" resultType="java.lang.Object">
 		select T.city_name from t_b_city T;
 	</select>

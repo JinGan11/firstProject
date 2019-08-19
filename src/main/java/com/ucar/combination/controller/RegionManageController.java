@@ -223,7 +223,7 @@ public class RegionManageController {
         }else{
             region.setUpperRegionID(null);
         }
-        region.setCountryCode(request.getParameter("countryCode"));
+        region.setCountryCode("CN");
         region.setRegionAreaCode(request.getParameter("regionAreaCode"));
         region.setRegionCode(request.getParameter("regionCode"));
         region.setRegionName(request.getParameter("regionName"));
@@ -236,7 +236,7 @@ public class RegionManageController {
         region.setCreateTime(modifyTime);
         region.setModifyEmp(accountId);
         region.setModifyTime(modifyTime);
-        region.setRemark("无情");
+        region.setRemark("无");
 
         int matchRegionCode=regionManageService.matchRegionCode(region).size();
         if(matchRegionCode>0)

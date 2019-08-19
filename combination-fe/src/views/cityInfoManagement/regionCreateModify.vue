@@ -141,8 +141,27 @@
                     cityID:'',
                     countryCode:'CN',
                     regionAreaCode:'',
-                    upperRegionID:'',
-                    upperRegionCode:'',
+                    upperRegionID:'0',
+                    upperRegionCode:'0',
+                    remark:'无',
+                    createEmpName:'',
+                    createTime:'',
+                    regionCode:'',
+                    regionName:'',
+                    regionPinyin:'',
+                    regionLevel:'',
+                    regionStatus:'',
+                    upperRegion:'中国',
+                    modifyEmpName:'',
+                    modifyTime:'',
+                    upperRegionTwice:''
+                },
+                formTemp:{
+                    cityID:'',
+                    countryCode:'CN',
+                    regionAreaCode:'',
+                    upperRegionID:'0',
+                    upperRegionCode:'0',
                     remark:'无',
                     createEmpName:'',
                     createTime:'',
@@ -310,12 +329,12 @@
                 }
             },
             setDefault(self){
-                var formDefault={
+                self.form={
                     cityID:'',
                     countryCode:'CN',
                     regionAreaCode:'',
-                    upperRegionID:'',
-                    upperRegionCode:'',
+                    upperRegionID:'0',
+                    upperRegionCode:'0',
                     remark:'无',
                     createEmpName:'',
                     createTime:'',
@@ -329,8 +348,25 @@
                     modifyTime:'',
                     upperRegionTwice:''
                 };
-                self.formTemp=formDefault;
-                self.form=formDefault;
+                self.formTemp={
+                    cityID:'',
+                    countryCode:'CN',
+                    regionAreaCode:'',
+                    upperRegionID:'0',
+                    upperRegionCode:'0',
+                    remark:'无',
+                    createEmpName:'',
+                    createTime:'',
+                    regionCode:'',
+                    regionName:'',
+                    regionPinyin:'',
+                    regionLevel:'',
+                    regionStatus:'',
+                    upperRegion:'中国',
+                    modifyEmpName:'',
+                    modifyTime:'',
+                    upperRegionTwice:''
+                };
                 self.formDisable=true;
                 self.modifyDisable=true;
                 self.isCreate=false;
@@ -442,12 +478,16 @@
                 this.getCurrentTime();
             },
             createRegionBtn(){
-                var formDefault={
+
+                this.formDisable=false;
+                this.isModify=false;
+                this.isCreate=true;
+                this.form={
                     cityID:'',
                     countryCode:'CN',
                     regionAreaCode:'',
-                    upperRegionID:'',
-                    upperRegionCode:'',
+                    upperRegionID:'0',
+                    upperRegionCode:'0',
                     remark:'无',
                     createEmpName:'',
                     createTime:'',
@@ -461,11 +501,6 @@
                     modifyTime:'',
                     upperRegionTwice:''
                 };
-                this.formDisable=false;
-                this.isModify=false;
-                this.isCreate=true;
-                this.form=formDefault;
-
 
 
 
@@ -481,10 +516,29 @@
                 }
                 this.form.regionLevel=regionLevel;
 
-                if(regionLevel==='1')
-                    this.form.upperRegion='中国'
-                else
-                    this.form.upperRegion=this.formTemp.regionName;
+                if(regionLevel==='1'){
+                    this.formTemp={
+                        cityID:'0',
+                        countryCode:'CN',
+                        regionAreaCode:'',
+                        upperRegionID:'0',
+                        upperRegionCode:'0',
+                        remark:'无',
+                        createEmpName:'',
+                        createTime:'',
+                        regionCode:'0',
+                        regionName:'中国',
+                        regionPinyin:'',
+                        regionLevel:'',
+                        regionStatus:'',
+                        upperRegion:'中国',
+                        modifyEmpName:'',
+                        modifyTime:'',
+                        upperRegionTwice:''
+                    };
+                }
+
+                this.form.upperRegion=this.formTemp.regionName;
                 this.form.upperRegionCode=this.formTemp.regionCode;
                 this.form.upperRegionID=this.formTemp.cityID;
                 this.form.upperRegionTwice=this.formTemp.upperRegion;
@@ -551,7 +605,7 @@
                     regionLevel:self.form.regionLevel,
                     regionStatus: self.form.regionStatus,
                     modifyTime:self.form.modifyTime,
-                    upperRegion:self.form.regionName,
+                    upperRegion:self.form.upperRegion,
                     upperRegionCode:self.form.upperRegionCode,
                     upperRegionID:self.form.upperRegionID
 
