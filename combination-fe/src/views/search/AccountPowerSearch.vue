@@ -41,8 +41,12 @@
         </el-col>
         <el-col :span="6">
           <el-form-item label="权限名称">
-            <el-input v-model="accountForm.path" clearable></el-input>
+            <el-input v-model="accountForm.path" :disabled="true"></el-input>
           </el-form-item>
+          <el-col :span="2">
+            <el-button type="text" @click="selectPower">选择</el-button>
+            <el-button type="text" @click="clearPower">清空</el-button>
+          </el-col>
         </el-col>
       </el-row>
       <el-row style="text-align: center">
@@ -78,11 +82,6 @@
         </template>
       </el-table-column>
       <el-table-column prop="accountId" v-if="false"></el-table-column>
-      <!--  <el-table-column prop="createTime" v-if="false"></el-table-column>
-       <el-table-column prop="modifyEmp" v-if="false"></el-table-column>
-       <el-table-column prop="modifyTime" v-if="false"></el-table-column>
-       <el-table-column prop="remark" v-if="false"></el-table-column>
-       <el-table-column prop="email" v-if="false"></el-table-column>-->
     </el-table>
     <el-pagination background
                    @size-change="handleSizeChange"
@@ -200,7 +199,34 @@
         <el-button type="primary" @click="getCheckedDepartment">确定</el-button>
       </div>
     </el-dialog>
-
+    <!--选择权限-->
+    <el-dialog :title="roleAssignPermissionTitle" :visible.sync="roleAssignPermissionFlag" :close-on-click-modal="false"
+               width="700px">
+      <div class="dialog-main" >
+        <el-form>
+          <el-row type="flex" justify="center" style="width: 100%;">
+            <el-col :span="11">
+              <el-scrollbar style="width: 400px">
+                <el-tree
+                  style="float: left;margin-left: 100px;height: 350px"
+                  ref="permTree"
+                  :props="PermissionProps"
+                  node-key="powerId"
+                  :load="loadNodePermTree"
+                  lazy="true"
+                  show-checkbox
+                  check-strictly
+                  @check-change="handleCheckChange">
+                </el-tree>
+              </el-scrollbar>
+            </el-col>
+          </el-row>
+          <div style="height: 80px;display: flex;align-items: center;margin-left: 80%">
+            <el-button type="primary" style="margin-right: 10px" @click="getCheckedPermission">确定</el-button>
+          </div>
+        </el-form>
+      </div>
+    </el-dialog>
   </home>
 </template>
 
@@ -223,6 +249,7 @@
           path: '',
           accountState: '',
           status: '',
+          powerId:'',
         },
         formDetail: {
           accountName: '',
@@ -260,6 +287,24 @@
         accountPowerList: [],
         permissionEnum: [],
         accountStatusEnum: [],
+        powerDialogVisible: false,
+        selectedNodes: null,
+        checkStrictly: false,
+
+        roleAssignPermissionFlag: false,
+        powerSelectedList: [],
+        selected: [],
+        PermissionProps: {
+          label: 'powerName',
+          children: 'children',
+          id: 'powerId'
+        },
+        selectedNodes: [],
+        myRole: [],
+        roleAssignPermissionTitle: '选择权限',
+        powerTree: [],
+        checkStrictly: false,
+        roleInfoDetailFlag: false,
       }
     },
     methods: {
@@ -281,7 +326,7 @@
           staffNum: this.accountForm.staffNum,
           staffName: this.accountForm.staffName,
           departmentName: this.accountForm.departmentName,
-          path: this.accountForm.path,
+          powerId: this.accountForm.powerId,
           accountState: this.accountForm.accountState,
         };
         self.$http.get('/roleAccount/getAccountPowerList.do_', {
@@ -336,7 +381,7 @@
             }
             var currentdate = year + seperator1 + month + seperator1 + strDate;
             const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '账号功能权限明细'+currentdate);
+            export_json_to_excel(tHeader, data, '账号功能权限明细' + currentdate);
             this.$message({
               showClose: true,
               message: '文件导出成功',
@@ -400,12 +445,22 @@
       selectDepartment() {//选择部门
         this.dialogVisibleDepartment = true;
       },
+      selectPower() {
+        const self = this;
+        self.roleAssignPermissionFlag = true;
+      },
       clearDepartment() {//清除部门的值
         this.accountForm.departmentName = '';
       },
-      loadNode(node, resolve) {
+      clearPower() {
+        this.accountForm.path = '';
+      },
+
+      //权限树的获得
+      //获取树数据
+      loadNode(node,resolve){
         var self = this;
-        self.$http.get('department/buildTree.do_', {
+        self.$http.get('department/buildTree2.do_', {
           params: null
         }).then((result) => {
           resolve([result.departmentDto]);
@@ -450,6 +505,39 @@
         // alert(this.$refs.tree.getCheckedNodes()[0].departmentName);
         this.accountForm.departmentName = this.$refs.tree.getCheckedNodes()[0].departmentName;
         this.dialogVisibleDepartment = false;
+      },
+
+      getCheckedPermission() {
+        this.accountForm.path=this.$refs.permTree.getCheckedNodes()[0].powerName;
+        this.roleAssignPermissionFlag=false;
+      },
+      //获取树数据
+      loadNodePermTree(node, resolve) {
+        var self = this;
+        self.$http.get('power/getPowerList', {
+          params: null
+        }).then((result) => {
+          resolve([result.powerTree]);
+        }).catch(function (error) {
+          commonUtils.Log("account/querylist.do_:" + error);
+          self.$message.error("获取数据错误")
+        });
+
+      },
+      handleCheckChange (data,checked,node) {
+        // 手动设置单选
+        if(checked === true) {
+          this.accountForm.powerId = data.powerId;
+          this.checkedId = data.powerId;
+          this.$refs.permTree.setCheckedKeys([data.powerId]);
+        } else {
+          if (this.checkedId == data.powerId) {
+            this.$refs.permTree.setCheckedKeys([data.powerId]);
+          }
+        }
+      },
+      clearPermission(){//清除权限的值
+        this.form.powerName='';
       },
     },
     filters: {

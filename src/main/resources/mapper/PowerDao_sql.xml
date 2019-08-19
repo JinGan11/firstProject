@@ -65,8 +65,8 @@
                 <if test="departmentName!=null and departmentName.trim()!=''">
                     AND T4.department_name=#{departmentName}
                 </if>
-                <if test="path!=null and path.trim()!=''">
-                    AND T3.path=#{path}
+                <if test="powerId!=null and powerId.trim()!=''">
+                    AND T3.power_id=#{powerId}
                 </if>
                 <if test="accountState!=null and accountState.trim()!=''">
                     AND T.account_state=#{accountState}
