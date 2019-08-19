@@ -454,6 +454,7 @@
       },
       clearPower() {
         this.accountForm.path = '';
+        this.accountForm.powerId = '';
       },
 
       //权限树的获得
