@@ -167,9 +167,7 @@
             };
 
             return{
-                defaultNode:'',
-                defaultResolve:'',
-                currentNode:'',
+                currentRegion:'',
                 currentResolve:'',
                 resultStr:'',
 
@@ -404,6 +402,7 @@
                     //第一次点击,应选中
                     this.destroyed();
                     this.currentKey = checkedKey;
+                    this.currentRegion=region;
                     this.fetchRegionDetails(this,region);
                     this.formDisable=true;
                     this.modifyDisable=false;
@@ -579,8 +578,7 @@
                 this.formDisable=false;
                 this.isModify=true;
                 this.isCreate=false;
-                this.form=this.formTemp;
-                console.log(this.formTemp);
+                this.fetchRegionDetails(this,this.currentRegion);
                 this.getCurrentTime();
 
             },
@@ -676,15 +674,17 @@
                             //对取回来的数据进行处理
                             // console.log(result);
 
-                            self.resultStr=result;
-                            self.$alert(self.resultStr);
-                            self.$refs["form"].validate(()=>{return ;});
+                            self.$alert(result);
+
 
                             if(result === "修改成功"){
                                 self.isModify=false;
                                 self.formDisable=true;
                                 //增加完根节点,刷新页面
                                 self.$router.go(0);
+                            }else{
+                                self.resultStr=result;
+                                self.$refs["form"].validate(()=>{return ;});
                             }
 
                         }).catch(function (error) {
@@ -738,14 +738,14 @@
                         }).then((result)=>{
                             //对取回来的数据进行处理
                             // console.log(result);
-                            self.resultStr=result;
-                            self.$alert(self.resultStr);
-                            self.$refs["form"].validate(()=>{return ;});
-                            // self.$alert(result);
-                            if(result === "新建成功") {
+                            self.$alert(result);
+                            if(result === "创建成功") {
                                 self.isCreate = false;
                                 self.formDisable = true;
                                 self.$router.go(0);
+                            }else{
+                                self.resultStr=result;
+                                self.$refs["form"].validate(()=>{return ;});
                             }
 
                             // console.log("param.regionLevel"+param.regionLevel);
