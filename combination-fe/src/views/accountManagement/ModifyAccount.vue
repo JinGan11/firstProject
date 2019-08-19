@@ -142,8 +142,8 @@
           </el-row>
           <el-row>
             <el-col>
-              <el-form-item label="备注" prop="remark">
-                <el-input style="width: 73%" type="textarea" :rows="2" v-model="modifyForm.remark"></el-input>
+              <el-form-item label="备注" prop="remark" >
+                <el-input style="width: 73%" :disabled="true" type="textarea" :rows="2" v-model="modifyForm.remark"></el-input>
               </el-form-item>
             </el-col>
           </el-row>

@@ -417,34 +417,6 @@
           return d;
         }
       },
-
-      // loadNode(node, resolve) {nodeIsLeaf
-      //   if (node.level === 0) {
-      //     return resolve(this.data1);
-      //   }
-      //   if (node.level > 1){
-      //     var id = node.data.id;
-      //     resolve(tt(id,this.data));
-      //   }
-      //   if (node.level === 1){
-      //     resolve(this.data);
-      //   }
-      //   function tt(id,datas) {
-      //     var d = null;
-      //     for(var i = 0;i<datas.length;i++){
-      //       var data = datas[i];
-      //       if (data.id != id && data.leaf == false){
-      //         d = tt(id,data.children);
-      //         if (d != null ){
-      //           return d;
-      //         }
-      //       }else if(data.id==id){
-      //         return data.children;
-      //       }
-      //     }
-      //     return d;
-      //   }
-      // },
       handleClickChange(data,checked,node){
         // 手动设置单选
         if(checked === true) {
