@@ -644,7 +644,16 @@
           callback();
         }
       };
-
+      var checkNum = (rule, value, callback) => {
+        // let phoneReg = /(^1[3|4|5|6|7|8|9]\d{9}$)|(^09\d{8}$)/;
+        if (value == "") {
+          callback(new Error("员工编号为必填项，不允许为空"));
+        } else if (!this.isNum(value)) {//引入methods中封装的检查手机格式的方法
+          callback(new Error("员工编号不满足录入条件,需为1-20位数字"));
+        } else {
+          callback();
+        }
+      };
       return {
         isDiss:true,
         total: 0,
@@ -683,8 +692,9 @@
           remark: '',
         },
         rulesCreate: {
-          staffNum: [{required: true, message: '员工编号为必填项，不允许为空', trigger: 'blur'},
-            {min: 1, max: 20, message: '员工编号不满足录入条件', trigger: 'blur'}],
+          /*staffNum: [{required: true, message: '员工编号为必填项，不允许为空', trigger: 'blur'},
+            {min: 1, max: 20, message: '员工编号不满足录入条件', trigger: 'blur'}],*/
+          staffNum: [{required: true, validator: checkNum, trigger: 'blur'}],
           staffName: [{required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur'},
             {min: 1, max: 30, message: '员工姓名不满足录入条件', trigger: 'blur'}],
 
@@ -1513,6 +1523,14 @@
         } else {
           return true;
         }
+      },
+      isNum(val){
+        if(!/^\d{1,20}$/.test(val)){
+          return false;
+        } else {
+          return true;
+        }
+
       },
       staffNumBtn(val) {
         this.contentDialogVisible = true;
