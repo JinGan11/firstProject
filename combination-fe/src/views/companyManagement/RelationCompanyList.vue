@@ -11,9 +11,7 @@
         <hr ><br>
       </div>
       <el-table ref="multipleTable" :data="tableRelationData" border @selection-change="handleRelationChange" >
-
         <el-table-column type="selection" width="50"></el-table-column>
-
         <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
         <el-table-column prop="id" label="编号" width="100px">
           <template slot-scope="scope">
@@ -45,15 +43,6 @@
         <el-table-column prop="modifyTime" label="修改时间" ></el-table-column>
         <el-table-column prop="modifyName" label="修改人"></el-table-column>
       </el-table>
-      <el-pagination background
-                     @size-change="handleSizeChangeRel"
-                     @current-change="handleCurrentChangeRel"
-                     :current-page="currentPageRel"
-                     :page-sizes="[10, 50, 100, 200]"
-                     :page-size="pageSizeRel"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="totalRel">
-      </el-pagination>
     </div>
     <div style="width:95%; margin-left: 10px">
       <el-dialog :title="title" :visible.sync="companyFlag" :close-on-click-modal="false" width="90%">
@@ -62,12 +51,12 @@
             <el-row>
               <el-col :span="6">
                 <el-form-item label="企业名称" label-width="70px">
-                  <el-input style="width:200px;" clearable v-model="form.companyName"></el-input>
+                  <el-input placeholder="企业名称" style="width:200px;" clearable v-model="form.companyName"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
                 <el-form-item label="统一社会信用代码" label-width="135px" style="margin-left: 20px" >
-                  <el-input style="width:200px" clearable v-model="form.creditCode"></el-input>
+                  <el-input placeholder="统一社会信用代码" style="width:200px" clearable v-model="form.creditCode"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="6">
@@ -135,9 +124,7 @@
             <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
           </div>
           <el-table ref="multipleTable2" :data="tableData" border @selection-change="handleSelectionChange" >
-            <el-table-column label="选择" width="50px">
-              <el-table-column type="selection" width="50px"></el-table-column>
-            </el-table-column>
+            <el-table-column type="selection" width="50px"></el-table-column>
             <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
             <el-table-column prop="id" label="编号" width="150">
               <template slot-scope="scope">
@@ -421,9 +408,6 @@
         oldRelationList:[],
         tableRelationData:[],
         relationSelection:[],
-        totalRel: 0,
-        currentPageRel: 1,
-        pageSizeRel: 10,
         companyChangesList:[],
         relationCompany:[],
         title:"公司详情页面",
@@ -527,33 +511,20 @@
       commonUtils.Log("页面进来");
     },
     methods: {
-      handleSizeChangeRel(val) {
-        this.pageSizeRel = val;
-        this.currentPageRel = 1;
-        this.fetchDataRel(1, val);
-      },
-      handleCurrentChangeRel(val) {
-        this.currentPageRel = val;
-        this.fetchDataRel(val, this.pageSizeRel);
-      },
       fetchDataRel(){//获取相关公司信息
         var self = this;
         //window.localStorage.setItem("departmentId",1);
         var param = {
-          page: self.currentPageRel,
-          limit: self.pageSizeRel,
           departmentId:window.localStorage.getItem("departmentRelId"),
         };
         self.$http.get('company/querylistRel.do_', {
           params: param
         }).then((result) => {
-          self.tableRelationData = result.page.list;
+          self.tableRelationData = result.list;
         for(let i=0;i<self.tableRelationData.length;i++){
           self.relationCompany.push(self.tableRelationData[i].id);
         }
-        self.companyChangesList=result.page.list;
-
-        self.totalRel = result.page.totalCount;
+        self.companyChangesList=result.list;
         self.CompanyTypeEnum = result.CompanyTypeEnum;
         self.CompanyNatureEnum = result.CompanyNatureEnum;
         self.CompanyMarkEnum = result.CompanyMarkEnum;

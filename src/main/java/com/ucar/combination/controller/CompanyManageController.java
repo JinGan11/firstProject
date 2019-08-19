@@ -10,6 +10,7 @@ import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Company;
 import com.ucar.combination.model.Department;
 import com.ucar.combination.model.dto.BusinessLicense;
+import com.ucar.combination.model.dto.CompanyDto;
 import com.ucar.combination.service.CompanyManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,7 +30,7 @@ import java.util.*;
  * @author jianan.shu@ucarinc.com
  * @version 1.0
  * @date: 2019/8/3 10:23
-*/
+ */
 @Controller
 @RequestMapping("/company")
 public class CompanyManageController {
@@ -83,7 +84,7 @@ public class CompanyManageController {
                                 @RequestParam("company") String data ,HttpSession session){
         Company company = JSON.parseObject(data, Company.class);
         if(businessLicenses.length > 20) {
-             return new Result().ok().put("msg","outLimit");
+            return new Result().ok().put("msg","outLimit");
         }
         //信用代码唯一性校验
         Map<String,Object>map=companyManageService.creditCodeValidate(company.getCreditCode());
@@ -193,12 +194,9 @@ public class CompanyManageController {
         String limit = request.getParameter("limit");
         String departmentId = request.getParameter("departmentId");
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("page", page);
-        params.put("limit", limit);
         params.put("departmentId", departmentId);
-
-        ResultPage resultPage = companyManageService.relationCompanyList(new QueryParam(params));
-        return new Result().ok().put("page", resultPage).put("CompanyTypeEnum", CommonEnums.toEnumMap(CommonEnums.CompanyType.values()))
+        List<CompanyDto> list = companyManageService.relationCompanyList(params);
+        return new Result().ok().put("list", list).put("CompanyTypeEnum", CommonEnums.toEnumMap(CommonEnums.CompanyType.values()))
                 .put("CompanyNatureEnum", CommonEnums.toEnumMap(CommonEnums.CompanyNature.values()))
                 .put("CompanyMarkEnum", CommonEnums.toEnumMap(CommonEnums.CompanyMark.values()))
                 .put("CompanyStatusEnum", CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values()));
@@ -263,7 +261,7 @@ public class CompanyManageController {
             }
         }
     }
-     /**
+    /**
      * 删除文件
      * @param
      * @param id
@@ -274,7 +272,7 @@ public class CompanyManageController {
         companyManageService.deleteLicense(id);
         return Result.ok().put("msg", "success");
     }
-        /**
+    /**
      * description: 返回COMPANY的分页查询语句
      * @author jing.luo01@ucarinc.com
      * @date   2019/8/16 22:33

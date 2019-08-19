@@ -359,9 +359,13 @@
           ],
           bankAccount:[
             { min: 7, max: 20, message: '长度在 7 到 20 位数字', trigger: 'blur' },
+            { pattern:/(^[\d]+$)/,message: '只支持 7 到 20 位数字，请勿输入其他字符', trigger: 'blur' }
+
           ],
           telephone:[
             { min: 11, max: 12, message: '长度在 11 到 12 位数字', trigger: 'blur' },
+            { pattern:/(^[\d]+$)/,message: '只支持 11 到 12 位数字，请勿输入其他字符', trigger: 'blur' }
+
           ],
           companyStatus:[
             { required: false, message: '状态'},
