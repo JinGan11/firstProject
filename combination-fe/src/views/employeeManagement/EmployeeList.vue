@@ -584,7 +584,7 @@
     </el-dialog>
 
 
-    <el-dialog title='选择当前部门' :visible.sync="searchDeptDialogVisible" :close-on-click-modal="false" width="50%">
+    <el-dialog title='选择当前部门' append-to-body :visible.sync="searchDeptDialogVisible" :close-on-click-modal="false" width="50%">
       <div>
         <el-tree
           ref="treeDept"
@@ -601,7 +601,7 @@
         <el-button type="primary" @click="searchDeptCheck">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title='选择上级部门' :visible.sync="searchDeptUpperDialogVisible" :close-on-click-modal="false" width="50%">
+    <el-dialog title='选择上级部门' append-to-body :visible.sync="searchDeptUpperDialogVisible" :close-on-click-modal="false" width="50%">
       <div>
         <el-tree
           ref="treeDeptUpper"
