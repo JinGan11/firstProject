@@ -24,7 +24,7 @@
     <div style="margin-bottom: 10px">
       <el-button type="primary" @click="createRole" v-if="!buttonPermission.createPermission" style="width:100px">新建</el-button>
       <el-button type="primary" @click="modifyRole(selection)" v-if="!buttonPermission.modifyPermission" :disabled="isModify" style="width:100px">修改</el-button>
-      <el-button type="primary" @click="deleteRole" v-if="!buttonPermission.deletePermission" :disabled="isModify" style="width:100px">删除</el-button>
+      <el-button type="primary" @click="deleteRole(selection)" v-if="!buttonPermission.deletePermission" :disabled="isModify" style="width:100px">删除</el-button>
       <el-button type="primary" @click="addAccount" v-if="!buttonPermission.addAccountPermission" :disabled="isAddCount" style="width:100px">添加账号</el-button>
       <el-button type="primary" @click="roleAssignPermission" v-if="!buttonPermission.assignPermission" :disabled="isModify" style="width:100px">分配权限</el-button>
     </div>
@@ -516,9 +516,29 @@
       modifyRole(val) {
         //点击修改按钮，进入修改角色弹窗
         //this.dialogVisible=true;
-        this.$router.push({path: '/ModifyRole', query: {roleID: val}});
+        var self = this;
+        var param = {
+          roleID: val
+        };
+        self.$http.get('roleManage/getOneInf.do_', {
+          params: param
+        }).then((result) => {
+          if (result.page.roleStatus ===0){
+            alert("该角色已经被删除，不可修改");
+            this.isModify = true;
+            this.isAddCount = true;
+            this.fetchData();
+          }
+          else{
+            this.$router.push({path: '/ModifyRole', query: {roleID: val}});
+          }
+        }).catch(function (error) {
+          commonUtils.Log("roleManage/getOneInf.do_" + error);
+          self.$message.error("获取数据错误");
+        });
       },
-      deleteRole() {//删除角色信息
+
+      deleteRole(val) {//删除角色信息
         this.$confirm('此操作将删除该角色, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -526,19 +546,38 @@
         }).then(() => {
           var self = this;
           var param = {
-            selection: self.selection,
+            roleID: val
           };
-          self.$http.get('roleManage/updateStatus.do_', {
+          self.$http.get('roleManage/getOneInf.do_', {
             params: param
-          }).then(() => {
-            self.$message.info("角色删除成功")
-            this.fetchData();
-            this.isAddCount = true;
-            this.isModify = true;
+          }).then((result) => {
+            if (result.page.roleStatus ===0){
+              alert("该角色已经被删除，不可修改");
+              this.isModify = true;
+              this.isAddCount = true;
+              this.fetchData();
+            }
+            else{
+              var self = this;
+              var param = {
+                selection: self.selection,
+              };
+              self.$http.get('roleManage/updateStatus.do_', {
+                params: param
+              }).then(() => {
+                self.$message.info("角色删除成功")
+                this.fetchData();
+                this.isAddCount = true;
+                this.isModify = true;
 
+              }).catch(function (error) {
+                commonUtils.Log("roleManage/updateStatus.do_:" + error);
+                self.$message.error("角色删除失败");
+              });
+            }
           }).catch(function (error) {
-            commonUtils.Log("roleManage/updateStatus.do_:" + error);
-            self.$message.error("角色删除失败");
+            commonUtils.Log("roleManage/getOneInf.do_" + error);
+            self.$message.error("获取数据错误");
           });
         }).catch(() => {
           this.$message({

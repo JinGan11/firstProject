@@ -763,9 +763,27 @@
         this.formRoleInfo.businessLine = row.businessLine;
       },
 
-
-      selectRole() {
-        //确认选择按钮 选择角色
+      selectRole() {    //确认选择按钮 选择角色
+        var self=this;
+        var param={
+          roleID: self.roleId,
+        };
+        self.$http.get('roleManage/getOneInf.do_', {
+          params: param
+        }).then((result) => {
+          this.roleStatus=result.page.roleStatus;
+          if(result.page.roleStatus==0){
+            self.$message.info("角色已被删除，添加角色失败！请重新选择");
+            this.formRoleInfo.roleName = '';
+            this.formRoleInfo.approverStaffName = '';
+            this.otherInfo.approverStaffName = '';
+            this.formRoleInfo.businessLine = '';
+          }
+        }).catch(function (error) {
+          commonUtils.Log("roleManage/getOtherOneInf.do_" + error);
+          self.$message.error("获取数据错误");
+        });
+        //隐藏弹出框
         this.dialogVisibleRole = false;
       },
       cancelSelectRole() {
