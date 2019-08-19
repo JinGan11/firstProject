@@ -659,6 +659,7 @@
                 self.$alert("重置密码邮件已发送成功，请注意查收！", '消息提醒', {
                   confirmButtonText: '确定',
                 });
+                self.fetchData();
               } else if (result.code === 201) {
                 self.$alert("操作失败！", '消息提醒', {
                   confirmButtonText: '确定',
@@ -782,10 +783,13 @@
         };
         self.$http.post("power/modifyPermission", param)
           .then((result) => {
-            console.log("success!")
+            self.$message.info("权限分配成功！")
+            self.fetchData();
           })
           .catch(function (error) {
-
+            self.$alert("系统错误，请稍后再试！", '消息提醒', {
+              confirmButtonText: '确定',
+            });
           });
         this.accountAssignPermissionFlag = false;
       },
