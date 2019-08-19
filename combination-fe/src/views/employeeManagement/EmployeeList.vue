@@ -183,7 +183,7 @@
           <el-form-item label="调整后部门" prop="staffAfterDepartmentName">
             <el-input style="width: 170px;" v-model="formdiStributionDepartment.staffAfterDepartmentName"
                       disabled></el-input>
-            <el-button style="width: 40px" typ="primary" @click="departmentVisible=true">选择</el-button>
+            <el-button style="width: 50px" typ="primary" @click="departmentVisible=true">选择</el-button>
           </el-form-item>
         </el-form>
       </div>

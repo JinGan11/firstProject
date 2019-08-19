@@ -1,6 +1,6 @@
 <template>
   <home>
-    <el-form :inline="true" :model="formInline" class="demo-form-inline" label-width="150px">
+    <el-form :inline="true" :model="formInline" class="demo-form-inline" label-width="100px">
       <el-row>
         <el-col :span="7">
           <el-form-item label="部门名称">
