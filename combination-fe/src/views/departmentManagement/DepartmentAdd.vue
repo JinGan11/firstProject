@@ -903,12 +903,16 @@
               let lng = poi.location.lng
               let lat = poi.location.lat
               let address = poi.cityname + poi.adname + poi.name
+              console.log(poi)
               vm.center = [lng, lat]
               vm.markers.push([lng, lat])
               vm.lng = lng
               vm.lat = lat
               vm.address = address
               vm.searchKey = address
+              vm.form.address = poi.address;
+              vm.longitudeNum = lng;
+              vm.latitudeNum = lat
             }
           })
         })
@@ -922,12 +926,11 @@
         this.baiduMapFlag = false
       },
       mapConfirm() {
-        const self = this
+        const self = this;
         if (self.form.address === '') {
-          self.$message.info('请点击具体位置');
-        } else {
-          self.baiduMapFlag = false
+          self.form.address = self.searchKey
         }
+        self.baiduMapFlag = false
       }
     }
   }

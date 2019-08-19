@@ -944,6 +944,9 @@
               vm.lat = lat
               vm.address = address
               vm.searchKey = address
+              vm.form.address = poi.address;
+              vm.longitudeNum = lng;
+              vm.latitudeNum = lat
             }
           })
         })
@@ -959,10 +962,9 @@
       mapConfirm() {
         const self = this
         if (self.form.address === '') {
-          self.$message.info('请点击具体位置');
-        } else {
-          self.baiduMapFlag = false
+          self.form.address = self.searchKey
         }
+        self.baiduMapFlag = false
       },
     }
   }
