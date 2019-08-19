@@ -2,7 +2,6 @@
   <home>
 
     <div style="width: 20%; margin-left: 70px ; float: left;height: 100%"  id="treeDiv">
-      <router-view v-if="isRouterAlive"></router-view>
       <div  style="width:100%; margin-left: 70px;height: 10%">
         <el-button type="primary" v-if="!BtnPermission.newPermission" :disabled="createDisable" @click="createRegionBtn" >新建</el-button>
         <el-button type="primary" v-if="!BtnPermission.modifyPermission" :disabled="modifyDisable" @click="modifyRegionBtn" >修改</el-button>
@@ -106,11 +105,11 @@
           <el-col  :offset="2">
             <el-form-item v-if="isModify">
               <el-button size="small" type="primary" @click="modifyRegionSave">修改保存</el-button>
-              <el-button size="small" type="primary" @click="closeForm">关闭</el-button>
+              <el-button size="small" type="primary" @click="closeForm">取消</el-button>
             </el-form-item>
             <el-form-item v-if="isCreate">
               <el-button size="small" type="primary" @click="createRegionSave">新建保存</el-button>
-              <el-button size="small" type="primary" @click="closeForm">关闭</el-button>
+              <el-button size="small" type="primary" @click="closeForm">取消</el-button>
             </el-form-item>
           </el-col>
 
@@ -124,14 +123,6 @@
 <script>
     import commonUtils from '../../common/commonUtils'
     export default {
-        provide () {
-            return {
-                reload: this.reload
-            }
-        },
-
-        inject:['reload'],
-
         data() {
             var checkRegionCode = (rule, value, callback) => {
                 if (!value) {
@@ -140,7 +131,11 @@
                 setTimeout(() => {
                     if (!Number.isInteger(Number(value))) {
                         callback(new Error('请输入数字值'));
-                    } else {
+                    }else if(this.resultStr!==''){
+                        callback(new Error(this.resultStr));
+                        this.resultStr='';
+                    }
+                    else {
                             callback();
                     }
                 }, 100);
@@ -172,6 +167,12 @@
             };
 
             return{
+                defaultNode:'',
+                defaultResolve:'',
+                currentNode:'',
+                currentResolve:'',
+                resultStr:'',
+
                 isRouterAlive: true,
                 isCheck:false,
                 rules: {
@@ -276,7 +277,7 @@
                     regionName:'',
                     regionPinyin:'',
                     regionStatus:''
-                }
+                },
 
             }
         },
@@ -305,6 +306,9 @@
             loadNode(node, resolve) {
                 var self=this;
                 if (node.level === 0) {
+                    // self.defaultNode=node;
+                    // self.defaultResolve=resolve;
+
                     var regionLevel=node.level+1;
                     var param={
                         regionLevel: regionLevel
@@ -361,7 +365,7 @@
                 // const styleContext = data.parentId ? '' : 'display:none;'
                 const styleContext = '';
                 let styleColor = '';
-                if (data.status === 0) {
+                if (data.regionStatus === 0) {
                     styleColor = 'color:#f56c6c' ;// 红
                 }
                 /* else if (data.status === 1) {
@@ -394,7 +398,7 @@
                     var regionLevel=1;
                     this.setCreateBtn(this,region,regionLevel);
                     this.isCheck=false;
-                    this.$refs["form"].resetFields();
+                    this.isFormCreate=false;
                     return;
                 }else{
                     //第一次点击,应选中
@@ -408,6 +412,8 @@
                     this.isCheck=true;
                     this.isModify=false;
                     this.isCreate=false;
+
+                    this.currentNode=node;
 
                     return;
                 }
@@ -579,6 +585,8 @@
 
             },
             createRegionBtn(){
+                if(this.isFormCreate)
+                    this.resetForm(this);
                 this.formDisable=false;
                 this.isModify=false;
                 this.isCreate=true;
@@ -623,8 +631,7 @@
                 console.log("this is ischeck"+this.isCheck);
 
 
-                if(this.isFormCreate)
-                   this.resetForm(this);
+
 
 
             },
@@ -668,11 +675,17 @@
                         }).then((result)=>{
                             //对取回来的数据进行处理
                             // console.log(result);
-                            self.$alert(result);
 
-                            //增加完根节点,刷新页面
-                            self.$router.go(0);
+                            self.resultStr=result;
+                            self.$alert(self.resultStr);
+                            self.$refs["form"].validate(()=>{return ;});
 
+                            if(result === "修改成功"){
+                                self.isModify=false;
+                                self.formDisable=true;
+                                //增加完根节点,刷新页面
+                                self.$router.go(0);
+                            }
 
                         }).catch(function (error) {
                             commonUtils.Log("/regionManage/modifyRegionSave:" + error);
@@ -686,8 +699,11 @@
 
 
             },
+
             closeForm(){
-              this.isCheck=false;
+              this.formDisable=true;
+              this.isModify=false;
+              this.isCreate=false;
             },
             resetForm(self){
                 self.$refs["form"].resetFields();
@@ -722,9 +738,17 @@
                         }).then((result)=>{
                             //对取回来的数据进行处理
                             // console.log(result);
-                            self.$alert(result);
-                            self.$router.go(0);
+                            self.resultStr=result;
+                            self.$alert(self.resultStr);
+                            self.$refs["form"].validate(()=>{return ;});
+                            // self.$alert(result);
+                            if(result === "新建成功") {
+                                self.isCreate = false;
+                                self.formDisable = true;
+                                self.$router.go(0);
+                            }
 
+                            // console.log("param.regionLevel"+param.regionLevel);
 
 
                         }).catch(function (error) {
@@ -739,12 +763,6 @@
 
 
             },
-            reload () {
-                this.isRouterAlive = false;
-                this.$nextTick(function () {
-                    this.isRouterAlive = true
-                })
-            }
 
 
         }
