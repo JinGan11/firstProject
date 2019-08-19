@@ -1,7 +1,8 @@
 <template>
   <home>
 
-    <div style="width: 20%; margin-left: 70px ; float: left;height: 100%"  >
+    <div style="width: 20%; margin-left: 70px ; float: left;height: 100%"  id="treeDiv">
+      <router-view v-if="isRouterAlive"></router-view>
       <div  style="width:100%; margin-left: 70px;height: 10%">
         <el-button type="primary" v-if="!BtnPermission.newPermission" :disabled="createDisable" @click="createRegionBtn" >新建</el-button>
         <el-button type="primary" v-if="!BtnPermission.modifyPermission" :disabled="modifyDisable" @click="modifyRegionBtn" >修改</el-button>
@@ -23,23 +24,26 @@
     <div style="width:45%; height: 100%;float: left"  >
 
       <div style="width:100%;margin-top: 70px;height: 100%">
-        <el-form :model="form" label-width="150px" :disabled="formDisable" status-icon :rules="rules" ref="form">
+        <el-form :model="form" label-width="150px" :disabled="formDisable" status-icon :rules="rules" ref="form" v-if="isCheck">
 
           <el-row :span="12">
-            <el-form-item label="国际代码" prop="regionCode">
+            <el-form-item label="国际代码" prop="regionCode" placeholder="请输入国际代码">
               <el-input v-model.number="form.regionCode"  style="width: 200px" maxlength="6"></el-input>
+              <span style="color: red;">*</span>
             </el-form-item>
           </el-row>
 
           <el-row :span="12">
             <el-form-item label="行政区划名称" prop="regionName">
               <el-input v-model="form.regionName" style="width: 200px" maxlength="50"></el-input>
+              <span style="color: red;">*</span>
             </el-form-item>
           </el-row>
 
           <el-row :span="12">
             <el-form-item label="名字拼音" prop="regionPinyin">
               <el-input v-model="form.regionPinyin"  style="width: 200px" maxlength="255"></el-input>
+              <span style="color: red;">*</span>
             </el-form-item>
           </el-row>
 
@@ -72,6 +76,7 @@
                   :value="item.value">
                 </el-option>
               </el-select>
+              <span style="color: red;">*</span>
             </el-form-item>
           </el-row>
 
@@ -98,12 +103,14 @@
               <el-input v-model="form.modifyTime" autocomplete="off" disabled  style="width: 200px"></el-input>
             </el-form-item>
           </el-row>
-          <el-col  :offset="8">
+          <el-col  :offset="2">
             <el-form-item v-if="isModify">
               <el-button size="small" type="primary" @click="modifyRegionSave">修改保存</el-button>
+              <el-button size="small" type="primary" @click="closeForm">关闭</el-button>
             </el-form-item>
             <el-form-item v-if="isCreate">
               <el-button size="small" type="primary" @click="createRegionSave">新建保存</el-button>
+              <el-button size="small" type="primary" @click="closeForm">关闭</el-button>
             </el-form-item>
           </el-col>
 
@@ -117,13 +124,21 @@
 <script>
     import commonUtils from '../../common/commonUtils'
     export default {
+        provide () {
+            return {
+                reload: this.reload
+            }
+        },
+
+        inject:['reload'],
+
         data() {
             var checkRegionCode = (rule, value, callback) => {
                 if (!value) {
                     return callback(new Error('国际代码不能为空'));
                 }
                 setTimeout(() => {
-                    if (!Number.isInteger(value)) {
+                    if (!Number.isInteger(Number(value))) {
                         callback(new Error('请输入数字值'));
                     } else {
                             callback();
@@ -157,7 +172,10 @@
             };
 
             return{
+                isRouterAlive: true,
+                isCheck:false,
                 rules: {
+
                     regionCode: [
                         { validator: checkRegionCode, trigger: 'blur' }
                     ],
@@ -193,11 +211,11 @@
                 timer:'',
                 form:{
                     cityID:'',
-                    countryCode:'CN',
+                    countryCode:'',
                     regionAreaCode:'',
-                    upperRegionID:'0',
-                    upperRegionCode:'0',
-                    remark:'无',
+                    upperRegionID:'',
+                    upperRegionCode:'',
+                    remark:'',
                     createEmpName:'',
                     createTime:'',
                     regionCode:'',
@@ -205,18 +223,18 @@
                     regionPinyin:'',
                     regionLevel:'',
                     regionStatus:'',
-                    upperRegion:'中国',
+                    upperRegion:'',
                     modifyEmpName:'',
                     modifyTime:'',
                     upperRegionTwice:''
                 },
                 formTemp:{
                     cityID:'',
-                    countryCode:'CN',
+                    countryCode:'',
                     regionAreaCode:'',
-                    upperRegionID:'0',
-                    upperRegionCode:'0',
-                    remark:'无',
+                    upperRegionID:'',
+                    upperRegionCode:'',
+                    remark:'',
                     createEmpName:'',
                     createTime:'',
                     regionCode:'',
@@ -224,7 +242,7 @@
                     regionPinyin:'',
                     regionLevel:'',
                     regionStatus:'',
-                    upperRegion:'中国',
+                    upperRegion:'',
                     modifyEmpName:'',
                     modifyTime:'',
                     upperRegionTwice:''
@@ -252,6 +270,13 @@
                   newPermission: true,
                   modifyPermission: true,
                 },
+                isFormCreate:false,
+                recoverFormTemp:{
+                    regionCode:'',
+                    regionName:'',
+                    regionPinyin:'',
+                    regionStatus:''
+                }
 
             }
         },
@@ -368,7 +393,8 @@
                     this.setDefault(this);
                     var regionLevel=1;
                     this.setCreateBtn(this,region,regionLevel);
-
+                    this.isCheck=false;
+                    this.$refs["form"].resetFields();
                     return;
                 }else{
                     //第一次点击,应选中
@@ -379,6 +405,10 @@
                     this.modifyDisable=false;
                     var regionLevel=region.regionLevel;
                     this.setCreateBtn(this,region,regionLevel);
+                    this.isCheck=true;
+                    this.isModify=false;
+                    this.isCreate=false;
+
                     return;
                 }
             },
@@ -397,13 +427,13 @@
                     regionPinyin:'',
                     regionLevel:'',
                     regionStatus:'',
-                    upperRegion:'中国',
+                    upperRegion:'',
                     modifyEmpName:'',
                     modifyTime:'',
                     upperRegionTwice:''
                 };
                 self.formTemp={
-                    cityID:'',
+                    cityID:'0',
                     countryCode:'CN',
                     regionAreaCode:'',
                     upperRegionID:'0',
@@ -411,11 +441,11 @@
                     remark:'无',
                     createEmpName:'',
                     createTime:'',
-                    regionCode:'',
-                    regionName:'',
+                    regionCode:'0',
+                    regionName:'中国',
                     regionPinyin:'',
                     regionLevel:'',
-                    regionStatus:'',
+                    regionStatus:'1',
                     upperRegion:'中国',
                     modifyEmpName:'',
                     modifyTime:'',
@@ -463,11 +493,13 @@
                 // 定时器，定时修改显示的时间
                 let _this = this;
                 this.timer = setInterval(function () {
-                    _this.form.modifyTime = _this.dealWithTime(new Date())
+                    _this.form.modifyTime = _this.dealWithTime(new Date());
+                    _this.form.createTime = _this.dealWithTime(new Date());
                 }, 1000);
             },
             //获取选择节点的详细信息
             fetchRegionDetails(self,region){
+
 
                 var regionLevel=region.regionLevel;
                 var cityID=region.cityID;
@@ -483,15 +515,26 @@
                 self.$http.get('/regionManage/getRegionDetails',{
                     params:param
                 }).then((result)=>{
+                    self.$refs["form"].resetFields();
                     //对取回来的数据进行处理
                     self.form=result.regionDetails;
                     self.regionStatus=self.form.regionStatus;
-                    this.formTemp=result.regionDetails;
+                    self.formTemp=result.regionDetails;
+
+                    self.recoverFormTemp.regionCode=self.formTemp.regionCode;
+                    self.recoverFormTemp.regionName=self.formTemp.regionName;
+                    self.recoverFormTemp.regionStatus=self.formTemp.regionStatus;
+                    self.recoverFormTemp.regionPinyin=self.formTemp.regionPinyin;
+
 
                     if (self.form.regionStatus === 0) {
                         self.form.regionStatus = '无效'
+                        self.recoverFormTemp.regionStatus= '无效';
+                        self.formTemp.regionStatus= '无效';
                     } else if (self.form.regionStatus === 1) {
                         self.form.regionStatus = '有效'
+                        self.recoverFormTemp.regionStatus= '有效';
+                        self.formTemp.regionStatus= '有效';
                     }
 
                     if (self.form.regionLevel === 1) {
@@ -501,6 +544,8 @@
                     }else if (self.form.regionLevel === 3) {
                         self.form.regionLevel = '区县'
                     }
+
+                    self.isFormCreate=true;
 
                     // console.log(self.form);
                 }).catch(function (error) {
@@ -529,10 +574,11 @@
                 this.isModify=true;
                 this.isCreate=false;
                 this.form=this.formTemp;
+                console.log(this.formTemp);
                 this.getCurrentTime();
+
             },
             createRegionBtn(){
-
                 this.formDisable=false;
                 this.isModify=false;
                 this.isCreate=true;
@@ -549,14 +595,12 @@
                     regionName:'',
                     regionPinyin:'',
                     regionLevel:'',
-                    regionStatus:'1',
+                    regionStatus:'',
                     upperRegion:'中国',
                     modifyEmpName:'',
                     modifyTime:'',
                     upperRegionTwice:''
                 };
-
-
 
                 this.getCurrentTime();
                 this.form.createEmpName=this.form.modifyEmpName;
@@ -570,32 +614,17 @@
                 }
                 this.form.regionLevel=regionLevel;
 
-                if(regionLevel==='1'){
-                    this.formTemp={
-                        cityID:'0',
-                        countryCode:'CN',
-                        regionAreaCode:'',
-                        upperRegionID:'0',
-                        upperRegionCode:'0',
-                        remark:'无',
-                        createEmpName:'',
-                        createTime:'',
-                        regionCode:'0',
-                        regionName:'中国',
-                        regionPinyin:'',
-                        regionLevel:'',
-                        regionStatus:'1',
-                        upperRegion:'中国',
-                        modifyEmpName:'',
-                        modifyTime:'',
-                        upperRegionTwice:''
-                    };
-                }
-
                 this.form.upperRegion=this.formTemp.regionName;
                 this.form.upperRegionCode=this.formTemp.regionCode;
                 this.form.upperRegionID=this.formTemp.cityID;
                 this.form.upperRegionTwice=this.formTemp.upperRegion;
+
+                this.isCheck=true;
+                console.log("this is ischeck"+this.isCheck);
+
+
+                if(this.isFormCreate)
+                   this.resetForm(this);
 
 
             },
@@ -641,6 +670,10 @@
                             // console.log(result);
                             self.$alert(result);
 
+                            //增加完根节点,刷新页面
+                            self.$router.go(0);
+
+
                         }).catch(function (error) {
                             commonUtils.Log("/regionManage/modifyRegionSave:" + error);
                             self.$message.error("获取数据错误");
@@ -651,6 +684,17 @@
                     }
                 });
 
+
+            },
+            closeForm(){
+              this.isCheck=false;
+            },
+            resetForm(self){
+                self.$refs["form"].resetFields();
+                self.formTemp.regionCode=self.recoverFormTemp.regionCode;
+                self.formTemp.regionName=self.recoverFormTemp.regionName;
+                self.formTemp.regionStatus=self.recoverFormTemp.regionStatus;
+                self.formTemp.regionPinyin=self.recoverFormTemp.regionPinyin;
 
             },
 
@@ -679,6 +723,9 @@
                             //对取回来的数据进行处理
                             // console.log(result);
                             self.$alert(result);
+                            self.$router.go(0);
+
+
 
                         }).catch(function (error) {
                             commonUtils.Log("/regionManage/createRegion:" + error);
@@ -692,6 +739,12 @@
 
 
             },
+            reload () {
+                this.isRouterAlive = false;
+                this.$nextTick(function () {
+                    this.isRouterAlive = true
+                })
+            }
 
 
         }
