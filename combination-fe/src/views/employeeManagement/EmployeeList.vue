@@ -1,7 +1,7 @@
 <template>
   <home>
     <div style="width:85%; margin-left: 70px">
-      <el-form ref="form" :model="form"  label-width="80px">
+      <el-form ref="form" :model="form" label-width="80px">
         <el-row>
           <el-col :span="6">
             <el-form-item label="员工编号">
@@ -15,12 +15,14 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="登陆账号">
-              <el-input placeholder="登陆账号" :disabled="cloumnDisabled" style="width:150px;" v-model="form.accountName"></el-input>
+              <el-input placeholder="登陆账号" :disabled="cloumnDisabled" style="width:150px;"
+                        v-model="form.accountName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item  label="是否离职">
-              <el-select v-model="form.isDimission" clearable :disabled="cloumnDisabled" style="width:150px;" placeholder="请选择">
+            <el-form-item label="是否离职">
+              <el-select v-model="form.isDimission" clearable :disabled="cloumnDisabled" style="width:150px;"
+                         placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -70,7 +72,9 @@
             <el-form-item>
               <div v-if="!buttonDisabled">
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
-                <el-button type="primary" :disabled="empButtonPermission.exportPermission" style="width:100px" @click="add">导出</el-button>
+                <el-button type="primary" :disabled="empButtonPermission.exportPermission" style="width:100px"
+                           @click="add">导出
+                </el-button>
               </div>
               <div v-else>
                 <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
@@ -81,12 +85,24 @@
       </el-form>
     </div>
     <div style="margin-bottom: 10px" v-if="!buttonDisabled">
-      <el-button type="primary" @click="createEmployee" v-if="!empButtonPermission.createPermission"  style="width:70px">新建</el-button>
-      <el-button type="primary" @click="modifyEmployee" v-if="!empButtonPermission.modifyPermission" :disabled="disabled" style="width:70px">修改</el-button>
-      <el-button type="primary" @click="deleteEmployee" v-if="!empButtonPermission.deletePermission" :disabled="disabled" style="width:70px">删除</el-button>
-      <el-button type="primary" @click="quitEmployee" v-if="!empButtonPermission.quitPermission" :disabled="quitDisabled" style="width:70px">离职</el-button>
-      <el-button type="primary" @click="recovery" v-if="!empButtonPermission.recoveryPermission" :disabled="recoveryDisabled" style="width:70px">恢复</el-button>
-      <el-button type="primary" @click="distributionDepartment" v-if="!empButtonPermission.assignDepPermission" :disabled="disabled" style="width:80px">分配部门</el-button>
+      <el-button type="primary" @click="createEmployee" v-if="!empButtonPermission.createPermission" style="width:70px">
+        新建
+      </el-button>
+      <el-button type="primary" @click="modifyEmployee" v-if="!empButtonPermission.modifyPermission"
+                 :disabled="disabled" style="width:70px">修改
+      </el-button>
+      <el-button type="primary" @click="deleteEmployee" v-if="!empButtonPermission.deletePermission"
+                 :disabled="disabled" style="width:70px">删除
+      </el-button>
+      <el-button type="primary" @click="quitEmployee" v-if="!empButtonPermission.quitPermission"
+                 :disabled="quitDisabled" style="width:70px">离职
+      </el-button>
+      <el-button type="primary" @click="recovery" v-if="!empButtonPermission.recoveryPermission"
+                 :disabled="recoveryDisabled" style="width:70px">恢复
+      </el-button>
+      <el-button type="primary" @click="distributionDepartment" v-if="!empButtonPermission.assignDepPermission"
+                 :disabled="disabled" style="width:80px">分配部门
+      </el-button>
     </div>
     <div style="margin-bottom: 10px" v-else>
       <el-button type="primary" @click="confirmChoice" style="width:70px">确认选择</el-button>
@@ -95,7 +111,8 @@
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <el-table-column label="选择" width="45">
         <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.id" @change="approvalInfo(scope.row)"><span width="0px;"></span></el-radio>
+          <el-radio v-model="selection" :label="scope.row.id" @change="approvalInfo(scope.row)"><span
+            width="0px;"></span></el-radio>
         </template>
       </el-table-column>
       <el-table-column prop="id" v-if="false" label="隐藏员工id"></el-table-column>
@@ -109,7 +126,8 @@
         <template slot-scope="scope">
           <el-button type="text" @click="staffNumBtn(scope.row)">{{scope.row.staffNum}}</el-button>
         </template>
-      </el-table-column>accountId
+      </el-table-column>
+      accountId
       <el-table-column prop="accountName" label="登陆账号" width="150"></el-table-column>
       <el-table-column prop="staffName" label="员工姓名" width="120"></el-table-column>
       <el-table-column prop="staffSex" label="性别" width="50" style="text-align: center">
@@ -143,7 +161,8 @@
 
     <el-dialog :title="title" :visible.sync="distributionDepartmentFlag" :close-on-click-modal="false" width="800px">
       <div class="dialog-main">
-        <el-form :inline="true" :rules="ruleDepartment" ref="formdiStributionDepartment" :model="formdiStributionDepartment" class="demo-form-inline" label-width="130px">
+        <el-form :inline="true" :rules="ruleDepartment" ref="formdiStributionDepartment"
+                 :model="formdiStributionDepartment"  label-width="130px">
           <el-form-item label="分配部门"></el-form-item>
           <br>
           <el-form-item label="员工编号">
@@ -162,7 +181,9 @@
             <el-input v-model="formdiStributionDepartment.staffBeforeDepartment" disabled></el-input>
           </el-form-item>
           <el-form-item label="调整后部门" prop="staffAfterDepartmentName">
-            <el-input style="width: 170px;" v-model="formdiStributionDepartment.staffAfterDepartmentName" disabled></el-input><el-button style="width: 40px" typ="primary" @click="departmentVisible=true">选择</el-button>
+            <el-input style="width: 170px;" v-model="formdiStributionDepartment.staffAfterDepartmentName"
+                      disabled></el-input>
+            <el-button style="width: 40px" typ="primary" @click="departmentVisible=true">选择</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -197,16 +218,17 @@
         :render-content="renderContent"
         @check-change="handleClick">
       </el-tree>
-      <el-button @click="getCheckedNodes">点击弹出选中的部门的ID</el-button>
+      <el-button @click="getCheckedNodes" style="background-color: cornflowerblue">确定</el-button>
     </el-dialog>
-    <el-dialog :title='createTitle' status-icon   :visible.sync="createDialogVisible" :close-on-click-modal="false" width="900px">
-      <el-form ref="createForm" :model="createForm"  :rules="rulesCreate" label-width="80px">
+    <el-dialog :title='createTitle' status-icon :visible.sync="createDialogVisible" :close-on-click-modal="false"
+               width="900px">
+      <el-form ref="createForm" :model="createForm" :rules="rulesCreate" label-width="80px">
         <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
           <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">员工信息</div>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="员工编号:"prop="staffNum" label-width="150px">
-                <el-input style="width:200px;"  v-model="createForm.staffNum"></el-input>
+              <el-form-item label="员工编号:" prop="staffNum" label-width="150px">
+                <el-input style="width:200px;" v-model="createForm.staffNum"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -239,7 +261,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="归属部门:" prop="departmentName" placeholder="请选择归属部门" label-width="150px">
-                <el-input style="width:80px;" :disabled="true"  v-model="createForm.departmentName"></el-input>
+                <el-input style="width:80px;" :disabled="true" v-model="createForm.departmentName"></el-input>
                 <el-button type="text" @click="selectDepartment">选择</el-button>
                 <el-button type="text" @click="clearDepartment">清空</el-button>
               </el-form-item>
@@ -248,7 +270,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="是否离职:" prop="isDimission" label-width="150px">
-                <el-input style="width:200px;"  :disabled="true" v-model="this.isDimissionEnum[0]"></el-input>
+                <el-input style="width:200px;" :disabled="true" v-model="this.isDimissionEnum[0]"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -260,9 +282,10 @@
         </div>
 
 
-
         <div>
-          <div style="font-family: Consolas; font-size:20px ; margin-left:50px;margin-bottom: 20px;padding-top: 20px">其他信息</div>
+          <div style="font-family: Consolas; font-size:20px ; margin-left:50px;margin-bottom: 20px;padding-top: 20px">
+            其他信息
+          </div>
           <el-row>
             <el-col :span="12">
               <el-form-item label="新建时间:" label-width="150px">
@@ -289,7 +312,7 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="备注:"prop="remark" label-width="150px">
+              <el-form-item label="备注:" prop="remark" label-width="150px">
                 <el-input style="width:200px;" v-model="createForm.remark"></el-input>
               </el-form-item>
             </el-col>
@@ -298,7 +321,7 @@
         <el-row>
           <el-col style="text-align: center">
             <el-form-item>
-              <el-button type="primary" style="width:100px" @click="saveEmployee" >保存</el-button>
+              <el-button type="primary" style="width:100px" @click="saveEmployee">保存</el-button>
               &nbsp&nbsp&nbsp&nbsp&nbsp
               <el-button type="primary" style="width:100px" @click="cancelEmployee">取消</el-button>
             </el-form-item>
@@ -314,7 +337,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="员工编号:" prop="staffNum" label-width="150px">
-                <el-input style="width:200px;"  v-model="modifyForm.staffNum"></el-input>
+                <el-input style="width:200px;" v-model="modifyForm.staffNum"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -346,7 +369,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="归属部门:" label-width="150px">
-                <el-input style="width:80px;" :disabled="true"  v-model="modifyForm.departmentName"></el-input>
+                <el-input style="width:80px;" :disabled="true" v-model="modifyForm.departmentName"></el-input>
                 <el-button type="text" @click="selectDepartmentModify">选择</el-button>
                 <el-button type="text" @click="clearDepartmentModify">清空</el-button>
               </el-form-item>
@@ -355,7 +378,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="是否离职:" label-width="150px">
-                <el-input style="width:200px;" :disabled="true"  v-model="modifyForm.isDimission"></el-input>
+                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.isDimission"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -367,9 +390,10 @@
         </div>
 
 
-
         <div>
-          <div style="font-family: Consolas; font-size:20px ; margin-left:50px;margin-bottom: 20px;padding-top: 20px">其他信息</div>
+          <div style="font-family: Consolas; font-size:20px ; margin-left:50px;margin-bottom: 20px;padding-top: 20px">
+            其他信息
+          </div>
           <el-row>
             <el-col :span="12">
               <el-form-item label="新建时间:" label-width="150px">
@@ -405,7 +429,7 @@
         <el-row>
           <el-col style="text-align: center">
             <el-form-item>
-              <el-button type="primary" style="width:100px" @click="saveUpdate" >保存</el-button>
+              <el-button type="primary" style="width:100px" @click="saveUpdate">保存</el-button>
               &nbsp&nbsp&nbsp&nbsp&nbsp
               <el-button type="primary" style="width:100px" @click="cancelUpdate">取消</el-button>
             </el-form-item>
@@ -414,7 +438,8 @@
 
       </el-form>
     </el-dialog>
-    <el-dialog :title='titleDepartment' :visible.sync="dialogVisibleDepartment"  :close-on-click-modal="false" width="50%">
+    <el-dialog :title='titleDepartment' :visible.sync="dialogVisibleDepartment" :close-on-click-modal="false"
+               width="50%">
       <div>
         <span>选择要操作的部门</span>
         <br><br>
@@ -434,7 +459,8 @@
         <el-button type="primary" @click="getCheckedDepartment">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :title='titleDepartment' :visible.sync="dialogVisibleDepartmentModify"  :close-on-click-modal="false" width="50%">
+    <el-dialog :title='titleDepartment' :visible.sync="dialogVisibleDepartmentModify" :close-on-click-modal="false"
+               width="50%">
       <div>
         <span>选择要操作的部门</span>
         <br><br>
@@ -461,7 +487,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="员工编号:" label-width="150px">
-                <el-input style="width:200px;"  v-model="contentForm.staffNum"></el-input>
+                <el-input style="width:200px;" v-model="contentForm.staffNum"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -513,9 +539,10 @@
         </div>
 
 
-
         <div>
-          <div style="font-family: Consolas; font-size:20px ; margin-left:50px;margin-bottom: 20px;padding-top: 20px">其他信息</div>
+          <div style="font-family: Consolas; font-size:20px ; margin-left:50px;margin-bottom: 20px;padding-top: 20px">
+            其他信息
+          </div>
           <el-row>
             <el-col :span="12">
               <el-form-item label="新建时间:" label-width="150px">
@@ -549,7 +576,7 @@
           </el-row>
         </div>
       </el-form>
-      <template slot="footer" >
+      <template slot="footer">
         <div align="center">
           <el-button type="primary" @click="confirmInfo">确定</el-button>
         </div>
@@ -557,7 +584,7 @@
     </el-dialog>
 
 
-    <el-dialog title='选择当前部门' :visible.sync="searchDeptDialogVisible"  :close-on-click-modal="false" width="50%">
+    <el-dialog title='选择当前部门' :visible.sync="searchDeptDialogVisible" :close-on-click-modal="false" width="50%">
       <div>
         <el-tree
           ref="treeDept"
@@ -574,7 +601,7 @@
         <el-button type="primary" @click="searchDeptCheck">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title='选择上级部门' :visible.sync="searchDeptUpperDialogVisible"  :close-on-click-modal="false" width="50%">
+    <el-dialog title='选择上级部门' :visible.sync="searchDeptUpperDialogVisible" :close-on-click-modal="false" width="50%">
       <div>
         <el-tree
           ref="treeDeptUpper"
@@ -602,7 +629,7 @@
   const employeeOptions = ['员工编号', '登录账号', '员工姓名', '性别', '员工手机', '员工邮箱', '所属部门', '上级部门', '是否离职'];
   export default {
     name: "employee-list",
-    inject:['changeDialogVisible','chooseStaff'],
+    inject: ['changeDialogVisible', 'chooseStaff'],
     props: {
       relAccount: 0
     },
@@ -642,55 +669,55 @@
           upperDepartmentNo: '',
         },
 
-        createForm:{
-          staffNum:'',
-          staffName:'',
-          staffSex:'',
-          staffTelephone:'',
-          staffEmail:'',
-          departmentId:'',
-          departmentName:'',
-          isDimission:'0',
-          accountId:'',
-          remark:'',
+        createForm: {
+          staffNum: '',
+          staffName: '',
+          staffSex: '',
+          staffTelephone: '',
+          staffEmail: '',
+          departmentId: '',
+          departmentName: '',
+          isDimission: '0',
+          accountId: '',
+          remark: '',
         },
-        rulesCreate:{
-          staffNum: [{ required: true, message: '员工编号为必填项，不允许为空', trigger: 'blur' },
-            { min: 1, max: 20, message: '员工编号不满足录入条件', trigger: 'blur' }],
-          staffName:[{ required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur' },
-            { min: 1, max: 30, message: '员工姓名不满足录入条件', trigger: 'blur' }],
+        rulesCreate: {
+          staffNum: [{required: true, message: '员工编号为必填项，不允许为空', trigger: 'blur'},
+            {min: 1, max: 20, message: '员工编号不满足录入条件', trigger: 'blur'}],
+          staffName: [{required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur'},
+            {min: 1, max: 30, message: '员工姓名不满足录入条件', trigger: 'blur'}],
 
-          staffTelephone:[{ required: true, validator: checkphone, trigger: "blur" }],
-          staffEmail:[
-            { type: 'email', message: '邮箱不满足录入条件', trigger: ['blur', 'change'] }],
-          departmentName:[{required: true,message: '归属部门为必填项，不允许为空'}],
+          staffTelephone: [{required: true, validator: checkphone, trigger: "blur"}],
+          staffEmail: [
+            {type: 'email', message: '邮箱不满足录入条件', trigger: ['blur', 'change']}],
+          departmentName: [{required: true, message: '归属部门为必填项，不允许为空'}],
 
         },
-        modifyForm:{
-         /* accountId:'',*/
-          accountName:'',
-          staffNum:'',
-          staffName:'',
-          staffSex:'',
-          staffTelephone:'',
-          staffEmail:'',
-          departmentId:'',
-          departmentName:'',
-          createTime:'',
-          createEmp:'',
-          createEmpInit:'',
-          remark:'',
+        modifyForm: {
+          /* accountId:'',*/
+          accountName: '',
+          staffNum: '',
+          staffName: '',
+          staffSex: '',
+          staffTelephone: '',
+          staffEmail: '',
+          departmentId: '',
+          departmentName: '',
+          createTime: '',
+          createEmp: '',
+          createEmpInit: '',
+          remark: '',
         },
-        rulesModify:{
-          staffNum: [{ required: true, message: '员工编号为必填项，不允许为空', trigger: 'blur' },
-            { min: 1, max: 20, message: '员工编号不满足录入条件', trigger: 'blur' }],
-          staffName:[{ required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur' },
-            { min: 1, max: 30, message: '员工姓名不满足录入条件', trigger: 'blur' }],
+        rulesModify: {
+          staffNum: [{required: true, message: '员工编号为必填项，不允许为空', trigger: 'blur'},
+            {min: 1, max: 20, message: '员工编号不满足录入条件', trigger: 'blur'}],
+          staffName: [{required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur'},
+            {min: 1, max: 30, message: '员工姓名不满足录入条件', trigger: 'blur'}],
 
-          staffTelephone:[{ required: true, validator: checkphone, trigger: "blur" }],
-          staffEmail:[
-            { type: 'email', message: '邮箱不满足录入条件', trigger: ['blur', 'change'] }],
-          departmentName:[{required: true,message: '归属部门为必填项，不允许为空'}],
+          staffTelephone: [{required: true, validator: checkphone, trigger: "blur"}],
+          staffEmail: [
+            {type: 'email', message: '邮箱不满足录入条件', trigger: ['blur', 'change']}],
+          departmentName: [{required: true, message: '归属部门为必填项，不允许为空'}],
         },
 
         tableData: [],
@@ -698,7 +725,7 @@
         id: '',
         staffName: '',
         accountId: '',
-        accountName:'',
+        accountName: '',
         staffSex: '',
         SexEnum: {},
         staffTelephone: '',
@@ -710,18 +737,18 @@
         title: '模板',
         excelTitle: '请选择需要导出的字段',
         createTitle: '员工新建页面',
-        modifyTitle:'员工信息修改页面',
-        createDialogVisible:false,
-        modifyDialogVisible:false,
+        modifyTitle: '员工信息修改页面',
+        createDialogVisible: false,
+        modifyDialogVisible: false,
         defaultProps: {
           label: 'departmentName',
           children: 'children',
           id: 'id',
           status: 'status'
         },
-        titleDepartment:'选择部门',
-        dialogVisibleDepartment:false,
-        dialogVisibleDepartmentModify:false,
+        titleDepartment: '选择部门',
+        dialogVisibleDepartment: false,
+        dialogVisibleDepartmentModify: false,
 
         dialogVisible: false,
         templateGroupName: '测试',
@@ -729,17 +756,17 @@
         staffDtoList: [],
         formdiStributionDepartment: {
           staffId: '',
-          staffNum:'',
+          staffNum: '',
           staffName: '',
           staffSex: '',
           staffPhone: '',
           staffBeforeDepartment: '',
           staffAfterDepartment: '',
-          staffAfterDepartmentName:'',
+          staffAfterDepartmentName: '',
         },
-        ruleDepartment:{
-          staffAfterDepartmentName:[
-            {required:true}
+        ruleDepartment: {
+          staffAfterDepartmentName: [
+            {required: true,message:'请选择部门',trigger:['blur','change']}
           ]
         },
         distributionDepartmentFlag: false,
@@ -763,9 +790,9 @@
         filterVal: [],
         list: [],
         disabled: true,
-        quitDisabled:true,//离职按钮显示
-        recoveryDisabled:true,//恢复按钮显示
-        departmentVisible:false,
+        quitDisabled: true,//离职按钮显示
+        recoveryDisabled: true,//恢复按钮显示
+        departmentVisible: false,
         defaultProps: {
           label: 'departmentName',
           children: 'children',
@@ -783,22 +810,22 @@
           assignDepPermission: true,
           exportPermission: true
         },
-        contentTitle:"员工详情页面",
-        contentDialogVisible:false,
-        contentForm:{
-          staffNum:'',
-          staffName:'',
-          staffSex:'',
-          staffTelephone:'',
-          staffEmail:'',
-          departmentId:'',
-          isDimission:'',
-          accountId:'',
-          remark:'',
-          createTime:'',
-          createEmp:'',
-          staffNumBtn:'',
-          modifyEmp:'',
+        contentTitle: "员工详情页面",
+        contentDialogVisible: false,
+        contentForm: {
+          staffNum: '',
+          staffName: '',
+          staffSex: '',
+          staffTelephone: '',
+          staffEmail: '',
+          departmentId: '',
+          isDimission: '',
+          accountId: '',
+          remark: '',
+          createTime: '',
+          createEmp: '',
+          staffNumBtn: '',
+          modifyEmp: '',
         },
         searchDeptDialogVisible: false,
         searchDeptUpperDialogVisible: false,
@@ -830,7 +857,7 @@
     created() {
       var self = this;
       self.judgmentAuthority();
-      if(self.relAccount == 1) {
+      if (self.relAccount == 1) {
         self.form.isDimission = '0';
         self.buttonDisabled = true;
         self.cloumnDisabled = true;
@@ -845,15 +872,15 @@
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
-        self.total = result.page.totalCount;
-        self.SexEnum = result.SexEnum;
-        self.isDimissionEnum = result.isDismissionEnum;
-        self.staffDtoList = result.staffDtoList;
-      }).catch(function (error) {
+          self.total = result.page.totalCount;
+          self.SexEnum = result.SexEnum;
+          self.isDimissionEnum = result.isDismissionEnum;
+          self.staffDtoList = result.staffDtoList;
+        }).catch(function (error) {
           commonUtils.Log("employee/querylist.do_:" + error);
           self.$message.error("获取数据错误");
         })
-      }else {
+      } else {
         self.fetchData();
       }
       ;
@@ -862,29 +889,29 @@
       judgmentAuthority() {
         const self = this;
         let permission = self.$store.state.powerList;
-        permission.forEach(item=>{
+        permission.forEach(item => {
           if (item === 15) {
-          self.empButtonPermission.createPermission = false
-        }
-        if (item === 16) {
-          self.empButtonPermission.modifyPermission = false
-        }
-        if (item === 17) {
-          self.empButtonPermission.deletePermission = false
-        }
-        if (item === 18) {
-          self.empButtonPermission.quitPermission = false
-        }
-        if (item === 19) {
-          self.empButtonPermission.recoveryPermission = false
-        }
-        if (item === 20) {
-          self.empButtonPermission.assignDepPermission = false
-        }
-        if (item === 66) {
-          self.empButtonPermission.exportPermission = false
-        }
-      });
+            self.empButtonPermission.createPermission = false
+          }
+          if (item === 16) {
+            self.empButtonPermission.modifyPermission = false
+          }
+          if (item === 17) {
+            self.empButtonPermission.deletePermission = false
+          }
+          if (item === 18) {
+            self.empButtonPermission.quitPermission = false
+          }
+          if (item === 19) {
+            self.empButtonPermission.recoveryPermission = false
+          }
+          if (item === 20) {
+            self.empButtonPermission.assignDepPermission = false
+          }
+          if (item === 66) {
+            self.empButtonPermission.exportPermission = false
+          }
+        });
       },
       handleSizeChange(val) {
         this.pageSize = val;
@@ -915,11 +942,11 @@
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
-        self.total = result.page.totalCount;
-        self.SexEnum = result.SexEnum;
-        self.isDimissionEnum = result.isDismissionEnum;
-        self.staffDtoList = result.staffDtoList;
-      }).catch(function (error) {
+          self.total = result.page.totalCount;
+          self.SexEnum = result.SexEnum;
+          self.isDimissionEnum = result.isDismissionEnum;
+          self.staffDtoList = result.staffDtoList;
+        }).catch(function (error) {
           commonUtils.Log("employee/querylist.do_:" + error);
           self.$message.error("获取数据错误");
         });
@@ -935,34 +962,35 @@
       },
       createEmployee() {//点击新建按钮，弹出新建窗口
 
-        this.createDialogVisible=true;
+        this.createDialogVisible = true;
 
       },
 
       modifyEmployee() {//点击修改按钮，跳转到修改页面
 
-        this.modifyDialogVisible=true;
+        this.modifyDialogVisible = true;
       },
-      saveEmployee(){
+      saveEmployee() {
 
-        const self=this;
+        const self = this;
         self.$refs["createForm"].validate(function (valid) {
           //if(self.$options.methods.checkInput(self)==false) return;
           if (valid) {
-            self.$http.post("employee/insertStaff",self.createForm)
+            self.$http.post("employee/insertStaff", self.createForm)
               .then((result) => {
-              if (result.code === 300) {
-              self.$message.error('员工已存在，不允许重复创建');
-            } else {
-              self.createDialogVisible=false;
-              self.$message.success("新建用户成功");
-              self.fetchData();
-            }
-          })
-          .catch(function (error) {
-              commonUtils.Log("employee/insertStaff:"+error);
-              self.$message.error("新建用户失败");
-            })} else {
+                if (result.code === 300) {
+                  self.$message.error('员工已存在，不允许重复创建');
+                } else {
+                  self.createDialogVisible = false;
+                  self.$message.success("新建用户成功");
+                  self.fetchData();
+                }
+              })
+              .catch(function (error) {
+                commonUtils.Log("employee/insertStaff:" + error);
+                self.$message.error("新建用户失败");
+              })
+          } else {
             console.log('error submit!!');
             return false;
           }
@@ -970,38 +998,39 @@
         })
 
       },
-      cancelEmployee(){
-        this.createDialogVisible=false;
+      cancelEmployee() {
+        this.createDialogVisible = false;
       },
-      saveUpdate(){
+      saveUpdate() {
         console.log("=========")
-        const self=this;
+        const self = this;
         let param = {
-          id:self.id,
-          accountId:self.modifyForm.accountId,
-          staffNum:self.modifyForm.staffNum,
-          staffName:self.modifyForm.staffName,
-          staffSex:self.modifyForm.staffSex,
-          staffEmail:self.modifyForm.staffEmail,
-          staffTelephone:self.modifyForm.staffTelephone,
-          departmentName:self.modifyForm.departmentName,
-          departmentId:self.modifyForm.departmentId,
-          remark:self.modifyForm.remark,
+          id: self.id,
+          accountId: self.modifyForm.accountId,
+          staffNum: self.modifyForm.staffNum,
+          staffName: self.modifyForm.staffName,
+          staffSex: self.modifyForm.staffSex,
+          staffEmail: self.modifyForm.staffEmail,
+          staffTelephone: self.modifyForm.staffTelephone,
+          departmentName: self.modifyForm.departmentName,
+          departmentId: self.modifyForm.departmentId,
+          remark: self.modifyForm.remark,
         }
         self.$refs["modifyForm"].validate(function (valid) {
           //if(self.$options.methods.checkInput(self)==false) return;
           if (valid) {
-            self.$http.post("employee/updateStaff",param)
+            self.$http.post("employee/updateStaff", param)
               .then(result => {
 
-              self.modifyDialogVisible=false;
-            self.$message.success("修改成功");
-            self.fetchData();
-          })
-          .catch(function (error) {
-              commonUtils.Log("employee/updateStaff:"+error);
-              self.$message.error("修改用户信息失败");
-            })} else {
+                self.modifyDialogVisible = false;
+                self.$message.success("修改成功");
+                self.fetchData();
+              })
+              .catch(function (error) {
+                commonUtils.Log("employee/updateStaff:" + error);
+                self.$message.error("修改用户信息失败");
+              })
+          } else {
             console.log('error submit!!');
             return false;
           }
@@ -1009,8 +1038,8 @@
         })
 
       },
-      cancelUpdate(){
-        this.modifyDialogVisible=false;
+      cancelUpdate() {
+        this.modifyDialogVisible = false;
       },
 
 
@@ -1021,139 +1050,150 @@
           type: 'warning'
         }).then(() => {
           var self = this;
-        var param = {
-          id:self.id,
-          accountId:self.accountId,
-        };
-        self.$http.get('employee/deleteEmployee', {
-          params: param
-        }).then((result) => {
-          self.$message.success("成功删除");
-        self.fetchData();
-      }).catch(function (error) {
-          commonUtils.Log("employee/deleteEmployee" + error);
-          self.$message.error("获取数据错误");
-        });
-      }).catch(() => {
+          var param = {
+            id: self.id,
+            accountId: self.accountId,
+          };
+          self.$http.get('employee/deleteEmployee', {
+            params: param
+          }).then((result) => {
+            self.$message.success("成功删除");
+            self.fetchData();
+          }).catch(function (error) {
+            commonUtils.Log("employee/deleteEmployee" + error);
+            self.$message.error("获取数据错误");
+          });
+        }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消删除'
           });
-      });
+        });
       },
       //进行员工的离职操作
-      quitEmployee(){
+      quitEmployee() {
         this.$confirm('此操作将离职该员工, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           var self = this;
-        var param = {
-          id:self.selection,
-        };
-        self.$http.get('employee/quitEmployee.do_', {
-          params: param
-        }).then((result) => {
-          if (result.status=="success"){
-          self.$message.success("成功离职");
-          self.fetchData();
-          self.quitDisabled=true;
-          self.recoveryDisabled=false;
-        } else {
-          self.$message.error("离职失败")
-        }
-      }).catch(function (error) {
-          commonUtils.Log("employee/quitEmployee.do_" + error);
-          self.$message.error("获取数据错误");
-        });
-      }).catch(() => {
+          var param = {
+            id: self.selection,
+          };
+          self.$http.get('employee/quitEmployee.do_', {
+            params: param
+          }).then((result) => {
+            if (result.status == "success") {
+              self.$message.success("成功离职");
+              self.fetchData();
+              self.quitDisabled = true;
+              self.recoveryDisabled = false;
+            } else {
+              self.$message.error("离职失败")
+            }
+          }).catch(function (error) {
+            commonUtils.Log("employee/quitEmployee.do_" + error);
+            self.$message.error("获取数据错误");
+          });
+        }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消离职'
           });
-      });
+        });
       },
       //进行员工的恢复操作
-      recovery(){
+      recovery() {
         this.$confirm('此操作将恢复该员工, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
           var self = this;
-        var param = {
-          id:self.selection,
-        };
-        self.$http.get('employee/recoverEmployee.do_', {
-          params: param
-        }).then((result) => {
-          if (result.status=="success"){
-          self.$message.success("恢复成功");
-          self.fetchData();
-          self.recoveryDisabled=true;
-          self.quitDisabled=false;
-        } else {
-          self.$message.error("恢复失败")
-        }
+          var param = {
+            id: self.selection,
+          };
+          self.$http.get('employee/recoverEmployee.do_', {
+            params: param
+          }).then((result) => {
+            if (result.status == "success") {
+              self.$message.success("恢复成功");
+              self.fetchData();
+              self.recoveryDisabled = true;
+              self.quitDisabled = false;
+            } else {
+              self.$message.error("恢复失败")
+            }
 
-      }).catch(function (error) {
-          commonUtils.Log("employee/recoverEmployee.do_" + error);
-          //self.$message.error("恢复失败");
-        });
-      }).catch(() => {
+          }).catch(function (error) {
+            commonUtils.Log("employee/recoverEmployee.do_" + error);
+            //self.$message.error("恢复失败");
+          });
+        }).catch(() => {
           this.$message({
             type: 'info',
             message: '已取消恢复'
           });
-      });
+        });
       },
       distributionDepartment() {
         this.distributionDepartmentFlag = true;
-        this.departmentVisible=false;
+        this.departmentVisible = false;
       },
       saveDepartment() {
-        //$refs是父组件与表单中的REF属性相结合
-            var param;
-            this.$http.get('employee/updateDepartmentByEmployee.do_', {
-              params:{
-                id:this.selection,
-                departmentId:this.formdiStributionDepartment.staffAfterDepartment,
+        var self=this;
+        self.$refs["formdiStributionDepartment"].validate(function (valid) {
+          if (valid) {
+            self.$http.get('employee/updateDepartmentByEmployee.do_', {
+              params: {
+                id: self.selection,
+                departmentId: self.formdiStributionDepartment.staffAfterDepartment,
               }
             }).then((result) => {
-              if (result.status=="success"){
-                this.$message.success(" 分配成功");
-                this.fetchData();
+              if (result.status == "success") {
+                self.$message.success(" 分配成功");
+                self.fetchData();
               } else {
-                this.$message.error("分配失败")
+                self.$message.error("分配失败")
               }
             }).catch(function (error) {
               commonUtils.Log("employee/updateDepartmentByEmployee.do_" + error);
             });
-        this.distributionDepartmentFlag=false;
+            self.formdiStributionDepartment.staffAfterDepartmentName = '';
+            self.formdiStributionDepartment.staffAfterDepartment = '';
+            self.distributionDepartmentFlag = false;
+          } else {
+            console.log('error submit');
+            return false;
+          }
+        });
+        //$refs是父组件与表单中的REF属性相结合
       },
       cancelDepartment() {
-        this.distributionDepartmentFlag=false;
+        this.distributionDepartmentFlag = false;
+        this.formdiStributionDepartment.staffAfterDepartmentName = '';
+        this.formdiStributionDepartment.staffAfterDepartment = '';
         alert("已取消");
       },
-      confirmChoice(){
+      confirmChoice() {
         const self = this;
-        if(self.selection!=''){
+        if (self.selection != '') {
           var staffData = {};
-          for(var i = 0;;i++){
-            staffData=self.tableData[i];
-            if(self.selection==staffData.id){
+          for (var i = 0; ; i++) {
+            staffData = self.tableData[i];
+            if (self.selection == staffData.id) {
               break;
             }
           }
           this.chooseStaff(staffData);
           this.changeDialogVisible();
-        }else {
+        } else {
           self.$message.info("请选择一名员工");
         }
 
       },
-      cancelChoice(){
+      cancelChoice() {
         this.changeDialogVisible();
       },
       exportExcel() {
@@ -1166,48 +1206,48 @@
         } else {
           require.ensure([], () => {
             const {export_json_to_excel} = require('../../excel/Export2Excel');
-          const tHeader = this.checkedemployees;
-          // 上面设置Excel的表格第一行的标题
+            const tHeader = this.checkedemployees;
+            // 上面设置Excel的表格第一行的标题
 
-          const filterVal = this.exportField(this.checkedemployees);
-          // 上面的staffNum、accountId、staffName是tableData里对象的属性
-          const list = this.staffDtoList;  //把data里的tableData存到list
-          for (let i = 0; i < list.length; i++) {
-            if (list[i].isDimission === 0) {
-              list[i].isDimission = '在职'
-            } else if (list[i].isDimission === 1) {
-              list[i].isDimission = '离职'
+            const filterVal = this.exportField(this.checkedemployees);
+            // 上面的staffNum、accountId、staffName是tableData里对象的属性
+            const list = this.staffDtoList;  //把data里的tableData存到list
+            for (let i = 0; i < list.length; i++) {
+              if (list[i].isDimission === 0) {
+                list[i].isDimission = '在职'
+              } else if (list[i].isDimission === 1) {
+                list[i].isDimission = '离职'
+              }
+              if (list[i].staffSex === 1) {
+                list[i].staffSex = '男'
+              } else if (list[i].staffSex === 2) {
+                list[i].staffSex = '女'
+              }
             }
-            if (list[i].staffSex === 1) {
-              list[i].staffSex = '男'
-            } else if (list[i].staffSex === 2) {
-              list[i].staffSex = '女'
+            //获取当前时间
+            var date = new Date();
+            var seperator1 = "-";
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+              month = "0" + month;
             }
-          }
-          //获取当前时间
-          var date = new Date();
-          var seperator1 = "-";
-          var year = date.getFullYear();
-          var month = date.getMonth() + 1;
-          var strDate = date.getDate();
-          if (month >= 1 && month <= 9) {
-            month = "0" + month;
-          }
-          if (strDate >= 0 && strDate <= 9) {
-            strDate = "0" + strDate;
-          }
-          var currentdate = year + seperator1 + month + seperator1 + strDate;
-          const data = this.formatJson(filterVal, list);
-          export_json_to_excel(tHeader, data, '员工管理'+currentdate);
-          this.$message({
-            showClose: true,
-            message: '文件导出成功',
-            type: 'success'
-          });
-          this.dialogVisible = false;
-          this.checkedemployees = [];
-          this.filterVal = [];
-        })
+            if (strDate >= 0 && strDate <= 9) {
+              strDate = "0" + strDate;
+            }
+            var currentdate = year + seperator1 + month + seperator1 + strDate;
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '员工管理' + currentdate);
+            this.$message({
+              showClose: true,
+              message: '文件导出成功',
+              type: 'success'
+            });
+            this.dialogVisible = false;
+            this.checkedemployees = [];
+            this.filterVal = [];
+          })
         }
       },
       formatJson(filterVal, jsonData) {
@@ -1251,33 +1291,33 @@
           this.id = val.id;
           this.accountId = val.accountId;
         },*/
-      loadNode(node,resolve){
+      loadNode(node, resolve) {
         var self = this;
         self.$http.get('department/buildTree2.do_', {
           params: null
         }).then((result) => {
           resolve([result.departmentDto]);
-      }).catch(function (error) {
+        }).catch(function (error) {
 
         });
       },
       getCheckedNodes() {
         // 用于演示获取部门id的方式
-        this.formdiStributionDepartment.staffAfterDepartmentName=this.$refs.tree.getCheckedNodes()[0].departmentName;
-        this.formdiStributionDepartment.staffAfterDepartment=this.$refs.tree.getCheckedNodes()[0].id;
-        this.departmentVisible=false;
+        this.formdiStributionDepartment.staffAfterDepartmentName = this.$refs.tree.getCheckedNodes()[0].departmentName;
+        this.formdiStributionDepartment.staffAfterDepartment = this.$refs.tree.getCheckedNodes()[0].id;
+        this.departmentVisible = false;
         //alert(this.$refs.tree.getCheckedNodes()[0].id);
       },
-      handleClick(data,checked,node){
+      handleClick(data, checked, node) {
         // 手动设置单选
-        if(checked === true) {
+        if (checked === true) {
           this.checkedId = data.id;
           this.$refs.tree.setCheckedKeys([data.id]);
           // 设置按钮是否可选（选中节点后调用两次handleClick，第一次checked为true，所以设置按钮写在这）
-          if(data.status === 1){
-            this.operationBtnActive=false;
-          }else{
-            this.operationBtnActive=true;
+          if (data.status === 1) {
+            this.operationBtnActive = false;
+          } else {
+            this.operationBtnActive = true;
           }
         } else {
           if (this.checkedId == data.id) {
@@ -1285,16 +1325,16 @@
           }
         }
       },
-      deleteDept(){
+      deleteDept() {
         var check_node = this.$refs.tree.getCheckedNodes()[0];
-        if( this.$options.methods.checkHaveChildren(check_node) ){
+        if (this.$options.methods.checkHaveChildren(check_node)) {
           alert("删除失败，请先删除该部门的下级部门");
           return;
         }
         var params = {
           id: check_node.id
         };
-        this.$http.post('department/deleteDepartment.do_',params);
+        this.$http.post('department/deleteDepartment.do_', params);
         this.dialogVisible = false;
         // 删除节点后前端显示跟着修改，避免刷新整个页面
         check_node.status = 0;
@@ -1304,72 +1344,75 @@
           id: 99999999,
           status: 0
         };
-        this.$refs.tree.insertBefore(tmpNode,check_node.id);
+        this.$refs.tree.insertBefore(tmpNode, check_node.id);
         this.$refs.tree.remove(check_node.id);
-        this.$refs.tree.insertAfter(check_node,tmpNode.id);
+        this.$refs.tree.insertAfter(check_node, tmpNode.id);
         this.$refs.tree.remove(tmpNode.id);
-        this.operationBtnActive=true;
+        this.operationBtnActive = true;
         alert("部门删除成功");
       },
-      checkHaveChildren (data) {
-        for(var i = 0;i<data.children.length;i++){
-          if(data.children[i].status === 1){
+      checkHaveChildren(data) {
+        for (var i = 0; i < data.children.length; i++) {
+          if (data.children[i].status === 1) {
             return true;
           }
         }
         return false;
       },
-      renderContent(h, { node, data, store }) {
+      renderContent(h, {node, data, store}) {
         // 这里编译器有红色波浪线不影响运行...
-        if(data.status != 1){
+        if (data.status != 1) {
           return (
-            <span style="color:red">{node.label}</span>
-        );
-        }else{
+            < span
+          style = "color:red" > {node.label} < /span>
+        )
+          ;
+        } else {
           return (
-            <span>{node.label}</span>
-        );
+            < span > {node.label} < /span>
+        )
+          ;
         }
       },
       changeUpper() {
-        window.localStorage.setItem("dept_id",this.$refs.tree.getCheckedNodes()[0].id);
-        window.localStorage.setItem("dept_name",this.$refs.tree.getCheckedNodes()[0].departmentName);
+        window.localStorage.setItem("dept_id", this.$refs.tree.getCheckedNodes()[0].id);
+        window.localStorage.setItem("dept_name", this.$refs.tree.getCheckedNodes()[0].departmentName);
         this.$router.replace('/departmentManagement/changeUpperDepartment');
       },
-      approvalInfo(val){
+      approvalInfo(val) {
         this.disabled = false;
         this.id = val.id;
         this.accountId = val.accountId;
-        this.modifyForm.id=val.id;
-        this.modifyForm.accountId=val.accountId;
-        this.modifyForm.accountName=val.accountName;
-        this.modifyForm.staffNum=val.staffNum;
-        this.modifyForm.staffName=val.staffName;
-        this.modifyForm.staffSex=val.staffSex;
-        this.modifyForm.staffEmail=val.staffEmail;
-        this.modifyForm.isDimission=this.isDimissionEnum[val.isDimission];
-        this.modifyForm.staffTelephone=val.staffTelephone;
-        this.modifyForm.departmentName=val.departmentName;
-        this.modifyForm.departmentId=val.departmentId;
-        this.modifyForm.createTime=val.createTime;
-        this.modifyForm.remark=val.remark;
-        this.modifyForm.createEmpInit=val.createEmp;
-        this.modifyForm.modifyTime=val.modifyTime;
+        this.modifyForm.id = val.id;
+        this.modifyForm.accountId = val.accountId;
+        this.modifyForm.accountName = val.accountName;
+        this.modifyForm.staffNum = val.staffNum;
+        this.modifyForm.staffName = val.staffName;
+        this.modifyForm.staffSex = val.staffSex;
+        this.modifyForm.staffEmail = val.staffEmail;
+        this.modifyForm.isDimission = this.isDimissionEnum[val.isDimission];
+        this.modifyForm.staffTelephone = val.staffTelephone;
+        this.modifyForm.departmentName = val.departmentName;
+        this.modifyForm.departmentId = val.departmentId;
+        this.modifyForm.createTime = val.createTime;
+        this.modifyForm.remark = val.remark;
+        this.modifyForm.createEmpInit = val.createEmp;
+        this.modifyForm.modifyTime = val.modifyTime;
 
 
-        this.formdiStributionDepartment.staffNum=val.staffNum;
-        this.formdiStributionDepartment.staffAfterDepartment=val.staffAfterDepartment;
-        this.formdiStributionDepartment.staffPhone=val.staffTelephone;
-        this.formdiStributionDepartment.staffSex=this.SexEnum[val.staffSex];
-        this.formdiStributionDepartment.staffBeforeDepartment=val.departmentName;
-        this.formdiStributionDepartment.staffName=val.staffName;
+        this.formdiStributionDepartment.staffNum = val.staffNum;
+        this.formdiStributionDepartment.staffAfterDepartment = val.staffAfterDepartment;
+        this.formdiStributionDepartment.staffPhone = val.staffTelephone;
+        this.formdiStributionDepartment.staffSex = this.SexEnum[val.staffSex];
+        this.formdiStributionDepartment.staffBeforeDepartment = val.departmentName;
+        this.formdiStributionDepartment.staffName = val.staffName;
 
         //回填创建人和修改人
         var self = this;
         var param = {
-          staffId:val.id,
-          createEmp:val.createEmp,
-          modifyEmp:val.modifyEmp
+          staffId: val.id,
+          createEmp: val.createEmp,
+          modifyEmp: val.modifyEmp
         };
         self.$http.get('employee/otherInfo.do_', {
           params: param
@@ -1377,56 +1420,59 @@
           self.modifyForm.createEmp = result.list.createEmpName;
           self.modifyForm.modifyEmp = result.list.modifyEmpName;
 
-      }).catch(function (error) {
-          commonUtils.Log("employee/otherInfo.do_:"+error);
+        }).catch(function (error) {
+          commonUtils.Log("employee/otherInfo.do_:" + error);
           //self.$message.error("获取数据错误");
         });
         //恢复，离职显示按钮
-        if (val.isDimission==0){
-          self.quitDisabled=false;
-          self.recoveryDisabled=true;
-        }else {
-          self.quitDisabled=true;
-          self.recoveryDisabled=false;
+        if (val.isDimission == 0) {
+          self.quitDisabled = false;
+          self.recoveryDisabled = true;
+        } else {
+          self.quitDisabled = true;
+          self.recoveryDisabled = false;
         }
       },
-      selectDepartment(){//选择部门
-        this.dialogVisibleDepartment=true;
+      selectDepartment() {//选择部门
+        this.dialogVisibleDepartment = true;
       },
-      clearDepartment(){//清除部门的值
-        this.createForm.departmentName='';
+      clearDepartment() {//清除部门的值
+        this.createForm.departmentName = '';
       },
-      loadNode(node,resolve){
+      loadNode(node, resolve) {
         var self = this;
         self.$http.get('department/buildTree2.do_', {
           params: null
         }).then((result) => {
           resolve([result.departmentDto]);
-      }).catch(function (error) {
+        }).catch(function (error) {
 
         });
-      },renderContent(h, { node, data, store }) {
+      }, renderContent(h, {node, data, store}) {
         // 这里编译器有红色波浪线不影响运行...
-        if(data.status != 1){
+        if (data.status != 1) {
           return (
-            <span style="color:red">{node.label}</span>
-        );
-        }else{
+            < span
+          style = "color:red" > {node.label} < /span>
+        )
+          ;
+        } else {
           return (
-            <span>{node.label}</span>
-        );
+            < span > {node.label} < /span>
+        )
+          ;
         }
       },
-      handleClick(data,checked,node){
+      handleClick(data, checked, node) {
         // 手动设置单选
-        if(checked === true) {
+        if (checked === true) {
           this.checkedId = data.id;
           this.$refs.tree.setCheckedKeys([data.id]);
           // 设置按钮是否可选（选中节点后调用两次handleClick，第一次checked为true，所以设置按钮写在这）
-          if(data.status === 1){
-            this.operationBtnActive=false;
-          }else{
-            this.operationBtnActive=true;
+          if (data.status === 1) {
+            this.operationBtnActive = false;
+          } else {
+            this.operationBtnActive = true;
           }
         } else {
           if (this.checkedId == data.id) {
@@ -1437,22 +1483,22 @@
       getCheckedDepartment() {
         // 获取部门 回填到文本框中
         // alert(this.$refs.tree.getCheckedNodes()[0].departmentName);
-        this.createForm.departmentName=this.$refs.tree.getCheckedNodes()[0].departmentName;
-        this.createForm.departmentId=this.$refs.tree.getCheckedNodes()[0].id;
-        this.dialogVisibleDepartment=false;
+        this.createForm.departmentName = this.$refs.tree.getCheckedNodes()[0].departmentName;
+        this.createForm.departmentId = this.$refs.tree.getCheckedNodes()[0].id;
+        this.dialogVisibleDepartment = false;
       },
-      selectDepartmentModify(){//选择部门
-        this.dialogVisibleDepartmentModify=true;
+      selectDepartmentModify() {//选择部门
+        this.dialogVisibleDepartmentModify = true;
       },
-      clearDepartmentModify(){//清除部门的值
-        this.modifyForm.departmentName='';
+      clearDepartmentModify() {//清除部门的值
+        this.modifyForm.departmentName = '';
       },
       getCheckedDepartmentModify() {
         // 获取部门 回填到文本框中
         // alert(this.$refs.tree.getCheckedNodes()[0].departmentName);
-        this.modifyForm.departmentName=this.$refs.tree.getCheckedNodes()[0].departmentName;
-        this.modifyForm.departmentId=this.$refs.tree.getCheckedNodes()[0].id;
-        this.dialogVisibleDepartmentModify=false;
+        this.modifyForm.departmentName = this.$refs.tree.getCheckedNodes()[0].departmentName;
+        this.modifyForm.departmentId = this.$refs.tree.getCheckedNodes()[0].id;
+        this.dialogVisibleDepartmentModify = false;
       },
       //检查手机号
       isCellPhone(val) {
@@ -1462,52 +1508,52 @@
           return true;
         }
       },
-      staffNumBtn(val){
-        this.contentDialogVisible=true;
-        this.contentForm.accountId=val.accountId;
-        this.contentForm.staffNum=val.staffNum;
-        this.contentForm.staffName=val.staffName;
-        this.contentForm.staffSex=val.staffSex;
-        this.contentForm.staffEmail=val.staffEmail;
-        this.contentForm.isDimission=this.isDimissionEnum[val.isDimission];
-        this.contentForm.staffTelephone=val.staffTelephone;
-        this.contentForm.departmentId=val.departmentName;
-        this.contentForm.createTime=val.createTime;
-        this.contentForm.createEmp=val.createEmp;
-        this.contentForm.modifyEmp=val.modifyEmp;
-        this.contentForm.modifyTime=val.modifyTime;
-        this.contentForm.remark=val.remark;
+      staffNumBtn(val) {
+        this.contentDialogVisible = true;
+        this.contentForm.accountId = val.accountId;
+        this.contentForm.staffNum = val.staffNum;
+        this.contentForm.staffName = val.staffName;
+        this.contentForm.staffSex = val.staffSex;
+        this.contentForm.staffEmail = val.staffEmail;
+        this.contentForm.isDimission = this.isDimissionEnum[val.isDimission];
+        this.contentForm.staffTelephone = val.staffTelephone;
+        this.contentForm.departmentId = val.departmentName;
+        this.contentForm.createTime = val.createTime;
+        this.contentForm.createEmp = val.createEmp;
+        this.contentForm.modifyEmp = val.modifyEmp;
+        this.contentForm.modifyTime = val.modifyTime;
+        this.contentForm.remark = val.remark;
 
         //回填创建人和修改人
         var self = this;
         var param = {
-          staffId:val.id,
+          staffId: val.id,
         };
         self.$http.get('employee/otherInfo.do_', {
           params: param
         }).then((result) => {
           self.contentForm.createEmp = result.list.createEmpName;
-        self.contentForm.modifyEmp = result.list.modifyEmpName;
-      }).catch(function (error) {
-          commonUtils.Log("employee/otherInfo.do_:"+error);
+          self.contentForm.modifyEmp = result.list.modifyEmpName;
+        }).catch(function (error) {
+          commonUtils.Log("employee/otherInfo.do_:" + error);
           self.$message.error("获取数据错误");
         });
       },
-      confirmInfo(){
-        this.contentDialogVisible=false;
+      confirmInfo() {
+        this.contentDialogVisible = false;
       },
-      loadNodeDept(node,resolve){
+      loadNodeDept(node, resolve) {
         var self = this;
         self.$http.get('department/buildTree2.do_')
           .then((result) => {
-          resolve([result.departmentDto]);
-      }).catch(function (error) {
+            resolve([result.departmentDto]);
+          }).catch(function (error) {
 
         });
       },
-      handleClickDept(data,checked,node){
+      handleClickDept(data, checked, node) {
         // 手动设置单选
-        if(checked === true) {
+        if (checked === true) {
           this.checkedId = data.id;
           this.$refs.treeDept.setCheckedKeys([data.id]);
         } else {
@@ -1516,9 +1562,9 @@
           }
         }
       },
-      handleClickDeptUpper(data,checked,node){
+      handleClickDeptUpper(data, checked, node) {
         // 手动设置单选
-        if(checked === true) {
+        if (checked === true) {
           this.checkedId = data.id;
           this.$refs.treeDeptUpper.setCheckedKeys([data.id]);
         } else {
@@ -1527,27 +1573,27 @@
           }
         }
       },
-      searchDeptCheck(){
+      searchDeptCheck() {
         //alert("选择部门");
-        this.searchDeptName=this.$refs.treeDept.getCheckedNodes()[0].departmentName;
-        this.form.departmentId=this.$refs.treeDept.getCheckedNodes()[0].id;
+        this.searchDeptName = this.$refs.treeDept.getCheckedNodes()[0].departmentName;
+        this.form.departmentId = this.$refs.treeDept.getCheckedNodes()[0].id;
         this.searchDeptDialogVisible = false;
       },
-      searchDeptClear(){
+      searchDeptClear() {
         //alert("清空部门");
-        this.searchDeptName="";
-        this.form.departmentId="";
+        this.searchDeptName = "";
+        this.form.departmentId = "";
       },
-      searchDeptUpperCheck(){
+      searchDeptUpperCheck() {
         //alert("选择上级部门");
-        this.searchDeptUpperName=this.$refs.treeDeptUpper.getCheckedNodes()[0].departmentName;
-        this.form.upperDepartmentNo=this.$refs.treeDeptUpper.getCheckedNodes()[0].departmentNo;
+        this.searchDeptUpperName = this.$refs.treeDeptUpper.getCheckedNodes()[0].departmentName;
+        this.form.upperDepartmentNo = this.$refs.treeDeptUpper.getCheckedNodes()[0].departmentNo;
         this.searchDeptUpperDialogVisible = false;
       },
-      searchDeptUpperClear(){
+      searchDeptUpperClear() {
         //alert("清空上级部门");
-        this.searchDeptUpperName="";
-        this.form.upperDepartmentNo="";
+        this.searchDeptUpperName = "";
+        this.form.upperDepartmentNo = "";
       }
     }
   }
