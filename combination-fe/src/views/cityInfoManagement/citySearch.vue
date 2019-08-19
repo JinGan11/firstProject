@@ -1,46 +1,50 @@
 <template>
   <home>
     <div style="width:85%; margin-left: 70px">
-      <el-form ref="form" :model="form" label-width="70px">
+      <el-form ref="form" :model="form" label-width="85px">
         <el-row class="demo-autocomplete">
           <el-col :span="6">
-            国际代码：
-            <el-autocomplete
-              class="inline-input"
-              v-model="form.regionCode"
-              valueKey="regionCode"
-              value="regionCode"
-              :fetch-suggestions="querySearchRegionCode"
-              placeholder="请输入国际代码"
-              @select="handleSelect"
-              clearable
-            ></el-autocomplete>
+            <el-form-item label="国际代码:">
+              <el-autocomplete
+                class="inline-input"
+                v-model="form.regionCode"
+                valueKey="regionCode"
+                value="regionCode"
+                :fetch-suggestions="querySearchRegionCode"
+                placeholder="请输入国际代码"
+                @select="handleSelect"
+                clearable
+              ></el-autocomplete>
+            </el-form-item>
           </el-col>
           <el-col :span="6">
-            城市名字:
-            <el-autocomplete
-              class="inline-input"
-              v-model="form.regionName"
-              valueKey="regionName"
-              value="regionName"
-              :fetch-suggestions="querySearchRegionName"
-              placeholder="请输入城市"
-              @select="handleSelect"
-              clearable
-            ></el-autocomplete>
+
+            <el-form-item label="城市名字:">
+              <el-autocomplete
+                class="inline-input"
+                v-model="form.regionName"
+                valueKey="regionName"
+                value="regionName"
+                :fetch-suggestions="querySearchRegionName"
+                placeholder="请输入城市"
+                @select="handleSelect"
+                clearable
+              ></el-autocomplete>
+            </el-form-item>
           </el-col>
           <el-col :span="6">
-            所属省市:
-            <el-autocomplete
-              class="inline-input"
-              v-model="form.upperRegion"
-              valueKey="upperRegion"
-              value="upperRegion"
-              :fetch-suggestions="querySearchUpperRegion"
-              placeholder="请输入省市"
-              @select="handleSelect"
-              clearable
-            ></el-autocomplete>
+            <el-form-item label="所属省市:">
+              <el-autocomplete
+                class="inline-input"
+                v-model="form.upperRegion"
+                valueKey="upperRegion"
+                value="upperRegion"
+                :fetch-suggestions="querySearchUpperRegion"
+                placeholder="请输入省市"
+                @select="handleSelect"
+                clearable
+              ></el-autocomplete>
+            </el-form-item>
           </el-col>
 
           <el-col :span="6">
@@ -72,7 +76,7 @@
       </el-form>
     </div>
 
-    <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
+    <el-table ref="multipleTable" :data="tableData" stripe @selection-change="handleSelectionChange">
       <el-table-column prop="regionCode" label="国际代码"  width="200px"></el-table-column>
       <el-table-column prop="regionName" label="城市名称"  width="200px"></el-table-column>
       <el-table-column prop="regionPinyin" label="名字拼音"  width="200px"></el-table-column>

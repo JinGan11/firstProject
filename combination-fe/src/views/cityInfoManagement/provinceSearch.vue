@@ -2,13 +2,13 @@
   <home>
     <!--搜索-->
     <div style="width:85%; margin-left: 70px">
-      <el-form ref="form" :model="form" label-width="70px">
+      <el-form ref="form" :model="form" label-width="85px">
 
 
         <el-row class="demo-autocomplete">
           <el-col :span="8">
-            国际代码：
-            <el-autocomplete
+            <el-form-item label="国际代码：">
+              <el-autocomplete
               class="inline-input"
               v-model="form.regionCode"
               valueKey="regionCode"
@@ -18,19 +18,21 @@
               @select="handleSelectRegionCode"
               clearable
             ></el-autocomplete>
+            </el-form-item>
           </el-col>
           <el-col :span="12">
-            省/直辖市:
-            <el-autocomplete
-              class="inline-input"
-              v-model="form.regionName"
-              valueKey="regionName"
-              value="regionName"
-              :fetch-suggestions="querySearch"
-              placeholder="请输入省市"
-              @select="handleSelect"
-              clearable
-            ></el-autocomplete>
+            <el-form-item label="省/直辖市:">
+              <el-autocomplete
+                class="inline-input"
+                v-model="form.regionName"
+                valueKey="regionName"
+                value="regionName"
+                :fetch-suggestions="querySearch"
+                placeholder="请输入省市"
+                @select="handleSelect"
+                clearable
+              ></el-autocomplete>
+            </el-form-item>
           </el-col>
           <el-col :span="4">
             <el-form-item label="状态：">
@@ -64,7 +66,7 @@
       </el-form>
     </div>
     <!--查询结果表格-->
-    <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
+    <el-table ref="multipleTable" :data="tableData"  @selection-change="handleSelectionChange" stripe>
       <el-table-column prop="regionCode" label="国际代码"  width="200px"></el-table-column>
       <el-table-column prop="regionName" label="省/直辖市"  width="200px"></el-table-column>
       <el-table-column prop="regionPinyin" label="名字拼音"  width="200px"></el-table-column>

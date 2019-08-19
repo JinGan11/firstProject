@@ -23,23 +23,23 @@
     <div style="width:45%; height: 100%;float: left"  >
 
       <div style="width:100%;margin-top: 70px;height: 100%">
-        <el-form :model="form" label-width="150px" :disabled="formDisable" >
+        <el-form :model="form" label-width="150px" :disabled="formDisable" status-icon :rules="rules" ref="form">
 
           <el-row :span="12">
-            <el-form-item label="国际代码" >
-              <el-input v-model="form.regionCode"  style="width: 200px"></el-input>
+            <el-form-item label="国际代码" prop="regionCode">
+              <el-input v-model.number="form.regionCode"  style="width: 200px" maxlength="6"></el-input>
             </el-form-item>
           </el-row>
 
           <el-row :span="12">
-            <el-form-item label="省/直辖市名称" >
-              <el-input v-model="form.regionName" style="width: 200px" ></el-input>
+            <el-form-item label="行政区划名称" prop="regionName">
+              <el-input v-model="form.regionName" style="width: 200px" maxlength="50"></el-input>
             </el-form-item>
           </el-row>
 
           <el-row :span="12">
-            <el-form-item label="名字拼音" >
-              <el-input v-model="form.regionPinyin"  style="width: 200px"></el-input>
+            <el-form-item label="名字拼音" prop="regionPinyin">
+              <el-input v-model="form.regionPinyin"  style="width: 200px" maxlength="255"></el-input>
             </el-form-item>
           </el-row>
 
@@ -63,7 +63,7 @@
           </el-row>
 
           <el-row>
-            <el-form-item label="状态" >
+            <el-form-item label="状态" prop="regionStatus">
               <el-select v-model="form.regionStatus"  style="width:100px;" placeholder="请选择" >
                 <el-option
                   v-for="item in optionsStatus"
@@ -118,7 +118,61 @@
     import commonUtils from '../../common/commonUtils'
     export default {
         data() {
+            var checkRegionCode = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('国际代码不能为空'));
+                }
+                setTimeout(() => {
+                    if (!Number.isInteger(value)) {
+                        callback(new Error('请输入数字值'));
+                    } else {
+                            callback();
+                    }
+                }, 100);
+            };
+
+            var checkRegionName = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('区划名称不能为空'));
+                }
+                else{
+                    return callback();
+                }
+            };
+            var checkRegionStatus = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('区划状态不能为空'));
+                }
+                else{
+                    return callback();
+                }
+            };
+            var checkRegionPinyin = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('区划拼音不能为空'));
+                }
+                else{
+                    return callback();
+                }
+            };
+
             return{
+                rules: {
+                    regionCode: [
+                        { validator: checkRegionCode, trigger: 'blur' }
+                    ],
+                    regionName: [
+                        { validator: checkRegionName, trigger: 'blur' }
+                    ],
+                    regionStatus: [
+                        { validator: checkRegionStatus, trigger: 'blur' }
+                    ],
+                    regionPinyin: [
+                        { validator: checkRegionPinyin, trigger: 'blur' }
+                    ],
+
+                },
+
                 optionsStatus:[ {
                     value: '1',
                     label: '有效'
@@ -192,7 +246,7 @@
                 formDisable:true,
                 isModify:false,
                 isCreate:false,
-                formTemp:{},
+
 
                 BtnPermission: {
                   newPermission: true,
@@ -495,7 +549,7 @@
                     regionName:'',
                     regionPinyin:'',
                     regionLevel:'',
-                    regionStatus:'',
+                    regionStatus:'1',
                     upperRegion:'中国',
                     modifyEmpName:'',
                     modifyTime:'',
@@ -530,7 +584,7 @@
                         regionName:'中国',
                         regionPinyin:'',
                         regionLevel:'',
-                        regionStatus:'',
+                        regionStatus:'1',
                         upperRegion:'中国',
                         modifyEmpName:'',
                         modifyTime:'',
@@ -548,79 +602,95 @@
 
             //修改区域信息(修改保存)
             modifyRegionSave(){
+                this.$refs["form"].validate((valid) => {
+                    if (valid) {
+                        var self=this;
+                        var regionStatus;
+                        var regionLevel;
+                        if (self.form.regionStatus === '无效') {
+                            regionStatus = 0
+                        } else if (self.form.regionStatus === '有效') {
+                            regionStatus = 1
+                        }else{
+                            regionStatus=self.form.regionStatus;
+                        }
 
-                var self=this;
+                        if (self.form.regionLevel === '省/直辖市') {
+                            regionLevel = 1
+                        } else if (self.form.regionLevel === '城市') {
+                            regionLevel = 2
+                        }else if (self.form.regionLevel === '区县') {
+                            regionLevel = 3
+                        }else{
+                            regionLevel =self.form.regionLevel;
+                        }
 
-                var regionStatus;
-                var regionLevel;
-                if (self.form.regionStatus === '无效') {
-                    regionStatus = 0
-                } else if (self.form.regionStatus === '有效') {
-                    regionStatus = 1
-                }else{
-                    regionStatus=self.form.regionStatus;
-                }
+                        var param={
+                            cityID:self.form.cityID,
+                            regionCode:self.form.regionCode,
+                            regionName:self.form.regionName,
+                            regionPinyin:self.form.regionPinyin,
+                            regionStatus: regionStatus,
+                            modifyTime:self.form.modifyTime,
+                        };
+                        // console.log(param);
+                        self.$http.get('/regionManage/modifyRegionSave',{
+                            params:param
+                        }).then((result)=>{
+                            //对取回来的数据进行处理
+                            // console.log(result);
+                            self.$alert(result);
 
-                if (self.form.regionLevel === '省/直辖市') {
-                    regionLevel = 1
-                } else if (self.form.regionLevel === '城市') {
-                    regionLevel = 2
-                }else if (self.form.regionLevel === '区县') {
-                    regionLevel = 3
-                }else{
-                    regionLevel =self.form.regionLevel;
-                }
-
-                var param={
-                    cityID:self.form.cityID,
-                    regionCode:self.form.regionCode,
-                    regionName:self.form.regionName,
-                    regionPinyin:self.form.regionPinyin,
-                    regionStatus: regionStatus,
-                    modifyTime:self.form.modifyTime,
-                };
-                // console.log(param);
-                self.$http.get('/regionManage/modifyRegionSave',{
-                    params:param
-                }).then((result)=>{
-                    //对取回来的数据进行处理
-                    // console.log(result);
-                    self.$alert(result);
-
-                }).catch(function (error) {
-                    commonUtils.Log("/regionManage/modifyRegionSave:" + error);
-                    self.$message.error("获取数据错误");
+                        }).catch(function (error) {
+                            commonUtils.Log("/regionManage/modifyRegionSave:" + error);
+                            self.$message.error("获取数据错误");
+                        });
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
                 });
+
+
             },
 
             //创建新的区域（新建保存）
             createRegionSave(){
-                var self=this;
-                console.log(self.formTemp);
-                console.log(self.form);
-                var param={
-                    regionCode:self.form.regionCode,
-                    regionName:self.form.regionName,
-                    regionPinyin:self.form.regionPinyin,
-                    regionLevel:self.form.regionLevel,
-                    regionStatus: self.form.regionStatus,
-                    modifyTime:self.form.modifyTime,
-                    upperRegion:self.form.upperRegion,
-                    upperRegionCode:self.form.upperRegionCode,
-                    upperRegionID:self.form.upperRegionID
+                this.$refs["form"].validate((valid) => {
+                    if (valid) {
+                        var self=this;
+                        console.log(self.formTemp);
+                        console.log(self.form);
+                        var param={
+                            regionCode:self.form.regionCode,
+                            regionName:self.form.regionName,
+                            regionPinyin:self.form.regionPinyin,
+                            regionLevel:self.form.regionLevel,
+                            regionStatus: self.form.regionStatus,
+                            modifyTime:self.form.modifyTime,
+                            upperRegion:self.form.upperRegion,
+                            upperRegionCode:self.form.upperRegionCode,
+                            upperRegionID:self.form.upperRegionID
 
-                };
-                self.$http.get('/regionManage/createRegion',{
-                    params:param
-                }).then((result)=>{
-                    //对取回来的数据进行处理
-                    // console.log(result);
-                    self.$alert(result);
+                        };
+                        self.$http.get('/regionManage/createRegion',{
+                            params:param
+                        }).then((result)=>{
+                            //对取回来的数据进行处理
+                            // console.log(result);
+                            self.$alert(result);
 
-                }).catch(function (error) {
-                    commonUtils.Log("/regionManage/createRegion:" + error);
-                    self.$message.error("获取数据错误");
+                        }).catch(function (error) {
+                            commonUtils.Log("/regionManage/createRegion:" + error);
+                            self.$message.error("获取数据错误");
+                        });
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
                 });
+
+
             },
 
 
