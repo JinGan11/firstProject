@@ -501,11 +501,11 @@
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;
-        this.fetchData(1, val);
+        this.fetchAccountData(1, val);
       },
       handleCurrentChange(val) {
         this.currentPage = val;
-        this.fetchData(val, this.pageSize);
+        this.fetchAccountData(val, this.pageSize);
       },
 
       fetchAccountData() {//获取账户信息
