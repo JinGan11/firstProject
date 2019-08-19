@@ -100,7 +100,7 @@
       </div>
       <hr style="width: 70%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
       <div style="width:85%; margin-left: 30px; float: left">
-        <el-form :model="modifyForm" label-width="120px">
+        <el-form :model="modifyForm" label-width="120px" :rules="rules" ref="modifyForm">
           <el-row>
             <el-col :span="9">
               <el-form-item label="新建人">
@@ -142,7 +142,7 @@
           </el-row>
           <el-row>
             <el-col>
-              <el-form-item label="备注">
+              <el-form-item label="备注" prop="remark">
                 <el-input style="width: 73%" type="textarea" :rows="2" v-model="modifyForm.remark"></el-input>
               </el-form-item>
             </el-col>
@@ -203,6 +203,9 @@
           secretEmail:[
             { required: true, message: '请输入密保邮箱' },
             { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          ],
+          remark:[
+            { max: 200, message: '长度要小于200字符', trigger: 'blur' }
           ],
         },
       }
