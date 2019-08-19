@@ -81,11 +81,11 @@
                   :props="defaultProps"
                   node-key="id"
                   :load="loadNode"
-                  lazy="true"
+                  lazy
                   show-checkbox
                   check-strictly
                   :default-expanded-keys="modifyForm.trees"
-                  :render-content="renderContent"
+                  :default-checked-keys="modifyForm.trees"
                   @check-change="handleClick">
                 </el-tree>
               </el-form-item>
@@ -194,6 +194,7 @@
           trees: [],
           remark:'',
         },
+        departmentDto: [],
         emailDisabled: true,
         rules: {
           permissions:[
@@ -216,6 +217,12 @@
     created() {
       const self = this;
       self.modifyForm.accountId = localStorage.getItem("accountId");
+      self.$http.get('department/buildTree2.do_')
+        .then((result) => {
+          self.departmentDto = result.departmentDto;
+        }).catch(function (error) {
+        self.$message.error("获取部门数据错误")
+      });
       self.fetchData();
       self.fetchEnums();
       self.fetchDeparentPower();
@@ -223,14 +230,33 @@
     methods: {
       loadNode(node,resolve){//加载部门的树结构
         var self = this;
-        self.$http.get('department/buildTree2.do_')
-          .then((result) => {
-          resolve([result.departmentDto]);
+        var departmentDto = [self.departmentDto];
+        if (node.level === 0) {
+          resolve(departmentDto);
+        }
+        if (node.level === 1) {
+          resolve(self.departmentDto.children);
+        }
+        if (node.level > 1){
+          var id = node.data.id;
+          resolve(getChilder(id,departmentDto));
+        }
+        function getChilder(id,datas) {
+          var d = null;
+          for(var i = 0;i<datas.length;i++){
+            var data = datas[i];
+            if (data.id != id && data.nodeIsLeaf == false){
+              d = getChilder(id,data.children);
+              if (d != null ){
+                return d;
+              }
+            }else if(data.id==id){
+              return data.children;
+            }
+          }
           self.$refs.tree.setCheckedKeys(self.modifyForm.trees);
-          self.$refs.tree.setC
-        }).catch(function (error) {
-
-        });
+          return d;
+        }
       },
       handleClick(data, sel) {//部门树结构父节点关联子节点，子节点不关联父节点功能
         if (sel) {

@@ -191,7 +191,6 @@
       self.$http.get('department/buildTree2.do_')
         .then((result) => {
           self.departmentDto = result.departmentDto;
-          self.setDisable([self.departmentDto ]);
         }).catch(function (error) {
         self.$message.error("获取部门数据错误")
       });
@@ -229,17 +228,6 @@
           return d;
         }
       },
-      setDisable(departmentDto) {
-        for(var i = 0;i<datas.length;i++){
-          var data = datas[i];
-          if (data.nodeIsLeaf == false){
-            data.canChoose = true;
-            setDisable(data.children);
-          }else{
-            data.canChoose = true;
-          }
-        }
-      },
       fetchDeparentPower(val){
         const self = this;
         var param = {
@@ -249,7 +237,6 @@
           params: param
         }).then((result) => {
           self.modifyForm.trees = result.trees;
-          self.$refs.tree.setCheckedKeys(self.modifyForm.trees);
           self.$refs.tree.setCheckedKeys(self.modifyForm.trees);
         }).catch(function (error) {
           self.$message.error("获取数据错误")
