@@ -52,7 +52,7 @@
       <el-row style="text-align: center">
         <el-form-item size="100px">
           <el-button type="primary" @click="Search">查询</el-button>
-          <el-button @click="exportRole">导出</el-button>
+          <el-button v-if="!BtnPermission.exportPermission" @click="exportRole">导出</el-button>
         </el-form-item>
       </el-row>
     </el-form>
@@ -305,6 +305,10 @@
         powerTree: [],
         checkStrictly: false,
         roleInfoDetailFlag: false,
+
+        BtnPermission: {
+          exportPermission: true,
+        },
       }
     },
     methods: {
@@ -540,6 +544,15 @@
       clearPermission() {//清除权限的值
         this.form.powerName = '';
       },
+      judgmentAuthority() {
+        const self = this;
+        let permission = self.$store.state.powerList;
+        permission.forEach(item=>{
+          if (item === 69) {
+            self.BtnPermission.exportPermission = false
+          }
+        });
+      },
     },
     filters: {
       ellipsis(value) {
@@ -552,6 +565,7 @@
     },
     mounted() {
       this.Search();
+      this.judgmentAuthority();
     }
   }
 </script>
