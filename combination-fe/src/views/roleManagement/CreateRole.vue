@@ -179,8 +179,6 @@
               </el-form-item>
             </el-col>
           </el-row>
-        </el-form>
-        <el-form ref="Form" :model="Form">
           <el-row>
             <el-col style="text-align: center">
               <el-form-item>
