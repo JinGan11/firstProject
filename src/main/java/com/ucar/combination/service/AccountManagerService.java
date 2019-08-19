@@ -1,6 +1,7 @@
 package com.ucar.combination.service;
 
 import com.ucar.combination.common.QueryParam;
+import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.*;
 import com.ucar.combination.model.Account;
@@ -208,4 +209,6 @@ public interface AccountManagerService {
     List<AccountHistory> getHistoryList(String accountId);
     void updateModifyTimeAndModifyName(@Param("a") Account account);
     public Long selectStaffIdById(Long accountID);
+
+    Result updateAccountStatue(Long accountId, Long operateAccountId);
 }

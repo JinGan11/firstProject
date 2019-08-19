@@ -3,6 +3,7 @@ package com.ucar.combination.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
+import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.AccountHistoryDao;
 import com.ucar.combination.dao.AccountManageDao;
@@ -350,5 +351,21 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     }
     public Long selectStaffIdById(Long accountID){
         return accountManageDao.selectStaffIdById(accountID);
+    }
+
+    @Override
+    public Result updateAccountStatue(Long accountId, Long operateAccountId) {
+        Long staffId = accountManageDao.selectStaffIdById(operateAccountId);
+        Account account = accountManageDao.selectAccountById(String.valueOf(accountId));
+        AccountStaff accountStaff = new AccountStaff();
+        accountStaff.setStaffId(account.getStaffId());
+        accountStaff.setPermissions(account.getPremissions());
+        accountStaff.setSecretEmail(account.getSecretEmail());
+        accountStaff.setModifier(staffId);
+        accountStaff.setModifyEmp(operateAccountId);
+        accountStaff.setRemark(account.getRemark());
+        accountStaff.setAccountId(accountId);
+        accountManageDao.modifyAccount(accountStaff);
+        return Result.ok();
     }
 }

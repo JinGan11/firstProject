@@ -50,6 +50,7 @@ public class RoleApplyManageServiceImpl implements RoleApplyManageService {
      * @param queryParam
      * @return
      */
+    @Override
     public List<RoleApplyDto> getRoleList(QueryParam queryParam){
         return roleApplyManageDao.queryList(queryParam);
     }

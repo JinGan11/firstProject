@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.dao.AccountManageDao;
 import com.ucar.combination.dao.PowerDao;
 import com.ucar.combination.dao.RoleManagementDao;
 import com.ucar.combination.model.*;
@@ -33,6 +34,9 @@ public class PowerServiceImpl implements PowerService {
 
     @Autowired
     RoleManagementDao roleManagementDao;
+
+    @Autowired
+    AccountManageDao accountManageDao;
 
     /**
      * description: 构造权限树
@@ -185,6 +189,17 @@ public class PowerServiceImpl implements PowerService {
         Result result = new Result();
         modifyAccountRole(powerList,accountId);
         modifySpecialPower(powerList,accountId);
+        Long staffId = accountManageDao.selectStaffIdById(accountId);
+        Account account = accountManageDao.selectAccountById(String.valueOf(powerList.getId()));
+        AccountStaff accountStaff = new AccountStaff();
+        accountStaff.setStaffId(account.getStaffId());
+        accountStaff.setPermissions(account.getPremissions());
+        accountStaff.setSecretEmail(account.getSecretEmail());
+        accountStaff.setModifier(staffId);
+        accountStaff.setModifyEmp(accountId);
+        accountStaff.setRemark(account.getRemark());
+        accountStaff.setAccountId(powerList.getId());
+        accountManageDao.modifyAccount(accountStaff);
         return result.put("code",200);
     }
 

@@ -311,6 +311,7 @@ public class AccountManagerController {
         Account account1 = accountManagerService.selectAccountById(String.valueOf(account.getId()));
         String content = "请点击下面的链接重置密码 http://"+ LOCALHOST + "/resetPass 如果无法点击，请复制至浏览器。";
         Result result = new Result();
+        result = accountManagerService.updateAccountStatue(account.getId(),OperateAccountId);
         AccountStaff accountStaff = new AccountStaff();
         if (account1.getSecretEmail() != null) {
             result = mailService.sendMail(account1.getSecretEmail(),"重置密码",content);
