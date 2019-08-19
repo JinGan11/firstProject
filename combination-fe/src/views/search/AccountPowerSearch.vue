@@ -1,35 +1,35 @@
 <template>
   <home>
-    <el-form :inline="true" label-width="130px" :model="accountForm" class="demo-form-inline">
+    <el-form :inline="true" label-width="100px" :model="accountForm" class="demo-form-inline">
       <el-row>
-        <el-col :span="6">
+        <el-col :span="7">
           <el-form-item label="登录账号">
             <el-input v-model="accountForm.accountName" clearable>
             </el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="7">
           <el-form-item label="员工编号">
             <el-input v-model="accountForm.staffNum" clearable></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="7">
           <el-form-item label="员工所属部门">
             <el-input :disabled="true" v-model="accountForm.departmentName"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="2">
+        <el-col :span="1.5">
           <el-button type="text" @click="selectDepartment">选择</el-button>
           <el-button type="text" @click="clearDepartment">清空</el-button>
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="6">
+        <el-col :span="7">
           <el-form-item label="员工姓名">
             <el-input v-model="accountForm.staffName" clearable></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="7">
           <el-form-item label="账号状态">
             <el-select v-model="accountForm.accountState">
               <el-option label="全部" value=""></el-option>
@@ -39,12 +39,12 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="7">
           <el-form-item label="权限名称">
             <el-input v-model="accountForm.path" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="2">
+        <el-col :span="1.5">
           <el-button type="text" @click="selectPower">选择</el-button>
           <el-button type="text" @click="clearPower">清空</el-button>
         </el-col>
