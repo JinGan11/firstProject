@@ -346,9 +346,13 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     public List<AccountHistory> getHistoryList(String accountId) {
         return accountHistoryDao.selectAccountHistoryByAccountId(accountId);
     }
+
+    @Override
     public void updateModifyTimeAndModifyName(@Param("a") Account account){
         accountManageDao.updateModifyTimeAndModifyName(account);
     }
+
+    @Override
     public Long selectStaffIdById(Long accountID){
         return accountManageDao.selectStaffIdById(accountID);
     }
