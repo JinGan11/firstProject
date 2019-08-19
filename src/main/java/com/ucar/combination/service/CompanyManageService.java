@@ -4,6 +4,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Company;
 import com.ucar.combination.model.dto.BusinessLicense;
+import com.ucar.combination.model.dto.CompanyDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -85,7 +86,7 @@ public interface CompanyManageService {
      * @date: 2019/8/14 11:17
      * @return：
      */
-    ResultPage relationCompanyList(QueryParam queryParam);
+    List<CompanyDto> relationCompanyList(Map<String,Object>map);
     /**
      * description: 关联公司保存
      * @author: jianan.shu@ucarinc.com

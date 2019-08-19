@@ -3,8 +3,8 @@
 
     <div style="width: 20%; margin-left: 70px ; float: left;height: 100%"  >
       <div  style="width:100%; margin-left: 70px;height: 10%">
-        <el-button type="primary" :disabled="createDisable" @click="createRegionBtn" >新建</el-button>
-        <el-button type="primary" :disabled="modifyDisable" @click="modifyRegionBtn" >修改</el-button>
+        <el-button type="primary" v-if="!BtnPermission.newPermission" :disabled="createDisable" @click="createRegionBtn" >新建</el-button>
+        <el-button type="primary" v-if="!BtnPermission.modifyPermission" :disabled="modifyDisable" @click="modifyRegionBtn" >修改</el-button>
       </div>
       <el-tree
         ref="regionTree"
@@ -175,7 +175,10 @@
                 isCreate:false,
                 formTemp:{},
 
-
+                BtnPermission: {
+                  newPermission: true,
+                  modifyPermission: true,
+                },
 
             }
         },
@@ -183,12 +186,23 @@
             commonUtils.Log("页面激活");
         },
         mounted() {
-
+            this.judgmentAuthority();
             commonUtils.Log("页面进来");
             this.getCurrentTime();
         },
         methods: {
-
+          judgmentAuthority() {
+            const self = this;
+            let permission = self.$store.state.powerList;
+            permission.forEach(item=>{
+              if (item === 71) {
+                self.BtnPermission.newPermission = false
+              }
+              if (item === 72) {
+                self.BtnPermission.modifyPermission = false
+              }
+            });
+          },
             //树
             loadNode(node, resolve) {
                 var self=this;

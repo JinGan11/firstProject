@@ -211,7 +211,15 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
     @Override
     public ResultPage queryRelationList(QueryParam queryParam){
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
-        List<Company> list = companyManageDao.queryRelationList(queryParam);
+        List<CompanyDto> list = companyManageDao.queryRelationList(queryParam);
+        //修改人样式
+        for(int i=0;i<list.size();i++)
+            if (companyManageDao.getModifyStaffId(list.get(i).getModifyEmp().intValue()) > 0) {
+                Map<String, Object> map = new HashMap<>();
+                //int long格式不对
+                map = companyManageDao.getModifyInfo(list.get(i).getId().intValue());
+                list.get(i).setModifyName(map.get("accountName") + "(" + map.get("staffName") + ")");
+            }
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
     /**
@@ -221,10 +229,17 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      * @date: 2019/8/14 11:16
      * @return：
      */
-    public ResultPage relationCompanyList(QueryParam queryParam){
-        Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
-        List<Company> list = companyManageDao.relationCompanyList(queryParam);
-        return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
+    public List<CompanyDto> relationCompanyList(Map<String,Object>map){
+        List<CompanyDto> list = companyManageDao.relationCompanyList(map);
+        //修改人样式
+        for(int i=0;i<list.size();i++)
+            if (companyManageDao.getModifyStaffId(list.get(i).getModifyEmp().intValue()) > 0) {
+                Map<String, Object> resultMap = new HashMap<>();
+                //int long格式不对
+                resultMap = companyManageDao.getModifyInfo(list.get(i).getId().intValue());
+                list.get(i).setModifyName(resultMap.get("accountName") + "(" + resultMap.get("staffName") + ")");
+            }
+        return  list;
     }
     /**
      * description: 关联公司保存
@@ -238,6 +253,9 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
         List newRelationCompany= (List<Long>) queryParam.get("newRelationList");
         String departmentId=(String)queryParam.get("departmentId");
         long accountId=(long)queryParam.get("accountId");
+        if(oldRelationCompany.get(0).equals("")) oldRelationCompany.remove(0);
+        if(newRelationCompany.get(0).equals("")) newRelationCompany.remove(0);
+
         //添加、不变
         for(int i=0;i<newRelationCompany.size();i++){
             int flag=0;

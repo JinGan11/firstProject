@@ -115,6 +115,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="roleName" label="申请角色名称"  width="150"></el-table-column>
+      <el-table-column prop="roleStatus" v-if="false" label="角色状态"  width="150"></el-table-column>
       <el-table-column prop="approverStaffName" label="审批负责人" width="150"></el-table-column>
       <el-table-column prop="approverAccountName" v-if="false" label="审批负责人账号" width="150"></el-table-column>
       <el-table-column prop="businessLine" label="角色支持业务线" width="150"></el-table-column>
@@ -426,13 +427,15 @@
                   <el-col :span="1">
                     <el-form-item label="状态">
                       <el-input style="width:200px;" :disabled="true" v-model="formInfo.roleStatus===1?'有效':'无效'"></el-input>
-
                     </el-form-item>
                   </el-col>
                 </el-row>
               </el-form>
             </div>
           </div>
+        </div>
+        <div style="text-align: center">
+          <el-button type="primary" @click="cancalShowRoleDetails" style="width:70px">取消</el-button>
         </div>
       </div>
     </el-dialog>
@@ -453,6 +456,7 @@
         dialogVisibleDepartment:false,
         dialogVisibleRoleApplyInfo:false,
         titleRoleApplyInfo:'角色申请详情',
+        roleStatus:'',
 
 
 
@@ -884,6 +888,7 @@
         }
 
         sessionStorage.setItem('applyIdFromApply', row.id);
+        sessionStorage.setItem('roleStatusFromApply', row.roleStatus);
         sessionStorage.setItem('roleIdFromApply', row.roleId);
         sessionStorage.setItem('applyNumFromApply',row.roleApplyNum);//角色申请编号
         sessionStorage.setItem('roleNameFromApply', row.roleName);//角色名字
@@ -894,7 +899,6 @@
         sessionStorage.setItem('modifyTimeFromApply', row.modifyTime);//修改时间
         sessionStorage.setItem('modifyEmpFromApply', row.modifyEmp);//修改人
       },
-
 
       roleApplyNumBtn(row){ //弹出框 角色申请详情
         this.dialogVisibleRoleApplyInfo=true;
@@ -980,6 +984,10 @@
           commonUtils.Log("roleManage/getOneInf.do_:" + error);
           self.$message.error("获取数据错误");
         });
+      },
+
+      cancalShowRoleDetails(){
+        this.roleInfoDetailFlag = true;
       },
 
     }
