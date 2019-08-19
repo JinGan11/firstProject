@@ -102,6 +102,8 @@
       <el-table-column prop="accountId" v-if="false" label="隐藏账户id"></el-table-column>
       <el-table-column prop="createTime" v-if="false" label="隐藏创建时间"></el-table-column>
       <el-table-column prop="createEmp" v-if="false" label="隐藏创建人"></el-table-column>
+      <el-table-column prop="modifyTime" v-if="false" label="隐藏修改时间"></el-table-column>
+      <el-table-column prop="modifyEmp" v-if="false" label="隐藏修改人"></el-table-column>
       <el-table-column prop="remark" v-if="false" label="隐藏备注"></el-table-column>
       <el-table-column prop="staffNum" label="员工编号" width="150">
         <template slot-scope="scope">
@@ -358,7 +360,7 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="登录账号:" label-width="150px">
-                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.accountId"></el-input>
+                <el-input style="width:200px;" :disabled="true" v-model="modifyForm.accountName"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -665,7 +667,8 @@
 
         },
         modifyForm:{
-          accountId:'',
+         /* accountId:'',*/
+          accountName:'',
           staffNum:'',
           staffName:'',
           staffSex:'',
@@ -1335,6 +1338,7 @@
         this.accountId = val.accountId;
         this.modifyForm.id=val.id;
         this.modifyForm.accountId=val.accountId;
+        this.modifyForm.accountName=val.accountName;
         this.modifyForm.staffNum=val.staffNum;
         this.modifyForm.staffName=val.staffName;
         this.modifyForm.staffSex=val.staffSex;
@@ -1346,6 +1350,8 @@
         this.modifyForm.createTime=val.createTime;
         this.modifyForm.remark=val.remark;
         this.modifyForm.createEmpInit=val.createEmp;
+        this.modifyForm.modifyTime=val.modifyTime;
+
 
         this.formdiStributionDepartment.staffNum=val.staffNum;
         this.formdiStributionDepartment.staffAfterDepartment=val.staffAfterDepartment;
@@ -1359,11 +1365,13 @@
         var param = {
           staffId:val.id,
           createEmp:val.createEmp,
+          modifyEmp:val.modifyEmp
         };
         self.$http.get('employee/otherInfo.do_', {
           params: param
         }).then((result) => {
           self.modifyForm.createEmp = result.list.createEmpName;
+          self.modifyForm.modifyEmp = result.list.modifyEmpName;
 
       }).catch(function (error) {
           commonUtils.Log("employee/otherInfo.do_:"+error);
