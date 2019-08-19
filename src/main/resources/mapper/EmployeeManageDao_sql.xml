@@ -39,8 +39,10 @@
         FROM t_staff t1
         LEFT JOIN t_account t3
         on (t3.id=t1.account_id)
-        ,t_department t2,t_department t4
-        where t1.department_id = t2.id and t2.upper_department_no=t4.department_no and t1.status=1
+        ,t_department t2
+        LEFT JOIN t_department t4
+        on (t2.upper_department_no=t4.department_no)
+        where t1.department_id = t2.id and t1.status=1
         <if test="userPermission == 4">
             and t1.id = #{accountId}
         </if>
