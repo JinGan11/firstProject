@@ -1011,6 +1011,8 @@
       },
       cancelEmployee() {
         this.createDialogVisible = false;
+        this.$refs['createForm'].resetFields();
+        this.createForm='';
       },
       saveUpdate() {
         console.log("=========")
