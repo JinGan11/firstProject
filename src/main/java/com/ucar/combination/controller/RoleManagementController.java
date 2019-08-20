@@ -153,6 +153,7 @@ public class RoleManagementController {
 		String strid = request.getParameter("roleID");
 		int id = Integer.parseInt(strid);
 		RoleDto roleDto = roleManagementService.getOneInf(id);
+		roleDto.setBusinessLine(roleDto.getBusinessLine().replace(',',';'));
 		//System.out.println("ASDFA");
 		return Result.ok().put("page", roleDto).put("RoleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values()));
 	}
