@@ -613,6 +613,24 @@
         }
         // 办公点
         if(data.level!=5) self.haveWorkplace=false;
+        //设置因下级部门导致的业务线不可选
+        var lowerParam = {
+          departmentNo: data.departmentNo
+        };
+        self.$http.get("department/getLowerSupports.do_",{ params: lowerParam })
+          .then(result => {
+            var sups = result.split(/[&;]/);
+            for(var i=0;i<sups.length;i++){
+              if(sups[i] == "闪贷") { self.businessDisable.shandai=true; continue; }
+              if(sups[i] == "租车") { self.businessDisable.zuche=true; continue; }
+              if(sups[i] == "专车") { self.businessDisable.zhuanche=true; continue; }
+              if(sups[i] == "保险") { self.businessDisable.baoxian=true; continue; }
+              if(sups[i] == "买买车") { self.businessDisable.maimaiche=true; continue; }
+            }
+          })
+          .catch(function (error) {
+
+          });
       },
 
       cancel () {
@@ -638,7 +656,7 @@
 
         // 前端校验输入
         if(!self.$options.methods.checkInput(self)) return;
-
+        //return; //=========================================================================
         self.$http.post("department/updateDepartment.do_",self.form)
           .then(result => {
             if(!result.result){
@@ -770,7 +788,7 @@
           self.$message.error("请至少选择一个【支持业务线】！");
           return false;
         }
-        // 城市还没做！！！
+        // 城市校验
         if(_form.cityId==""){
           self.$message.error("请选择【城市】！");
           return false;

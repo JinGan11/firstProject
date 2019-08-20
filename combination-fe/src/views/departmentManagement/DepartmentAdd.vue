@@ -590,7 +590,7 @@
 
         // 前端校验输入
         if(!self.$options.methods.checkInput(self)) return;
-
+        return; //=========================================================================
         self.$http.post("department/addDepartment.do_",self.form)
           .then(result => {
             if(!result.result){

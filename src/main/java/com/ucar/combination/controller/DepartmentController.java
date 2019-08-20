@@ -265,4 +265,18 @@ public class DepartmentController {
         List<Object> cityList=regionManageService.getCityList();
         return Result.ok().put("cityList",cityList);
     }
+
+    /**
+     * description: 查询下级部门支持的业务线
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/20 10:28
+     * @params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/getLowerSupports.do_")
+    public String getLowerSupports(String departmentNo){
+        return departmentService.getLowerSupports(departmentNo);
+    }
+
 }
