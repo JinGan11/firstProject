@@ -470,7 +470,8 @@
           department: self.form.departmentId,
           isRelStaff: self.form.isRelStaff,
           status: self.form.status,
-          filterIds: []
+          filterIds: [],
+          date : new Date().getTime(),
         };
         for(var i=0;i<self.accountTableData.length;i++){
           param.filterIds.push(self.accountTableData[i].id);
@@ -613,7 +614,8 @@
           page: self.currentAccounytPage,
           limit: self.accountPageSize,
           roleId:self.selection,
-          accountName:self.loginAccount
+          accountName:self.loginAccount,
+          date : new Date().getTime(),
         };
         self.$http.get('roleManage/getRoleAccountList.do_', {
           params: param
