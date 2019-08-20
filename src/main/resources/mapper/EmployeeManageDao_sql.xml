@@ -54,13 +54,13 @@
             AND (t1.account_id = '' or t1.account_id IS NULL or t1.account_id = 0)
         </if>
         <if test="satff_num != null and satff_num.trim() != ''">
-            AND t1.staff_num =#{satff_num}
+            AND t1.staff_num  like '%${satff_num}%'
         </if>
         <if test="staff_name != null and staff_name.trim() != ''">
-            AND t1.staff_name =#{staff_name}
+            AND t1.staff_name like '%${staff_name}%'
         </if>
         <if test="accountName != null and accountName.trim() != ''">
-            AND t3.account_name=#{accountName}
+            AND t3.account_name  like '%${accountName}%'
         </if>
         <if test="is_dimission != null and is_dimission.trim() != ''">
             AND t1.is_dimission =#{is_dimission}
