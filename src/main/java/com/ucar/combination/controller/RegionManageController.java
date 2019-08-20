@@ -59,7 +59,8 @@ public class RegionManageController {
         params.put("regionStatus", regionStatus);
         ResultPage resultPage=regionManageService.provinceSearchList(new QueryParam(params));
         List<Object> provinceSearchList = regionManageService.getProvinceSearchList(new QueryParam(params));
-        return new Result().ok().put("page",resultPage).put("provinceSearchList",provinceSearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
+        int size=provinceSearchList.size();
+        return new Result().ok().put("page",resultPage).put("provinceSearchList",provinceSearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values())).put("size",size);
     }
 
     /**
@@ -93,7 +94,8 @@ public class RegionManageController {
         params.put("regionStatus", regionStatus);
         ResultPage resultPage=regionManageService.citySearchList(new QueryParam(params));
         List<Object> citySearchList = regionManageService.getCitySearchList(new QueryParam(params));
-        return new Result().ok().put("page",resultPage).put("citySearchList",citySearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
+        int size=citySearchList.size();
+        return new Result().ok().put("size",size).put("page",resultPage).put("citySearchList",citySearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
     }
 
     /**
@@ -126,7 +128,8 @@ public class RegionManageController {
         params.put("regionStatus", regionStatus);
         ResultPage resultPage=regionManageService.countySearchList(new QueryParam(params));
         List<Object> countySearchList = regionManageService.getCountySearchList(new QueryParam(params));
-        return new Result().ok().put("page",resultPage).put("countySearchList",countySearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
+        int size=countySearchList.size();
+        return new Result().ok().put("size",size).put("page",resultPage).put("countySearchList",countySearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
     }
 
     /**
@@ -251,6 +254,13 @@ public class RegionManageController {
     }
 
 
+    /**
+     * description: 修改区划信息保存
+     * @author kailun.yang@ucarinc.com
+     * @date <2019-08-20>
+     * @param <[request, session]> <参数说明>
+     * @return <java.lang.String><返回值说明>
+     */
     @ResponseBody
     @RequestMapping("/modifyRegionSave")
     public String modifyRegionDetails(HttpServletRequest request, HttpSession session) throws IllegalAccessException,ParseException {
@@ -301,6 +311,7 @@ public class RegionManageController {
         else
         {return "修改失败";}
     }
+
     /**
      * description: 部门及部门下属城市列表展示
      * @author jing.luo01@ucarinc.com

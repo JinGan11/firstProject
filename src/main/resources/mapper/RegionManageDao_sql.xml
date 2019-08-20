@@ -34,9 +34,9 @@
 		<if test="regionStatus != null and regionStatus.trim() != ''">
 			AND t1.status =#{regionStatus}
 		</if>
+		ORDER BY t1.international_code ASC
 
     </select>
-
 
 	<select id="citySearchList" resultType="com.ucar.combination.model.Region">
 		SELECT
@@ -76,6 +76,7 @@
 		<if test="upperRegionID != null and upperRegionID.trim() != ''">
 			AND t1.upper_city_id = #{upperRegionID}
 		</if>
+		ORDER BY t1.international_code ASC
 
 	</select>
 
@@ -121,6 +122,7 @@
 		<if test="upperRegionID != null and upperRegionID.trim() != ''">
 			AND t1.upper_city_id = #{upperRegionID}
 		</if>
+		ORDER BY t1.international_code ASC
 
 	</select>
 

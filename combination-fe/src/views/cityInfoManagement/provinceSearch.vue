@@ -112,6 +112,7 @@
   export default {
     data(){
       return{
+
           tableData:[],
         //  分页
         total:0,
@@ -223,6 +224,11 @@
           self.total = result.page.totalCount;
           self.provinceSearchList=result.provinceSearchList;
           self.RegionStatus=result.RegionStatus;
+
+          if(result.size<=0)
+              self.provinceBtnPermission.exportPermission=true;
+          else
+              self.provinceBtnPermission.exportPermission=false;
           //
             if(self.flags=='1'){
                 self.provinceSuggest=self.provinceSearchList;
@@ -233,9 +239,6 @@
           commonUtils.Log("/regionManage/provinceSearch:" + error);
           self.$message.error("获取数据错误");
         });
-          // for (let i = 0; i < provinceSearchList.length; i++) {
-          //     this.provinceSuggest.push("value",provinceSearchList.regionName);
-          // }
       },
       // 导出execl
         cancel() {
@@ -296,6 +299,7 @@
                     this.exportVisible = false;
                     this.checkedRegionProps = [];
                     this.filterVal = [];
+                    this.isIndeterminate = true;
                 })
             }
         },

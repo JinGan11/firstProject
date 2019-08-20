@@ -242,6 +242,12 @@
                   self.total = result.page.totalCount;
                   self.countySearchList = result.countySearchList;
                   self.RegionStatus=result.RegionStatus;
+                  if(result.size<=0){
+                      self.countyBtnPermission.exportPermission=true;
+                  }
+                  else{
+                      self.countyBtnPermission.exportPermission=false;
+                  }
                   if(self.flags=='1'){
                       self.countySuggest=self.countySearchList;
                       self.flags='0';
@@ -292,8 +298,6 @@
                               list[i].regionStatus = '有效'
                           }
                       }
-                      // console.log("this is list : ");
-                      // console.log(list);
                     //获取当前时间
                     var date = new Date();
                     var seperator1 = "-";
@@ -318,6 +322,7 @@
                       this.exportVisible = false;
                       this.checkedRegionProps = [];
                       this.filterVal = [];
+                      this.isIndeterminate = true;
                   })
               }
           },

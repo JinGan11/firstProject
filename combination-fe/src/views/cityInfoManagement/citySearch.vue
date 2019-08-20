@@ -67,7 +67,7 @@
           </el-col>
           <el-col :span="6" >
             <el-form-item>
-              <el-button type="primary" style="width: 100px" @click="exportVisible = true" v-if="!cityBtnPermission.exportPermission" size="medium">导出</el-button>
+              <el-button type="primary" style="width: 100px" @click="exportVisible = true" :disabled="exportDisabled" v-if="!cityBtnPermission.exportPermission" size="medium">导出</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -169,6 +169,7 @@
         },
 
           flags:'1',
+          exportDisabled:false
       }
     },
     activated() {
@@ -223,6 +224,12 @@
           self.total = result.page.totalCount;
             self.citySearchList=result.citySearchList;
             self.RegionStatus=result.RegionStatus;
+            if(result.size>0){
+                self.exportDisabled=false;
+            }
+            else{
+                self.exportDisabled=true;
+            }
             //
             if(self.flags=='1'){
                 self.citySuggest=self.citySearchList;
@@ -292,6 +299,7 @@
                     this.exportVisible = false;
                     this.checkedRegionProps = [];
                     this.filterVal = [];
+                    this.isIndeterminate = true;
                 })
             }
         },
