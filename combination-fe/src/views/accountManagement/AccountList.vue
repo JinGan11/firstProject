@@ -604,7 +604,11 @@
           };
           self.$http.post('account/deleAccount.do_', param)
             .then((result) => {
-              self.$message.info("删除成功");
+              if(result.state == 3){
+                self.$message.error("账户无效，删除失败");
+              }else{
+                self.$message.info("删除成功");
+              }
               self.fetchData();
             }).catch(function (error) {
             commonUtils.Log("account/deleAccount.do_:" + error);
