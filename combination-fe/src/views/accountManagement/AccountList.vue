@@ -222,7 +222,7 @@
 
 
     <el-dialog title="历史记录" :visible.sync="historyRecordsVisible" width="1000px">
-    <el-table ref="multipleTable" :data="historyRecords" border max-height="550px">
+    <el-table ref="multipleTable" :data="historyRecords" border height="550px">
       <el-table-column prop="staffNum" label="员工编号" width="130"></el-table-column>
       <el-table-column prop="staffName" label="员工姓名" width="120"></el-table-column>
       <el-table-column prop="permissions" label="数据权限类型" width="150">

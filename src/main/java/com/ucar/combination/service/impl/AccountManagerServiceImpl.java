@@ -299,7 +299,10 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         account.setModifyTime(date);
         account.setId(Long.parseLong(String.valueOf(id)));
          //拼装一条历史记录
+
         AccountHistory accountHistory = accountManageDao.selectAccountInfoById(id);
+        accountHistory.setCreateEmp(Long.parseLong(currentAccountId));
+        accountHistory.setCreateTime(date);
         accountHistory.setAccountState(Byte.parseByte(String.valueOf(status)));
         accountHistory.setHistoryOperationType(historyOperationType);
 
