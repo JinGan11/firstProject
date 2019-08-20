@@ -40,6 +40,7 @@
         select id role_id, role_name
         from t_role_info
         where 1=1
+        and role_status = 1
     </select>
 
     <update id="updateStatus">
@@ -70,8 +71,8 @@
 
     <select id="getAccountRoleListById" parameterType="Long" resultType="com.ucar.combination.model.Role">
         select ta.id, ta.role_id, tr.role_name
-        from t_r_account_role ta, t_role_info tr
-        where ta.role_id = tr.id
+        from t_r_account_role ta left join t_role_info tr on ta.role_id = tr.id
+        where tr.role_status = 1
         and ta.account_id = #{accountId}
     </select>
 

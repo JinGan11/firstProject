@@ -202,6 +202,11 @@ public class RoleManagementController {
 	@RequestMapping("/assignPermission")
 	public Result assignPermission(@RequestBody AssignPermission assignPermission, HttpSession session) {
 		Long accountId = (Long) session.getAttribute("accountId");
+		RoleDto roleDto1 = roleManagementService.getOneInf(Math.toIntExact(assignPermission.getRoleInfoId()));
+		if (roleDto1.getRoleStatus() == 0){
+			return Result.ok().put("code",203)
+					.put("msg", "保存失败，该角色已失效");
+		}
 		Result result = roleManagementService.assignPermission(assignPermission, accountId);
 		RoleDto roleDto = roleManagementService.getOneInf(Math.toIntExact(assignPermission.getRoleInfoId()));
 		roleDto.setModifyEmp(accountId);

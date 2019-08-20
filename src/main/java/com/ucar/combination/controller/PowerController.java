@@ -99,6 +99,10 @@ public class PowerController {
     @RequestMapping("/modifyPermission")
     public Result modifyPermission(@RequestBody PowerList powerList, HttpSession session) {
         Long accountId = (Long) session.getAttribute("accountId");
+        Account account1 = accountManagerService.selectAccountById(String.valueOf(powerList.getId()));
+        if (account1.getaccountState() == 3) {
+            return Result.ok().put("code", 303).put("msg", "权限分配失败，改账号已失效");
+        }
         Result result = powerService.modifyPermission(powerList,accountId);
         Account account = accountManagerService.selectAccountById(String.valueOf(accountId));
         AccountStaff accountStaff = new AccountStaff();
