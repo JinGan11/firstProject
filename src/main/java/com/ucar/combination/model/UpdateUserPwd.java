@@ -11,6 +11,15 @@ public class UpdateUserPwd {
     private String accountName;
     private String oldPassword;
     private String newPassword;
+    private Long staffId;
+
+    public Long getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(Long staffId) {
+        this.staffId = staffId;
+    }
 
     public Long getId() {
         return id;

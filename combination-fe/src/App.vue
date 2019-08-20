@@ -378,6 +378,24 @@
                     self.ruleForm.oldPass='';
                     self.ruleForm.checkPass='';
                     self.resetPasswordFlag = false;
+                    self.$http.post('login/logout.do_')
+                      .then(result => {
+                        self.loginIn = false;
+                        window.sessionStorage.removeItem("loginUsername");
+                        window.sessionStorage.removeItem("powerList");
+                        self.$store.state.loginUserName = '';
+                        self.$store.state.powerList = '';
+                        self.loginUserName = window.sessionStorage.getItem("loginUsername");
+                        self.$router.replace("/");
+                        self.$message({
+                          type: "success",
+                          message: "退出成功"
+                        });
+                      })
+                      .catch(function (error) {
+                        commonUtils.Log("user/updatePwd:" + error);
+                        self.$message.error("系统故障，请联系管理员！");
+                      });
                     self.$router.replace("/")
                   })
                 } else if (result.code === 300) {

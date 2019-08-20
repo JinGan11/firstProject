@@ -329,6 +329,7 @@ public class AccountManagerController {
     public Result resetPass(@RequestBody Account account, HttpSession session){
         Long OperateAccountId = (Long) session.getAttribute("accountId");
         Account account1 = accountManagerService.selectAccountById(String.valueOf(account.getId()));
+//        if (account1.getaccountState())
         String content = "请点击下面的链接重置密码 http://"+ LOCALHOST + "/resetPass 如果无法点击，请复制至浏览器。";
         Result result = new Result();
         result = accountManagerService.updateAccountStatue(account.getId(),OperateAccountId);
