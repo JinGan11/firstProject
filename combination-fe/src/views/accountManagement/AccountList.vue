@@ -350,7 +350,9 @@
 //控制历史记录对话框可见性
         historyRecordsVisible:false,
 //历史记录表格数据
-        historyRecords:[]
+        historyRecords:[],
+
+        strict: false,
       }
     },
      components: {accountView},
@@ -687,7 +689,9 @@
         };
         self.$http.post('power/getAccountPower.do_',param).then((result) => {
           self.selectedNodes = result.accountPower;
-          self.checkStrictly = false;
+          if (self.strict) {
+            self.checkStrictly = false;
+          }
         }).catch(function (error) {
           commonUtils.Log("power/getAccountPower.do_" + error);
           self.$message.error("获取数据错误")
@@ -745,11 +749,12 @@
       //获取树数据
       loadNode(node,resolve){
         var self = this;
-        self.$http.get('power/getPowerList', {
+        self.$http.post('power/getPowerList', {
           params: null
         }).then((result) => {
           resolve([result.powerTree]);
           self.checkStrictly = false;
+          self.strict = true;
         }).catch(function (error) {
 
         });
