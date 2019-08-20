@@ -10,6 +10,7 @@ import com.ucar.combination.model.Company;
 import com.ucar.combination.model.dto.BusinessLicense;
 import com.ucar.combination.model.dto.CompanyDto;
 import com.ucar.combination.service.CompanyManageService;
+import com.ucar.combination.service.DepartmentService;
 import com.ucar.combination.utils.FileUrlGenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,18 +36,23 @@ import java.util.Map;
 public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManageService {
     @Autowired(required = false)
     private CompanyManageDao companyManageDao;
+    @Autowired
+    private DepartmentService departmentService;
+
     @Override
     public ResultPage queryList(QueryParam queryParam) {
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
         List<CompanyDto> list = companyManageDao.queryList(queryParam);
+
         //修改人格式
-        for(int i=0;i<list.size();i++)
-            if (companyManageDao.getModifyStaffId(list.get(i).getModifyEmp().intValue()) > 0) {
+        for(int i=0;i<list.size();i++) {
+            if (companyManageDao.getModifyStaffId(list.get(i).getId().intValue()) != null && companyManageDao.getModifyStaffId(list.get(i).getId().intValue()) > 0) {
                 Map<String, Object> map = new HashMap<>();
                 //int long格式不对
                 map = companyManageDao.getModifyInfo(list.get(i).getId().intValue());
                 list.get(i).setModifyName(map.get("accountName") + "(" + map.get("staffName") + ")");
             }
+        }
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
     /**
@@ -116,7 +122,7 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
         String modifyEmp="";
 
         //判断账号是否关联员工
-        if(createStaffId.intValue()==0){
+        if(createStaffId==null||createStaffId.intValue()==0){
             String createAccountName=companyManageDao.getEmpById(company.getCreateEmp());
             createEmp=createAccountName;
         }else{
@@ -126,7 +132,7 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
             createEmp=createAccountName+"("+createStaffName+")";
         }
 
-        if(modifyStaffId.intValue()==0){
+        if(modifyStaffId==null||modifyStaffId.intValue()==0){
             String modifyAccountName=companyManageDao.getEmpById(company.getModifyEmp());
             modifyEmp=modifyAccountName;
         }else{
@@ -214,7 +220,7 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
         List<CompanyDto> list = companyManageDao.queryRelationList(queryParam);
         //修改人样式
         for(int i=0;i<list.size();i++)
-            if (companyManageDao.getModifyStaffId(list.get(i).getModifyEmp().intValue()) > 0) {
+            if (companyManageDao.getModifyStaffId(list.get(i).getId().intValue())!=null&&companyManageDao.getModifyStaffId(list.get(i).getId().intValue()) > 0) {
                 Map<String, Object> map = new HashMap<>();
                 //int long格式不对
                 map = companyManageDao.getModifyInfo(list.get(i).getId().intValue());
@@ -233,7 +239,7 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
         List<CompanyDto> list = companyManageDao.relationCompanyList(map);
         //修改人样式
         for(int i=0;i<list.size();i++)
-            if (companyManageDao.getModifyStaffId(list.get(i).getModifyEmp().intValue()) > 0) {
+            if (companyManageDao.getModifyStaffId(list.get(i).getId().intValue())!=null&&companyManageDao.getModifyStaffId(list.get(i).getId().intValue()) > 0) {
                 Map<String, Object> resultMap = new HashMap<>();
                 //int long格式不对
                 resultMap = companyManageDao.getModifyInfo(list.get(i).getId().intValue());
@@ -248,59 +254,69 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      * @date: 2019/8/14 11:16
      * @return：
      */
-    public void saveRelations(Map<String ,Object>queryParam){
+    public Map<String,Object> saveRelations(Map<String ,Object>queryParam){
+        Map<String,Object>resultMap=new HashMap<>();
+        resultMap.put("code",200);
         List oldRelationCompany=(List<Long>)queryParam.get("oldRelationList");
-        List newRelationCompany= (List<Long>) queryParam.get("newRelationList");
+        List newRelationCompany=(List<Long>) queryParam.get("newRelationList");
         String departmentId=(String)queryParam.get("departmentId");
         long accountId=(long)queryParam.get("accountId");
         if(oldRelationCompany.get(0).equals("")) oldRelationCompany.remove(0);
         if(newRelationCompany.get(0).equals("")) newRelationCompany.remove(0);
+        //部门已经被删除
+        if(!departmentService.checkStatusChange(Long.parseLong(departmentId),null)){
+            resultMap.put("code",501);
+        }else{
+            //添加、不变
+            for(int i=0;i<newRelationCompany.size();i++){
+                int flag=0;
+                for(int j=0;j<oldRelationCompany.size();j++){
+                    if(newRelationCompany.get(i).equals(oldRelationCompany.get(j))){
+                        flag=1;
+                    }
+                }
+                //如果原有的关联公司没有新公司，则添加   1、原先没有记录 2、原先有记录，将status变为有效（1）
+                if(flag==0){
+                    Map<String,Object>map=new HashMap<>();
+                    map.put("companyId",newRelationCompany.get(i));
+                    map.put("departmentId",departmentId);
+                    Integer count ;
+                    count = companyManageDao.getRelationCount(map);
+                    if(count == 0){
+                        map.put("createEmp",accountId);
+                        map.put("modifyEmp",accountId);
+                        map.put("status",1);
+                        companyManageDao.addRelationCompany(map);;
+                    }else{
+                        map.put("status",1);
+                        map.put("modifyEmp",accountId);
+                        companyManageDao.updateRelation(map);
 
-        //添加、不变
-        for(int i=0;i<newRelationCompany.size();i++){
-            int flag=0;
+                    }
+                }
+            }
+            //删除
             for(int j=0;j<oldRelationCompany.size();j++){
-                if(newRelationCompany.get(i).equals(oldRelationCompany.get(j))){
-                    flag=1;
+                int flag=0;
+                for (int i = 0; i < newRelationCompany.size(); i++) {
+                    if(oldRelationCompany.get(j).equals(newRelationCompany.get(i))){
+                        flag=1;
+                    }
+                }
+                if(flag==0){
+                    Map<String,Object>relMap=new HashMap<>();
+                    relMap.put("departmentId",departmentId);
+                    relMap.put("companyId",oldRelationCompany.get(j));
+                    relMap.put("status",2);
+                    relMap.put("modifyEmp",accountId);
+                    companyManageDao.updateRelation(relMap);
                 }
             }
-            //如果原有的关联公司没有新公司，则添加   1、原先没有记录 2、原先有记录，将status变为有效（1）
-            if(flag==0){
-                Map<String,Object>map=new HashMap<>();
-                map.put("companyId",newRelationCompany.get(i));
-                map.put("departmentId",departmentId);
-                Integer count ;
-                count = companyManageDao.getRelationCount(map);
-                if(count == 0){
-                    map.put("createEmp",accountId);
-                    map.put("modifyEmp",accountId);
-                    map.put("status",1);
-                    companyManageDao.addRelationCompany(map);;
-                }else{
-                    map.put("status",1);
-                    map.put("modifyEmp",accountId);
-                    companyManageDao.updateRelation(map);
 
-                }
-            }
         }
-        //删除
-        for(int j=0;j<oldRelationCompany.size();j++){
-            int flag=0;
-            for (int i = 0; i < newRelationCompany.size(); i++) {
-                if(oldRelationCompany.get(j).equals(newRelationCompany.get(i))){
-                    flag=1;
-                }
-            }
-            if(flag==0){
-                Map<String,Object>relMap=new HashMap<>();
-                relMap.put("departmentId",departmentId);
-                relMap.put("companyId",oldRelationCompany.get(j));
-                relMap.put("status",2);
-                relMap.put("modifyEmp",accountId);
-                companyManageDao.updateRelation(relMap);
-            }
-        }
+
+
+        return resultMap;
     }
 
     @Override
@@ -327,5 +343,6 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
             e.printStackTrace();
         }
     }
+
 }
 

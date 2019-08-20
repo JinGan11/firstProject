@@ -94,7 +94,7 @@ public interface CompanyManageService {
      * @date: 2019/8/14 11:18
      * @return：
      */
-    void saveRelations(Map<String, Object> queryParam);
+    Map<String,Object> saveRelations(Map<String, Object> queryParam);
 
     /**
      * description: 通过id找文件路径

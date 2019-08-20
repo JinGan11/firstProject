@@ -211,7 +211,7 @@ public class CompanyManageController {
      */
     @ResponseBody
     @RequestMapping(value = "/saveRelation.do_")
-    public String saveRelation(HttpServletRequest request, HttpSession session) {
+    public Result saveRelation(HttpServletRequest request, HttpSession session) {
         Long accountId = (Long) session.getAttribute("accountId");
         String departmentId = (String)request.getParameter("departmentId");
         String oldRelation=request.getParameter("oldRelationList");
@@ -227,9 +227,9 @@ public class CompanyManageController {
         params.put("newRelationList", newRelationList);
         params.put("oldRelationList", oldRelationList);
         params.put("accountId", accountId);
-
-        companyManageService.saveRelations(params);
-        return "success";
+        Map<String,Object>map=new HashMap<>();
+        map=companyManageService.saveRelations(params);
+        return Result.ok().put("code",map.get("code"));
     }
     /**
      * 输出文件流

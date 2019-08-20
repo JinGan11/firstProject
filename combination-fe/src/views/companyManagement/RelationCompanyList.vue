@@ -172,47 +172,47 @@
       <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
         <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">基本信息</div>
         <hr><br>
-        <el-form :inline="true" :model="companyForm" class="demo-form-inline"label-width="100px">
+        <el-form :inline="true" :model="companyForm" class="demo-form-inline" :disabled="true" label-width="100px">
           <el-row>
             <el-col :span="9">
               <el-form-item label="公司名称:">
-                <el-input style="width:200px;" :disabled="true"  v-model="companyForm.companyName"></el-input>
+                <el-input style="width:200px;" v-model="companyForm.companyName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="统一社会信用代码:" label-width="140px">
-                <el-input style="width:200px;"  :disabled="true" v-model="companyForm.creditCode"></el-input>
+                <el-input style="width:200px;" v-model="companyForm.creditCode"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="9">
               <el-form-item label="住所:">
-                <el-input style="width:200px;" :disabled="true"  v-model="companyForm.companyAddress"></el-input>
+                <el-input style="width:200px;" v-model="companyForm.companyAddress"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="经营范围:" label-width="140px">
-                <el-input style="width:200px;" :disabled="true"  v-model="companyForm.businessScope"></el-input>
+                <el-input style="width:200px;" v-model="companyForm.businessScope"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="9">
               <el-form-item label="法定代表人:">
-                <el-input style="width:200px;" :disabled="true"  v-model="companyForm.legalPerson"></el-input>
+                <el-input style="width:200px;" v-model="companyForm.legalPerson"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="注册资本:" label-width="140px">
-                <el-input style="width:200px;" :disabled="true"  v-model="companyForm.registeredCapital"></el-input>
+                <el-input style="width:200px;" v-model="companyForm.registeredCapital"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="9">
-              <el-form-item label="类型:" >
-                <el-select :disabled="true" v-model="companyForm.companyType" clearable  style="width:200px;" placeholder="请选择">
+              <el-form-item label="类型:">
+                <el-select v-model="companyForm.companyType" clearable  style="width:200px;" placeholder="请选择">
                   <el-option
                     v-for="item in options1"
                     :key="item.value"
@@ -224,14 +224,14 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="登记机关:" label-width="140px">
-                <el-input style="width:200px;" :disabled="true" v-model="companyForm.registeredInstitution"></el-input>
+                <el-input style="width:200px;" v-model="companyForm.registeredInstitution"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="9">
               <el-form-item label="登记状态:">
-                <el-input style="width:200px;" :disabled="true" v-model="companyForm.registeredStatus"></el-input>
+                <el-input style="width:200px;" v-model="companyForm.registeredStatus"></el-input>
               </el-form-item>
 
             </el-col>
@@ -239,7 +239,6 @@
               <el-form-item label="成立日期:" label-width="140px">
                 <el-date-picker
                   v-model="companyForm.establishTime"
-                  :disabled="true"
                   type="date"
                   format="yyyy-MM-dd"
                   value-format="yyyy-MM-dd"
@@ -253,7 +252,6 @@
             <el-col :span="9">
               <el-form-item label="核准日期:">
                 <el-date-picker
-                  :disabled="true"
                   v-model="companyForm.causeTime"
                   type="date"
                   format="yyyy-MM-dd"
@@ -267,7 +265,6 @@
             <el-col >
               <el-form-item label="营业期限:" >
                 <el-date-picker
-                  :disabled="true"
                   v-model="businessTerm"
                   type="daterange"
                   format="yyyy-MM-dd"
@@ -283,17 +280,12 @@
             <br>
             <span style="font-size: 20px">附件信息</span>
             <hr >营业执照附件：<br><br>
-            <el-row>
-              <el-col>
-                <ul class="box">
-                  <license v-for="license in licenses" ref="upload" :license="license" :key="license.id" v-bind:isShow="false"
-                            @preview-license="previewLicense"
-                  ></license>
-                </ul>
-              </el-col>
-            </el-row>
+            <ul class="box">
+              <li v-for ="item in licenses" :key="item.id">
+                <img :id="fileUrl+item.id" :src="fileUrl+item.id" height="150px" width="200px"/>
+              </li>
+            </ul>
           </div>
-
 
           <div style="margin-bottom: 10px">
             <br>
@@ -303,13 +295,13 @@
           <el-row>
             <el-col :span="10">
               <el-form-item label="注册地址:">
-                <el-input style="width:200px;" :disabled="true" v-model="companyForm.registrationAddress"></el-input>
+                <el-input style="width:200px;" v-model="companyForm.registrationAddress"></el-input>
               </el-form-item>
 
             </el-col>
             <el-col :span="10">
               <el-form-item label="公司性质:">
-                <el-radio-group :disabled="true" v-model="companyForm.companyNature">
+                <el-radio-group v-model="companyForm.companyNature">
                   <el-radio :label="1">一般纳税人</el-radio>
                   <el-radio :label="2">小规模纳税人</el-radio>
                 </el-radio-group>
@@ -319,24 +311,24 @@
           <el-row>
             <el-col :span="10">
               <el-form-item label="开户银行:">
-                <el-input style="width:200px;" :disabled="true" v-model="companyForm.bankName"></el-input>
+                <el-input style="width:200px;" v-model="companyForm.bankName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="账号:">
-                <el-input style="width:200px;" :disabled="true" v-model="companyForm.bankAccount"></el-input>
+                <el-input style="width:200px;" v-model="companyForm.bankAccount"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
               <el-form-item label="注册电话:">
-                <el-input style="width:200px;" :disabled="true" v-model="companyForm.telephone"></el-input>
+                <el-input style="width:200px;" v-model="companyForm.telephone"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="总公司标志:">
-                <el-radio-group :disabled="true" v-model="companyForm.companyMark">
+                <el-radio-group v-model="companyForm.companyMark">
                   <el-radio  :label="1">总公司</el-radio>
                   <el-radio  :label="2" style="margin-left: 28px">子公司</el-radio>
                 </el-radio-group>
@@ -375,7 +367,7 @@
           <el-row>
             <el-col :span="10">
               <el-form-item label="状态:">
-                <el-select :disabled="true" v-model="companyForm.companyStatus" clearable  style="width:200px;" placeholder="请选择">
+                <el-select v-model="companyForm.companyStatus" clearable  style="width:200px;" placeholder="请选择">
                   <el-option
                     v-for="item in options3"
                     :key="item.value"
@@ -391,7 +383,7 @@
           <el-row>
             <el-col :span="10">
               <el-form-item label="备注:">
-                <el-input style="width:200px;" :disabled="true" v-model="companyForm.remark"></el-input>
+                <el-input style="width:200px;" v-model="companyForm.remark"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -403,26 +395,15 @@
         </div>
       </template>
     </el-dialog>
-    <el-dialog
-      :visible.sync="preview"
-      width="720px">
-      <div class="dialog-main" style="overflow: auto;height: 670px">
-        <img :id="fileUrl+previewId" :src="fileUrl+previewId" height="650px" width="700px"/>
-      </div>
-    </el-dialog>
   </home>
 </template>
 <script>
   import commonUtils from '../../common/commonUtils'
-  import license from './component/license';
   export default {
-    name:"RelationCompanyList",
-    components: {license},
     data() {
       return {
         dep:[],
-        previewId:'',
-        preview:false,
+
         newRelationList:[],
         oldRelationList:[],
         tableRelationData:[],
@@ -550,7 +531,7 @@
           self.CompanyStatusEnum = result.CompanyStatusEnum;
         }).catch(function (error) {
           commonUtils.Log("company/querylistRel.do_:"+error);
-          self.$message.error("获取数据错误");
+          self.$alert("获取数据错误");
         });
       },
       handleSizeChange(val) {
@@ -629,21 +610,28 @@
         this.selection=[];
       },
       removeCompanyBtn(){//移除公司
-        this.$confirm('此操作将移除关联公司, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          for(let i=0;i<this.relationSelection.length;i++){
-            for(let j=0;j<this.companyChangesList.length;j++){
-              if(this.relationSelection[i].id==this.companyChangesList[j].id){
-                this.companyChangesList.splice(j,1);
+        //判断有没有选中公司
+        if(this.relationSelection.length==0){
+          this.$alert("请选择要移除的公司！")
+        }else{
+          this.$confirm('此操作将移除该公司, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            for(let i=0;i<this.relationSelection.length;i++){
+              for(let j=0;j<this.companyChangesList.length;j++){
+                if(this.relationSelection[i].id==this.companyChangesList[j].id){
+                  this.companyChangesList.splice(j,1);
+                }
               }
             }
-          }
-          //前端关联公司表动态变化
-          this.tableRelationData=this.companyChangesList;
-        });
+            //前端关联公司表动态变化
+            this.tableRelationData=this.companyChangesList;
+          });
+        }
+
+
       },
       saveBtn(){//保存按钮，传送新旧关联公司信息
         var self = this;
@@ -663,8 +651,13 @@
         self.$http.get("company/saveRelation.do_", {
           params: param
         }).then((result) => {
-          self.$alert("保存成功！");
-          this.$router.replace("/departmentManagement/showDepartment");
+          if(result.code==200){
+            self.$alert("关联公司保存成功！");
+            this.$router.replace("/departmentManagement/showDepartment");
+          }else if(result.code==501){
+            this.$message.error("很抱歉，该部门已被删除，保存失败！\n请点击取消按钮，返回上级页面！")
+          }
+
         }).catch(function (error) {
           commonUtils.Log("company/querylist.do_:"+error);
           self.$message.error("获取数据错误");
@@ -679,7 +672,6 @@
         self.companyContentFlag=false;
       },
       companyIdBtn(val){//显示公司详情
-        console.log(this.$refs["upload"]);
         var self = this;
         var companyId=val;
         self.companyContentFlag=true;
@@ -710,10 +702,6 @@
           commonUtils.Log("company/getCompanyById.do_:" + error);
           self.$message.error("获取数据错误");
         });
-      },
-      previewLicense(id){
-        this.preview=true;
-        this.previewId=id;
       },
     },
   }
