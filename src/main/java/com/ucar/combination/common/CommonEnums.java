@@ -181,7 +181,6 @@ public abstract class CommonEnums {
 	 * @date: 2019-07-30
 	 **/
 	public static enum AccountStatusEnum implements IEnum {
-		ALL(0, "全部"),
 		NORMAl(1, "正常"),
 		FRUZEN(2, "冻结"),
 		INVALID(3, "无效");
