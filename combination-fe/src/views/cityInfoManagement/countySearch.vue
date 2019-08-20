@@ -281,8 +281,8 @@
                       // 上面设置Excel的表格第一行的标题
 
                       const filterVal = this.exportField(this.checkedRegionProps);
-                      console.log("this is filterVal : ");
-                      console.log(filterVal);
+                      // console.log("this is filterVal : ");
+                      // console.log(filterVal);
                       // 上面的staffNum、accountId、staffName是tableData里对象的属性
                       const list = this.countySearchList;  //把data里的tableData存到list
                       for (let i = 0; i < list.length; i++) {
@@ -292,8 +292,8 @@
                               list[i].regionStatus = '有效'
                           }
                       }
-                      console.log("this is list : ");
-                      console.log(list);
+                      // console.log("this is list : ");
+                      // console.log(list);
                     //获取当前时间
                     var date = new Date();
                     var seperator1 = "-";

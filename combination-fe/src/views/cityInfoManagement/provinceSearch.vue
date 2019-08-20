@@ -25,9 +25,9 @@
                 class="inline-input"
                 v-model="form.regionName"
                 valueKey="regionName"
-                :fetch-suggestions="querySearch"
+                :fetch-suggestions="querySearchRegionName"
                 placeholder="请输入省市"
-                @select="handleSelect"
+                @select="handleSelectRegionName"
                 clearable
               ></el-autocomplete>
             </el-form-item>
@@ -112,6 +112,7 @@
   export default {
     data(){
       return{
+          tableData:[],
         //  分页
         total:0,
         currentPage:1,
@@ -323,20 +324,19 @@
         },
 
         //带建议的输入：省份名字
-        querySearch(queryString, cb) {
+        querySearchRegionName(queryString, cb) {
             var provinceSuggests = this.provinceSuggest;
-            var results = queryString ? provinceSuggests.filter(this.createFilter(queryString)) : provinceSuggests;
+            var results = queryString ? provinceSuggests.filter(this.createFilterRegionName(queryString)) : provinceSuggests;
 
             // 调用 callback 返回建议列表的数据
             cb(results);
         },
-        createFilter(queryString) {
+        createFilterRegionName(queryString) {
             return (province) => {
                 return (province.regionName.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
             };
         },
-
-        handleSelect(item) {
+        handleSelectRegionName(item) {
             console.log(item);
         },
         //带建议的输入：国际代码
@@ -353,16 +353,6 @@
         },
         handleSelectRegionCode(item) {
             console.log(item);
-        },
-
-        //输入校验
-        // 只能输入汉字、英文、数字
-        btKeyDown(e) {
-            e.target.value = e.target.value.replace(/[^\u4E00-\u9FA5]/g,"");
-        },
-        //限制输入特殊字符
-        btKeyUp(e) {
-            e.target.value = e.target.value.replace(/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/g,"");
         },
 
 
