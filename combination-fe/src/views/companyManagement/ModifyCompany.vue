@@ -119,7 +119,7 @@
           <el-row>
             <el-col>
               <ul class="box">
-                <license v-for="license in licenses" :license="license" :key="license.id"
+                <license v-for="license in licenses" :license="license" :key="license.id" v-bind:isShow="true"
                          @delete-license="deleteLicense" @preview-license="previewLicense"
                       ></license>
               </ul>
