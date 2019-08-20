@@ -1,11 +1,11 @@
 <template>
   <home>
     <div style="width:85%; margin-left: 7px">
-      <el-form ref="form" :model="form" label-width="100px">
+      <el-form ref="form" :model="form" label-width="100px" @submit.native.prevent>
         <el-row>
           <el-col :span="6">
             <el-form-item label="角色名称">
-              <el-input style="width:200px;" placeholder="角色名称" v-model="form.name"></el-input>
+              <el-input style="width:200px;" placeholder="角色名称" v-model="form.name" @keyup.13.native = "fetchData"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="3">

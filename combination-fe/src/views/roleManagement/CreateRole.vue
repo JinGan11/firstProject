@@ -442,20 +442,38 @@
                   cancelButtonText: '取消',
                   type: 'warning'
                 }).then(() => {
-                  self.form.businessLine = self.form.businessLine.join(',');
-                  self.$http.post("roleManage/insertRole.do_", self.form)
-                    .then((result) => {
-                      self.$router.replace("/roleManagement/roleManagement");
-                    })
-                    .catch(function (error) {
-                      commonUtils.Log("roleManage/insertRole.do_" + error);
-                      self.$message.error("保存数据错误");
-                      self.$router.replace("/roleManagement/roleManagement");
-                    });
-                  self.$message({
-                    type: 'success',
-                    message: '保存成功!'
+
+                  const self = this;
+                  var param = {
+                    id: self.selection.id,
+                  };
+                  self.$http.get('account/selectAccountById.do_',{
+                    params: param
+                  }).then((result) => {
+                    if (result.account.accountState === 3){
+                      alert("该账户已被删除，不可选择");
+                    }
+                    else{
+                      self.form.businessLine = self.form.businessLine.join(',');
+                      self.$http.post("roleManage/insertRole.do_", self.form)
+                        .then((result) => {
+                          self.$router.replace("/roleManagement/roleManagement");
+                        })
+                        .catch(function (error) {
+                          commonUtils.Log("roleManage/insertRole.do_" + error);
+                          self.$message.error("保存数据错误");
+                          self.$router.replace("/roleManagement/roleManagement");
+                        });
+                      self.$message({
+                        type: 'success',
+                        message: '保存成功!'
+                      });
+                    }
+                  }).catch(function (error) {
+                    commonUtils.Log("account/selectAccountById.do_:"+error);
+                    self.$message.error("获取数据错误")
                   });
+
                 }).catch(() => {
                   self.$message({
                     type: 'info',
