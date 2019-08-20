@@ -478,7 +478,7 @@
                           alert("该角色已经被删除，不可修改");
                         }
                         else{
-                          self.form.businessLine = self.form.businessLine.join(',');
+                          self.form.businessLine = self.form.businessLine.join(';');
                           self.$http.post("roleManage/updateByModify.do_", self.form)
                             .then((result) => {
                               self.$router.replace("/roleManagement/roleManagement");
@@ -581,7 +581,7 @@
         }).then((result) => {
           self.form = result.page;
           self.RoleStatusEnum = result.RoleStatusEnum;
-          self.form.businessLine = self.form.businessLine.split(',');
+          self.form.businessLine = self.form.businessLine.split(';');
         }).catch(function (error) {
           commonUtils.Log("roleManage/getOneInf.do_" + error);
           self.$message.error("获取数据错误");

@@ -454,7 +454,7 @@
                       alert("该账户已被删除，不可选择");
                     }
                     else{
-                      self.form.businessLine = self.form.businessLine.join(',');
+                      self.form.businessLine = self.form.businessLine.join(';');
                       self.$http.post("roleManage/insertRole.do_", self.form)
                         .then((result) => {
                           self.$router.replace("/roleManagement/roleManagement");
