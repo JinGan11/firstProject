@@ -346,7 +346,8 @@
           self.$message.error("获取数据错误")
         });
       },
-      save() {//保存修改账户信息
+      //保存修改账户信息
+      save() {
         const self = this;
         self.$refs["modifyForm"].validate(function(valid) {
           if (valid) {
@@ -360,7 +361,11 @@
               }
               self.$http.post('account/modifyAccount.do_', self.modifyForm)
                 .then((result) => {
-                  self.$message.info("修改成功");
+                  if(result.state == 3){
+                    self.$message.info("账户无效，修改失败");
+                  }else{
+                    self.$message.info("修改成功");
+                  }
                   self.$router.replace("/accountManagement");
                 }).catch(function (error) {
                 commonUtils.Log("account/createAccount.do_:" + error);

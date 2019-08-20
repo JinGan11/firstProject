@@ -359,6 +359,11 @@
     <select id="selectStaffIdById" parameterType="Long" resultType="Long">
         SELECT staff_id from t_account where id = #{accountId}
     </select>
+
+    <select id="getAccountStateById" parameterType="Long" resultType="int">
+        SELECT account_state FROM t_account
+        WHERE id = #{accountId}
+    </select>
 </mapper>
 
 

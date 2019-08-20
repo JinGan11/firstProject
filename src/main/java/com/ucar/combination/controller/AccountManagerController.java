@@ -247,8 +247,9 @@ public class AccountManagerController {
     @Transactional
     @ResponseBody
     @RequestMapping(value = "/modifyAccount.do_",method = RequestMethod.POST)
-    public void modifyAccount(@RequestBody AccountStaff accountStaff,HttpSession session){
-        try {
+    public Result modifyAccount(@RequestBody AccountStaff accountStaff,HttpSession session){
+        int state = accountManagerService.getAccountStateById(accountStaff.getAccountId());
+        if(state != 3){
             accountStaff.setModifyEmp((Long) session.getAttribute("accountId"));
             accountStaff.setCreateEmp((Long) session.getAttribute("accountId"));
             if(accountStaff.getStaffId() == null){
@@ -266,9 +267,8 @@ public class AccountManagerController {
                 accountStaff.setAccountId(0L);
                 accountManagerService.updateStaffAccount(accountStaff);
             }
-        }catch(Exception e) {
-            throw new RuntimeException("");
         }
+        return Result.ok().put("state",state);
     }
 
     /**
@@ -314,10 +314,14 @@ public class AccountManagerController {
     @Transactional
     @ResponseBody
     @RequestMapping(value = "deleAccount.do_",method = RequestMethod.POST)
-    public void deleAccount(@RequestBody AccountStaff accountStaff,HttpSession session){
-        accountStaff.setCreateEmp((Long) session.getAttribute("accountId"));
-        accountStaff.setModifyEmp((Long) session.getAttribute("accountId"));
-        accountManagerService.deleteAccountById(accountStaff);
+    public Result deleAccount(@RequestBody AccountStaff accountStaff,HttpSession session){
+        int state = accountManagerService.getAccountStateById(accountStaff.getAccountId());
+        if(state != 3) {
+            accountStaff.setCreateEmp((Long) session.getAttribute("accountId"));
+            accountStaff.setModifyEmp((Long) session.getAttribute("accountId"));
+            accountManagerService.deleteAccountById(accountStaff);
+        }
+        return Result.ok().put("state",state);
     }
 
     @ResponseBody
@@ -344,5 +348,18 @@ public class AccountManagerController {
             result.put("code", 202);
         }
         return result;
+    }
+    /**
+     * description: 根据账户id查询员工id
+     * @author junqiang.zhang@ucarinc.com
+     * @date: 2019/8/20
+     * @params: accountId 账户id
+     * @return: int 账户状态
+     */
+    @ResponseBody
+    @RequestMapping(value = "getAccountState.do_",method = RequestMethod.POST)
+    public Result getAccountStateById(@RequestBody String AccountId) {
+        int state = accountManagerService.getAccountStateById(Long.parseLong(AccountId));
+        return Result.ok().put("state",state);
     }
 }

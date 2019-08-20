@@ -175,5 +175,14 @@ public interface AccountManageDao {
      * @params: accountId 账户id
      * @return: Long 员工id
      */
-    public Long selectStaffIdById(Long accountID);
+    Long selectStaffIdById(Long accountID);
+
+    /**
+     * description: 根据账户id查询员工id
+     * @author junqiang.zhang@ucarinc.com
+     * @date: 2019/8/20
+     * @params: accountId 账户id
+     * @return: int 账户状态
+     */
+    int getAccountStateById(Long accountId);
 }

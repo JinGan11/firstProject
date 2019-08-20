@@ -399,4 +399,17 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         accountManageDao.modifyAccount(accountStaff);
         return Result.ok();
     }
+
+    /**
+     * description: 根据账户id查询员工id
+     * @author junqiang.zhang@ucarinc.com
+     * @date: 2019/8/20
+     * @params: accountId 账户id
+     * @return: int 账户状态
+     */
+    @Override
+    public int getAccountStateById(Long accountId){
+        return accountManageDao.getAccountStateById(accountId);
+    }
+
 }
