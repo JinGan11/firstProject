@@ -497,6 +497,7 @@
           limit: self.pageSize,
           roleName: self.form.name,
           //flag: '1',
+          date : new Date().getTime(),
         };
         self.$http.get("roleManage/querylist.do_", {
           params: param
