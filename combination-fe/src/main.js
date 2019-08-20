@@ -26,7 +26,16 @@ import utils from './common/util'
 
 // Vue.use(Vuex);
 import VueAMap from 'vue-amap';
+import global from './common/global.js'
 
+
+window.addEventListener("visibilitychange",function(){ //这个方法是监测浏览器窗口发生变化的时候执行
+  if (document.hidden == false && global.accountName != localStorage.getItem('accountName')) {
+    global.accountName = localStorage.getItem('accountName') //只有当初始创建的aaa不等于localStorage里面的userId的时候去覆盖掉这个aaa
+    router.push({path:'/'});
+  }
+  //不覆盖的话aaa永远都是我们设的初始值
+});
 Vue.use(VueAMap);
 VueAMap.initAMapApiLoader({
   key: 'b2551e2e478785561d5d88081a58dfb3',
@@ -67,7 +76,7 @@ Vue.config.productionTip = false
 //路由守卫
 router.beforeEach((to, from, next) => {
   if (to.meta.requireAuth) { // 判断该路由是否需要登录权限
-    if(window.sessionStorage.getItem("loginUsername")!=null ){ //判断本地是否存在access_token
+    if(window.sessionStorage.getItem("loginUsername") ){ //判断本地是否存在access_token
       next();
     } else {
       utils.$emit("loginSuccess",false);

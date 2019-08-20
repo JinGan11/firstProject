@@ -118,6 +118,7 @@
   import LoginPage from './views/Login'
   import utils from './common/util'
   import ResetPass from './views/accountManagement/ResetPass'
+  import global from './common/global.js'
 
   export default {
     data() {
@@ -185,6 +186,9 @@
         }
       };
     },
+    watch: {
+      'global.accountName' : 'refresh'
+    },
     created() {
       // console.log($route.path.slice(-6));
       const self = this;
@@ -205,6 +209,7 @@
       })
     },
     mounted() {
+      this.timer = setInterval(this.get, 1000);
       utils.$on('isFirstLogin', () => {
         this.resetPasswordFlag = true;
       });
@@ -222,6 +227,9 @@
     },
     components: {MenuItem, AsideMenu, LoginPage, ResetPass},
     methods: {
+      refresh() {
+        this.$router.replace("/")
+      },
       loginSuccess(isSuccess, username, powerList) {
         const self = this;
         self.loginIn = isSuccess;

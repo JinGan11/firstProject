@@ -20,6 +20,9 @@
 <script>
   import App from '../App'
   import utils from '../common/util'
+  import commonUtils from "../common/commonUtils";
+  import global from '../common/global'
+
   export default{
     data(){
       return {
@@ -38,6 +41,18 @@
       }
     },
     created() {
+      const self = this
+      self.$http.get('login/isLogin')
+        .then(result => {
+          if (result.code === 202) {
+            utils.$emit("loginSuccess",true,result.accountName, result.powerList);
+            self.$router.replace("/index");
+          }
+        })
+        .catch(function (error) {
+          commonUtils.Log("user/updatePwd:" + error);
+          self.$message.error("登陆错误，请联系管理员！");
+        });
       localStorage.setItem('isLogin', 'false');
     },
     mounted() {
@@ -55,9 +70,21 @@
             self.$http.post('login/login.do_', param)
               .then(result => {
                 if (result.code === 200) {
-                  utils.$emit("loginSuccess",true,self.loginForm.username, result.powerList);
+                  localStorage.setItem("isLogin",1);
+                  global.accountName = result.accountName;
+                  localStorage.setItem("accountName",result.accountName);
+                  utils.$emit("loginSuccess",true,result.accountName, result.powerList);
                   self.$router.replace("/index");
                   // self.visible = true
+                } else if (result.code === 202) {
+                  utils.$emit("loginSuccess",true,result.accountName, result.powerList);
+                  self.$confirm('已有账号登陆，自动为您跳转！如需登陆其它账号请先退出！', '提示', {
+                    showCancelButton:false,
+                    showClose:false,
+                    confirmButtonText: '确定',
+                    type: 'warning'
+                  });
+                  self.$router.replace("/index");
                 } else if (result.code === 506){
                   self.$confirm('首次登陆系统，请先修改密码', '提示', {
                     showCancelButton:false,

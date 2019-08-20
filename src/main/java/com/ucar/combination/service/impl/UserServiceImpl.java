@@ -250,4 +250,19 @@ public class UserServiceImpl implements UserService {
         List<Account> accountList = userDao.getAllAccountListByModifyTime();
         return Result.ok().put("accountList", accountList);
     }
+
+    /**
+     * description:
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/19 20:42
+     * @params
+     * @return
+     */
+    @Override
+    public Result isLogin(Long accountId) {
+        User user = new User();
+        user.setId(accountId);
+        List<User> list = userDao.qryAccountByAccountName(user);
+        return Result.ok().put("list",list);
+    }
 }

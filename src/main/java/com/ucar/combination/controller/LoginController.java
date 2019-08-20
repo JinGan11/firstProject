@@ -36,7 +36,6 @@ public class LoginController {
 
     /**
      * description: 用户登陆方法
-     *
      * @return Result结果集
      * @author peng.zhang11@ucarinc.com
      * @date 2019/7/30 16:10
@@ -45,6 +44,11 @@ public class LoginController {
      */
     @RequestMapping("/login.do_")
     public Result login(@RequestBody(required = false) User loginUser, HttpServletRequest request) {
+        Result result1 = isLogin(request.getSession());
+        int code = (int) result1.get("code");
+        if (202 == code) {
+            return result1;
+        }
         HttpSession session = request.getSession();
         Result result = userService.login(loginUser);
         List<User> list = (List<User>) result.get("list");
@@ -76,7 +80,7 @@ public class LoginController {
             session.setAttribute("accountName", loginUser.getAccountName());
             session.setAttribute("accountId", list.get(0).getId());
         }
-        return result;
+        return result.put("accountName",loginUser.getAccountName());
     }
 
     /**
@@ -95,5 +99,41 @@ public class LoginController {
         session.removeAttribute("accountId");
         session.removeAttribute("powerList");
         return Result.ok();
+    }
+
+    /**
+     * description: 判断是否登陆
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/19 20:20
+     * @params
+     * @return
+     */
+    @RequestMapping("/isLogin")
+    public Result isLogin(HttpSession session) {
+        Long isLogin = (Long) session.getAttribute("accountId");
+        if (isLogin != null) {
+            Result result = userService.isLogin(isLogin);
+            return Result.ok().put("code", 202)
+                    .put("accountName", session.getAttribute("accountName"))
+                    .put("powerList",session.getAttribute("powerList"));
+        }
+        return Result.ok().put("code", 300);
+    }
+
+    /**
+     * description: 判断是否是当前用户
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/19 23:09
+     * @params
+     * @return
+     */
+    @RequestMapping("/isCurrentLogin")
+    public Result isCurrentLogin(HttpSession session, String accountName) {
+        if (session.getAttribute("accountName") != null && session.getAttribute("accountName").equals(accountName)) {
+            return Result.ok().put("code", 200);
+        }else {
+            return Result.ok().put("code", 300)
+                    .put("msg", "请重新登陆！");
+        }
     }
 }

@@ -13,4 +13,5 @@ public interface UserService {
     Result getEmpInfo(User user);
     Result isFirstLogin(User user);
     Result getAllAccountListByModifyTime();
+    Result isLogin(Long accountId);
 }
