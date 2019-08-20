@@ -92,7 +92,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         // 该上级部门在自己下方
         List<DepartmentTree2Dto> listDto = departmentDao.selectDepartmentTree2Dto();
         DepartmentTree2Builder builder = new DepartmentTree2Builder(listDto);
-        if(!builder.checkUpperLegal(id,upperDepartmentNo)){
+        if (!builder.checkUpperLegal(id, upperDepartmentNo)) {
             map.put("result", false);
             String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
             map.put("msg", tmp + "上级部门发生改变！");
@@ -101,7 +101,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         // 业务线校验
         String upperSupport = departmentDao.selectUpperDepartmentBusiness(upperDepartmentNo);
         String support = departmentDao.selectSupportBusinessByNo(departmentDao.selectDepartmentNoById(id));
-        if(support==null || upperSupport==null || SupportBusinessUtil.compareSups(upperSupport,support)<0){
+        if (support == null || upperSupport == null || SupportBusinessUtil.compareSups(upperSupport, support) < 0) {
             map.put("result", false);
             String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
             map.put("msg", tmp + "上级部门支持业务线发生更改！");
@@ -199,11 +199,13 @@ public class DepartmentServiceImpl implements DepartmentService {
                 map.put("msg", tmp + "下级部门的业务线不能拥有本部门没有的，请修改或删除下级部门！");
             }
         }
-        String support = departmentDao.selectUpperDepartmentBusiness(department.getUpperDepartmentNo());
-        if (support == null || SupportBusinessUtil.compareSups(support, department.getSupportBusiness()) < 0) {
-            map.put("result", false);
-            String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
-            map.put("msg", tmp + "上级部门的业务线发生更改，你选中的业务线中含有上级部门已取消的！");
+        if (!department.getDepartmentNo().equals("Z000001")) {
+            String support = departmentDao.selectUpperDepartmentBusiness(department.getUpperDepartmentNo());
+            if (support == null || SupportBusinessUtil.compareSups(support, department.getSupportBusiness()) < 0) {
+                map.put("result", false);
+                String tmp = (String) map.get("msg") == null ? "" : (String) map.get("msg");
+                map.put("msg", tmp + "上级部门的业务线发生更改，你选中的业务线中含有上级部门已取消的！");
+            }
         }
         return map;
     }
