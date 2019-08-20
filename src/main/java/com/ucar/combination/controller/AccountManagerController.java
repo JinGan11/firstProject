@@ -64,7 +64,20 @@ public class AccountManagerController {
         String id = request.getParameter("id");
         return new Result().ok().put("account",accountManagerService.selectAccountById(id)).put("permissionEnum",CommonEnums.toEnumMap(CommonEnums.Permission.values())).put("accountStatusEnum",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()));
     }
+		/**
+		 * description: 账号功能权限明细，根据账户ID进行查找
+		 * @author jing.luo01@ucarinc.com
+		 * @date   2019/8/20 10:07
+		 * @params request 描述
 
+		 * @return
+		 */
+	@ResponseBody
+	@RequestMapping("/selectById.do_")
+	public Result selectById(HttpServletRequest request){
+		String id = request.getParameter("id");
+		return new Result().ok().put("account",accountManagerService.selectById(Long.valueOf(id))).put("permissionEnum",CommonEnums.toEnumMap(CommonEnums.Permission.values())).put("accountStatusEnum",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()));
+	}
     /*
      * description: 新建账户
      * @uthor： junqiang.zhang@ucarinc.com

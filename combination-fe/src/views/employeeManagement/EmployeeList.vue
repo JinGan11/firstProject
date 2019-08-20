@@ -101,7 +101,7 @@
                  :disabled="recoveryDisabled" style="width:70px">恢复
       </el-button>
       <el-button type="primary" @click="distributionDepartment" v-if="!empButtonPermission.assignDepPermission"
-                 :disabled="disabled" style="width:80px">分配部门
+                 :disabled="departmentDisabled" style="width:80px">分配部门
       </el-button>
     </div>
     <div style="margin-bottom: 10px" v-else>
@@ -792,6 +792,7 @@
         disabled: true,
         quitDisabled: true,//离职按钮显示
         recoveryDisabled: true,//恢复按钮显示
+        departmentDisabled:true,//分配部门按钮显示
         departmentVisible: false,
         defaultProps: {
           label: 'departmentName',
@@ -1088,6 +1089,7 @@
               self.$message.success("成功离职");
               self.fetchData();
               self.quitDisabled = true;
+              self.departmentDisabled=true;
               self.recoveryDisabled = false;
             } else {
               self.$message.error("离职失败")
@@ -1122,6 +1124,7 @@
               self.fetchData();
               self.recoveryDisabled = true;
               self.quitDisabled = false;
+              self.departmentDisabled=false;
             } else {
               self.$message.error("恢复失败")
             }
@@ -1427,9 +1430,11 @@
         //恢复，离职显示按钮
         if (val.isDimission == 0) {
           self.quitDisabled = false;
+          self.departmentDisabled=false;
           self.recoveryDisabled = true;
         } else {
           self.quitDisabled = true;
+          self.departmentDisabled=true;
           self.recoveryDisabled = false;
         }
       },
