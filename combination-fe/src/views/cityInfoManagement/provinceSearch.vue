@@ -1,7 +1,7 @@
 <template>
   <home>
     <!--搜索-->
-    <div style="width:85%; margin-left: 70px">
+    <div style="width:85%; margin-left: 70px;margin-top: 2%" >
       <el-form ref="form" :model="form" label-width="85px">
 
 
