@@ -34,9 +34,9 @@ axios.interceptors.response.use(function (response) {
   if(response.headers && response.headers['content-type'] === 'application/octet-stream;charset=UTF-8'){
     downloadUrl(response.data);
     //session失效状态 100
-    if (response.data === 100) {
-      router.push({path:'/'});
-    }
+    // if (response.data === 100) {
+    //   router.push({path:'/'});
+    // }
     return;
   }
   return response.data;
