@@ -1,6 +1,6 @@
 <template>
   <home>
-    <div style="width:85%; margin-left: 70px">
+    <div style="width:85%; margin-left: 70px;margin-top: 2%">
       <el-form ref="form" :model="form" label-width="85px" >
         <el-row class="demo-autocomplete">
           <el-col :span="5">
