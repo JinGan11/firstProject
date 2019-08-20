@@ -154,6 +154,9 @@
         <if test="filterIds != null">
             and t1.id not in <foreach collection="filterIds" item="item2" open="(" separator="," close=")">#{item2}</foreach>
         </if>
+        <if test="defaultStatus != null and defaultStatus.trim() != ''">
+            and t1.account_state = 1 or t1.account_state = 2
+        </if>
         ORDER BY modify_time DESC
     </select>
     <select id="selectById" parameterType="java.lang.Long" resultType="com.ucar.combination.model.Account">

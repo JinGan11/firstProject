@@ -131,12 +131,16 @@ public class AccountManagerController {
     @RequestMapping("/querylist.do_")
     public Result queryList(HttpServletRequest request,HttpSession session){
         String page = request.getParameter("page");
+        Map<String, Object> params = new HashMap<String, Object>();
         if(page==null){
             page = "1";
         }
         String limit = request.getParameter("limit");
         if(limit==null){
             limit = "10";
+        }
+        if(request.getParameter("defaultStatus") != null && request.getParameter("status")=="") {
+            params.put("defaultStatus", "12");
         }
         String accountName = request.getParameter("accountName");
         String staffNum = request.getParameter("staffNo");
@@ -150,7 +154,6 @@ public class AccountManagerController {
         String flag = request.getParameter("flag");
         String[] filterIds = null;
         if(filterId!=null && filterId.length()>0) filterIds=filterId.split(",");
-        Map<String, Object> params = new HashMap<String, Object>();
         params.put("page", page);
         params.put("limit", limit);
         params.put("accountName", accountName);

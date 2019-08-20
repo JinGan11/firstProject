@@ -208,7 +208,7 @@
               <el-form-item label="账号状态">
                 <el-select style="width:180px;" v-model="form.status" clearable placeholder="请选择">
                   <el-option
-                    v-for="item in form.accountStatusList"
+                    v-for="item in StatusList"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -274,6 +274,13 @@
         total: 0,
         currentPage: 1,
         pageSize: 10,
+        StatusList:[{
+          value:'1',
+          label:'正常'
+        },{
+          value:'2',
+          label:'冻结'
+      }],
         form: {
           name: '',
         },
@@ -471,6 +478,7 @@
           isRelStaff: self.form.isRelStaff,
           status: self.form.status,
           filterIds: [],
+          defaultStatus:"1",
           date : new Date().getTime(),
         };
         for(var i=0;i<self.accountTableData.length;i++){
@@ -767,13 +775,7 @@
         };
         self.$http.post("roleManage/assignPermission", param)
           .then((result) => {
-            if (result.code === 203 ){
-              self.$alert(result.msg, '消息提醒', {
-                confirmButtonText: '确定',
-              });
-            } else {
-              self.$message.info("权限分配成功！")
-            }
+            self.$message.info("权限分配成功！")
           })
           .catch(function (error) {
             self.$alert("系统错误，请稍后再试！", '消息提醒', {
