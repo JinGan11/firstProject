@@ -1290,9 +1290,9 @@
           } else if (this.checkedemployees[i] === '员工邮箱') {
             this.filterVal.push('staffEmail')
           } else if (this.checkedemployees[i] === '所属部门') {
-            this.filterVal.push('departmentId')
+            this.filterVal.push('departmentName')
           } else if (this.checkedemployees[i] === '上级部门') {
-            this.filterVal.push('upperDepartmentNo')
+            this.filterVal.push('upperDepartmentName')
           } else if (this.checkedemployees[i] === '是否离职') {
             this.filterVal.push('isDimission')
           }
