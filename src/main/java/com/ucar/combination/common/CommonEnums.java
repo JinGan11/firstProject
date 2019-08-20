@@ -181,6 +181,7 @@ public abstract class CommonEnums {
 	 * @date: 2019-07-30
 	 **/
 	public static enum AccountStatusEnum implements IEnum {
+		ALL(0, "全部"),
 		NORMAl(1, "正常"),
 		FRUZEN(2, "冻结"),
 		INVALID(3, "无效");
@@ -770,7 +771,20 @@ public abstract class CommonEnums {
 		}
 		return list;
 	}
-
+	public static List<JSONObject> permissionsJsonList(IEnum[] enumArr) {
+		List<JSONObject> list = new ArrayList<JSONObject>();
+		JSONObject jso = new JSONObject();
+		jso.put("value",0);
+		jso.put("label","全选");
+		list.add(jso);
+		for (IEnum item : enumArr) {
+			JSONObject js = new JSONObject();
+			js.put("value", item.getI());
+			js.put("label", item.getN());
+			list.add(js);
+		}
+		return list;
+	}
 	/**
 	 * @Description:  角色申请 新建  添加移除 枚举类
 	 * @Author: min.zhang08@ucarinc.com

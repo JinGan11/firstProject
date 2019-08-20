@@ -136,7 +136,7 @@
         <if test="staffNum != null and staffNum.trim() != ''">
           and t2.staff_num like concat('%',#{staffNum},'%')
         </if>
-        <if test="permissions != null and permissions.trim() != ''">
+        <if test="permissions != null and permissions.trim() != '' and permissions != 0">
           and t1.permissions = #{permissions}
         </if>
         <if test="departmentId != null and departmentId.trim() != ''">
@@ -148,7 +148,7 @@
         <if test="isRelStaff!=null and isRelStaff.trim()!='' and isRelStaff == 0 ">
             and (t1.staff_id = 0 or t1.staff_id is null)
         </if>
-        <if test="accountState != null and accountState.trim() != ''">
+        <if test="accountState != null and accountState.trim() != '' and accountState != 0">
             and t1.account_state = #{accountState}
         </if>
         <if test="filterIds != null">

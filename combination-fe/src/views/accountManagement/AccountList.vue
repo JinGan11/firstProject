@@ -1,70 +1,86 @@
 <template>
   <home>
-    <div style="width: 95%;">
-      <el-form ref="form" :model="form" label-width="100px">
+    <div style="width: 100%;">
+      <el-form ref="form" :model="form" label-width="85px">
         <el-row>
-          <el-col :span="5">
-            <el-form-item label="登陆账号" >
-              <el-input style="width:140px;" v-model="form.accountNo" clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="员工编号">
-              <el-input style="width:160px;" v-model="form.staffNo" clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="7">
-            <el-form-item label="员工姓名">
-              <el-input style="width:180px;" v-model="form.name" clearable></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="数据权限类型">
-              <el-select style="width:180px;" v-model="form.permissions" clearable placeholder="请选择">
-                <el-option
-                  v-for="item in form.permissionsList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
+          <div style="float: left; margin-left: 35px">
+            <el-col>
+              <el-form-item label="登陆账号">
+                <el-input style="width:140px;"  placeholder="登陆账号" v-model="form.accountNo" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </div>
+          <div style="float: left">
+            <el-col>
+              <el-form-item label="员工编号">
+                <el-input style="width:160px;" placeholder="员工编号" v-model="form.staffNo" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </div>
+          <div style="float: left">
+            <el-col>
+              <el-form-item label="员工姓名">
+                <el-input style="width:180px;" v-model="form.name" placeholder="员工姓名" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </div>
+          <div style="float: left">
+            <el-col>
+              <el-form-item label="数据权限类型" label-width="120px">
+                <el-select style="width:180px;" v-model="form.permissions" clearable placeholder="请选择">
+                  <el-option
+                    v-for="item in form.permissionsList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </div>
         </el-row>
         <el-row>
-          <el-col :span="6">
-            <el-form-item label="员工所属部门">
-              <el-input style="width:140px;" :disabled="true" v-model="form.department"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="5">
-            <el-button type="text" @click="chooseDepartment">选择</el-button>
-            <el-button type="text" @click="clearDepartment">取消</el-button>
-          </el-col>
-          <el-col :span="7">
-            <el-form-item label="是否关联员工">
-              <el-select style="width: 180px" v-model="form.isRelStaff" clearable placeholder="请选择">
-                <el-option
-                  v-for="item in form.isRelStaffoptions"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="账号状态">
-              <el-select style="width:180px;" v-model="form.status" clearable placeholder="请选择">
-                <el-option
-                  v-for="item in form.accountStatusList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
+          <div style="float: left">
+            <el-col>
+              <el-form-item label="员工所属部门" label-width="120px">
+                <el-input style="width:140px;" placeholder="请选择部门" :disabled="true" v-model="form.department"></el-input>
+              </el-form-item>
+            </el-col>
+          </div>
+          <div style="float: left; margin-left: 5px; margin-right: 140px">
+            <el-col>
+              <el-button type="text" @click="chooseDepartment">选择</el-button>
+              <el-button type="text" @click="clearDepartment">取消</el-button>
+            </el-col>
+          </div>
+          <div style="float: left;">
+            <el-col>
+              <el-form-item label="是否关联员工" label-width="118px">
+                <el-select style="width: 180px" v-model="form.isRelStaff" clearable placeholder="请选择">
+                  <el-option
+                    v-for="item in form.isRelStaffoptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </div>
+          <div style="float: left">
+            <el-col>
+              <el-form-item label="账号状态" label-width="120px">
+                <el-select style="width:180px;" v-model="form.status" placeholder="请选择">
+                  <el-option
+                    v-for="item in form.accountStatusList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </div>
         </el-row>
       </el-form>
       <el-form ref="form" :model="form">
@@ -187,16 +203,16 @@
         </el-form>
       </div>
     </el-dialog>
-    <el-dialog title="选择部门" :visible.sync="chooseDepartmentFlag" width="300px">
+    <el-dialog title="选择部门" :visible.sync="chooseDepartmentFlag">
       <el-tree
         ref="tree"
         :props="defaultPropsTree"
         node-key="id"
         :load="loadNodeDepartment"
         lazy
+        default-expanded-keys="[1]"
         check-strictly
         show-checkbox
-
         @check-change="handleClickChange">
       </el-tree>
     </el-dialog>
@@ -272,14 +288,17 @@
           departmentId:'',
           department:'',
           isRelStaffoptions:[{
-            value: '1',
+            value: 2,
+            label: '全部'
+          },{
+            value: 1,
             label: '是'
           },{
-            value: '0',
+            value: 0,
             label: '否'
           }],
           isRelStaff: null,
-          status:null
+          status: ''
         },
         tableData: [],
         accountDtoList: [],
@@ -368,6 +387,9 @@
         self.form.accountStatusEnum = result.accountStatusEnum;
         self.form.accountStatusList = result.accountStatusList;
         self.total = result.page.totalCount;
+        self.form.status = 0;
+        self.form.permissions = 0;
+        self.form.isRelStaff = 2;
       }).catch(function (error) {
         commonUtils.Log("account/querylist.do_:"+error);
         self.$message.error("获取数据错误")
