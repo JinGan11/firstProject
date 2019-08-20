@@ -468,20 +468,36 @@
                       alert("该账户已被删除，不可选择");
                     }
                     else{
-                      self.form.businessLine = self.form.businessLine.join(',');
-                      self.$http.post("roleManage/updateByModify.do_", self.form)
-                        .then((result) => {
-                          self.$router.replace("/roleManagement/roleManagement");
-                        })
-                        .catch(function (error) {
-                          commonUtils.Log("roleManage/updateByModify.do_" + error);
-                          self.$message.error("保存数据错误");
-                          self.$router.replace("/roleManagement/roleManagement");
-                        });
-                      self.$message({
-                        type: 'success',
-                        message: '保存成功!'
+                      var param = {
+                        roleID: self.form.roleID,
+                      };
+                      self.$http.get('roleManage/getOneInf.do_', {
+                        params: param
+                      }).then((result) => {
+                        if (result.page.roleStatus ===0){
+                          alert("该角色已经被删除，不可修改");
+                        }
+                        else{
+                          self.form.businessLine = self.form.businessLine.join(',');
+                          self.$http.post("roleManage/updateByModify.do_", self.form)
+                            .then((result) => {
+                              self.$router.replace("/roleManagement/roleManagement");
+                            })
+                            .catch(function (error) {
+                              commonUtils.Log("roleManage/updateByModify.do_" + error);
+                              self.$message.error("保存数据错误");
+                              self.$router.replace("/roleManagement/roleManagement");
+                            });
+                          self.$message({
+                            type: 'success',
+                            message: '保存成功!'
+                          });
+                        }
+                      }).catch(function (error) {
+                        commonUtils.Log("roleManage/getOneInf.do_" + error);
+                        self.$message.error("获取数据错误");
                       });
+
                     }
                   }).catch(function (error) {
                     commonUtils.Log('account/querylist.do_'+error);
