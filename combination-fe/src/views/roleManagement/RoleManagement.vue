@@ -440,7 +440,7 @@
       handleAddSizeChange(val) {
         this.pageAddSize = val;
         this.currentAddPage = 1;
-        this.fetchData(1, val);
+        this.fetchAddData(1, val);
       },
       handleAddCurrentChange(val) {
         this.currentAddPage = val;
@@ -461,8 +461,8 @@
       fetchAddData(){
         var self = this;
         var param = {
-          page: self.currentPage,
-          limit: self.pageSize,
+          page: self.currentAddPage,
+          limit: self.pageAddSize,
           accountName: self.form.accountNo,
           staffNo: self.form.staffNo,
           name:self.form.name,
