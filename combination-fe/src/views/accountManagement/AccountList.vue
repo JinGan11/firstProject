@@ -886,8 +886,8 @@
               message: '文件导出成功',
               type: 'success'
             });
-            this.dialogVisible = false;
-            this.checkedemployees = [];
+            this.exportVisible = false;
+            this.checkedAccounts = [];
             this.filterVal = [];
           })
         }

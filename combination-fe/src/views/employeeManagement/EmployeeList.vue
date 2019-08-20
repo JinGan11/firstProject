@@ -480,7 +480,7 @@
         <el-button type="primary" @click="getCheckedDepartmentModify">确定</el-button>
       </div>
     </el-dialog>
-    <el-dialog :title='contentTitle' :visible.sync="contentDialogVisible" :close-on-click-modal="false" width="900px">
+    <el-dialog :title='contentTitle' append-to-body :visible.sync="contentDialogVisible" :close-on-click-modal="false" width="900px">
       <el-form ref="form" :model="contentForm" :disabled="true" label-width="80px">
         <div style="margin-left: 40px;border-bottom:1px solid gray;padding-bottom: 10px ;">
           <div style="font-family: Consolas; font-size:20px ;margin-bottom: 20px;">员工信息</div>

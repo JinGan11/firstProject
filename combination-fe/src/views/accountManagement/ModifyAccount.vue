@@ -100,7 +100,7 @@
       </div>
       <hr style="width: 70%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
       <div style="width:85%; margin-left: 30px; float: left">
-        <el-form :model="modifyForm" label-width="120px" :rules="rules" ref="modifyForm">
+        <el-form :model="modifyForm" label-width="120px">
           <el-row>
             <el-col :span="9">
               <el-form-item label="新建人">

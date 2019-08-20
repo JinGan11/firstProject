@@ -1,78 +1,74 @@
 <template>
   <home>
-  <div>
-    <div>
-      <div style="width: 60%; float:left">
-        <h2 style="color: #409EFF">|账户信息</h2>
-      </div>
-      <div style="width: 40%; float: right; margin-top: 20px">
-        <el-button type="primary" @click="save" style="width:70px">保存</el-button>
-        <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
-      </div>
+    <div style="width: 30%; float:left">
+      <h2 style="color: #409EFF">|账户信息</h2>
     </div>
-    <hr style="width: 70%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
-    <div style="width:85%; margin-left: 30px; float: left">
-      <el-form  :model="newForm" status-icon :rules="rules" ref="newForm" size="medium" label-width="120px"
-                 class="demo-ruleForm">
-        <el-row>
-          <el-col :span="9">
-            <el-form-item label="登录账户" prop="accountName">
-              <el-input  style="width:250px " v-model="newForm.accountName" autocomplete="off" clearable></el-input>
-            </el-form-item>
-            <div style="position: absolute; width: 0px">
-              <el-form-item label="">
-                <el-input  autocomplete="off"></el-input>
+    <div style="width: 40%; float: right;">
+      <el-button type="primary" @click="save" style="width:70px">保存</el-button>
+      <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
+    </div>
+      <div style="width:85%; margin-left: 30px; float: left;">
+        <hr style="width: 80%; float: left; border:1px solid #409EFF; margin-top: 0; margin-bottom: 15px"></hr>
+        <el-form  :model="newForm" status-icon :rules="rules" ref="newForm" size="medium" label-width="120px"
+                   class="demo-ruleForm">
+          <el-row>
+            <el-col :span="9">
+              <el-form-item label="登录账户" prop="accountName">
+                <el-input  style="width:250px " v-model="newForm.accountName" autocomplete="off" clearable></el-input>
               </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="15">
-            <div style="position: absolute; width: 0px">
-            <el-form-item label="">
-              <el-input  type="password"  autocomplete="off" ></el-input>
-            </el-form-item>
-            </div>
-            <el-form-item label="密码" prop="password">
-              <el-input style="width:250px " type="password" v-model="newForm.password" autocomplete="off" clearable></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
+              <div style="position: absolute; width: 0px">
+                <el-form-item label="">
+                  <el-input  autocomplete="off"></el-input>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="15">
+              <div style="position: absolute; width: 0px">
+              <el-form-item label="">
+                <el-input  type="password"  autocomplete="off" ></el-input>
+              </el-form-item>
+              </div>
+              <el-form-item label="密码" prop="password">
+                <el-input style="width:250px " type="password" v-model="newForm.password" autocomplete="off" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-        <el-row>
-          <el-col :span="7">
-            <el-form-item label="关联员工编号">
-              <el-input style="width: 150px" v-model="newForm.staffNum" disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="2">
-            <el-button type="text" @click="changeDialogVisible">选择</el-button>
-            <el-button type="text" @click="clearStaffInf">清空</el-button>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="员工姓名">
-              <el-input style="width: 250px" v-model="newForm.staffName" disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="9">
-            <el-form-item label="数据权限类型" prop="permissions">
-              <el-select style="width:250px;" v-model="newForm.permissions" clearable placeholder="请选择" @change="pressionChange">
-                <el-option
-                  v-for="item in permissionsList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="密保邮箱" prop="secretEmail">
-              <el-input style="width:250px;" v-model="newForm.secretEmail" clearable :disabled="emailDisabled"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row v-if="departmentVisible">
+          <el-row>
+            <el-col :span="7">
+              <el-form-item label="关联员工编号">
+                <el-input style="width: 150px" v-model="newForm.staffNum" disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="2">
+              <el-button type="text" @click="changeDialogVisible">选择</el-button>
+              <el-button type="text" @click="clearStaffInf">清空</el-button>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="员工姓名">
+                <el-input style="width: 250px" v-model="newForm.staffName" disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="9">
+              <el-form-item label="数据权限类型" prop="permissions">
+                <el-select style="width:250px;" v-model="newForm.permissions" clearable placeholder="请选择" @change="pressionChange">
+                  <el-option
+                    v-for="item in permissionsList"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="密保邮箱" prop="secretEmail">
+                <el-input style="width:250px;" v-model="newForm.secretEmail" clearable :disabled="emailDisabled"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
           <el-row v-if="departmentVisible">
             <el-col :span="6">
               <el-form-item label="手动选择部门" prop="permissions">
@@ -90,58 +86,53 @@
               </el-form-item>
             </el-col>
           </el-row>
-        </el-row>
-      </el-form>
-    </div>
-    <div>
-      <div style="width: 50%; float:left">
-        <h2 style="color: #409EFF">|其他信息</h2>
+          <div>
+            <div style="width: 50%; float:left; margin-left:-30px">
+              <h2 style="color: #409EFF">|其他信息</h2>
+            </div>
+          </div>
+          <hr style="width: 80%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
+          <el-row>
+            <el-col :span="9">
+              <el-form-item label="新建人">
+                <el-input style="width:250px;" :disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="新建时间">
+                <el-input style="width:250px;" :disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="9">
+              <el-form-item label="修改人">
+                <el-input style="width:250px;" :disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label="修改时间">
+                <el-input style="width:250px;" :disabled="true"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="6">
+              <el-form-item label="账号状态">
+                <el-select style="width:250px;" :disabled="true" clearable placeholder="正常" ></el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col>
+              <el-form-item label="备注" prop = "remark">
+                <el-input style="width: 72%" type="textarea" :rows="2" v-model="newForm.remark"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
       </div>
-    </div>
-    <hr style="width: 70%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
-    <div style="width:85%; margin-left: 30px; float: left">
-      <el-form :model="newForm" label-width="120px" :rules="rules" ref="newForm">
-        <el-row>
-          <el-col :span="9">
-            <el-form-item label="新建人">
-              <el-input style="width:250px;" :disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="新建时间">
-              <el-input style="width:250px;" :disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="9">
-            <el-form-item label="修改人">
-              <el-input style="width:250px;" :disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="修改时间">
-              <el-input style="width:250px;" :disabled="true"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="6">
-            <el-form-item label="账号状态">
-              <el-select style="width:250px;" :disabled="true" clearable placeholder="正常" ></el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col>
-            <el-form-item label="备注" prop = "remark">
-              <el-input style="width: 72%" type="textarea" :rows="2" v-model="newForm.remark"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-    </div>
-  </div>
+
     <el-dialog fullscreen :visible.sync="dialogEmployee" :close-on-click-modal="false" width="700px">
       <employee-list :relAccount="relAccount" ></employee-list>
     </el-dialog>
