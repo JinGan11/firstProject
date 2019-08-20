@@ -233,4 +233,9 @@
             (#{item},#{roleId},#{createEmp},now(),#{modifyEmp},now())
         </foreach>
     </insert>
+
+    <select id="isRoleInvalid" parameterType="Long" resultType="int">
+        SELECT role_status from t_role_info
+        WHERE id = #{roleId}
+    </select>
 </mapper>

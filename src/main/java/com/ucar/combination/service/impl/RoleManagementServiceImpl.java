@@ -292,7 +292,17 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     }
 
     @Override
-    public void addRoleAccount(Map<String, Object> map){
-        roleManagementDao.addRoleAccount(map);
+    public String addRoleAccount(Map<String, Object> map){
+        String roleId = null;
+        if(map.get("roleId")!=null) {
+            roleId = (String) map.get("roleId");
+        }
+
+        if(roleManagementDao.isRoleInvalid( Long.parseLong(roleId)) == 0){
+             return "添加失败";
+        }else{
+            roleManagementDao.addRoleAccount(map);
+            return "添加成功";
+        }
     }
 }

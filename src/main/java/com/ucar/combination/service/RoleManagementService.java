@@ -61,5 +61,5 @@ public interface RoleManagementService {
      * @date   2019/8/12 13:06
      * @param map
      */
-    void addRoleAccount(Map<String, Object> map);
+    String addRoleAccount(Map<String, Object> map);
 }

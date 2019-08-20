@@ -840,8 +840,14 @@
         self.$http.get('roleManage/addRoleAccount.do_', {
           params: param
         }).then((result) => {
-          this.chooseAccountPage = false;
-          this.fetchAccountData();
+          if(result.msg === "添加成功") {
+            this.chooseAccountPage = false;
+            this.fetchAccountData();
+          }else{
+            self.$message.error("添加失败，该角色已失效！")
+            this.fetchAccountData();
+            this.fetchData();
+          }
         }).catch(function (error) {
           commonUtils.Log("roleManage/addRoleAccount.do_:" + error);
           self.$message.error("获取数据错误")

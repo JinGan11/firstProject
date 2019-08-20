@@ -304,7 +304,7 @@ public class RoleManagementController {
 		params.put("accountIds", accountIds);
 		params.put("createEmp", createId);
 		params.put("modifyEmp", createId);
-		roleManagementService.addRoleAccount(params);
-		return new Result().ok().put("msg", "成功添加");
+		String msg = roleManagementService.addRoleAccount(params);
+		return new Result().ok().put("msg", msg);
 	}
 }
