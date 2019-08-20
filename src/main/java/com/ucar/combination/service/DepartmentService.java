@@ -180,4 +180,14 @@ public interface DepartmentService {
      * @params 部门id或部门编号，没有的传null
      */
     Boolean checkStatusChange(Long departmentId, String departmentNo);
+
+    /**
+     * description: 查询下级部门支持的业务线
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/20 10:29
+     * @params
+     * @return
+     */
+    String getLowerSupports(String no);
+
 }

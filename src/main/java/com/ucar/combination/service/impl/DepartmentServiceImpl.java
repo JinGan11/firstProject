@@ -294,4 +294,49 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<SearchDepartmentDto> searchDepartmentAll(QueryParam queryParam) {
         return departmentDao.searchDepartment(queryParam);
     }
+
+    /**
+     * description: 获取子部门的支持业务线集合
+     *
+     * @return
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/20 10:41
+     * @params
+     */
+    @Override
+    public String getLowerSupports(String no) {
+        String[] supportbusiness = {"闪贷", "租车", "专车", "买买车", "保险"};
+        List<String> supports = departmentDao.selectLowerDepartmentBusiness(no);
+        Boolean[] flag = new Boolean[5];//01234对应闪贷，租车，专车，买买车，保险
+        for (int i = 0; i < flag.length; i++) flag[i] = false;
+        for (int i = 0; i < supports.size(); i++) {
+            String tmps[] = supports.get(i).split(";");
+            if (tmps == null || tmps.length < 1 || (tmps.length == 1 && tmps[0].equals(""))) continue;
+            for (int j = 0; j < tmps.length; j++) {
+                if (tmps[j].equals(supportbusiness[0]))
+                    flag[0] = true;
+                if (tmps[j].equals(supportbusiness[1]))
+                    flag[1] = true;
+                if (tmps[j].equals(supportbusiness[2]))
+                    flag[2] = true;
+                if (tmps[j].equals(supportbusiness[3]))
+                    flag[3] = true;
+                if (tmps[j].equals(supportbusiness[4]))
+                    flag[4] = true;
+            }
+        }
+        // 整理结果
+        String result = "";
+        int k = 0;
+        for (; k < flag.length; k++)
+            if (flag[k] == true){
+                result = supportbusiness[k];
+                break;
+            }
+        for (; k < flag.length; k++)
+            if (flag[k] == true)
+                result = result + ";" + supportbusiness[k];
+        return result;
+    }
+
 }
