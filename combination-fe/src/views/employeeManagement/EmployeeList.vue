@@ -1187,7 +1187,6 @@
         this.distributionDepartmentFlag = false;
         this.formdiStributionDepartment.staffAfterDepartmentName = '';
         this.formdiStributionDepartment.staffAfterDepartment = '';
-        alert("已取消");
       },
       confirmChoice() {
         const self = this;

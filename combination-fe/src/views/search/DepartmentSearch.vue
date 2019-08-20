@@ -515,7 +515,6 @@
           page: this.currentPageCompany,
           limit: this.pageSizeCompany,
         };
-
         this.$http.get("/department/selectDepartment.do_", {
           params: param
         }).then((resultss) => {

@@ -241,11 +241,11 @@ public class DepartmentController {
     @RequestMapping("/selectDepartment.do_")
     public Result selectDepartment(HttpServletRequest request, @RequestParam(defaultValue = "") String id) {
         DepartmentDto departmentDto = departmentService.getDepartmentDtoById(id);
-        if (departmentDto.getCreateEmp()!=null){
+        if (departmentDto!=null&&departmentDto.getCreateEmp()!=null){
             StaffAccountDTO staffAccountDTO=employeeManageService.getInfoByStaffId(departmentDto.getCreateEmp());
             departmentDto.setCreateEmpName(staffAccountDTO.getCreateEmpName());
         }
-        if (departmentDto.getModifyEmp()!=null){
+        if (departmentDto!=null&&departmentDto.getModifyEmp()!=null){
             StaffAccountDTO staffAccountDTO1=employeeManageService.getInfoByStaffId(departmentDto.getModifyEmp());
             departmentDto.setModifyEmpName(staffAccountDTO1.getModifyEmpName());
         }
