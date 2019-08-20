@@ -149,14 +149,13 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
     @Override
     public StaffAccountDTO getInfoByStaffId(long staffId){
         StaffAccountDTO staffAccountDTO=new StaffAccountDTO();
-        if(employeeManageDao.getCreateStaffId(staffId).longValue()==0){
+        if(employeeManageDao.getCreateStaffId(staffId)==null||Long.valueOf(employeeManageDao.getCreateStaffId(staffId))==0){
             staffAccountDTO.setCreateEmpName((String)employeeManageDao.getCreateEmpById(staffId));
         }else{
             Map<String,Object> createMap=employeeManageDao.getCreateInfo(staffId);
             staffAccountDTO.setCreateEmpName((String)createMap.get("accountName")+"("+(String)createMap.get("staffName")+")");
         }
-
-        if(employeeManageDao.getModifyStaffId(staffId).longValue()==0){
+        if(employeeManageDao.getModifyStaffId(staffId)==null||Long.valueOf(employeeManageDao.getModifyStaffId(staffId))==0){
             staffAccountDTO.setModifyEmpName((String)employeeManageDao.getModifyEmpById(staffId));
         }else{
             Map<String,Object> modifyMap=employeeManageDao.getModifyInfo(staffId);

@@ -436,7 +436,7 @@
         var param = {
           id: val.accountId,
         }
-        this.$http.get("/account/selectAccountById.do_", {
+        this.$http.get("/account/selectById.do_", {
           params: param
         }).then((result) => {
           this.formDetail = result.account;

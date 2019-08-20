@@ -157,20 +157,24 @@
         ORDER BY modify_time DESC
     </select>
     <select id="selectById" parameterType="java.lang.Long" resultType="com.ucar.combination.model.Account">
-        SELECT T.id,
+           SELECT T.id,
                 T.account_name,
                 T.account_password,
                 T.staff_id,
-                T.permissions,
-                T.account_secret_email,
+                T.permissions premissions,
+                T.account_secret_email secretEmail,
                 T.create_time,
-                T.create_emp,
+                T.create_emp creatEmpId,
                 T.modify_time,
-                T.modify_emp,
+                T.modify_emp modifyEmpId,
                 T.account_state,
-                T.account_remark
+                T.account_remark,
+
+               T1.staff_num,
+               T1.staff_name
                 FROM t_account T
-                  where T.id=#{id};
+                  LEFT JOIN t_staff T1  ON T.id = T1.account_id
+                  where T.id=#{id}
 
     </select>
     <resultMap type="com.ucar.combination.model.RoleAccount" id="RoleAccount">
@@ -240,7 +244,7 @@
         where t1.id = #{id}
     </update>
     <update id="updateState" parameterType="java.lang.String">
-        UPDATE t_account T set T.account_state=0 WHERE T.id=#{id};
+        UPDATE t_account T set T.account_state=3 WHERE T.id=#{id};
     </update>
 
     <insert id="insertAccountHistory" parameterType="com.ucar.combination.model.AccountStaff">

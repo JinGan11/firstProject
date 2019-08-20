@@ -312,17 +312,7 @@
         <hr style="height: 1px">
         <div>
           <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">部门及部门下属所在城市</div>
-           <el-form-item>
-             <template>
-            <el-popover
-              placement="bottom"
-              width="200"
-              trigger="hover"
-              :content=>
-              <el-input style="width: 700px;" v-model="this.departmentListById.toString()" disabled></el-input>
-            </el-popover>
-             </template>
-           </el-form-item>
+              <el-input style="width: 90%;text-align: center" v-model="this.departmentListById.toString()" disabled></el-input>
         </div>
         <hr style="height: 1px">
         <div>

@@ -6,9 +6,11 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Department;
+import com.ucar.combination.model.Staff;
 import com.ucar.combination.model.dto.*;
 import com.ucar.combination.service.CompanyManageService;
 import com.ucar.combination.service.DepartmentService;
+import com.ucar.combination.service.EmployeeManageService;
 import com.ucar.combination.service.RegionManageService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,8 @@ public class DepartmentController {
     @Autowired
     RegionManageService regionManageService;
 
+    @Autowired
+    EmployeeManageService employeeManageService;
     /**
      * description: 构建树结构的部门
      *
@@ -237,6 +241,14 @@ public class DepartmentController {
     @RequestMapping("/selectDepartment.do_")
     public Result selectDepartment(HttpServletRequest request, @RequestParam(defaultValue = "") String id) {
         DepartmentDto departmentDto = departmentService.getDepartmentDtoById(id);
+        if (departmentDto.getCreateEmp()!=null){
+            StaffAccountDTO staffAccountDTO=employeeManageService.getInfoByStaffId(departmentDto.getCreateEmp());
+            departmentDto.setCreateEmpName(staffAccountDTO.getCreateEmpName());
+        }
+        if (departmentDto.getModifyEmp()!=null){
+            StaffAccountDTO staffAccountDTO1=employeeManageService.getInfoByStaffId(departmentDto.getModifyEmp());
+            departmentDto.setModifyEmpName(staffAccountDTO1.getModifyEmpName());
+        }
         return new Result().ok().put("department", departmentDto).put("CompanyTypeEnum", CommonEnums.toEnumMap(CommonEnums.CompanyType.values())).put("CompanyStatusEnum", CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values())).put("CompanyMarkEnum", CommonEnums.toEnumMap(CommonEnums.CompanyMark.values())).put("CompanyNatureEnum", CommonEnums.toEnumMap(CommonEnums.CompanyNature.values())).put("DepartmentTypeEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentType.values())).put("LevelEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentLevel.values())).put("DepartmentStatusEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentStatus.values()));
     }
 

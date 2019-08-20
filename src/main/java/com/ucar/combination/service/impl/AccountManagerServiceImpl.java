@@ -11,6 +11,7 @@ import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.dao.PowerDao;
 import com.ucar.combination.model.*;
 import com.ucar.combination.model.dto.AccountPowerDto;
+import com.ucar.combination.model.dto.StaffAccountDTO;
 import com.ucar.combination.service.AccountManagerService;
 import com.ucar.combination.service.DepartmentService;
 import com.ucar.combination.service.EmployeeManageService;
@@ -45,6 +46,8 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     private AccountHistoryDao accountHistoryDao;
     @Resource
     private DepartmentService departmentService;
+    @Resource
+    private EmployeeManageService employeeManageService;
 
     /**
      * description: 账户管理列表
@@ -103,6 +106,27 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         return accountManageDao.selectAccountById(id);
     }
 
+    /**
+     * description: 通过ID进行查找
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/19 19:29
+     * @params id 账户ID
+
+     * @return
+     */
+    public Account selectById(Long id){
+        Account account=accountManageDao.selectById(id);
+        if (account!=null&&account.getCreatEmpId()!=null){
+			StaffAccountDTO staffAccountDTO=employeeManageService.getInfoByStaffId(account.getCreatEmpId());
+        	account.setCreatEmpName(staffAccountDTO.getCreateEmpName());
+        	account.setModifyEmpName(staffAccountDTO.getModifyEmpName());
+
+        }
+       /* if (account!=null&&account.getModifyEmpId()!=null){
+            account.setModifyEmpName(employeeManageService.getInfoByStaffId(account.getModifyEmpId()).getModifyEmpName());
+        }*/
+        return account;
+    }
     /**
      * description:由账户id将账户状态设置为无效
      *
@@ -168,10 +192,10 @@ public class AccountManagerServiceImpl implements AccountManagerService {
      * @date 2019/8/8 10:34
      * @params 账户ID
      */
-    @Override
+ /*   @Override
     public Account selectById(Long id) {
-        return accountManageDao.selectById(id);
-    }
+        return accountManageDao.selectById(id); accountManagerService.selectById
+    }*/
 
     /**
      * description:插入历史记录
