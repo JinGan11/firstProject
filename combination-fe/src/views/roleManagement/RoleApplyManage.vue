@@ -770,6 +770,7 @@
           var self = this;
           var param = {
             selection:self.selection,
+            date : new Date().getTime(),
           };
           self.$http.get('roleApply/deleteRoleApply.do_', {
             params: param
@@ -799,6 +800,7 @@
           var self = this;
           var param = {
             selection:self.selection,
+            date : new Date().getTime(),
           };
           self.$http.get('roleApply/commitRoleApply.do_', {
             params: param
@@ -931,6 +933,7 @@
         var self = this;
         var param = {
           applyId: self.applyId,
+          date : new Date().getTime(),
         };
         self.$http.get('roleApply/showAccountListByApplyId.do_', {
           params: param
@@ -963,6 +966,7 @@
         self.roleInfoDetailFlag = true;
         var param = {
           roleID: roleId,
+          date : new Date().getTime(),
         };
         self.$http.get('roleManage/getOtherOneInf.do_', {
           params: param
