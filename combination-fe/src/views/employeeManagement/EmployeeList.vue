@@ -1261,6 +1261,7 @@
             this.dialogVisible = false;
             this.checkedemployees = [];
             this.filterVal = [];
+            this.checkAll=false;
           })
         }
       },
