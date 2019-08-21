@@ -242,6 +242,8 @@
            <el-input
              type="textarea"
              :rows="4"
+             maxlength="200"
+             show-word-limit
              placeholder="请输入内容"
              v-model="rejectReason">
            </el-input>
@@ -652,6 +654,10 @@
       },
       approvalReject(){
         var self = this;
+        if(self.rejectReason ===""){
+          self.$message.error("操作失败，拒绝原因不允许为空");
+          return;
+        }
         var param = {
           id:self.selection,
           rejectReason:self.rejectReason,
