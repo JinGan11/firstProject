@@ -816,13 +816,25 @@
           var param = {
             roleId:self.myRole.roleId,
             accountIds:self.list.toString(),
+            accountNameList:self.accountNameList.toString(),
             date : new Date().getTime(),
           };
           self.$http.get('roleManage/removeRoleAccount.do_', {
             params: param
           }).then((result) => {
-            if(result.msg==='成功删除'){
+            console.log(result.romoveAccounts);
+            if(result.msg==='成功删除' && result.romoveAccounts.length ===0){
               self.$message.success("成功删除");
+              self.fetchAccountData();
+            }else if(result.msg==='成功删除' && result.romoveAccounts.length !=0) {
+                  let nameList="";
+              for (let i = 0; i < result.romoveAccounts.length ; i++) {
+                  nameList +=result.romoveAccounts[i];
+                if(i != (result.romoveAccounts.length-1)){
+                  nameList+=",";
+                }
+              }
+              self.$message.error("账户"+nameList+"已经被移除");
               self.fetchAccountData();
             }else{
               self.$message.error("删除失败");

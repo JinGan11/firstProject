@@ -278,12 +278,15 @@ public class RoleManagementController {
 	public Result removeAddAccount(HttpServletRequest request){
         String roleId = request.getParameter("roleId");
         String ids = request.getParameter("accountIds");
+		String list = request.getParameter("accountNameList");
         String[] accountIds = ids.split(",");
+        String[] accountNameList =list.split(",");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("roleId", roleId);
         params.put("accountIds", accountIds);
-        roleManagementService.removeRoleAccount(params);
-	    return new Result().ok().put("msg", "成功删除");
+		params.put("accountNameList", accountNameList);
+		List<String> romoveAccounts = roleManagementService.removeRoleAccount(params);
+	    return new Result().ok().put("msg", "成功删除").put("romoveAccounts", romoveAccounts);
     }
 
 	/**

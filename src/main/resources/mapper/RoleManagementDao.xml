@@ -238,4 +238,10 @@
         SELECT role_status from t_role_info
         WHERE id = #{roleId}
     </select>
+
+    <select id="isAccountRemoved" resultType="map">
+         SELECT account_id from t_r_account_role
+         WHERE role_id= #{roleId}
+         and account_id =#{accountId}
+    </select>
 </mapper>
