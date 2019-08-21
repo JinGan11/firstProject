@@ -332,6 +332,7 @@
           departmentName: this.accountForm.departmentName,
           powerId: this.accountForm.powerId,
           accountState: this.accountForm.accountState,
+          date:new Date().getTime(),
         };
         self.$http.get('/roleAccount/getAccountPowerList.do_', {
           params: param
@@ -350,6 +351,7 @@
         this.selection = val;
       },
       exportRole() {
+        this.checkAll=false;
         this.exportDialogVisible = true;
       },
       exportExcel() {
@@ -435,6 +437,7 @@
       formDetails(val) {
         var param = {
           id: val.accountId,
+          date:new Date().getTime(),
         }
         this.$http.get("/account/selectById.do_", {
           params: param

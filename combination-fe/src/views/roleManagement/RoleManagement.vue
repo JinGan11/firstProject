@@ -688,6 +688,7 @@
         this.exportDialogVisible = false;
       },
       exportRole() {
+        this.checkAll=false;
         this.exportDialogVisible = true;
       },
       exportField(val) {

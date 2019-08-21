@@ -27,20 +27,13 @@
         </el-col>
         <el-col :span="7">
           <el-form-item label="部门所在城市">
-            <el-select v-model="formInline.cityName"
-                       remote
-                       reserve-keyword
-                       filterable
-                       loading-text
-                       :remote-method="remoteMethod"
-                       :loading="loading">
-              <el-option value="" label="全部"></el-option>
-              <el-option v-for="item in options"
-                         :key="item.value"
-                         :lable="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
+            <el-autocomplete
+              v-model="formInline.cityName"
+              :fetch-suggestions="querySearchAsync"
+              placeholder="请输入内容"
+              @select="handleSelect"
+              clearable
+            ></el-autocomplete>
           </el-form-item>
         </el-col>
         <el-col :span="7">
@@ -49,18 +42,6 @@
             </el-input>
           </el-form-item>
         </el-col>
-        <!--</el-row>
-        <el-row >-->
-        <!-- <el-col :span="4">
-           <el-button
-             type="text"
-             @click="">选择
-           </el-button>
-           <el-button
-             type="text"
-             @click="">清空
-           </el-button>
-         </el-col>-->
         <el-col style="width: 100px">
           <el-button type="text" @click="selectDepartment" :span="2">选择</el-button>
           <el-button type="text" @click="clearDepartment" :span="2">清空</el-button>
@@ -113,12 +94,6 @@
 
     </el-form>
     <el-table ref="multipleTable" :data="tableData" border @selection-change='handleSelectionChange'>
-      <!-- <el-table-column label="选择" width="45">
-         <template slot-scope="scope">
-           <el-radio v-model="selection" :label="scope.row.id" @change="ChooseOnDetail"><:span width="0px;"></:span>
-           </el-radio>
-         </template> prop="departmentNo"
-       </el-table-column>-->
       <el-table-column label="部门编号" width="140">
         //此处是BUG吧，一摸一样的写法，上面个TEMPLATE就不行，下面个行
         <!--  <template slot-scope="scope">
@@ -399,6 +374,7 @@
         options: [],
         value: [],
         list: [],
+        state:'',
         loading: false,
         total: 0,
         currentPage: 1,
@@ -514,6 +490,7 @@
           id: val,
           page: this.currentPageCompany,
           limit: this.pageSizeCompany,
+          date:new Date().getTime(),
         };
         this.$http.get("/department/selectDepartment.do_", {
           params: param
@@ -544,6 +521,7 @@
         id:this.departmentId,
         page:this.currentPageCompany,
         limit:this.pageSizeCompany,
+        date:new Date().getTime(),
        }
        this.$http.get('/company/queryCompanyList.do_',{
        params:param,
@@ -557,6 +535,7 @@
       SearchCityList(){
       var param={
         id:this.departmentId,
+        date:new Date().getTime(),
       }
       this.$http.get('/regionManage/citySearchListById.do_',{
         params:param,
@@ -570,6 +549,9 @@
       },
       Search() {
         //this.formInline.cityName='全部';
+        if (this.formInline.cityName=='全部'){
+          this.formInline.cityName='';
+        }
         var self = this;
         var param = {
           page: self.currentPage,
@@ -583,6 +565,7 @@
           upperDepartmentNo: self.formInline.upperDepartmentNo,
           status: self.formInline.status,
           departmentType: self.formInline.departmentType,
+          date:new Date().getTime(),
         };
         self.$http.get('/department/searchDepartment.do_', {
           params: param
@@ -663,6 +646,7 @@
         }
       },
       exportDepartment() {
+        this.checkAll=false;
         this.exportDialogVisible = true;
       },
       cancel() {
@@ -719,6 +703,7 @@
       },
       clearDepartment() {//清除部门的值
         this.formInline.upperDepartmentName = '';
+        this.formInline.upperDepartmentNo='';
       },
       loadNode(node, resolve) {
         var self = this;
@@ -763,35 +748,37 @@
         }
       },
       getCheckedDepartment() {
-        /*// 获取部门 回填到文本框中
-        // alert(this.$refs.tree.getCheckedNodes()[0].departmentName);
-        //upperDepartmentName是显示到上级部门的部门名称
-        upperDepartmentNo是查找时用的部门编号
-        */
+
         this.formInline.upperDepartmentName = this.$refs.tree.getCheckedNodes()[0].departmentName;
         this.formInline.upperDepartmentNo = this.$refs.tree.getCheckedNodes()[0].departmentNo;
         this.dialogVisibleDepartment = false;
       },
-      remoteMethod(query) {
-        if (query !== '') {
-          this.loading = true;
-          setTimeout(() => {
-            this.loading = false;
-            this.options = this.list.filter(item => {
-              return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
-            });
-          }, 200);
-        } else {
-          this.options = [];
-        }
+      querySearchAsync(queryString, cb) {
+        var list = this.list;
+        var results = queryString ? list.filter(this.createStateFilter(queryString)) : list;
+
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          cb(results);
+        }, 3000 * Math.random());
+      },
+      createStateFilter(queryString) {
+        return (state) => {
+          return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+      },
+      handleSelect(item) {
+        console.log(item);
       }
     },
     mounted() {
       this.$http.get("/department/getCityList.do_").then((result) => {
-        this.list = result.cityList.map(item => {
-          return {value: item, label: item};
-        });
+        this.list.push({value:'全部'});
+       result.cityList.map(item => {
+         //对象转换为数组
+         this.list.push({value: item});
       });
+    });
       this.Search();
 
     }

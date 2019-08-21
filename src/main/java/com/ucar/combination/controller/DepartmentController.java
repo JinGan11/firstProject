@@ -262,8 +262,8 @@ public class DepartmentController {
     @ResponseBody
     @RequestMapping("/getCityList.do_")
      public Result getCityList(){
-        List<Object> cityList=regionManageService.getCityList();
-        return Result.ok().put("cityList",cityList);
+         List<Object> cityList=regionManageService.getCityList();
+        return   Result.ok().put("cityList",cityList);
     }
 
     /**
