@@ -217,12 +217,12 @@ public class AccountManagerController {
     @RequestMapping(value = "/lock",method = RequestMethod.POST)
     public Result lockAccount(@RequestBody Map<String,String> map,HttpServletRequest request){
         String accountId = map.get("id");
-        if (accountState.selectAccountStatusById(Long.parseLong(accountId)) == 1){
+        if (accountState.getAccountStateById(Long.parseLong(accountId)) == 1){
         Integer status = 2;
         accountManagerService.lockAndUnlock(Integer.parseInt(accountId),status,"冻结",request);
         return null;
-        }else if(accountState.selectAccountStatusById(Long.parseLong(accountId)) == 2){
-            return Result.error(20,"账号已冻结，冻结失败");
+        }else if(accountState.getAccountStateById(Long.parseLong(accountId)) == 2){
+            return Result.error(20,"账号状态已经是冻结，冻结失败");
         }else {
             return Result.error(30,"账号已失效，冻结失败");
         }
@@ -232,12 +232,12 @@ public class AccountManagerController {
     @RequestMapping(value = "/unLock",method = RequestMethod.POST)
     public Result unLockAccount(@RequestBody Map<String,String> map,HttpServletRequest request){
         String accountId = map.get("id");
-        if (accountState.selectAccountStatusById(Long.parseLong(accountId)) == 2){
+        if (accountState.getAccountStateById(Long.parseLong(accountId)) == 2){
             Integer status = 1;
             accountManagerService.lockAndUnlock(Integer.parseInt(accountId),status,"解冻",request);
             return null;
-        }else if(accountState.selectAccountStatusById(Long.parseLong(accountId)) == 1){
-            return Result.error(10,"账号已解冻，解冻失败");
+        }else if(accountState.getAccountStateById(Long.parseLong(accountId)) == 1){
+            return Result.error(10,"账号状态已经是正常，解冻失败");
         }else {
             return Result.error(30,"账号已失效，解冻失败");
         }

@@ -187,5 +187,5 @@ public interface AccountManageDao {
     int getAccountStateById(Long accountId);
 
     //根据员工ID获取员工状态
-    int selectAccountStatusById(long accountId);
+    //int selectAccountStatusById(long accountId);
 }
