@@ -80,18 +80,11 @@ public class CompanyManageController {
      */
     @ResponseBody
     @RequestMapping(value = "/createCompany",method = RequestMethod.POST)
-    public Result createCompany(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
+    public String createCompany(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
                                 @RequestParam("company") String data ,HttpSession session){
         Company company = JSON.parseObject(data, Company.class);
-        if(businessLicenses.length > 20) {
-            return new Result().ok().put("msg","outLimit");
-        }
-        //信用代码唯一性校验
-        Map<String,Object>map=companyManageService.creditCodeValidate(company.getCreditCode());
-        if((Boolean)map.get("result")){
-            companyManageService.insertCompany(businessLicenses, data,session);
-        }
-        return new Result().ok().put("list",map);
+        companyManageService.insertCompany(businessLicenses, data,session);
+        return "success";
     }
     /**
      * description: 获取单一公司信息
@@ -118,29 +111,12 @@ public class CompanyManageController {
      */
     @ResponseBody
     @RequestMapping(value = "/modifyCompany",method = RequestMethod.POST)
-    public Result updateCompanyById(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
+    public String updateCompanyById(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
                                     @RequestParam("company") String data ,HttpSession session){
         Company company = JSON.parseObject(data, Company.class);
         Long companyId = company.getCompanyId();
-        List<BusinessLicense> licenses = companyManageService.getIdsByCompanyId(companyId.intValue());
-        if(businessLicenses.length+licenses.size() > 20) {
-            return new Result().ok().put("error","outLimit");
-        }
-
-        //信用代码唯一性校验,先判断是否更改，如更改则需判断唯一性，否则直接更新公司
-        Map<String,Object>map=new HashMap<>();
-        if(company.getOldCreditCode().equals(company.getCreditCode())) {
-            companyManageService.updateCompanyById(businessLicenses, data, session);
-        }else{
-            map = companyManageService.creditCodeValidate(company.getCreditCode());
-            if((Boolean) map.get("result")){
-                companyManageService.updateCompanyById(businessLicenses, data, session);
-            }else{
-                return new Result().ok().put("msg", "fail");
-            }
-        }
-
-        return new Result().ok().put("msg", "success");
+        companyManageService.updateCompanyById(businessLicenses, data, session);
+        return "success";
     }
     /**
      * description: 查询未关联公司列表
@@ -289,5 +265,37 @@ public class CompanyManageController {
         params.put("id", id);
         ResultPage resultPage = companyManageService.getCompanyList(new QueryParam(params));
         return Result.ok().put("page", resultPage);
+    }
+    @ResponseBody
+    @RequestMapping(value = "/validateCompanyInfo",method = RequestMethod.POST)
+    public Result validateCompany(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
+                                @RequestParam("company") String data ,HttpSession session){
+        Company company = JSON.parseObject(data, Company.class);
+        if(businessLicenses.length > 20) {
+            return new Result().ok().put("msg","outLimit");
+        }
+        //信用代码唯一性校验
+        Map<String,Object>map=companyManageService.creditCodeValidate(company.getCreditCode());
+        return new Result().ok().put("list",map);
+    }
+    @ResponseBody
+    @RequestMapping(value = "/validateModifyCompany",method = RequestMethod.POST)
+    public Result validateModifyCompany(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
+                                    @RequestParam("company") String data ,HttpSession session) {
+        Company company = JSON.parseObject(data, Company.class);
+        Long companyId = company.getCompanyId();
+        List<BusinessLicense> licenses = companyManageService.getIdsByCompanyId(companyId.intValue());
+        if (businessLicenses.length + licenses.size() > 20) {
+            return new Result().ok().put("error", "outLimit");
+        }
+        //信用代码唯一性校验,先判断是否更改，如更改则需判断唯一性，否则直接更新公司
+        Map<String, Object> map = new HashMap<>();
+        if (!company.getOldCreditCode().equals(company.getCreditCode())) {
+            map = companyManageService.creditCodeValidate(company.getCreditCode());
+            if (!(Boolean) map.get("result")) {
+                return new Result().ok().put("msg", "fail");
+            }
+        }
+        return new Result().ok().put("msg", "success");
     }
 }

@@ -13,12 +13,12 @@
           <el-row>
             <el-col :span="10">
               <el-form-item label="公司名称:" prop="companyName">
-                <el-input style="width:200px;" v-model="form.companyName"></el-input>
+                <el-input style="width:200px;" v-model.trim="form.companyName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="统一社会信用代码:" prop="creditCode">
-                <el-input style="width:200px;" v-model="form.creditCode"></el-input>
+                <el-input style="width:200px;" v-model.trim="form.creditCode"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -53,24 +53,24 @@
           <el-row>
             <el-col :span="10">
               <el-form-item label="住所:" prop="companyAddress">
-                <el-input style="width:200px;" v-model="form.companyAddress"></el-input>
+                <el-input style="width:200px;" v-model.trim="form.companyAddress"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="经营范围:" prop="businessScope">
-                <el-input style="width:200px;" v-model="form.businessScope"></el-input>
+                <el-input style="width:200px;" v-model.trim="form.businessScope"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
               <el-form-item label="法定代表人:" prop="legalPerson">
-                <el-input style="width:200px;" v-model="form.legalPerson"></el-input>
+                <el-input style="width:200px;" v-model.trim="form.legalPerson"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="注册资本:"  prop="registeredCapital">
-                <el-input style="width:200px;" v-model="form.registeredCapital"></el-input>
+                <el-input style="width:200px;" v-model.trim="form.registeredCapital"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -88,7 +88,7 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="登记机关:" prop="registeredInstitution">
-                <el-input style="width:200px;" v-model="form.registeredInstitution"></el-input>
+                <el-input style="width:200px;" v-model.trim="form.registeredInstitution"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -106,7 +106,7 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="登记状态:" prop="registeredStatus">
-                <el-input style="width:200px;" v-model="form.registeredStatus"></el-input>
+                <el-input style="width:200px;" v-model.trim="form.registeredStatus"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -155,26 +155,26 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="注册地址:" prop="registrationAddress">
-                <el-input style="width:200px;" v-model="form.registrationAddress"></el-input>
+                <el-input style="width:200px;" v-model.trim="form.registrationAddress"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="10">
               <el-form-item label="开户银行:" prop="bankName">
-                <el-input style="width:200px;" v-model="form.bankName"></el-input>
+                <el-input style="width:200px;" v-model.trim="form.bankName"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
               <el-form-item label="账号:" prop="bankAccount">
-                <el-input style="width:200px;" v-model="form.bankAccount"></el-input>
+                <el-input style="width:200px;" v-model.trim="form.bankAccount"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="9">
               <el-form-item label="注册电话:" prop="telephone">
-                <el-input style="width:200px;" v-model="form.telephone"></el-input>
+                <el-input style="width:200px;" v-model.trim="form.telephone"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="10">
@@ -234,7 +234,7 @@
           <el-row>
             <el-col :span="10">
               <el-form-item label="备注:" prop="remark">
-                <el-input style="width:200px;" v-model="form.remark"></el-input>
+                <el-input style="width:200px;" v-model.trim="form.remark"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -313,11 +313,13 @@
           companyName: [
             { required: true, message: '请输入公司名称', trigger: 'blur' },
             { min: 2, max: 60, message: '长度在 2 到 60 个字符', trigger: 'blur' },
+            { pattern:/(^[^ ]{2,60}$)/,message: '不能输入空格', trigger: 'blur' },
+
           ],
           creditCode: [
             { required: true, message: '请输入统一社会信用代码', trigger: 'blur' },
-            //{ min: 15, max: 18, message: '长度在 15 到 18 个字符或数字', trigger: 'blur' },
-            { pattern:/(^[\da-zA-Z]{15}$)|(^[\da-zA-Z]{18}$)/,message: '长度为15或18位，且只支持字母和数字', trigger: 'blur' }
+            { min: 15, max: 18, message: '长度在 15 到 18 个字符或数字', trigger: 'blur' },
+            { pattern:/(^[^ \da-zA-Z]{15}$)|(^[\da-zA-Z]{18}$)/,message: '长度为15或18位，且只支持字母和数字', trigger: 'blur' }
           ],
           companyType:[
             { required: false, message: '公司类型', trigger: 'blur' },
@@ -335,6 +337,8 @@
           ],
           companyAddress:[
             { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' },
+            //{ pattern:/(^[^ ]{2,100}$)/,message: '不能输入空格', trigger: 'blur' },
+
           ],
           businessScope:[
             { min: 2, max: 200, message: '长度在 2 到 200 个字符', trigger: 'blur' },
@@ -459,65 +463,52 @@
         });
       },
       save() {//保存修改公司信息
-        this.$refs.upload.submit();
-        const self = this;
-    //    console.log(self.form.registeredCapital)
-        if(this.iscommit){
-          self.$refs["ruleForm"].validate(function (valid) {
-            if (valid) {
-              // console.log(self.form.registeredCapital)
-              //if(self.$options.methods.checkInput(self)==false) return;
-              self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-              }).then(() => {
-                var companyId=window.localStorage.getItem('companyId');
-                self.form.companyId=companyId;
-                self.form.businessStartTime=self.businessTerm[0];
-                self.form.businessDeadline=self.businessTerm[1];
-                self.form.liscensePath='dfs';
-                self.form.createEmp='';
-                self.form.modifyEmp='';
-                self.formData.append("company", JSON.stringify(self.form));
-                //     console.log(self.formData.get("businessLicenses"));
-                self.$http.post("company/modifyCompany",self.formData)
-                  .then((result) => {
-                    console.log(result.msg)
-                    if(result.error ==="outLimit"){
-                      self.$message.error("最多只能上传20张图片!");
-                      self.formData=new FormData();
-                      return ;
-                    }
-                    if (result.msg !="success") {
-                      self.$alert("统一社会信用代码已存在，请重新修改！");
-                    }else{
-                      self.$alert("修改成功！");
-                      self.$router.replace("/CompanyManagement");
-                    }
-                    self.formData=new FormData();
-                  })
-                  .catch(function (error) {
-                    self.formData=new FormData();
-                    commonUtils.Log("company/modifyCompany:"+error);
-                    self.$message.error("修改公司失败");
-                  });
-                this.$message({
-                  type: 'success',
-                  message: '保存成功!'
-                });
-              }).catch(() => {
-                this.$message({
-                  type: 'info',
-                  message: '已取消保存'
-                });
-              });
-            } else {
-              //    console.log('error submit!!');
-              return false;
-            }
-          })
-        }
+          this.$refs.upload.submit();
+          const self = this;
+          //    console.log(self.form.registeredCapital)
+          if(this.iscommit){
+              self.$refs["ruleForm"].validate(function (valid) {
+                  if (valid) {
+                      // console.log(self.form.registeredCapital)
+                      //if(self.$options.methods.checkInput(self)==false) return;
+                          var companyId=window.localStorage.getItem('companyId');
+                          self.form.companyId=companyId;
+                          self.form.businessStartTime=self.businessTerm[0];
+                          self.form.businessDeadline=self.businessTerm[1];
+                          self.form.liscensePath='dfs';
+                          self.form.createEmp='';
+                          self.form.modifyEmp='';
+                          self.formData.append("company", JSON.stringify(self.form));
+                          //     console.log(self.formData.get("businessLicenses"));
+                          self.$http.post("company/validateModifyCompany",self.formData)
+                              .then((result) => {
+                                  self.$alert("第一层");
+                                  console.log(result.msg)
+                                  if(result.error ==="outLimit"){
+                                      self.$message.error("最多只能上传20张图片!");
+                                      self.formData=new FormData();
+                                      return ;
+                                  }
+                                  if (result.msg !="success") {
+                                      self.$alert("统一社会信用代码已存在，请重新修改！");
+                                      self.formData=new FormData();
+                                  }else{
+                                      self.formData=new FormData();
+                                      self.saveCompanyInfo();
+                                  }
+                              })
+                              .catch(function (error) {
+                                  self.formData=new FormData();
+                                  commonUtils.Log("company/validateModifyCompany:"+error);
+                                  self.$message.error("校验修改公司内容失败");
+                              });
+
+                  } else {
+                      //    console.log('error submit!!');
+                      return false;
+                  }
+              })
+          }
           },
       cancel(){//关闭新建公司页面，返回公司管理列表页面
         this.$router.replace('/CompanyManagement')
@@ -575,6 +566,51 @@
         this.preview=true;
         this.previewId=id;
       },
+        saveCompanyInfo() {//保存修改公司信息
+            this.$refs.upload.submit();
+            const self = this;
+            //    console.log(self.form.registeredCapital)
+            if(this.iscommit){
+                        // console.log(self.form.registeredCapital)
+                        //if(self.$options.methods.checkInput(self)==false) return;
+                        self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            var companyId=window.localStorage.getItem('companyId');
+                            self.form.companyId=companyId;
+                            self.form.businessStartTime=self.businessTerm[0];
+                            self.form.businessDeadline=self.businessTerm[1];
+                            self.form.liscensePath='dfs';
+                            self.form.createEmp='';
+                            self.form.modifyEmp='';
+                            self.formData.append("company", JSON.stringify(self.form));
+                            //     console.log(self.formData.get("businessLicenses"));
+                            self.$http.post("company/modifyCompany",self.formData)
+                                .then((result) => {
+                                    console.log(result.msg)
+                                        self.$alert("修改成功！");
+                                        self.$router.replace("/CompanyManagement");
+                                        self.formData=new FormData();
+                                })
+                                .catch(function (error) {
+                                    self.formData=new FormData();
+                                    commonUtils.Log("company/modifyCompany:"+error);
+                                    self.$message.error("修改公司失败");
+                                });
+                            this.$message({
+                                type: 'success',
+                                message: '保存成功!'
+                            });
+                        }).catch(() => {
+                            this.$message({
+                                type: 'info',
+                                message: '已取消保存'
+                            });
+                        });
+            }
+        },
     },
   }
 

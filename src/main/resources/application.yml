@@ -28,16 +28,16 @@ spring:
         url: jdbc:mysql://10.104.20.123:3306/ucar_combination_test1?useUnicode=true&characterEncoding=UTF-8&useSSL=false&&allowMultiQueries=true&serverTimezone=GMT%2B8&&zeroDateTimeBehavior=convertToNull
         username: developer
         password: developer1015
-#        url: jdbc:mysql://127.0.0.1:3306/ucar_combination_test1?useUnicode=true&characterEncoding=UTF-8&useSSL=false&&allowMultiQueries=true&serverTimezone=GMT%2B8&&zeroDateTimeBehavior=convertToNull
-#        username: root
-#        password: ucarinc
-      read:
-        url: jdbc:mysql://10.104.20.123:3306/ucar_combination_test1?useUnicode=true&characterEncoding=UTF-8&useSSL=false&&allowMultiQueries=true&serverTimezone=GMT%2B8&&zeroDateTimeBehavior=convertToNull
-        username: developer
-        password: developer1015
-#        url: jdbc:mysql://127.0.0.1:3306/ucar_combination_test1?useUnicode=true&characterEncoding=UTF-8&useSSL=false&&allowMultiQueries=true&serverTimezone=GMT%2B8&&zeroDateTimeBehavior=convertToNull
-#        username: root
-#        password: ucarinc
+        #        url: jdbc:mysql://127.0.0.1:3306/ucar_combination_test1?useUnicode=true&characterEncoding=UTF-8&useSSL=false&&allowMultiQueries=true&serverTimezone=GMT%2B8&&zeroDateTimeBehavior=convertToNull
+        #        username: root
+        #        password: ucarinc
+        read:
+          url: jdbc:mysql://10.104.20.123:3306/ucar_combination_test1?useUnicode=true&characterEncoding=UTF-8&useSSL=false&&allowMultiQueries=true&serverTimezone=GMT%2B8&&zeroDateTimeBehavior=convertToNull
+          username: developer
+          password: developer1015
+      #        url: jdbc:mysql://127.0.0.1:3306/ucar_combination_test1?useUnicode=true&characterEncoding=UTF-8&useSSL=false&&allowMultiQueries=true&serverTimezone=GMT%2B8&&zeroDateTimeBehavior=convertToNull
+      #        username: root
+      #        password: ucarinc
       initial-size: 10
       max-active: 100
       min-idle: 10
