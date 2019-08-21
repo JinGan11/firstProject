@@ -1,6 +1,14 @@
 <template>
   <div>
-    <el-container ref="container" class="view-container" v-if="loginIn">
+    <div id="resetPass" v-if="$route.path ==='/resetPass'">
+      <reset-pass></reset-pass>
+    </div>
+
+    <div id="abc" v-else-if="$route.path.slice(-6)==='/'">
+      <login-page @loginSuccess="loginSuccess"></login-page>
+    </div>
+
+    <el-container ref="container" class="view-container" v-else-if="loginIn">
     <!--<el-container ref="container" class="view-container" v-if="$route.path.slice(-6)!=='/index'">-->
       <aside-menu :isCollapse="isCollapse" :data="data"></aside-menu>
       <div class="contentBox" :class="{'content-collapse':isCollapse}">
@@ -102,13 +110,6 @@
       </el-dialog>
     </el-container>
 
-    <div id="abc" v-else-if="$route.path.slice(-6)==='/'">
-      <login-page @loginSuccess="loginSuccess"></login-page>
-    </div>
-
-    <div id="resetPass" v-else>
-      <reset-pass></reset-pass>
-    </div>
   </div>
 </template>
 
