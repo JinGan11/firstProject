@@ -220,9 +220,9 @@ public class EmployeeManageController {
         staff.setModifyEmp((Long)(request.getSession().getAttribute("accountId")));
         employeeManageService.updateStaff(staff);
         Long accountId=staff.getAccountId();
-        if(accountId!=null&&staff.getStaffEmail()!=null){
+        if(accountId != null && accountId !=0 &&staff.getStaffEmail()!=null){
             Account account=accountManagerService.selectAccountById(String.valueOf(accountId));
-            if(account.getaccountState()==1 && account != null){
+            if(account.getaccountState()==1){
                 accountManagerService.updateAccountSecretEmailById(staff.getStaffEmail(), String.valueOf(accountId));
             }
 
