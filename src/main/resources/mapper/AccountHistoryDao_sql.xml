@@ -24,7 +24,6 @@
         t_account t1,t_account_history t2
         where t2.account_id = #{accountId}
         and t2.create_emp = t1.id
-
-
+        order by create_time DESC
     </select>
 </mapper>

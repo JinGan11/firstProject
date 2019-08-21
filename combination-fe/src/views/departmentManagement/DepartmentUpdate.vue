@@ -8,22 +8,20 @@
       </div>
     </div>
 
-    <el-form style="margin-left: 10px; padding-top: 10px">
+    <el-form style="margin-left: 10px; padding-top: 10px" :model="form" ref="form" :rules="rulesDepartment">
 
       <span>基本信息</span>
       <hr><br>
 
       <el-row>
         <el-col :span="8">
-          <el-form-item label="部门编号">
+          <el-form-item label="部门编号" prop="departmentNo">
             <el-input style="width:200px;" v-model="form.departmentNo" :disabled="true" maxlength="7"></el-input>
-            <span style="color: red;">*</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="部门名称">
+          <el-form-item label="部门名称" prop="departmentName">
             <el-input style="width:200px;" v-model="form.departmentName" maxlength="40"></el-input>
-            <span style="color: red;">*</span>
           </el-form-item>
         </el-col>
       </el-row>
@@ -45,13 +43,12 @@
 
       <el-row>
         <el-col :span="8">
-          <el-form-item label="手机号">
+          <el-form-item label="手机号" prop="telephone">
             <el-input style="width:200px;" v-model="form.telephone" maxlength="11"></el-input>
-            <span style="color: red;">*</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="邮箱">
+          <el-form-item label="邮箱" prop="email">
             <el-input style="width:200px;" v-model="form.email" maxlength="30"></el-input>
           </el-form-item>
         </el-col>
@@ -59,31 +56,30 @@
 
       <el-row>
         <el-col :span="8">
-          <el-form-item label="座机号">
+          <el-form-item label="座机号" prop="landline">
             <el-input style="width:200px;" v-model="form.landline" maxlength="13"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="所在城市">
+          <el-form-item label="所在城市" prop="cityName">
             <el-input style="width:200px;" v-model="cityName" :disabled="true" maxlength="20"></el-input>
-            <span style="color: red;">*</span>
-            <a style="color: blue" @click="chooseCityVisible = true">选择</a>
+            <a style="color: blue;cursor: pointer" @click="chooseCityVisible = true">选择</a>
           </el-form-item>
         </el-col>
       </el-row>
 
       <el-row>
         <el-col :span="16">
-          <el-form-item label="详细地址">
+          <el-form-item label="详细地址" prop="address">
             <div><span :hidden="!haveWorkplace" style="color: #FF0000;">*</span>
-            <el-input style="width:600px;" v-model="form.address" maxlength="255" @focus="baiduMapFlag=true"></el-input></div>
+              <el-input style="width:600px;" v-model="form.address" maxlength="255" @focus="baiduMapFlag=true"></el-input></div>
           </el-form-item>
         </el-col>
       </el-row>
 
       <el-row>
-        <el-col :span="8">
-          <el-form-item label="经度">
+        <el-col :span="8" :inline="true">
+          <el-form-item label="经度" prop="longitudeNum">
             <el-select style="width: 60px" v-model="longitudeDirection" placeholder="选">
               <el-option
                 v-for="item in longitudeOptions"
@@ -96,7 +92,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="纬度">
+          <el-form-item label="纬度" prop="latitudeNum">
             <el-select style="width: 60px" v-model="latitudeDirection" placeholder="选">
               <el-option
                 v-for="item in latitudeOptions"
@@ -117,7 +113,7 @@
 
       <el-row>
         <el-col :span="8">
-          <el-form-item label="部门级别">
+          <el-form-item label="部门级别" prop="level">
             <el-select style="width: 200px;" v-model="form.level" :disabled="true" @change="levelChange">
               <el-option
                 v-for="item in departmentLevelOptions"
@@ -126,7 +122,6 @@
                 :value="item.value">
               </el-option>
             </el-select>
-            <span style="color: red;">*</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -138,14 +133,14 @@
 
       <el-row>
         <el-col :span="16">
-          <el-form-item label="支持业务线" style="width:400px;">
-            <span style="color: red;">*</span>
+          <el-form-item label="支持业务线" style="width:400px;" prop="supports">
+            <br/>
             <el-checkbox-group v-model="supports">
-              <el-checkbox label="买买车" :disabled="businessDisable.maimaiche"></el-checkbox>
-              <el-checkbox label="闪贷" :disabled="businessDisable.shandai"></el-checkbox>
-              <el-checkbox label="租车" :disabled="businessDisable.zuche"></el-checkbox>
-              <el-checkbox label="专车" :disabled="businessDisable.zhuanche"></el-checkbox>
-              <el-checkbox label="保险" :disabled="businessDisable.baoxian"></el-checkbox>
+              <el-checkbox label="买买车" name="supports" :disabled="businessDisable.maimaiche"></el-checkbox>
+              <el-checkbox label="闪贷" name="supports" :disabled="businessDisable.shandai"></el-checkbox>
+              <el-checkbox label="租车" name="supports" :disabled="businessDisable.zuche"></el-checkbox>
+              <el-checkbox label="专车" name="supports" :disabled="businessDisable.zhuanche"></el-checkbox>
+              <el-checkbox label="保险" name="supports" :disabled="businessDisable.baoxian"></el-checkbox>
             </el-checkbox-group>
           </el-form-item>
         </el-col>
@@ -153,8 +148,8 @@
 
       <el-row v-if="haveWorkplace">
         <el-col :span="8">
-          <el-form-item label="部门类型">
-            <el-select style="width: 200px;" :disabled="true" v-model="form.departmentType">
+          <el-form-item label="部门类型" prop="departmentType">
+            <el-select style="width: 200px;" :disabled="true" v-model="form.departmentType"  @change="deptTypeChange">
               <el-option
                 v-for="item in departmentTypeOptions"
                 :key="item.value"
@@ -162,13 +157,11 @@
                 :value="item.value">
               </el-option>
             </el-select>
-            <span style="color: red;">*</span>
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="办公点标识">
+          <el-form-item label="办公点标识" prop="workplace">
             <el-input style="width:200px;" :disabled="true" v-model="form.workplace" maxlength="3"></el-input>
-            <span style="color: red;">*</span>
           </el-form-item>
         </el-col>
       </el-row>
@@ -326,6 +319,93 @@
   export default {
     data() {
       let self = this;
+
+      //各种校验 zzz
+      var validLevel = (rule, value, callback) => {
+        if (this.form.level == '' || this.form.level<= 0)
+          return callback(new Error("请选择部门级别"));
+        callback();
+      };
+      var validDepartmentNo = (rule, value, callback) => {
+        if( this.form.departmentNo=='' ) callback(new Error("请填写部门编号"));
+        if (this.form.level == '' || this.form.level<= 0)
+          callback();
+        var patternDeptNo;
+        switch (this.form.level) {
+          case 1:
+            patternDeptNo = /^Z[a-zA-Z0-9]{6}$/;
+            if (!patternDeptNo.test(this.form.departmentNo))
+              callback(new Error("格式错误：7位数字或字母，以Z开头"));
+            break;
+          case 2:
+            patternDeptNo = /^F[a-zA-Z0-9]{6}$/;
+            if (!patternDeptNo.test(this.form.departmentNo))
+              callback(new Error("格式错误：7位数字或字母，以F开头"));
+            break;
+          case 3:
+            patternDeptNo = /^G[a-zA-Z0-9]{6}$/;
+            if (!patternDeptNo.test(this.form.departmentNo))
+              callback(new Error("格式错误：7位数字或字母，以G开头"));
+            break;
+          case 4:
+            patternDeptNo = /^Q[a-zA-Z0-9]{6}$/;
+            if (!patternDeptNo.test(this.form.departmentNo))
+              callback(new Error("格式错误：7位数字或字母，以Z开头"));
+            break;
+          case 5:
+            patternDeptNo = /^B[a-zA-Z0-9]{6}$/;
+            if (!patternDeptNo.test(this.form.departmentNo))
+              callback(new Error("格式错误：7位数字或字母，以B开头"));
+            break;
+        }
+        callback();
+      };
+      var validDepartmentType = (rule, value, callback) => {
+        if (this.haveWorkplace) {
+          if (this.form.departmentType == '' || this.form.departmentType <= 0)
+            callback(new Error("请填写部门类型"));
+        }
+        callback();
+      };
+      var validWorkplace = (rule, value, callback) => {
+        if (this.haveWorkplace) {
+          var patternWorkplace = /^[0-9]{1,3}$/;
+          if (!patternWorkplace.test(value))
+            callback(new Error("请填写办公点标识，支持1-3位数字"));
+          if(value==0 || value=='0')
+            callback(new Error("办公点标识不能为0"));
+        }
+        callback();
+      };
+      var validAddress = (rule, value, callback) => {
+        if (this.haveWorkplace && value == '')
+          callback(new Error("请填写详细地址"));
+        callback();
+      };
+      var validSupports = (rule, value, callback) => {
+        if (this.supports == [] || this.supports == '' || this.supports.length <= 0)
+          return callback(new Error("请至少选择一个业务线"));
+        callback();
+      };
+      var validLongitude = (rule, value, callback) => {
+        if(this.longitudeNum=='') callback();
+        var patternLongitudeNum = /^(0(\.\d{1,10})?|([1-9](\d)?)(\.\d{1,10})?|1[0-7]\d{1}(\.\d{1,10})?|180\.0{1,10})$/;
+        if (!patternLongitudeNum.test(this.longitudeNum))
+          return callback(new Error("经度格式有误，格式为'120.1234567'"));
+        callback();
+      };
+      var validLatitude = (rule, value, callback) => {
+        if(this.latitudeNum=='') callback();
+        var patternLatitudeNum = /^((0|([1-8]\d?))(\.\d{1,10})?|90(\.0{1,10})?)$/;
+        if (!patternLatitudeNum.test(this.latitudeNum))
+          return callback(new Error("纬度格式有误，格式为'70.1234567'"));
+        callback();
+      };
+      var validCityName = (rule, value, callback) => {
+        if (this.cityName == '')
+          return callback(new Error("请选择城市"));
+        callback();
+      };
       return {
         address: null,
         searchKey: '',
@@ -519,6 +599,51 @@
         //员工选择
         dialogEmployee: false,
         relAccount: 1,
+        // 数据校验
+        rulesDepartment: {
+          departmentNo:[
+            {required:true, validator:validDepartmentNo, trigger: 'blur'}
+          ],
+          departmentName: [
+            {required: true, message: '请输入部门名称', trigger: 'blur'},
+          ],
+          telephone: [
+            {required: true, message: '请输入手机号', trigger: 'blur'},
+            {pattern: /^1[0-9]{10}$/, message: '手机号格式不正确', trigger: 'blur'}
+          ],
+          email: [
+            {pattern: /^\w+@[a-z0-9]+\.[a-z]+$/i, message: '邮箱格式不正确', trigger: 'blur'}
+          ],
+          landline: [
+            {pattern: /^[0-9]{4}\-[0-9]{7,8}$/, message: "座机号格式不正确，格式为'0592-8888888'", trigger: 'blur'}
+          ],
+          cityName: [
+            {required: true, validator: validCityName, trigger: 'blur'}
+          ],
+          level: [
+            { required:true, validator: validLevel, trigger: 'blur'}
+          ],
+          supports: [
+            {required: true, validator: validSupports, trigger: 'change'},
+          ],
+          longitudeNum: [
+            {validator: validLongitude, trigger: 'blur'}
+          ],
+          latitudeNum: [
+            {validator: validLatitude, trigger: 'blur'}
+          ],
+          departmentType: [
+            {required: true, validator: validDepartmentType, trigger: 'blur'}
+          ],
+          workplace: [
+            {required: true, validator: validWorkplace, trigger: 'blur'}
+          ],
+          address: [
+            {validator: validAddress, trigger: 'blur'}
+          ]
+          // ccc
+
+        },
       }
     },
     provide(){
@@ -640,35 +765,48 @@
       levelChange() {
         if(this.form.level==5) this.haveWorkplace=true;
         else this.haveWorkplace=false;
+        this.$options.methods.checkInputByHand(this,'level');
+        this.$options.methods.checkInputByHand(this,'address');
+        this.$options.methods.checkInputByHand(this,'departmentNo');
+      },
+      deptTypeChange(){
+        this.$options.methods.checkInputByHand(this,'departmentType');
+      },
+      checkInputByHand(self,name){
+        self.$refs.form.validateField(name);
       },
       save () {
         var self=this;
+        self.$refs['form'].validate(function (valid) {
+          if(valid) {
+            self.form.supportBusiness = self.$options.methods.addSubSign(self.supports); // 添加分隔符;
+            self.form.longitude = self.longitudeNum + self.longitudeDirection;
+            self.form.latitude = self.latitudeNum + self.latitudeDirection;
 
-        self.form.supportBusiness = self.$options.methods.addSubSign(self.supports); // 添加分隔符;
-        self.form.longitude = self.longitudeNum + self.longitudeDirection;
-        self.form.latitude = self.latitudeNum + self.latitudeDirection;
-
-        // 给不需要的值统一设置0避免占用数字
-        if(self.haveWorkplace==false){
-          self.form.workplace=0;
-          self.departmentType=0;
-        }
-
-        // 前端校验输入
-        if(!self.$options.methods.checkInput(self)) return;
-        //return; //=========================================================================
-        self.$http.post("department/updateDepartment.do_",self.form)
-          .then(result => {
-            if(!result.result){
-              self.$message.error(result.msg);
-              return false;
+            // 给不需要的值统一设置0避免占用数字
+            if (self.haveWorkplace == false) {
+              self.form.workplace = 0;
+              self.departmentType = 0;
             }
-            self.$message.success("修改成功！");
-            self.$router.replace("/departmentManagement/showDepartment");
-          })
-          .catch(function (error) {
 
-          })
+            // 前端校验输入
+            //if(!self.$options.methods.checkInput(self)) return;
+            // alert("假装添加成功！");
+            // return;
+            self.$http.post("department/updateDepartment.do_", self.form)
+              .then(result => {
+                if (!result.result) {
+                  self.$message.error(result.msg);
+                  return false;
+                }
+                self.$message.success("修改成功！");
+                self.$router.replace("/departmentManagement/showDepartment");
+              })
+              .catch(function (error) {
+
+              })
+          }
+        });
       },
       // 添加业务线的分隔符
       addSubSign (data) {
@@ -808,8 +946,13 @@
       },
       chooseStaff(staffData) {//关联员工
         var self = this;
-        self.form.staffId = staffData.id;
-        self.form.staffName = staffData.staffName;
+        if(staffData.isDimission!=1){
+          self.form.staffId = staffData.id;
+          self.form.staffName = staffData.staffName;
+        }else{
+          self.$message.error("无法选择离职的员工！");
+          self.dialogEmployee = !self.dialogEmployee;
+        }
       },
 
 
@@ -899,6 +1042,7 @@
               self.cityName=self.countySearchList[i].regionName;
               self.form.cityId=self.chooseCityForm.countyChosen;
               self.chooseCityVisible=false;
+              self.$options.methods.checkInputByHand(self,'cityName');
               return;
             }
           }
@@ -909,6 +1053,7 @@
               self.cityName=self.citySearchList[i].regionName;
               self.form.cityId=self.chooseCityForm.cityChosen;
               self.chooseCityVisible=false;
+              self.$options.methods.checkInputByHand(self,'cityName');
               return;
             }
           }
@@ -919,11 +1064,13 @@
               self.cityName=self.provinceSearchList[i].regionName;
               self.form.cityId=self.chooseCityForm.provinceChosen;
               self.chooseCityVisible=false;
+              self.$options.methods.checkInputByHand(self,'cityName');
               return;
             }
           }
         }
         self.$message.error("请至少选择一个城市！");
+        self.$options.methods.checkInputByHand(self,'cityName');
       },
       initSearch () {
         let vm = this;
@@ -978,7 +1125,8 @@
         if (self.form.address === '') {
           self.form.address = self.searchKey
         }
-        self.baiduMapFlag = false
+        self.baiduMapFlag = false;
+        self.$options.methods.checkInputByHand(self,'cityName');
       },
     }
   }

@@ -13,10 +13,7 @@ import com.ucar.combination.service.RoleManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Description: 角色管理
@@ -286,13 +283,51 @@ public class RoleManagementServiceImpl implements RoleManagementService {
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
 
+    /**
+     * description: 移除角色账户信息
+     * @author qingyu.lan@ucarinc.com
+     * @date   2019/8/12 11:16
+     * @return
+     */
     @Override
-    public void removeRoleAccount(Map<String, Object> map){
+    public List<String> removeRoleAccount(Map<String, Object> map){
+        String[] ids = null;
+        String roleId = null;
+        String[] nameList = null;
+        List<String> removedAccounts = new ArrayList<>();
+        if(map.get("accountIds")!=null){
+             ids = (String[]) map.get("accountIds");
+        }
+        if(map.get("roleId")!= null) {
+            roleId = (String) map.get("roleId");
+        }
+        if(map.get("accountNameList")!= null) {
+            nameList = (String[]) map.get("accountNameList");
+        }
+        Map<String, Object> param = new HashMap<>();
+        param.put("roleId",roleId);
+        for (int i = 0; i < ids.length ; i++) {
+            param.put("accountId",ids[i]);
+            if(roleManagementDao.isAccountRemoved(param) == null){
+                removedAccounts.add(nameList[i]);
+            }
+        }
         roleManagementDao.removeRoleAccount(map);
+        return removedAccounts;
     }
 
     @Override
-    public void addRoleAccount(Map<String, Object> map){
-        roleManagementDao.addRoleAccount(map);
+    public String addRoleAccount(Map<String, Object> map){
+        String roleId = null;
+        if(map.get("roleId")!=null) {
+            roleId = (String) map.get("roleId");
+        }
+
+        if(roleManagementDao.isRoleInvalid( Long.parseLong(roleId)) == 0){
+             return "添加失败";
+        }else{
+            roleManagementDao.addRoleAccount(map);
+            return "添加成功";
+        }
     }
 }

@@ -380,8 +380,8 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     }
 
     @Override
-    public Long selectStaffIdById(Long accountID){
-        return accountManageDao.selectStaffIdById(accountID);
+    public Long selectStaffIdById(Long accountId){
+        return accountManageDao.selectStaffIdById(accountId);
     }
 
     @Override
@@ -401,7 +401,7 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     }
 
     /**
-     * description: 根据账户id查询员工id
+     * description: 根据账户id查询账户状态
      * @author junqiang.zhang@ucarinc.com
      * @date: 2019/8/20
      * @params: accountId 账户id
@@ -412,4 +412,26 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         return accountManageDao.getAccountStateById(accountId);
     }
 
+    /**
+     * description: 根据员工id查询员工信息
+     * @author junqiang.zhang@ucarinc.com
+     * @date: 2019/8/20
+     * @params: staffId 员工id
+     * @return: flag 离职，是否删除，是否关联账户的标志
+     */
+    @Override
+    public int getStaffInfBystaffId(Long staffId){
+        int flag = 0;
+        if(staffId != null && staffId != 0) {
+            Staff staff = employeeManageDao.getStaffInfById(staffId);
+            if(staff.getStatus() == 0)  {
+                flag = 1;
+            } else if (staff.getIsDimission() == 1) {
+                flag = 2;
+            } else if (staff.getAccountId() != null && staff.getAccountId() != 0) {
+                flag = 3;
+            }
+        }
+        return flag;
+    }
 }

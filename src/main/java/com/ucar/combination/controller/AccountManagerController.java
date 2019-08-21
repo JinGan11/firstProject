@@ -4,6 +4,7 @@ import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.dao.AccountManageDao;
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.service.AccountManagerService;
@@ -48,6 +49,9 @@ public class AccountManagerController {
     private DepartmentService departmentService;
 
     @Resource
+    private AccountManageDao accountState;
+
+    @Resource
     private MailService mailService;
 
     /*
@@ -64,14 +68,14 @@ public class AccountManagerController {
         String id = request.getParameter("id");
         return new Result().ok().put("account",accountManagerService.selectAccountById(id)).put("permissionEnum",CommonEnums.toEnumMap(CommonEnums.Permission.values())).put("accountStatusEnum",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()));
     }
-		/**
-		 * description: 账号功能权限明细，根据账户ID进行查找
-		 * @author jing.luo01@ucarinc.com
-		 * @date   2019/8/20 10:07
-		 * @params request 描述
+    /**
+     * description: 账号功能权限明细，根据账户ID进行查找
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/20 10:07
+     * @params request 描述
 
-		 * @return
-		 */
+     * @return
+     */
 	@ResponseBody
 	@RequestMapping("/selectById.do_")
 	public Result selectById(HttpServletRequest request){
@@ -88,8 +92,10 @@ public class AccountManagerController {
     @Transactional
     @ResponseBody
     @RequestMapping(value = "/createAccount.do_", method = RequestMethod.POST)
-    public void createAccount(@RequestBody AccountStaff accountStaff, HttpSession session){
-        try {
+    public Result createAccount(@RequestBody AccountStaff accountStaff, HttpSession session){
+        //获取员工是否删除，离职和关联账户的信息
+        int flag = accountManagerService.getStaffInfBystaffId(accountStaff.getStaffId());
+        if(flag ==0) {
             Long user = (Long) session.getAttribute("accountId");
             accountStaff.setAccountName(accountStaff.getAccountName().toLowerCase());
             accountStaff.setCreateEmp(user);
@@ -101,9 +107,8 @@ public class AccountManagerController {
             if(accountStaff.getStaffId()!= null && accountStaff.getStaffId()!= 0) {
                 accountManagerService.updateStaffAccount(accountStaff);
             }
-        }catch(Exception e) {
-            throw  new RuntimeException("");
         }
+        return Result.ok().put("flag",flag);
     }
 
     /*
@@ -189,7 +194,6 @@ public class AccountManagerController {
     public void update(HttpServletRequest request){
         String strid = request.getParameter("accountId");
         int id = Integer.parseInt(strid);
-        //**************************************
         accountManagerService.updateStatus(id,3);
 
     }
@@ -214,18 +218,30 @@ public class AccountManagerController {
     @RequestMapping(value = "/lock",method = RequestMethod.POST)
     public Result lockAccount(@RequestBody Map<String,String> map,HttpServletRequest request){
         String accountId = map.get("id");
+        if (accountState.getAccountStateById(Long.parseLong(accountId)) == 1){
         Integer status = 2;
         accountManagerService.lockAndUnlock(Integer.parseInt(accountId),status,"冻结",request);
         return null;
+        }else if(accountState.getAccountStateById(Long.parseLong(accountId)) == 2){
+            return Result.error(20,"账号状态已经是冻结，冻结失败");
+        }else {
+            return Result.error(30,"账号已失效，冻结失败");
+        }
     }
     //解冻账户信息
     @ResponseBody
     @RequestMapping(value = "/unLock",method = RequestMethod.POST)
     public Result unLockAccount(@RequestBody Map<String,String> map,HttpServletRequest request){
         String accountId = map.get("id");
-        Integer status = 1;
-        accountManagerService.lockAndUnlock(Integer.parseInt(accountId),status,"解冻",request);
-        return null;
+        if (accountState.getAccountStateById(Long.parseLong(accountId)) == 2){
+            Integer status = 1;
+            accountManagerService.lockAndUnlock(Integer.parseInt(accountId),status,"解冻",request);
+            return null;
+        }else if(accountState.getAccountStateById(Long.parseLong(accountId)) == 1){
+            return Result.error(10,"账号状态已经是正常，解冻失败");
+        }else {
+            return Result.error(30,"账号已失效，解冻失败");
+        }
     }
 
     //历史记录
@@ -248,8 +264,13 @@ public class AccountManagerController {
     @ResponseBody
     @RequestMapping(value = "/modifyAccount.do_",method = RequestMethod.POST)
     public Result modifyAccount(@RequestBody AccountStaff accountStaff,HttpSession session){
+        //获取账户是否删除的信息
         int state = accountManagerService.getAccountStateById(accountStaff.getAccountId());
-        if(state != 3){
+        //获取员工是否删除，离职和关联账户的信息
+        int flag = accountManagerService.getStaffInfBystaffId(accountStaff.getStaffId());
+        //防止并发修改关联多个员工
+        accountStaff.setOldStaffId(accountManagerService.selectStaffIdById(accountStaff.getAccountId()));
+        if(state != 3 && (flag == 0 || flag == 3)){
             accountStaff.setModifyEmp((Long) session.getAttribute("accountId"));
             accountStaff.setCreateEmp((Long) session.getAttribute("accountId"));
             if(accountStaff.getStaffId() == null){
@@ -268,7 +289,7 @@ public class AccountManagerController {
                 accountManagerService.updateStaffAccount(accountStaff);
             }
         }
-        return Result.ok().put("state",state);
+        return Result.ok().put("state",state).put("flag",flag);
     }
 
     /**
@@ -329,6 +350,7 @@ public class AccountManagerController {
     public Result resetPass(@RequestBody Account account, HttpSession session){
         Long OperateAccountId = (Long) session.getAttribute("accountId");
         Account account1 = accountManagerService.selectAccountById(String.valueOf(account.getId()));
+//        if (account1.getaccountState())
         String content = "请点击下面的链接重置密码 http://"+ LOCALHOST + "/resetPass 如果无法点击，请复制至浏览器。";
         Result result = new Result();
         result = accountManagerService.updateAccountStatue(account.getId(),OperateAccountId);

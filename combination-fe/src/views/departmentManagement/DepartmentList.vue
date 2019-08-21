@@ -92,7 +92,7 @@
       },
       loadNode(node,resolve){
         var self = this;
-        self.$http.get('department/buildTree.do_', {
+        self.$http.post('department/buildTree.do_', {
           params: null
         }).then((result) => {
           resolve([result.departmentDto]);

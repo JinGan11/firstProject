@@ -81,10 +81,10 @@
                   :props="defaultProps"
                   node-key="id"
                   :load="loadNode"
-                  lazy
+                  :lazy="true"
                   show-checkbox
                   check-strictly
-                  :default-expanded-keys="modifyForm.trees"
+                  :default-expand-all="[1]"
                   :default-checked-keys="modifyForm.trees"
                   @check-change="handleClick">
                 </el-tree>
@@ -174,6 +174,7 @@
         relAccount: 1,
         permissionsList:[],
         statusList: [],
+        expanded: [1,4],
         modifyForm: {
           staffId: '',
           oldStaffId: '',
@@ -257,7 +258,10 @@
               return data.children;
             }
           }
-          self.$refs.tree.setCheckedKeys(self.modifyForm.trees);
+          function aa(){
+
+          }
+          //self.$refs.tree.setCheckedKeys(self.modifyForm.trees);
           return d;
         }
       },
@@ -362,7 +366,9 @@
               self.$http.post('account/modifyAccount.do_', self.modifyForm)
                 .then((result) => {
                   if(result.state == 3){
-                    self.$message.info("账户无效，修改失败");
+                    self.$message.error("账户无效，修改失败");
+                  }else if(result.flag == 1 || result.flag == 2) {
+                    self.$message.error("员工信息无效，修改失败");
                   }else{
                     self.$message.info("修改成功");
                   }

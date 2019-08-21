@@ -135,8 +135,8 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
      * @return
      */
     @Override
-    public List<String> selectAllStaffName(){
-        List<String> list=employeeManageDao.selectAllStaffName();
+    public List<String> selectAllStaffNum(){
+        List<String> list=employeeManageDao.selectAllStaffNum();
         return list;
     }
     /**

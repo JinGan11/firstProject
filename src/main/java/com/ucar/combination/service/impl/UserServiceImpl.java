@@ -87,12 +87,14 @@ public class UserServiceImpl implements UserService {
             list = userDao.qryAccountByAccountName(oldUser);
             if (list.size() != 0){
                 userInfo = list.get(0);
+                userPwd.setStaffId(userInfo.getStaffId());
             }
             if (!md5OldPassword.equals(userInfo.getAccountPassword())) {
                 result.setMsg("原密码输入密码错误！");
                 result.setCode(303);
                 return result;
-            } else if (!md5NewPassword.equals(userInfo.getAccountPassword())) {
+            }
+            if (!md5NewPassword.equals(userInfo.getAccountPassword())) {
                 // 查询历史密码
                 list2 = userDao.qryHistoryPwdById(list.get(0));
                 if (list2.size() == 0){

@@ -34,14 +34,14 @@
 
           <el-row :span="12">
             <el-form-item label="行政区划名称" prop="regionName">
-              <el-input v-model="form.regionName" style="width: 200px" maxlength="50"></el-input>
+              <el-input v-model.trim="form.regionName" style="width: 200px" maxlength="50"></el-input>
               <span style="color: red;">*</span>
             </el-form-item>
           </el-row>
 
           <el-row :span="12">
             <el-form-item label="名字拼音" prop="regionPinyin">
-              <el-input v-model="form.regionPinyin"  style="width: 200px" maxlength="255"></el-input>
+              <el-input v-model.trim="form.regionPinyin"  style="width: 200px" maxlength="255"></el-input>
               <span style="color: red;">*</span>
             </el-form-item>
           </el-row>

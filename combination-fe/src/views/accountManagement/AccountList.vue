@@ -485,7 +485,7 @@
         });
       },
       lock(){
-        this.$confirm('此操作将冻结该员工, 是否继续?', '提示', {
+        this.$confirm('此操作将会冻结该员工, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -494,8 +494,13 @@
             id:this.selection
           };
           this.$http.post("account/lock",accountId).then((result) => {
-            this.$message.success("冻结成功")
-            this.fetchData();
+            if(result.code===20||result.code===30){
+              this.$message.error(result.msg)
+              this.fetchData();
+            }else{
+              this.$message.success("冻结成功");
+              this.fetchData();
+            }
           }).catch(function (error) {
             commonUtils.Log("account/lock" + error);
             this.$message.error("冻结失败");
@@ -508,7 +513,7 @@
         });
       },
       unlock(){
-        this.$confirm('此操作将冻结该员工, 是否继续?', '提示', {
+        this.$confirm('此操作将会解冻该员工, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -517,8 +522,13 @@
             id:this.selection
           };
           this.$http.post("account/unLock",accountId).then((result) => {
-            this.$message.success("解冻成功");
-            this.fetchData();
+            if(result.code===10||result.code===30){
+              this.$message.error(result.msg)
+              this.fetchData();
+            }else{
+              this.$message.success("解冻成功");
+              this.fetchData();
+            }
           }).catch(function (error) {
             commonUtils.Log("account/unlock" + error);
             this.$message.error("解冻失败")
@@ -792,8 +802,8 @@
               });
             } else {
               self.$message.info("权限分配成功！")
-              self.fetchData();
             }
+            self.fetchData();
           })
           .catch(function (error) {
             self.$alert("系统错误，请稍后再试！", '消息提醒', {

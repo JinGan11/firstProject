@@ -368,7 +368,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="归属部门:" label-width="150px">
+              <el-form-item label="归属部门:" prop="departmentName" label-width="150px">
                 <el-input style="width:80px;" :disabled="true" v-model="modifyForm.departmentName"></el-input>
                 <el-button type="text" @click="selectDepartmentModify">选择</el-button>
                 <el-button type="text" @click="clearDepartmentModify">清空</el-button>
@@ -650,7 +650,25 @@
           callback(new Error("员工编号为必填项，不允许为空"));
         } else if (!this.isNum(value)) {//引入methods中封装的检查手机格式的方法
           callback(new Error("员工编号不满足录入条件,需为1-20位数字"));
-        } else {
+        }
+        else if(this.staffNumList.indexOf(value) > -1) {
+          callback(new Error("该员工编号已存在，不允许重复创建"))
+        }
+        else {
+          callback();
+        }
+      };
+      var checkUpdateNum = (rule, value, callback) => {
+        // let phoneReg = /(^1[3|4|5|6|7|8|9]\d{9}$)|(^09\d{8}$)/;
+        if (value == "") {
+          callback(new Error("员工编号为必填项，不允许为空"));
+        } else if (!this.isNum(value)) {//引入methods中封装的检查手机格式的方法
+          callback(new Error("员工编号不满足录入条件,需为1-20位数字"));
+        }
+        else if(this.staffNumList.indexOf(value) > -1 && this.updateStaffNum != value) {
+          callback(new Error("该员工编号已存在，不允许重复创建"))
+        }
+        else {
           callback();
         }
       };
@@ -717,8 +735,22 @@
           createEmpInit: '',
           remark: '',
         },
+        modifyForm2:{
+          accountName: '',
+          staffNum: '',
+          staffName: '',
+          staffSex: '',
+          staffTelephone: '',
+          staffEmail: '',
+          departmentId: '',
+          departmentName: '',
+          createTime: '',
+          createEmp: '',
+          createEmpInit: '',
+          remark: '',
+        },
         rulesModify: {
-          staffNum: [{required: true, validator: checkNum, trigger: 'blur'}],
+          staffNum: [{required: true, validator: checkUpdateNum, trigger: 'blur'}],
           staffName: [{required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur'},
             {min: 1, max: 30, message: '员工姓名不满足录入条件，需为1-30个字符', trigger: 'blur'}],
 
@@ -762,6 +794,7 @@
         templateGroupName: '测试',
         description: '测试',
         staffDtoList: [],
+        staffNumList:[],
         formdiStributionDepartment: {
           staffId: '',
           staffNum: '',
@@ -846,7 +879,8 @@
           isLeaf: 'nodeIsLeaf',
           id: 'id',
           no: 'departmentNo',
-        }
+        },
+        updateStaffNum:'',
       }
     },
     filters: {
@@ -957,6 +991,7 @@
           self.SexEnum = result.SexEnum;
           self.isDimissionEnum = result.isDismissionEnum;
           self.staffDtoList = result.staffDtoList;
+          self.staffNumList=result.staffNumList;
         }).catch(function (error) {
           commonUtils.Log("employee/querylist.do_:" + error);
           self.$message.error("获取数据错误");
@@ -989,13 +1024,9 @@
           if (valid) {
             self.$http.post("employee/insertStaff", self.createForm)
               .then((result) => {
-                if (result.code === 300) {
-                  self.$message.error('员工已存在，不允许重复创建');
-                } else {
                   self.createDialogVisible = false;
                   self.$message.success("新建用户成功");
                   self.fetchData();
-                }
               })
               .catch(function (error) {
                 commonUtils.Log("employee/insertStaff:" + error);
@@ -1012,7 +1043,16 @@
       cancelEmployee() {
         this.createDialogVisible = false;
         this.$refs['createForm'].resetFields();
-        this.createForm='';
+        this.createForm.accountId='';
+        this.createForm.departmentId='';
+        this.createForm.departmentName='';
+        this.createForm.isDimission='';
+        this.createForm.remark='';
+        this.createForm.staffEmail='';
+        this.createForm.staffName='';
+        this.createForm.staffNum='';
+        this.createForm.staffSex='';
+        this.createForm.staffTelephone='';
       },
       saveUpdate() {
         console.log("=========")
@@ -1053,6 +1093,22 @@
       },
       cancelUpdate() {
         this.modifyDialogVisible = false;
+        this.$refs['modifyForm'].resetFields();
+        this.modifyForm.id = this.modifyForm2.id;
+        this.modifyForm.accountId = this.modifyForm2.accountId;
+        this.modifyForm.accountName = this.modifyForm2.accountName;
+        this.modifyForm.staffNum = this.modifyForm2.staffNum;
+        this.modifyForm.staffName = this.modifyForm2.staffName;
+        this.modifyForm.staffSex = this.modifyForm2.staffSex;
+        this.modifyForm.staffEmail = this.modifyForm2.staffEmail;
+        this.modifyForm.isDimission = this.modifyForm2.isDimission;
+        this.modifyForm.staffTelephone = this.modifyForm2.staffTelephone;
+        this.modifyForm.departmentName = this.modifyForm2.departmentName;
+        this.modifyForm.departmentId = this.modifyForm2.departmentId;
+        this.modifyForm.createTime = this.modifyForm2.createTime;
+        this.modifyForm.remark = this.modifyForm2.remark;
+        this.modifyForm.createEmpInit = this.modifyForm2.createEmp;
+        this.modifyForm.modifyTime = this.modifyForm2.modifyTime
       },
 
 
@@ -1261,6 +1317,7 @@
             this.dialogVisible = false;
             this.checkedemployees = [];
             this.filterVal = [];
+            this.checkAll=false;
           })
         }
       },
@@ -1403,20 +1460,37 @@
         this.id = val.id;
         this.accountId = val.accountId;
         this.modifyForm.id = val.id;
+        this.modifyForm2.id = val.id;
         this.modifyForm.accountId = val.accountId;
+        this.modifyForm2.accountId = val.accountId;
         this.modifyForm.accountName = val.accountName;
+        this.modifyForm2.accountName = val.accountName;
         this.modifyForm.staffNum = val.staffNum;
+        this.modifyForm2.staffNum = val.staffNum;
+        this.updateStaffNum = val.staffNum;
         this.modifyForm.staffName = val.staffName;
+        this.modifyForm2.staffName = val.staffName;
         this.modifyForm.staffSex = val.staffSex;
+        this.modifyForm2.staffSex = val.staffSex;
         this.modifyForm.staffEmail = val.staffEmail;
+        this.modifyForm2.staffEmail = val.staffEmail;
         this.modifyForm.isDimission = this.isDimissionEnum[val.isDimission];
+        this.modifyForm2.isDimission = this.isDimissionEnum[val.isDimission];
         this.modifyForm.staffTelephone = val.staffTelephone;
+        this.modifyForm2.staffTelephone = val.staffTelephone;
         this.modifyForm.departmentName = val.departmentName;
+        this.modifyForm2.departmentName = val.departmentName;
         this.modifyForm.departmentId = val.departmentId;
+        this.modifyForm2.departmentId = val.departmentId;
         this.modifyForm.createTime = val.createTime;
+        this.modifyForm2.createTime = val.createTime;
         this.modifyForm.remark = val.remark;
+        this.modifyForm2.remark = val.remark;
         this.modifyForm.createEmpInit = val.createEmp;
+        this.modifyForm2.createEmpInit = val.createEmp;
         this.modifyForm.modifyTime = val.modifyTime;
+        this.modifyForm2.modifyTime = val.modifyTime;
+        this.modifyForm = this.modifyForm2;
 
 
         this.formdiStributionDepartment.staffNum = val.staffNum;
@@ -1532,7 +1606,8 @@
       isNum(val){
         if(!/^\d{1,20}$/.test(val)){
           return false;
-        } else {
+        }
+        else {
           return true;
         }
 

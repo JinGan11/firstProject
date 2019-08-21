@@ -207,16 +207,25 @@ public interface AccountManagerService {
     //返回历史记录
     List<AccountHistory> getHistoryList(String accountId);
     void updateModifyTimeAndModifyName(@Param("a") Account account);
-    public Long selectStaffIdById(Long accountID);
+    Long selectStaffIdById(Long accountId);
 
     Result updateAccountStatue(Long accountId, Long operateAccountId);
 
     /**
-     * description: 根据账户id查询员工id
+     * description: 根据账户id查询账户状态
      * @author junqiang.zhang@ucarinc.com
      * @date: 2019/8/20
      * @params: accountId 账户id
      * @return: int 账户状态
      */
     int getAccountStateById(Long accountId);
+
+    /**
+     * description: 根据员工id查询员工信息
+     * @author junqiang.zhang@ucarinc.com
+     * @date: 2019/8/20
+     * @params: staffId 员工id
+     * @return: Staff 离职，是否删除，账户id信息
+     */
+    int getStaffInfBystaffId(Long staffId);
 }

@@ -259,7 +259,8 @@
         const self = this;
         var roleid = this.$route.query.roleID;
         var param = {
-          roleName: value
+          roleName: value,
+          date : new Date().getTime(),
         };
         self.$http.get("roleManage/judgeExist.do_", {
           params: param
@@ -405,6 +406,7 @@
         roleid = this.$route.query.roleID;
         var param = {
           roleID: roleid,
+          date : new Date().getTime(),
         };
         self.$http.get('roleManage/getOtherOneInf.do_', {
           params: param
@@ -421,6 +423,7 @@
         const self = this;
         var param = {
           id: self.selection.id,
+          date : new Date().getTime(),
         };
         self.$http.get('account/selectAccountById.do_',{
           params: param
@@ -461,7 +464,8 @@
 
                   const self = this;
                   var param = {
-                    accountName: self.form.accountNum
+                    accountName: self.form.accountNum,
+                    date : new Date().getTime(),
                   };
                   self.$http.get('account/querylist.do_',{params:param}).then((result) => {
                     if (result.page.list[0].accountState === 3){
@@ -470,6 +474,7 @@
                     else{
                       var param = {
                         roleID: self.form.roleID,
+                        date : new Date().getTime(),
                       };
                       self.$http.get('roleManage/getOneInf.do_', {
                         params: param
@@ -478,7 +483,7 @@
                           alert("该角色已经被删除，不可修改");
                         }
                         else{
-                          self.form.businessLine = self.form.businessLine.join(',');
+                          self.form.businessLine = self.form.businessLine.join(';');
                           self.$http.post("roleManage/updateByModify.do_", self.form)
                             .then((result) => {
                               self.$router.replace("/roleManagement/roleManagement");
@@ -552,7 +557,8 @@
           department: self.accountForm.departmentId,
           isRelStaff: self.accountForm.isRelStaff,
           status: self.accountForm.status,
-          flag:1
+          flag:1,
+          date : new Date().getTime(),
         };
         self.$http.get('account/querylist.do_', {
           params: param
@@ -575,13 +581,14 @@
         roleid = this.$route.query.roleID;
         var param = {
           roleID: roleid,
+          date : new Date().getTime(),
         };
         self.$http.get('roleManage/getOneInf.do_', {
           params: param
         }).then((result) => {
           self.form = result.page;
           self.RoleStatusEnum = result.RoleStatusEnum;
-          self.form.businessLine = self.form.businessLine.split(',');
+          self.form.businessLine = self.form.businessLine.split(';');
         }).catch(function (error) {
           commonUtils.Log("roleManage/getOneInf.do_" + error);
           self.$message.error("获取数据错误");

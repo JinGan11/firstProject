@@ -176,6 +176,7 @@
         var self = this;
         var param = {
           roleID: roleid,
+          date : new Date().getTime(),
         };
         self.$http.get('roleManage/getOtherOneInf.do_', {
           params: param
@@ -205,13 +206,14 @@
         //roleid=this.$route.query.roleID;
         var param = {
           roleID: roleid,
+          date : new Date().getTime(),
         };
         self.$http.get('roleManage/getOneInf.do_', {
           params: param
         }).then((result) => {
           self.form=result.page;
           self.RoleStatusEnum = result.RoleStatusEnum;
-          self.form.businessLine=self.form.businessLine.split(',');
+          self.form.businessLine=self.form.businessLine.split(';');
         }).catch(function (error) {
           commonUtils.Log("roleManage/getOneInf.do_:" + error);
           self.$message.error("获取数据错误");

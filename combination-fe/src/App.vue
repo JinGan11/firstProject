@@ -1,6 +1,14 @@
 <template>
   <div>
-    <el-container ref="container" class="view-container" v-if="loginIn">
+    <div id="resetPass" v-if="$route.path ==='/resetPass'">
+      <reset-pass></reset-pass>
+    </div>
+
+    <div id="abc" v-else-if="$route.path.slice(-6)==='/'">
+      <login-page @loginSuccess="loginSuccess"></login-page>
+    </div>
+
+    <el-container ref="container" class="view-container" v-else-if="loginIn">
     <!--<el-container ref="container" class="view-container" v-if="$route.path.slice(-6)!=='/index'">-->
       <aside-menu :isCollapse="isCollapse" :data="data"></aside-menu>
       <div class="contentBox" :class="{'content-collapse':isCollapse}">
@@ -102,13 +110,6 @@
       </el-dialog>
     </el-container>
 
-    <div id="abc" v-else-if="$route.path.slice(-6)==='/'">
-      <login-page @loginSuccess="loginSuccess"></login-page>
-    </div>
-
-    <div id="resetPass" v-else>
-      <reset-pass></reset-pass>
-    </div>
   </div>
 </template>
 
@@ -378,6 +379,24 @@
                     self.ruleForm.oldPass='';
                     self.ruleForm.checkPass='';
                     self.resetPasswordFlag = false;
+                    self.$http.post('login/logout.do_')
+                      .then(result => {
+                        self.loginIn = false;
+                        window.sessionStorage.removeItem("loginUsername");
+                        window.sessionStorage.removeItem("powerList");
+                        self.$store.state.loginUserName = '';
+                        self.$store.state.powerList = '';
+                        self.loginUserName = window.sessionStorage.getItem("loginUsername");
+                        self.$router.replace("/");
+                        self.$message({
+                          type: "success",
+                          message: "退出成功"
+                        });
+                      })
+                      .catch(function (error) {
+                        commonUtils.Log("user/updatePwd:" + error);
+                        self.$message.error("系统故障，请联系管理员！");
+                      });
                     self.$router.replace("/")
                   })
                 } else if (result.code === 300) {

@@ -146,7 +146,7 @@
     <select id="selectDepartmentId" resultType="Long">
         SELECT department_id FROM t_staff WHERE account_id=#{id}
     </select>
-    <select id="selectAllStaffName" resultType="java.lang.String">
+    <select id="selectAllStaffNum" resultType="java.lang.String">
         select staff_num
         from t_staff
     </select>
@@ -197,5 +197,10 @@
     <update id="updateDepartmentByEmployee">
         update t_staff T set T.department_id=#{departmentId} where T.id=#{id}
     </update>
+
+    <select id="getStaffInfById" parameterType="Long" resultType="com.ucar.combination.model.Staff">
+        SELECT is_dimission,status,account_id FROM t_staff
+        WHERE id = #{staffId}
+    </select>
 
 </mapper>

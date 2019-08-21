@@ -530,7 +530,8 @@
         //this.dialogVisible=true;
         var self = this;
         var param = {
-          roleID: val
+          roleID: val,
+          date : new Date().getTime(),
         };
         self.$http.get('roleManage/getOneInf.do_', {
           params: param
@@ -558,7 +559,8 @@
         }).then(() => {
           var self = this;
           var param = {
-            roleID: val
+            roleID: val,
+            date : new Date().getTime(),
           };
           self.$http.get('roleManage/getOneInf.do_', {
             params: param
@@ -573,6 +575,7 @@
               var self = this;
               var param = {
                 selection: self.selection,
+                date : new Date().getTime(),
               };
               self.$http.get('roleManage/updateStatus.do_', {
                 params: param
@@ -739,7 +742,8 @@
         const self = this;
         self.checkStrictly = true;
         var param = {
-          roleInfoId: self.myRole.roleId
+          roleInfoId: self.myRole.roleId,
+          date : new Date().getTime(),
         }
         self.$http.post('roleManage/getRolePower.do_', param).then((result) => {
           self.selectedNodes = result.rolePowerList;
@@ -776,7 +780,14 @@
         };
         self.$http.post("roleManage/assignPermission", param)
           .then((result) => {
-            self.$message.info("权限分配成功！")
+            if (result.code === 203) {
+              self.$alert(result.msg, '消息提醒', {
+                confirmButtonText: '确定',
+              });
+            } else {
+              self.$message.info("权限分配成功！")
+            }
+            self.fetchData();
           })
           .catch(function (error) {
             self.$alert("系统错误，请稍后再试！", '消息提醒', {
@@ -805,13 +816,26 @@
           var self = this;
           var param = {
             roleId:self.myRole.roleId,
-            accountIds:self.list.toString()
+            accountIds:self.list.toString(),
+            accountNameList:self.accountNameList.toString(),
+            date : new Date().getTime(),
           };
           self.$http.get('roleManage/removeRoleAccount.do_', {
             params: param
           }).then((result) => {
-            if(result.msg==='成功删除'){
+            console.log(result.romoveAccounts);
+            if(result.msg==='成功删除' && result.romoveAccounts.length ===0){
               self.$message.success("成功删除");
+              self.fetchAccountData();
+            }else if(result.msg==='成功删除' && result.romoveAccounts.length !=0) {
+                  let nameList="";
+              for (let i = 0; i < result.romoveAccounts.length ; i++) {
+                  nameList +=result.romoveAccounts[i];
+                if(i != (result.romoveAccounts.length-1)){
+                  nameList+=",";
+                }
+              }
+              self.$message.error("账户"+nameList+"已经已从角色中移除");
               self.fetchAccountData();
             }else{
               self.$message.error("删除失败");
@@ -836,13 +860,20 @@
         var self = this;
         var param = {
           roleId:self.myRole.roleId,
-          accountIds:self.selectAccountIds.toString()
+          accountIds:self.selectAccountIds.toString(),
+          date : new Date().getTime(),
         };
         self.$http.get('roleManage/addRoleAccount.do_', {
           params: param
         }).then((result) => {
-          this.chooseAccountPage = false;
-          this.fetchAccountData();
+          if(result.msg === "添加成功") {
+            this.chooseAccountPage = false;
+            this.fetchAccountData();
+          }else{
+            self.$message.error("添加失败，该角色已失效！")
+            this.fetchAccountData();
+            this.fetchData();
+          }
         }).catch(function (error) {
           commonUtils.Log("roleManage/addRoleAccount.do_:" + error);
           self.$message.error("获取数据错误")

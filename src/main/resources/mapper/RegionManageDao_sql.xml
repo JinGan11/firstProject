@@ -34,7 +34,8 @@
 		<if test="regionStatus != null and regionStatus.trim() != ''">
 			AND t1.status =#{regionStatus}
 		</if>
-		ORDER BY t1.international_code ASC
+		ORDER BY t1.status DESC,t1.international_code ASC
+
 
     </select>
 
@@ -76,7 +77,7 @@
 		<if test="upperRegionID != null and upperRegionID.trim() != ''">
 			AND t1.upper_city_id = #{upperRegionID}
 		</if>
-		ORDER BY t1.international_code ASC
+		ORDER BY t1.status DESC,t1.international_code ASC
 
 	</select>
 
@@ -122,7 +123,7 @@
 		<if test="upperRegionID != null and upperRegionID.trim() != ''">
 			AND t1.upper_city_id = #{upperRegionID}
 		</if>
-		ORDER BY t1.international_code ASC
+		ORDER BY t1.status DESC,t1.international_code ASC
 
 	</select>
 

@@ -81,6 +81,7 @@
                   lazy
                   show-checkbox
                   check-strictly
+                  :default-expand-all="[1]"
                   @check-change="handleClick">
                 </el-tree>
               </el-form-item>
