@@ -355,7 +355,9 @@ public class AccountManagerController {
         Result result = new Result();
         result = accountManagerService.updateAccountStatue(account.getId(),OperateAccountId);
         AccountStaff accountStaff = new AccountStaff();
-        if (account1.getSecretEmail() != null) {
+        if (account1.getAccountSecretEmail() == null || account1.getAccountSecretEmail().trim() == "") {
+            result.put("code", 202);
+        } else {
             result = mailService.sendMail(account1.getSecretEmail(),"重置密码",content);
             accountStaff.setAccountId(account1.getId());
             accountStaff.setOperationType("密码重置");
@@ -366,8 +368,6 @@ public class AccountManagerController {
             accountStaff.setStaffName(account1.getStaffName());
             accountStaff.setCreateEmp(OperateAccountId);
             accountManagerService.insertAccountHistory(accountStaff);
-        } else {
-            result.put("code", 202);
         }
         return result;
     }

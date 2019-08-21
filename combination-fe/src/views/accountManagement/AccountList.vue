@@ -670,7 +670,7 @@
                 });
                 self.fetchData();
               } else if (result.code === 201) {
-                self.$alert("操作失败！", '消息提醒', {
+                self.$alert("系统繁忙，请稍后再试！", '消息提醒', {
                   confirmButtonText: '确定',
                 });
               } else if (result.code === 202) {
