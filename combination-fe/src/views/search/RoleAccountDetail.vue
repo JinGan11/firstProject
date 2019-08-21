@@ -494,6 +494,7 @@
             this.exportVisible = false;
             this.checkedRoleAccount = [];
             this.filterVal = [];
+            this.checkAll=false;
           })
         }
       },
