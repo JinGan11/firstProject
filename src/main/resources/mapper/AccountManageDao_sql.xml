@@ -200,6 +200,7 @@
         a.business_line,
         a.role_status,
         c.account_name,
+        c.create_time,
         c.account_state,
         d.staff_num,
         d.staff_name,
@@ -238,7 +239,7 @@
         <if test="departmentName != null and departmentName.trim() != ''">
         and  department_name = #{departmentName}
         </if>
-        ORDER BY role_id DESC
+        ORDER BY role_id DESC,create_time DESC
     </select>
 
     <update id="updateStatus">
