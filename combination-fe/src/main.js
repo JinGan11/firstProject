@@ -96,10 +96,11 @@ router.beforeEach((to, from, next) => {
         utils.$emit("loginSuccess",false);
         window.sessionStorage.removeItem("loginUsername");
         next()
-      }
-    next({
-      path:'/'
-    })
+    }else {
+      next({
+        path:'/'
+      })
+    }
   }
 });
 
