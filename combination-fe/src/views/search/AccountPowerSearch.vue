@@ -51,7 +51,7 @@
       </el-row>
       <el-row style="text-align: center">
         <el-form-item size="100px">
-          <el-button type="primary" @click="Search">查询</el-button>
+          <el-button type="primary" @click="Search1">查询</el-button>
           <el-button v-if="!BtnPermission.exportPermission" @click="exportRole">导出</el-button>
         </el-form-item>
       </el-row>
@@ -322,6 +322,33 @@
         this.Search(val, this.pageSize);
       },
       Search() {
+        var self = this;
+        var param = {
+          page: self.currentPage,
+          limit: self.pageSize,
+          accountName: this.accountForm.accountName,
+          staffNum: this.accountForm.staffNum,
+          staffName: this.accountForm.staffName,
+          departmentName: this.accountForm.departmentName,
+          powerId: this.accountForm.powerId,
+          accountState: this.accountForm.accountState,
+          date:new Date().getTime(),
+        };
+        self.$http.get('/roleAccount/getAccountPowerList.do_', {
+          params: param
+        }).then((result) => {
+          if (result.status == "success") {
+            self.tableData = result.page.list;
+            self.total = result.page.totalCount;
+            this.AccountStatusEnums = result.AccountStatusEnums;
+            this.accountPowerList = result.accountPowerDtoList;
+          } else {
+            alert("查询失败");
+          }
+        })
+      },
+      Search1() {
+        this.currentPage=1;
         var self = this;
         var param = {
           page: self.currentPage,

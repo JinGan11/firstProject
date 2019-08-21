@@ -85,7 +85,7 @@
         <el-col style="text-align: center">
           <el-form-item size="100px">
             <div>
-              <el-button type="primary" @click="Search" style="width: 100px">查询</el-button>
+              <el-button type="primary" @click="Search1" style="width: 100px">查询</el-button>
               <el-button @click="exportDepartment" style="width: 100px">导出</el-button>
             </div>
           </el-form-item>
@@ -549,6 +549,40 @@
       },
       Search() {
         //this.formInline.cityName='全部';
+        if (this.formInline.cityName=='全部'){
+          this.formInline.cityName='';
+        }
+        var self = this;
+        var param = {
+          page: self.currentPage,
+          limit: self.pageSize,
+          departmentName: self.formInline.departmentName,
+          staffName: self.formInline.staffName,
+          staffId: self.formInline.staffId,
+          telephone: self.formInline.telephone,
+          cityName: self.formInline.cityName,
+          level: self.formInline.level,
+          upperDepartmentNo: self.formInline.upperDepartmentNo,
+          status: self.formInline.status,
+          departmentType: self.formInline.departmentType,
+          date:new Date().getTime(),
+        };
+        self.$http.get('/department/searchDepartment.do_', {
+          params: param
+        }).then((result) => {
+          self.tableData = result.page.list;
+          self.DepartmentTypeEnum = result.DepartmentTypeEnum;
+          self.StatusEnum = result.StatusEnum;
+          self.total = result.page.totalCount;
+          self.LevelEnum = result.LevelEnum;
+          self.departmentList = result.listSearch;
+        }).catch(function (error) {
+          self.$message.error("获取数据错误");
+        });
+      },
+      Search1() {
+        //this.formInline.cityName='全部';
+        this.currentPage=1;
         if (this.formInline.cityName=='全部'){
           this.formInline.cityName='';
         }
