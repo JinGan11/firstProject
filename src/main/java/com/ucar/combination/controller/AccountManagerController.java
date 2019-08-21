@@ -270,7 +270,7 @@ public class AccountManagerController {
         int flag = accountManagerService.getStaffInfBystaffId(accountStaff.getStaffId());
         //防止并发修改关联多个员工
         accountStaff.setOldStaffId(accountManagerService.selectStaffIdById(accountStaff.getAccountId()));
-        if(state != 3 && flag == 0){
+        if(state != 3 && (flag == 0 || flag == 3)){
             accountStaff.setModifyEmp((Long) session.getAttribute("accountId"));
             accountStaff.setCreateEmp((Long) session.getAttribute("accountId"));
             if(accountStaff.getStaffId() == null){

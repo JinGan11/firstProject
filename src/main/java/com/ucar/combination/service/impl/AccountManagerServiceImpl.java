@@ -424,11 +424,11 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         int flag = 0;
         if(staffId != null && staffId != 0) {
             Staff staff = employeeManageDao.getStaffInfById(staffId);
-            if (staff.getAccountId() != null && staff.getAccountId() != 0) {
+            if(staff.getStatus() == 0)  {
                 flag = 1;
             } else if (staff.getIsDimission() == 1) {
                 flag = 2;
-            } else if (staff.getStatus() == 0) {
+            } else if (staff.getAccountId() != null && staff.getAccountId() != 0) {
                 flag = 3;
             }
         }
