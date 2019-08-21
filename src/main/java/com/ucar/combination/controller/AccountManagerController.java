@@ -4,6 +4,7 @@ import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.dao.AccountManageDao;
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AccountStaff;
 import com.ucar.combination.service.AccountManagerService;
@@ -46,6 +47,9 @@ public class AccountManagerController {
 
     @Resource
     private DepartmentService departmentService;
+
+    @Resource
+    private AccountManageDao accountState;
 
     @Resource
     private MailService mailService;
@@ -189,7 +193,6 @@ public class AccountManagerController {
     public void update(HttpServletRequest request){
         String strid = request.getParameter("accountId");
         int id = Integer.parseInt(strid);
-        //**************************************
         accountManagerService.updateStatus(id,3);
 
     }
@@ -214,18 +217,30 @@ public class AccountManagerController {
     @RequestMapping(value = "/lock",method = RequestMethod.POST)
     public Result lockAccount(@RequestBody Map<String,String> map,HttpServletRequest request){
         String accountId = map.get("id");
+        if (accountState.selectAccountStatusById(Long.parseLong(accountId)) == 1){
         Integer status = 2;
         accountManagerService.lockAndUnlock(Integer.parseInt(accountId),status,"冻结",request);
         return null;
+        }else if(accountState.selectAccountStatusById(Long.parseLong(accountId)) == 2){
+            return Result.error(20,"账号已冻结，冻结失败");
+        }else {
+            return Result.error(30,"账号已失效，冻结失败");
+        }
     }
     //解冻账户信息
     @ResponseBody
     @RequestMapping(value = "/unLock",method = RequestMethod.POST)
     public Result unLockAccount(@RequestBody Map<String,String> map,HttpServletRequest request){
         String accountId = map.get("id");
-        Integer status = 1;
-        accountManagerService.lockAndUnlock(Integer.parseInt(accountId),status,"解冻",request);
-        return null;
+        if (accountState.selectAccountStatusById(Long.parseLong(accountId)) == 2){
+            Integer status = 1;
+            accountManagerService.lockAndUnlock(Integer.parseInt(accountId),status,"解冻",request);
+            return null;
+        }else if(accountState.selectAccountStatusById(Long.parseLong(accountId)) == 1){
+            return Result.error(10,"账号已解冻，解冻失败");
+        }else {
+            return Result.error(30,"账号已失效，解冻失败");
+        }
     }
 
     //历史记录
