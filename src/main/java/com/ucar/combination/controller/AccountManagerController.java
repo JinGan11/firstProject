@@ -269,7 +269,7 @@ public class AccountManagerController {
         //获取员工是否删除，离职和关联账户的信息
         int flag = accountManagerService.getStaffInfBystaffId(accountStaff.getStaffId());
         //防止并发修改关联多个员工
-        accountStaff.setStaffId(accountManagerService.selectStaffIdById(accountStaff.getAccountId()));
+        accountStaff.setOldStaffId(accountManagerService.selectStaffIdById(accountStaff.getAccountId()));
         if(state != 3 && flag == 0){
             accountStaff.setModifyEmp((Long) session.getAttribute("accountId"));
             accountStaff.setCreateEmp((Long) session.getAttribute("accountId"));
