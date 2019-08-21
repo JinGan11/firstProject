@@ -735,6 +735,20 @@
           createEmpInit: '',
           remark: '',
         },
+        modifyForm2:{
+          accountName: '',
+          staffNum: '',
+          staffName: '',
+          staffSex: '',
+          staffTelephone: '',
+          staffEmail: '',
+          departmentId: '',
+          departmentName: '',
+          createTime: '',
+          createEmp: '',
+          createEmpInit: '',
+          remark: '',
+        },
         rulesModify: {
           staffNum: [{required: true, validator: checkUpdateNum, trigger: 'blur'}],
           staffName: [{required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur'},
@@ -1079,6 +1093,22 @@
       },
       cancelUpdate() {
         this.modifyDialogVisible = false;
+        this.$refs['modifyForm'].resetFields();
+        this.modifyForm.id = this.modifyForm2.id;
+        this.modifyForm.accountId = this.modifyForm2.accountId;
+        this.modifyForm.accountName = this.modifyForm2.accountName;
+        this.modifyForm.staffNum = this.modifyForm2.staffNum;
+        this.modifyForm.staffName = this.modifyForm2.staffName;
+        this.modifyForm.staffSex = this.modifyForm2.staffSex;
+        this.modifyForm.staffEmail = this.modifyForm2.staffEmail;
+        this.modifyForm.isDimission = this.modifyForm2.isDimission;
+        this.modifyForm.staffTelephone = this.modifyForm2.staffTelephone;
+        this.modifyForm.departmentName = this.modifyForm2.departmentName;
+        this.modifyForm.departmentId = this.modifyForm2.departmentId;
+        this.modifyForm.createTime = this.modifyForm2.createTime;
+        this.modifyForm.remark = this.modifyForm2.remark;
+        this.modifyForm.createEmpInit = this.modifyForm2.createEmp;
+        this.modifyForm.modifyTime = this.modifyForm2.modifyTime
       },
 
 
@@ -1430,21 +1460,37 @@
         this.id = val.id;
         this.accountId = val.accountId;
         this.modifyForm.id = val.id;
+        this.modifyForm2.id = val.id;
         this.modifyForm.accountId = val.accountId;
+        this.modifyForm2.accountId = val.accountId;
         this.modifyForm.accountName = val.accountName;
+        this.modifyForm2.accountName = val.accountName;
         this.modifyForm.staffNum = val.staffNum;
+        this.modifyForm2.staffNum = val.staffNum;
         this.updateStaffNum = val.staffNum;
         this.modifyForm.staffName = val.staffName;
+        this.modifyForm2.staffName = val.staffName;
         this.modifyForm.staffSex = val.staffSex;
+        this.modifyForm2.staffSex = val.staffSex;
         this.modifyForm.staffEmail = val.staffEmail;
+        this.modifyForm2.staffEmail = val.staffEmail;
         this.modifyForm.isDimission = this.isDimissionEnum[val.isDimission];
+        this.modifyForm2.isDimission = this.isDimissionEnum[val.isDimission];
         this.modifyForm.staffTelephone = val.staffTelephone;
+        this.modifyForm2.staffTelephone = val.staffTelephone;
         this.modifyForm.departmentName = val.departmentName;
+        this.modifyForm2.departmentName = val.departmentName;
         this.modifyForm.departmentId = val.departmentId;
+        this.modifyForm2.departmentId = val.departmentId;
         this.modifyForm.createTime = val.createTime;
+        this.modifyForm2.createTime = val.createTime;
         this.modifyForm.remark = val.remark;
+        this.modifyForm2.remark = val.remark;
         this.modifyForm.createEmpInit = val.createEmp;
+        this.modifyForm2.createEmpInit = val.createEmp;
         this.modifyForm.modifyTime = val.modifyTime;
+        this.modifyForm2.modifyTime = val.modifyTime;
+        this.modifyForm = this.modifyForm2;
 
 
         this.formdiStributionDepartment.staffNum = val.staffNum;
