@@ -68,14 +68,14 @@ public class AccountManagerController {
         String id = request.getParameter("id");
         return new Result().ok().put("account",accountManagerService.selectAccountById(id)).put("permissionEnum",CommonEnums.toEnumMap(CommonEnums.Permission.values())).put("accountStatusEnum",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()));
     }
-		/**
-		 * description: 账号功能权限明细，根据账户ID进行查找
-		 * @author jing.luo01@ucarinc.com
-		 * @date   2019/8/20 10:07
-		 * @params request 描述
+    /**
+     * description: 账号功能权限明细，根据账户ID进行查找
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/20 10:07
+     * @params request 描述
 
-		 * @return
-		 */
+     * @return
+     */
 	@ResponseBody
 	@RequestMapping("/selectById.do_")
 	public Result selectById(HttpServletRequest request){
@@ -268,6 +268,8 @@ public class AccountManagerController {
         int state = accountManagerService.getAccountStateById(accountStaff.getAccountId());
         //获取员工是否删除，离职和关联账户的信息
         int flag = accountManagerService.getStaffInfBystaffId(accountStaff.getStaffId());
+        //防止并发修改关联多个员工
+        accountStaff.setStaffId(accountManagerService.selectStaffIdById(accountStaff.getAccountId()));
         if(state != 3 && flag == 0){
             accountStaff.setModifyEmp((Long) session.getAttribute("accountId"));
             accountStaff.setCreateEmp((Long) session.getAttribute("accountId"));

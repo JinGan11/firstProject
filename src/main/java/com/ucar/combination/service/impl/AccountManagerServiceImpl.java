@@ -380,8 +380,8 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     }
 
     @Override
-    public Long selectStaffIdById(Long accountID){
-        return accountManageDao.selectStaffIdById(accountID);
+    public Long selectStaffIdById(Long accountId){
+        return accountManageDao.selectStaffIdById(accountId);
     }
 
     @Override

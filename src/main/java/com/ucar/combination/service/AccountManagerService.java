@@ -207,7 +207,7 @@ public interface AccountManagerService {
     //返回历史记录
     List<AccountHistory> getHistoryList(String accountId);
     void updateModifyTimeAndModifyName(@Param("a") Account account);
-    public Long selectStaffIdById(Long accountID);
+    Long selectStaffIdById(Long accountId);
 
     Result updateAccountStatue(Long accountId, Long operateAccountId);
 
