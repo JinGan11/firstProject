@@ -834,7 +834,7 @@
                   nameList+=",";
                 }
               }
-              self.$message.error("账户"+nameList+"已经被移除");
+              self.$message.error("账户"+nameList+"已经已从角色中移除");
               self.fetchAccountData();
             }else{
               self.$message.error("删除失败");
