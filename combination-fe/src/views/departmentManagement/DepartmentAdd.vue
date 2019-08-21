@@ -897,8 +897,13 @@
       },
       chooseStaff(staffData) {//关联员工
         var self = this;
-        self.form.staffId = staffData.id;
-        self.form.staffName = staffData.staffName;
+        if(staffData.isDimission!=1){
+          self.form.staffId = staffData.id;
+          self.form.staffName = staffData.staffName;
+        }else{
+          self.$message.error("无法选择离职的员工！");
+          self.dialogEmployee = !self.dialogEmployee;
+        }
       },
 
       // 城市选择
