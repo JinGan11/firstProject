@@ -319,7 +319,7 @@
           creditCode: [
             { required: true, message: '请输入统一社会信用代码', trigger: 'blur' },
             { min: 15, max: 18, message: '长度在 15 到 18 个字符或数字', trigger: 'blur' },
-            { pattern:/(^[^ \da-zA-Z]{15}$)|(^[\da-zA-Z]{18}$)/,message: '长度为15或18位，且只支持字母和数字', trigger: 'blur' }
+            { pattern:/(^[^ \da-zA-Z]{15}$)|(^[\da-zA-Z]{18}$)/,message: '长度为15或18位，且只支持字母和数字，不能有空格', trigger: 'blur' }
           ],
           companyType:[
             { required: false, message: '公司类型', trigger: 'blur' },
@@ -331,8 +331,8 @@
           ],
           registeredCapital:[
             { required: false, message: '请选择数据类型'},
-            //{ min: 1, max: 20, message: '长度在 1 到 20 位数字', trigger: 'blur' },
-            { pattern:/(^[1-9]{1}[\d]+$)/,message: '长度在 1 到 20 位数字，请勿输入其他字符', trigger: 'blur' }
+            { min: 1, max: 20, message: '长度在 1 到 20 位数字', trigger: 'blur' },
+            { pattern:/(^[1-9]{1}[^ \d]+$)/,message: '长度在 1 到 20 位数字，请勿输入其他字符和空格', trigger: 'blur' }
 
           ],
           companyAddress:[

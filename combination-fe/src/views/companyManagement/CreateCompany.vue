@@ -318,7 +318,7 @@
           registeredCapital:[
             { required: false, message: '请选择数据类型'},
             { min: 1, max: 20, message: '长度在 1 到 20 位数字', trigger: 'blur' },
-            { pattern:/(^[1-9]{1}[\d]+$)/,message: '只支持不以0开头的整数，请勿输入其他字符', trigger: 'blur' }
+            { pattern:/(^[1-9]{1}[^ \d]+$)/,message: '只支持不以0开头的整数，请勿输入其他字符', trigger: 'blur' }
 
           ],
           companyAddress:[

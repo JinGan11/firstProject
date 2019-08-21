@@ -81,7 +81,7 @@
         <el-row>
           <el-col style="text-align: center">
             <el-form-item>
-              <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
+              <el-button type="primary" @click="search" style="width:100px">查询</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -609,6 +609,10 @@
         this.preview=true;
         this.previewId=id;
       },
+        search(){
+          this.currentPage=1;
+          this.fetchData();
+        },
     },
 
   }
