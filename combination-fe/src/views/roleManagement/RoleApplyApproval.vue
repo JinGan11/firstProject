@@ -553,7 +553,8 @@
           applyStatus: '2',
           applyTime:self.form.applyTime ,
           modifyTime: self.form.modifyTime,
-          type:'角色审核'
+          type:'角色审核',
+          date : new Date().getTime(),
         };
         self.$http.get('roleApply/querylist.do_', {
           params: param
@@ -578,6 +579,7 @@
         }
         var param = {
           applyId: this.selection,
+          date : new Date().getTime(),
         };
         this.$http.get('roleApply/showAccountListByApplyId.do_', {
           params: param
@@ -631,6 +633,7 @@
           accountIds:accountIds.toString(),
           removeAccountIds:removeAccountIds.toString(),
           roleId:self.apply.role_id,
+          date : new Date().getTime(),
         };
         self.$http.get('roleApplyApproval/approvalPass.do_', {
           params: param
@@ -651,7 +654,8 @@
         var self = this;
         var param = {
           id:self.selection,
-          rejectReason:self.rejectReason
+          rejectReason:self.rejectReason,
+          date : new Date().getTime(),
         };
         self.$http.get('roleApplyApproval/approvalReject.do_', {
           params: param
@@ -709,6 +713,7 @@
         var self = this;
         var param = {
           applyId: self.applyId,
+          date : new Date().getTime(),
         };
         self.$http.get('roleApply/showAccountListByApplyId.do_', {
           params: param
