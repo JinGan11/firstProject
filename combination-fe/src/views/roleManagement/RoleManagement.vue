@@ -530,7 +530,8 @@
         //this.dialogVisible=true;
         var self = this;
         var param = {
-          roleID: val
+          roleID: val,
+          date : new Date().getTime(),
         };
         self.$http.get('roleManage/getOneInf.do_', {
           params: param
@@ -558,7 +559,8 @@
         }).then(() => {
           var self = this;
           var param = {
-            roleID: val
+            roleID: val,
+            date : new Date().getTime(),
           };
           self.$http.get('roleManage/getOneInf.do_', {
             params: param
@@ -573,6 +575,7 @@
               var self = this;
               var param = {
                 selection: self.selection,
+                date : new Date().getTime(),
               };
               self.$http.get('roleManage/updateStatus.do_', {
                 params: param
@@ -738,7 +741,8 @@
         const self = this;
         self.checkStrictly = true;
         var param = {
-          roleInfoId: self.myRole.roleId
+          roleInfoId: self.myRole.roleId,
+          date : new Date().getTime(),
         }
         self.$http.post('roleManage/getRolePower.do_', param).then((result) => {
           self.selectedNodes = result.rolePowerList;
@@ -811,7 +815,8 @@
           var self = this;
           var param = {
             roleId:self.myRole.roleId,
-            accountIds:self.list.toString()
+            accountIds:self.list.toString(),
+            date : new Date().getTime(),
           };
           self.$http.get('roleManage/removeRoleAccount.do_', {
             params: param
@@ -842,7 +847,8 @@
         var self = this;
         var param = {
           roleId:self.myRole.roleId,
-          accountIds:self.selectAccountIds.toString()
+          accountIds:self.selectAccountIds.toString(),
+          date : new Date().getTime(),
         };
         self.$http.get('roleManage/addRoleAccount.do_', {
           params: param

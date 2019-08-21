@@ -253,7 +253,8 @@
       var validatePass = (rule, value, callback) => {
         const self = this;
         var param = {
-          roleName: value
+          roleName: value,
+          date : new Date().getTime(),
         };
         self.$http.get("roleManage/judgeExist.do_", {
           params: param
@@ -402,6 +403,7 @@
         const self = this;
         var param = {
           id: self.selection.id,
+          date : new Date().getTime(),
         };
         self.$http.get('account/selectAccountById.do_',{
           params: param
@@ -446,6 +448,7 @@
                   const self = this;
                   var param = {
                     id: self.selection.id,
+                    date : new Date().getTime(),
                   };
                   self.$http.get('account/selectAccountById.do_',{
                     params: param
@@ -522,7 +525,8 @@
           department: self.accountForm.departmentId,
           isRelStaff: self.accountForm.isRelStaff,
           status: self.accountForm.status,
-          flag:1
+          flag:1,
+          date : new Date().getTime(),
         };
         self.$http.get('account/querylist.do_', {
           params: param

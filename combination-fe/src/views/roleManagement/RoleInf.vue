@@ -176,6 +176,7 @@
         var self = this;
         var param = {
           roleID: roleid,
+          date : new Date().getTime(),
         };
         self.$http.get('roleManage/getOtherOneInf.do_', {
           params: param
@@ -205,6 +206,7 @@
         //roleid=this.$route.query.roleID;
         var param = {
           roleID: roleid,
+          date : new Date().getTime(),
         };
         self.$http.get('roleManage/getOneInf.do_', {
           params: param
