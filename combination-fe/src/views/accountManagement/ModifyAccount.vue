@@ -362,7 +362,9 @@
               self.$http.post('account/modifyAccount.do_', self.modifyForm)
                 .then((result) => {
                   if(result.state == 3){
-                    self.$message.info("账户无效，修改失败");
+                    self.$message.error("账户无效，修改失败");
+                  }else if(result.flag != 0) {
+                    self.$message.error("员工信息无效，修改失败");
                   }else{
                     self.$message.info("修改成功");
                   }

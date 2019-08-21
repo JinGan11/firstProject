@@ -92,8 +92,10 @@ public class AccountManagerController {
     @Transactional
     @ResponseBody
     @RequestMapping(value = "/createAccount.do_", method = RequestMethod.POST)
-    public void createAccount(@RequestBody AccountStaff accountStaff, HttpSession session){
-        try {
+    public Result createAccount(@RequestBody AccountStaff accountStaff, HttpSession session){
+        //获取员工是否删除，离职和关联账户的信息
+        int flag = accountManagerService.getStaffInfBystaffId(accountStaff.getStaffId());
+        if(flag ==0) {
             Long user = (Long) session.getAttribute("accountId");
             accountStaff.setAccountName(accountStaff.getAccountName().toLowerCase());
             accountStaff.setCreateEmp(user);
@@ -105,9 +107,8 @@ public class AccountManagerController {
             if(accountStaff.getStaffId()!= null && accountStaff.getStaffId()!= 0) {
                 accountManagerService.updateStaffAccount(accountStaff);
             }
-        }catch(Exception e) {
-            throw  new RuntimeException("");
         }
+        return Result.ok().put("flag",flag);
     }
 
     /*
@@ -263,8 +264,11 @@ public class AccountManagerController {
     @ResponseBody
     @RequestMapping(value = "/modifyAccount.do_",method = RequestMethod.POST)
     public Result modifyAccount(@RequestBody AccountStaff accountStaff,HttpSession session){
+        //获取账户是否删除的信息
         int state = accountManagerService.getAccountStateById(accountStaff.getAccountId());
-        if(state != 3){
+        //获取员工是否删除，离职和关联账户的信息
+        int flag = accountManagerService.getStaffInfBystaffId(accountStaff.getStaffId());
+        if(state != 3 && flag == 0){
             accountStaff.setModifyEmp((Long) session.getAttribute("accountId"));
             accountStaff.setCreateEmp((Long) session.getAttribute("accountId"));
             if(accountStaff.getStaffId() == null){
@@ -283,7 +287,7 @@ public class AccountManagerController {
                 accountManagerService.updateStaffAccount(accountStaff);
             }
         }
-        return Result.ok().put("state",state);
+        return Result.ok().put("state",state).put("flag",flag);
     }
 
     /**

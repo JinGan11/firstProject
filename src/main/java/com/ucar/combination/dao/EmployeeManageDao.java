@@ -137,4 +137,13 @@ public interface EmployeeManageDao {
      */
     Integer updateDepartmentByEmployee(Map<String,String> employeeMap);
 
+    /**
+     * description: 根据员工id查询员工信息
+     * @author junqiang.zhang@ucarinc.com
+     * @date: 2019/8/20
+     * @params: staffId 员工id
+     * @return: Staff 离职，是否删除，账户id信息
+     */
+    Staff getStaffInfById(Long staffId);
+
 }

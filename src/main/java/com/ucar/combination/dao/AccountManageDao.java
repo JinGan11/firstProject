@@ -178,7 +178,7 @@ public interface AccountManageDao {
     Long selectStaffIdById(Long accountID);
 
     /**
-     * description: 根据账户id查询员工id
+     * description: 根据账户id查询账户状态
      * @author junqiang.zhang@ucarinc.com
      * @date: 2019/8/20
      * @params: accountId 账户id
