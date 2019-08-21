@@ -737,7 +737,7 @@
       },
       loadNode(node,resolve){
         var self = this;
-        self.$http.get('department/buildTree.do_', {
+        self.$http.get('department/buildTree2.do_', {
           params: null
         }).then((result) => {
           resolve([result.departmentDto]);
