@@ -76,13 +76,15 @@ public class EmployeeManageController {
         HttpSession session = request.getSession();
         Long accountId = (Long) session.getAttribute("accountId");
         List<Long> departmentIdList = departmentService.selectDataPowerIds(accountId);
+        List<String> staffNumList=employeeManageService.selectAllStaffNum();
         params.put("departmentIdList",departmentIdList);
         params.put("accountId",accountId);
         ResultPage resultPage = employeeManageService.queryList(new QueryParam(params));
         List<Object> staffDtoList = employeeManageService.getStaffList(new QueryParam(params));
         return new Result().ok().put("page", resultPage).put("SexEnum", CommonEnums.toEnumMap(CommonEnums.Sex.values()))
                 .put("isDismissionEnum", CommonEnums.toEnumMap(CommonEnums.isDimission.values()))
-                .put("staffDtoList", objectToMap(staffDtoList));
+                .put("staffDtoList", objectToMap(staffDtoList))
+                .put("staffNumList",staffNumList);
     }
     /**
      * description:在员工表中插入新员工
@@ -94,15 +96,12 @@ public class EmployeeManageController {
     @ResponseBody
     @RequestMapping(value = "/insertStaff",method = RequestMethod.POST)
     public Result insertStaff(HttpSession session, @RequestBody Staff staff){
-        List<String> list=employeeManageService.selectAllStaffName();
-        if(list.contains(staff.getStaffNum())){
-            return Result.ok().put("code", 300) ;
-        }else{
+
             staff.setCreateEmp((Long) session.getAttribute("accountId"));
             staff.setModifyEmp((Long) session.getAttribute("accountId"));
             employeeManageService.insertStaff(staff);
             return Result.ok();
-        }
+
 
     }
     /**
@@ -119,7 +118,7 @@ public class EmployeeManageController {
         int id = Integer.parseInt(request.getParameter("id"));
 
         String accountId=request.getParameter("accountId");
-        System.out.print(accountId);
+
         Integer accountID = null;
         if (accountId != null) {
             accountID=Integer.parseInt(accountId);
@@ -221,9 +220,9 @@ public class EmployeeManageController {
         staff.setModifyEmp((Long)(request.getSession().getAttribute("accountId")));
         employeeManageService.updateStaff(staff);
         Long accountId=staff.getAccountId();
-            if(accountId!=null&&staff.getStaffEmail()!=null){
+        if(accountId!=null&&staff.getStaffEmail()!=null){
             Account account=accountManagerService.selectAccountById(String.valueOf(accountId));
-            if(account.getaccountState()==1){
+            if(account.getaccountState()==1 && account != null){
                 accountManagerService.updateAccountSecretEmailById(staff.getStaffEmail(), String.valueOf(accountId));
             }
 

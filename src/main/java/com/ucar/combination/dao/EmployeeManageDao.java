@@ -111,7 +111,7 @@ public interface EmployeeManageDao {
      * @params
      * @return
      */
-    List<String> selectAllStaffName();
+    List<String> selectAllStaffNum();
     /**
      * description: 获取员工修改人和创建人
      * @author: jianan.shu@ucarinc.com

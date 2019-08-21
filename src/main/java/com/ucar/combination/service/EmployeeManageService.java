@@ -84,7 +84,7 @@ public interface EmployeeManageService {
      * @params
      * @return
      */
-    public List<String> selectAllStaffName();
+    public List<String> selectAllStaffNum();
 
     /**
      * description: 获取创建人和修改人值

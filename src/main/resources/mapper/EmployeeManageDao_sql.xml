@@ -146,7 +146,7 @@
     <select id="selectDepartmentId" resultType="Long">
         SELECT department_id FROM t_staff WHERE account_id=#{id}
     </select>
-    <select id="selectAllStaffName" resultType="java.lang.String">
+    <select id="selectAllStaffNum" resultType="java.lang.String">
         select staff_num
         from t_staff
     </select>

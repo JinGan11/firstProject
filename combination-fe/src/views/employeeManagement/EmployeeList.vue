@@ -368,7 +368,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="归属部门:" label-width="150px">
+              <el-form-item label="归属部门:" prop="departmentName" label-width="150px">
                 <el-input style="width:80px;" :disabled="true" v-model="modifyForm.departmentName"></el-input>
                 <el-button type="text" @click="selectDepartmentModify">选择</el-button>
                 <el-button type="text" @click="clearDepartmentModify">清空</el-button>
@@ -650,7 +650,25 @@
           callback(new Error("员工编号为必填项，不允许为空"));
         } else if (!this.isNum(value)) {//引入methods中封装的检查手机格式的方法
           callback(new Error("员工编号不满足录入条件,需为1-20位数字"));
-        } else {
+        }
+        else if(this.staffNumList.indexOf(value) > -1) {
+          callback(new Error("该员工编号已存在，不允许重复创建"))
+        }
+        else {
+          callback();
+        }
+      };
+      var checkUpdateNum = (rule, value, callback) => {
+        // let phoneReg = /(^1[3|4|5|6|7|8|9]\d{9}$)|(^09\d{8}$)/;
+        if (value == "") {
+          callback(new Error("员工编号为必填项，不允许为空"));
+        } else if (!this.isNum(value)) {//引入methods中封装的检查手机格式的方法
+          callback(new Error("员工编号不满足录入条件,需为1-20位数字"));
+        }
+        else if(this.staffNumList.indexOf(value) > -1 && this.updateStaffNum != value) {
+          callback(new Error("该员工编号已存在，不允许重复创建"))
+        }
+        else {
           callback();
         }
       };
@@ -718,7 +736,7 @@
           remark: '',
         },
         rulesModify: {
-          staffNum: [{required: true, validator: checkNum, trigger: 'blur'}],
+          staffNum: [{required: true, validator: checkUpdateNum, trigger: 'blur'}],
           staffName: [{required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur'},
             {min: 1, max: 30, message: '员工姓名不满足录入条件，需为1-30个字符', trigger: 'blur'}],
 
@@ -762,6 +780,7 @@
         templateGroupName: '测试',
         description: '测试',
         staffDtoList: [],
+        staffNumList:[],
         formdiStributionDepartment: {
           staffId: '',
           staffNum: '',
@@ -846,7 +865,8 @@
           isLeaf: 'nodeIsLeaf',
           id: 'id',
           no: 'departmentNo',
-        }
+        },
+        updateStaffNum:'',
       }
     },
     filters: {
@@ -957,6 +977,7 @@
           self.SexEnum = result.SexEnum;
           self.isDimissionEnum = result.isDismissionEnum;
           self.staffDtoList = result.staffDtoList;
+          self.staffNumList=result.staffNumList;
         }).catch(function (error) {
           commonUtils.Log("employee/querylist.do_:" + error);
           self.$message.error("获取数据错误");
@@ -989,13 +1010,9 @@
           if (valid) {
             self.$http.post("employee/insertStaff", self.createForm)
               .then((result) => {
-                if (result.code === 300) {
-                  self.$message.error('员工已存在，不允许重复创建');
-                } else {
                   self.createDialogVisible = false;
                   self.$message.success("新建用户成功");
                   self.fetchData();
-                }
               })
               .catch(function (error) {
                 commonUtils.Log("employee/insertStaff:" + error);
@@ -1012,7 +1029,16 @@
       cancelEmployee() {
         this.createDialogVisible = false;
         this.$refs['createForm'].resetFields();
-        this.createForm='';
+        this.createForm.accountId='';
+        this.createForm.departmentId='';
+        this.createForm.departmentName='';
+        this.createForm.isDimission='';
+        this.createForm.remark='';
+        this.createForm.staffEmail='';
+        this.createForm.staffName='';
+        this.createForm.staffNum='';
+        this.createForm.staffSex='';
+        this.createForm.staffTelephone='';
       },
       saveUpdate() {
         console.log("=========")
@@ -1407,6 +1433,7 @@
         this.modifyForm.accountId = val.accountId;
         this.modifyForm.accountName = val.accountName;
         this.modifyForm.staffNum = val.staffNum;
+        this.updateStaffNum = val.staffNum;
         this.modifyForm.staffName = val.staffName;
         this.modifyForm.staffSex = val.staffSex;
         this.modifyForm.staffEmail = val.staffEmail;
@@ -1533,7 +1560,8 @@
       isNum(val){
         if(!/^\d{1,20}$/.test(val)){
           return false;
-        } else {
+        }
+        else {
           return true;
         }
 
