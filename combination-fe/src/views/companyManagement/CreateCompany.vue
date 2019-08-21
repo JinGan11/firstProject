@@ -304,8 +304,8 @@
           ],
           creditCode: [
             { required: true, message: '请输入统一社会信用代码', trigger: 'blur' },
-            { min: 15, max: 18, message: '长度在 15 到 18 个字符或数字', trigger: 'blur' },
-            { pattern:/(^[^ \da-zA-Z]{15}$)|(^[\da-zA-Z]{18}$)/,message: '长度为15或18位，且只支持字母和数字,不能输入空格', trigger: 'blur' }
+            { min:15,max: 18, message: '长度在 15 到 18 个字符或数字', trigger: 'blur' },
+            { pattern:/(^[A-Za-z0-9]{15}$)|(^[A-Za-z0-9]{18}$)/,message: '长度为15或18位，且只支持字母和数字,不能输入空格', trigger: 'blur' }
           ],
           companyType:[
             { required: false, message: '公司类型', trigger: 'blur' },
