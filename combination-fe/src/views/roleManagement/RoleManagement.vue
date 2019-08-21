@@ -775,7 +775,14 @@
         };
         self.$http.post("roleManage/assignPermission", param)
           .then((result) => {
-            self.$message.info("权限分配成功！")
+            if (result.code === 203) {
+              self.$alert(result.msg, '消息提醒', {
+                confirmButtonText: '确定',
+              });
+            } else {
+              self.$message.info("权限分配成功！")
+            }
+            self.fetchData();
           })
           .catch(function (error) {
             self.$alert("系统错误，请稍后再试！", '消息提醒', {

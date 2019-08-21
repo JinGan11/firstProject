@@ -800,8 +800,8 @@
               });
             } else {
               self.$message.info("权限分配成功！")
-              self.fetchData();
             }
+            self.fetchData();
           })
           .catch(function (error) {
             self.$alert("系统错误，请稍后再试！", '消息提醒', {
