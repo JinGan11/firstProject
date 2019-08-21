@@ -153,7 +153,7 @@
 	</insert>
 
 	<select id="getCityList" resultType="java.lang.Object">
-		select T.city_name from t_b_city T where T.level=2;
+		select T.city_name from t_b_city T;
 	</select>
 
 	<select id="getRegionDetails" resultType="com.ucar.combination.model.Region">
