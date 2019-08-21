@@ -496,6 +496,7 @@
           this.$http.post("account/lock",accountId).then((result) => {
             if(result.code===20||result.code===30){
               this.$message.error(result.msg)
+              this.fetchData();
             }else{
               this.$message.success("冻结成功");
               this.fetchData();
@@ -523,6 +524,7 @@
           this.$http.post("account/unLock",accountId).then((result) => {
             if(result.code===10||result.code===30){
               this.$message.error(result.msg)
+              this.fetchData();
             }else{
               this.$message.success("解冻成功");
               this.fetchData();
