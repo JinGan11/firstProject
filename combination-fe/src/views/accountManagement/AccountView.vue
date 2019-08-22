@@ -245,7 +245,8 @@
       fetchData(val){ //根据accountId查询界面要显示的数据
         const self = this;
         var param = {
-          id: val
+          id: val,
+          date:new Date().getTime()
         }
         self.$http.get('account/selectAccountById.do_',{
           params: param

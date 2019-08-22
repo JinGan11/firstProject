@@ -87,7 +87,7 @@
         <el-row>
           <el-col style="text-align: center">
             <el-form-item>
-              <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
+              <el-button type="primary" @click="search" style="width:100px">查询</el-button>
               <el-button type="primary" @click="add1" style="width:100px" >导出</el-button>
             </el-form-item>
           </el-col>
@@ -382,7 +382,12 @@
         }).catch(function (error) {
 
       });
-      self.$http.get('account/querylist.do_').then((result) => {
+      var param = {
+        date:new Date().getTime()
+      }
+      self.$http.get('account/querylist.do_',{
+        params: param
+      }).then((result) => {
         self.tableData = result.page.list;
         self.accountDtoList = result.accountDtoList;
         self.form.permissionsList = result.permissionList;
@@ -560,6 +565,10 @@
       handleSelectionChange(val) {
         this.selection = val;
       },
+      search(){
+        this.currentPage = 1;
+        this.fetchData();
+      },
       fetchData(){
         var self = this;
         self.disabled = true;
@@ -575,7 +584,8 @@
           permissions: self.form.permissions,
           department: self.form.departmentId,
           isRelStaff: self.form.isRelStaff,
-          status: self.form.status
+          status: self.form.status,
+          date:new Date().getTime()
         };
         self.$http.get('account/querylist.do_', {
           params: param
