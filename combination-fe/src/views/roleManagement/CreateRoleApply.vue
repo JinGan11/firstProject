@@ -853,6 +853,7 @@
       },
 
       selectAccountConfirm() {//点击添加按钮，将选择的账户 回显
+        this.accountDuplicateList=[];
         for (let i = 0; i < this.multipleSelection.length; i++) {
           let flag = 0;
           for (let j = 0; j < this.accountChangesList.length; j++) {

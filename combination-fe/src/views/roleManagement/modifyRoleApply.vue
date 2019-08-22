@@ -841,6 +841,7 @@
         this.disabledSelectAccount=false;
       },
       selectAccountConfirm() {//确定添加账户
+        this.accountDuplicateList=[];
         for (let i = 0; i < this.multipleSelection.length; i++) {
           let flag = 0;
           for (let j = 0; j < this.accountChangesList.length; j++) {
