@@ -153,7 +153,7 @@
     </el-dialog>
 
     <el-dialog :title="chooseAdd" :visible.sync="chooseAccountPage" :close-on-click-modal="false"
-               width="80%">
+               :before-close="handleClose" width="80%">
       <div class="dialog-main" style="overflow: auto">
       <div style="width: 95%">
         <el-form ref="form" :model="form" label-width="100px">
@@ -873,6 +873,15 @@
           if(result.msg === "添加成功") {
             this.chooseAccountPage = false;
             this.fetchAccountData();
+            this.currentAddPage=1;
+            this.pageAddSize=10;
+            this.form.accountNo='';
+            this.form.staffNo='';
+            this.form.name='';
+            this.form.permissions='';
+            this.form.departmentId='';
+            this.form.isRelStaff='';
+            this.form.status='';
           }else{
             self.$message.error("添加失败，该角色已失效！")
             this.fetchAccountData();
@@ -887,6 +896,18 @@
       cancelAdd(){
         this.chooseAccountPage = false;
         this.selectAccountIds=[];
+      },
+      handleClose(done) {
+        this.currentAddPage=1;
+        this.pageAddSize=10;
+        this.form.accountNo='';
+        this.form.staffNo='';
+        this.form.name='';
+        this.form.permissions='';
+        this.form.departmentId='';
+        this.form.isRelStaff='';
+        this.form.status='';
+        done();
       }
     }
   }
