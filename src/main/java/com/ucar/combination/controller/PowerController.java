@@ -109,11 +109,11 @@ public class PowerController {
         if (account != null ) {
             accountStaff.setAccountId(powerList.getId());
             accountStaff.setOperationType("账号分配权限");
-            accountStaff.setStaffId(account.getStaffId());
-            accountStaff.setAccountState(account.getaccountState());
-            accountStaff.setPermissions(account.getPremissions());
-            accountStaff.setStaffNum(account.getStaffNum());
-            accountStaff.setStaffName(account.getStaffName());
+            accountStaff.setStaffId(account1.getStaffId());
+            accountStaff.setAccountState(account1.getaccountState());
+            accountStaff.setPermissions(account1.getPremissions());
+            accountStaff.setStaffNum(account1.getStaffNum());
+            accountStaff.setStaffName(account1.getStaffName());
             accountStaff.setCreateEmp(accountId);
             accountManagerService.insertAccountHistory(accountStaff);
         }
