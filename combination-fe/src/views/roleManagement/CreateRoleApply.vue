@@ -1131,7 +1131,7 @@
         }).then((result) => {
           self.formInfo=result.page;
           self.RoleStatusEnum = result.RoleStatusEnum;
-          self.formInfo.businessLine=self.formInfo.businessLine.split(',');
+          self.formInfo.businessLine=self.formInfo.businessLine.split(';');
         }).catch(function (error) {
           commonUtils.Log("roleManage/getOneInf.do_:" + error);
           self.$message.error("获取数据错误");
