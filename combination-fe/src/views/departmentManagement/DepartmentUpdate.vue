@@ -612,7 +612,7 @@
             {pattern: /^1[0-9]{10}$/, message: '手机号格式不正确', trigger: 'blur'}
           ],
           email: [
-            {pattern: /^\w+@[a-z0-9]+\.[a-z]+$/i, message: '邮箱格式不正确', trigger: 'blur'}
+            {pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{1,4}){1,4})$/, message: '邮箱格式不正确', trigger: 'blur'}
           ],
           landline: [
             {pattern: /^[0-9]{4}\-[0-9]{7,8}$/, message: "座机号格式不正确，格式为'0592-8888888'", trigger: 'blur'}
