@@ -158,7 +158,7 @@
       <div style="width: 95%">
         <el-form ref="form" :model="form" label-width="100px">
           <el-row>
-            <el-col :span="5">
+            <el-col :span="6">
               <el-form-item label="登陆账号" >
                 <el-input style="width:140px;" v-model="form.accountNo" placeholder="登陆账号" clearable></el-input>
               </el-form-item>
@@ -187,10 +187,18 @@
             </el-col>
           </el-row>
           <el-row>
-            <el-col :span="11">
+            <el-col :span="6">
               <el-form-item label="员工所属部门">
-                <el-input style="width:180px;" v-model="form.departmentId" placeholder="员工所属部门"></el-input>
+                <el-input style="width:180px;" v-model="form.department" placeholder="员工所属部门"></el-input>
               </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <div style="float: left; margin-left: 5px; margin-right: 140px">
+                <el-col>
+                  <el-button type="text" @click="chooseDepartment">选择</el-button>
+                  <el-button type="text" @click="clearDepartment">取消</el-button>
+                </el-col>
+              </div>
             </el-col>
             <el-col :span="6">
               <el-form-item label="是否关联员工">
@@ -261,6 +269,20 @@
       </el-pagination>
     </div>
     </el-dialog>
+
+    <el-dialog title="选择部门" :visible.sync="chooseDepartmentFlag">
+      <el-tree
+        ref="tree"
+        :props="defaultPropsTree"
+        node-key="id"
+        :load="loadNodeDepartment"
+        lazy
+        default-expanded-keys="[1]"
+        check-strictly
+        show-checkbox
+        @check-change="handleClickChange">
+      </el-tree>
+    </el-dialog>
   </home>
 </template>
 
@@ -271,6 +293,14 @@
   export default {
     data() {
       return {
+        defaultPropsTree: {
+          label: 'departmentName',
+          children: 'children',
+          isLeaf: 'nodeIsLeaf',
+          id: 'id',
+          no: 'departmentNo',
+        },
+        departmentDto:[],
         total: 0,
         currentPage: 1,
         pageSize: 10,
@@ -281,9 +311,6 @@
           value:'2',
           label:'冻结'
       }],
-        form: {
-          name: '',
-        },
         tableData: [],
         RoleStatusEnum: {},
         selection: '',
@@ -359,6 +386,7 @@
           accountStatusEnum:{},
           permissions: '',
           departmentId:'',
+          department:'',
           isRelStaffoptions:[{
             value: '',
             label: '全部'
@@ -374,8 +402,8 @@
          },
         selectAccountIds:[],
         isComfirmAdd:true,
-
         strict: false,
+        chooseDepartmentFlag:false,
       }
     },
     activated() {
@@ -383,6 +411,13 @@
     },
     created() {
       this.judgmentAuthority();
+      const self = this;
+      self.$http.get('department/buildTree2.do_')
+        .then((result) => {
+          self.departmentDto = result.departmentDto;
+        }).catch(function (error) {
+
+      });
     },
     mounted() {
       commonUtils.Log("页面进来");
@@ -879,6 +914,7 @@
             this.form.staffNo='';
             this.form.name='';
             this.form.permissions='';
+            this.form.department='';
             this.form.departmentId='';
             this.form.isRelStaff='';
             this.form.status='';
@@ -904,11 +940,65 @@
         this.form.staffNo='';
         this.form.name='';
         this.form.permissions='';
+        this.form.department='';
         this.form.departmentId='';
         this.form.isRelStaff='';
         this.form.status='';
         done();
-      }
+      },
+      chooseDepartment(){
+        this.chooseDepartmentFlag = true;
+      },
+      clearDepartment(){
+        this.form.departmentId = '';
+        this.form.department = '';
+      },
+      loadNodeDepartment(node,resolve){
+        var self = this;
+        var departmentDto = [self.departmentDto];
+        if (node.level === 0) {
+          resolve(departmentDto);
+        }
+        if (node.level === 1) {
+          resolve(self.departmentDto.children);
+        }
+        if (node.level > 1){
+          var id = node.data.id;
+          resolve(getChilder(id,departmentDto));
+        }
+        function getChilder(id,datas) {
+          var d = null;
+          for(var i = 0;i<datas.length;i++){
+            var data = datas[i];
+            if (data.id != id && data.nodeIsLeaf == false){
+              d = getChilder(id,data.children);
+              if (d != null ){
+                return d;
+              }
+            }else if(data.id==id){
+              return data.children;
+            }
+          }
+          return d;
+        }
+      },
+      handleClickChange(data,checked,node){
+        // 手动设置单选
+        if(checked === true) {
+          this.checkedId = data.id;
+          this.$refs.tree.setCheckedKeys([data.id]);
+          this.form.departmentId = data.id;
+          this.form.department = data.departmentName;
+        } else {
+          if (this.checkedId == data.id) {
+            this.$refs.tree.setCheckedKeys([data.id]);
+          }
+        }
+        this.closeChooseDepartment();
+      },
+      closeChooseDepartment(){
+        this.chooseDepartmentFlag = false;
+      },
     }
   }
 </script>
