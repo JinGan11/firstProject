@@ -175,7 +175,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="数据权限类型">
-                <el-select style="width:180px;" v-model="form.permissions" clearable placeholder="请选择">
+                <el-select style="width:180px;" v-model="form.permissions" clearable placeholder="全选">
                   <el-option
                     v-for="item in form.permissionsList"
                     :key="item.value"
@@ -194,7 +194,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="是否关联员工">
-                <el-select style="width: 180px" v-model="form.isRelStaff" clearable placeholder="请选择">
+                <el-select style="width: 180px" v-model="form.isRelStaff" clearable placeholder="全部">
                   <el-option
                     v-for="item in form.isRelStaffoptions"
                     :key="item.value"
@@ -206,7 +206,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="账号状态">
-                <el-select style="width:180px;" v-model="form.status" clearable placeholder="请选择">
+                <el-select style="width:180px;" v-model="form.status" clearable placeholder="全部">
                   <el-option
                     v-for="item in StatusList"
                     :key="item.value"
@@ -360,15 +360,18 @@
           permissions: '',
           departmentId:'',
           isRelStaffoptions:[{
-            value: '1',
-            label: '是'
+            value: '',
+            label: '全部'
           },{
+              value: '1',
+              label: '是'
+         },{
             value: '0',
             label: '否'
           }],
           isRelStaff: '',
           status:''
-        },
+         },
         selectAccountIds:[],
         isComfirmAdd:true,
 
@@ -690,8 +693,6 @@
       },
       cancel() {
         this.exportDialogVisible = false;
-        this.checkRoles = [];
-        this.filterVal = [];
       },
       exportRole() {
         this.checkAll=false;
