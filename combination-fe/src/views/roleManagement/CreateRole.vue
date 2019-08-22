@@ -156,7 +156,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="是否关联员工">
-                <el-select style="width: 180px" v-model=" accountForm.isRelStaff" clearable placeholder="请选择">
+                <el-select style="width: 180px" v-model="accountForm.isRelStaff" clearable placeholder="请选择">
                   <el-option
                     v-for="item in accountForm.isRelStaffoptions"
                     :key="item.value"
@@ -214,7 +214,12 @@
           </template>
         </el-table-column>
         <el-table-column prop="modifyTime" label="操作时间" style="width:auto"></el-table-column>
-        <el-table-column prop="modifyEmpName" label="操作人" style="width:auto"></el-table-column>
+        <el-table-column prop="modifyEmpName" label="操作人" style="width:auto">
+          <template slot-scope="scope">
+            <p v-if="scope.row.modifier!=null">{{scope.row.modifyEmpName}}({{scope.row.modifier}})</p>
+            <p v-else>{{scope.row.modifyEmpName}}</p>
+          </template>
+        </el-table-column>
       </el-table>
       <el-pagination background
                      @size-change="handleSizeChange"
@@ -310,18 +315,21 @@
           permissionsEnum:{},
           accountStatusList:[],
           accountStatusEnum:{},
+          isRelStaffoptions:[{
+            value: '',
+            label: '全部'
+          },{
+            value: 1,
+            label: '是'
+          },{
+            value: 0,
+            label: '否'
+          }],
           permissions: null,
           department:null,
           departmentId:'',
-          isRelStaffoptions:[{
-            value: '1',
-            label: '是'
-          },{
-            value: '0',
-            label: '否'
-          }],
-          isRelStaff: null,
-          status:null
+          isRelStaff:null,
+          status:null,
         },
         tableData:[],
         selection:[],
@@ -493,7 +501,7 @@
         this.$router.replace('/roleManagement/roleManagement')
       },
       chooseAccount(){
-
+        //this.accountForm = {};
         this.accountForm.accountNo = null;
         this.accountForm.staffNo = null;
         this.accountForm.name = null;
@@ -501,17 +509,28 @@
         this.accountForm.department = null;
         this.accountForm.isRelStaff = null;
         this.accountForm.status = null;
+        this.accountForm.isRelStaff = '';
+        this.accountForm.status = 0;
+        this.accountForm.permissions = 0;
         this.dialogVisibleAccount=true;
         this.fetchData();
       },
       handleSizeChange(val) {
         this.pageSize = val;
+        var string = {};
+        string = this.accountForm;
+        this.accountForm = {};
         this.currentPage = 1;
         this.fetchData(1, val);
+        this.accountForm = string;
       },
       handleCurrentChange(val) {
         this.currentPage = val;
+        var string = {};
+        string = this.accountForm;
+        this.accountForm = {};
         this.fetchData(val, this.pageSize);
+        this.accountForm = string;
       },
       fetchData(){
         var self = this;

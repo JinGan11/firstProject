@@ -161,7 +161,7 @@
               <el-form-item label="是否关联员工">
                 <el-select style="width: 180px" v-model=" accountForm.isRelStaff" clearable placeholder="请选择">
                   <el-option
-                    v-for="item in accountForm.isRelStaffoptions"
+                    v-for="item in isRelStaffoptions"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -219,7 +219,12 @@
           </template>
         </el-table-column>
         <el-table-column prop="modifyTime" label="操作时间" style="width:auto"></el-table-column>
-        <el-table-column prop="modifyEmpName" label="操作人" style="width:auto"></el-table-column>
+        <el-table-column prop="modifyEmpName" label="操作人" style="width:auto">
+          <template slot-scope="scope">
+            <p v-if="scope.row.modifier!=null">{{scope.row.modifyEmpName}}({{scope.row.modifier}})</p>
+            <p v-else>{{scope.row.modifyEmpName}}</p>
+          </template>
+        </el-table-column>
       </el-table>
       <el-pagination background
                      @size-change="handleSizeChange"
@@ -340,16 +345,19 @@
           permissions: null,
           department:null,
           departmentId:'',
-          isRelStaffoptions:[{
-            value: '1',
-            label: '是'
-          },{
-            value: '0',
-            label: '否'
-          }],
           isRelStaff: null,
           status:null
         },
+        isRelStaffoptions:[{
+          value: '',
+          label: '全部'
+        },{
+          value: '1',
+          label: '是'
+        },{
+          value: '0',
+          label: '否'
+        }],
         tableData:[],
         selection:[],
       }
@@ -532,17 +540,28 @@
         this.accountForm.department = null;
         this.accountForm.isRelStaff = null;
         this.accountForm.status = null;
+        this.accountForm.isRelStaff = '';
+        this.accountForm.status = 0;
+        this.accountForm.permissions = 0;
         this.dialogVisibleAccount = true;
         this.fetchAccountData();
       },
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;
+        var string = {};
+        string = this.accountForm;
+        this.accountForm = {};
         this.fetchAccountData(1, val);
+        this.accountForm = string;
       },
       handleCurrentChange(val) {
         this.currentPage = val;
+        var string = {};
+        string = this.accountForm;
+        this.accountForm = {};
         this.fetchAccountData(val, this.pageSize);
+        this.accountForm = string;
       },
 
       fetchAccountData() {//获取账户信息

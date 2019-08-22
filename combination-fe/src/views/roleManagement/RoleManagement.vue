@@ -10,7 +10,7 @@
           </el-col>
           <el-col :span="3">
             <el-form-item>
-              <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
+              <el-button type="primary" @click="fetchData1" style="width:100px">查询</el-button>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -450,11 +450,19 @@
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;
+        var string = {};
+        string = this.form;
+        this.form = {};
         this.fetchData(1, val);
+        this.form = string;
       },
       handleCurrentChange(val) {
         this.currentPage = val;
+        var string = {};
+        string = this.form;
+        this.form = {};
         this.fetchData(val, this.pageSize);
+        this.form = string;
       },
       handleSelectionChange(val) {
         this.selection = val;
@@ -559,6 +567,32 @@
           self.$message.error("获取数据错误");
         });
       },
+      fetchData1() { //获取数据
+        this.currentPage = 1;
+        var self = this;
+        var param = {
+          page: self.currentPage,
+          limit: self.pageSize,
+          roleName: self.form.name,
+          //flag: '1',
+          date : new Date().getTime(),
+        };
+        self.$http.get("roleManage/querylist.do_", {
+          params: param
+        }).then((result) => {
+          self.tableData = result.page.list;
+          self.total = result.page.totalCount;
+          self.RoleStatusEnum = result.RoleStatusEnum;
+          self.roleDtoList = result.roleList;
+          this.isAddCount = true;
+          this.isModify = true;
+          //self.form.name="dsf";
+        }).catch(function (error) {
+          commonUtils.Log("roleManage/querylist.do_:" + error);
+          self.$message.error("获取数据错误");
+        });
+      },
+
       createRole() {
         //点击新建按钮，进入新建角色界面
         this.$router.replace('/CreateRole');
