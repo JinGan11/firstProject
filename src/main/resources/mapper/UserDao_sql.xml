@@ -9,7 +9,6 @@
         modify_time, modify_emp, account_state, account_remark
         FROM t_account
         where account_name = #{accountName}
-        and account_state != 3
     </select>
 
     <select id="qryAccountPwdByAccountName" parameterType="String" resultType="com.ucar.combination.model.User">

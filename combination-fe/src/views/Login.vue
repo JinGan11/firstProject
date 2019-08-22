@@ -80,6 +80,10 @@
                   self.$alert("没有该用户", '消息提醒', {
                     confirmButtonText: '确定',
                   });
+                }else if (result.code === 303) {
+                  self.$alert(result.Msg, '消息提醒', {
+                    confirmButtonText: '确定',
+                  });
                 }else if (result.code === 202) {
                   utils.$emit("loginSuccess",true,result.accountName, result.powerList);
                   self.$confirm('已有账号登陆，自动为您跳转！如需登陆其它账号请先退出！', '提示', {
