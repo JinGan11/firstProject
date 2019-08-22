@@ -1733,6 +1733,15 @@
         //alert("清空上级部门");
         this.searchDeptUpperName = "";
         this.form.upperDepartmentNo = "";
+      },
+      initializationForm(){
+          this.form.staffNum = '',
+          this.form.staffName = '',
+          this.form.accountName = '',
+          this.form.isDimission = '0',
+          this.form.departmentId = '',
+          this.form.upperDepartmentNo = '',
+          this.fetchData();
       }
     }
   }

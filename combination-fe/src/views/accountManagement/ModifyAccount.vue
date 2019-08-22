@@ -151,7 +151,7 @@
       </div>
     </div>
     <el-dialog fullscreen :visible.sync="dialogEmployee" :close-on-click-modal="false" width="700px">
-      <employee-list :relAccount="relAccount" ></employee-list>
+      <employee-list ref="ref" :relAccount="relAccount" ></employee-list>
     </el-dialog>
   </home>
 </template>
@@ -392,6 +392,9 @@
       },
       changeDialogVisible() {//选择员工界面的开关
         const self = this;
+        if(self.$refs.ref != undefined) {
+          self.$refs.ref.initializationForm();
+        }
         self.dialogEmployee = !this.dialogEmployee;
       },
       clearStaffInf(){//清除选择关联的员工
