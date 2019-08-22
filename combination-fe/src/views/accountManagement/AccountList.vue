@@ -154,11 +154,7 @@
             <el-button type="primary" style="margin-right: 10px" @click="preservePower">保存</el-button>
             <el-button type="primary" @click="cencel">取消</el-button>
           </div>
-          <div style="height: 50px;">
-            <label style="margin-left: 5%; font-size: 22px; color: cornflowerblue;">所拥有角色</label>
-            <label style="margin-left: 45%; font-size: 22px; color: cornflowerblue;">所拥有特殊权限</label>
-          </div>
-          <el-row type="flex" justify="center" style="width: 100%;">
+          <el-row type="flex" style="width: 100%; margin-left: 5%">
             <el-col :span="11" style="width: 20%">
               <el-table ref="currAvaiVarRef" class="total-variable" height="350" border @cell-click="currCellClick"
                         @selection-change="selectionChangeLeft" :data="roleList">
@@ -166,12 +162,12 @@
                 <el-table-column prop="roleName" label="可分配角色"></el-table-column>
               </el-table>
             </el-col>
-            <el-col :span="2" class="button-col" style="display: flex; align-items: center;">
+            <el-col :span="3" class="button-col" style="display: flex; align-items: center;">
               <div class="button-group">
                 <el-button type="primary" :disabled="leftButtonDisable" style="margin-left: 7px;margin-bottom: 15px"
-                           class="button-select el-icon-arrow-right" round @click="selectVariable"></el-button>
+                           round @click="selectVariable">添加 ></el-button>
                 <el-button type="primary" :disabled="rightButtonDisable" style="margin-left: 7px"
-                           class="button-select el-icon-arrow-left" round @click="abandonVariable"></el-button>
+                           round @click="abandonVariable">< 移除</el-button>
               </div>
             </el-col>
             <el-col :span="11" style="width: 20%">
@@ -182,6 +178,11 @@
                 <el-table-column prop="roleName" label="已拥有角色"></el-table-column>
               </el-table>
             </el-col>
+          </el-row>
+          <div style="margin-top: 20px; margin-bottom: 20px;">
+            <label style="margin-left: 5%; font-size: 22px; color: cornflowerblue;">所拥有特殊权限</label>
+          </div>
+          <el-row>
             <el-col :span="11">
               <el-scrollbar style="width: 400px">
                 <el-tree

@@ -107,7 +107,7 @@ public class PowerController {
         Account account = accountManagerService.selectAccountById(String.valueOf(accountId));
         AccountStaff accountStaff = new AccountStaff();
         if (account != null ) {
-            accountStaff.setAccountId(account.getId());
+            accountStaff.setAccountId(powerList.getId());
             accountStaff.setOperationType("账号分配权限");
             accountStaff.setStaffId(account.getStaffId());
             accountStaff.setAccountState(account.getaccountState());

@@ -355,7 +355,7 @@ public class AccountManagerController {
         Result result = new Result();
         result = accountManagerService.updateAccountStatue(account.getId(),OperateAccountId);
         AccountStaff accountStaff = new AccountStaff();
-        if (account1.getAccountSecretEmail() == null || account1.getAccountSecretEmail().trim() == "") {
+        if (account1.getSecretEmail() == null || account1.getSecretEmail().equals("")) {
             result.put("code", 202);
         } else {
             result = mailService.sendMail(account1.getSecretEmail(),"重置密码",content);
