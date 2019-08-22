@@ -496,7 +496,8 @@
         });
       },
       lock(){
-        this.$confirm('此操作将会冻结该员工, 是否继续?', '提示', {
+        // console.log(this.checkRow);
+        this.$confirm(`确定将账号${this.row.accountName}冻结吗`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -524,7 +525,7 @@
         });
       },
       unlock(){
-        this.$confirm('此操作将会解冻该员工, 是否继续?', '提示', {
+        this.$confirm(`确定将账号${this.row.accountName}解冻吗`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -534,7 +535,7 @@
           };
           this.$http.post("account/unLock",accountId).then((result) => {
             if(result.code===10||result.code===30){
-              this.$message.error(result.msg)
+              this.$message.error(result.msg);
               this.fetchData();
             }else{
               this.$message.success("解冻成功");
@@ -542,7 +543,7 @@
             }
           }).catch(function (error) {
             commonUtils.Log("account/unlock" + error);
-            this.$message.error("解冻失败")
+            this.$message.error("解冻失败");
 
           });
         }).catch(() => {
@@ -596,6 +597,7 @@
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
+          // console.log(result.page.list);
           self.accountDtoList = result.accountDtoList;
           self.form.permissionsList = result.permissionList;
           self.form.permissionsEnum = result.permissionEnum;
