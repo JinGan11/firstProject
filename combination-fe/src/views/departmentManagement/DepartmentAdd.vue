@@ -1141,9 +1141,7 @@
       },
       mapConfirm() {
         const self = this;
-        if (self.form.address === '') {
-          self.form.address = self.searchKey
-        }
+        self.form.address = self.searchKey
         self.baiduMapFlag = false;
         this.$options.methods.checkInputByHand(this,'address'); // 校验输入地址
       }

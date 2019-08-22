@@ -1180,9 +1180,7 @@
       },
       mapConfirm() {
         const self = this
-        if (self.form.address === '') {
-          self.form.address = self.searchKey
-        }
+        self.form.address = self.searchKey
         self.baiduMapFlag = false;
         self.$options.methods.checkInputByHand(self,'cityName');
       },
