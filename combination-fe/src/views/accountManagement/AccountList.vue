@@ -243,7 +243,7 @@
 
 
 
-    <el-dialog title="历史记录" :visible.sync="historyRecordsVisible" width="1000px">
+    <el-dialog :title='"【"+row.accountName+"】的历史记录"' :visible.sync="historyRecordsVisible" width="1000px">
     <el-table ref="multipleTable" :data="historyRecords" border height="550px">
       <el-table-column prop="staffNum" label="员工编号" width="130"></el-table-column>
       <el-table-column prop="staffName" label="员工姓名" width="120"></el-table-column>
@@ -497,7 +497,7 @@
       },
       lock(){
         // console.log(this.checkRow);
-        this.$confirm(`确定将账号${this.row.accountName}冻结吗`, '提示', {
+        this.$confirm(`确定将账号【${this.row.accountName}】冻结吗`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -525,7 +525,7 @@
         });
       },
       unlock(){
-        this.$confirm(`确定将账号${this.row.accountName}解冻吗`, '提示', {
+        this.$confirm(`确定将账号【${this.row.accountName}】解冻吗`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
