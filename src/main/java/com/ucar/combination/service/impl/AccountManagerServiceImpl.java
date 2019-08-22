@@ -117,15 +117,19 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     public Account selectById(Long id){
         //有可改进的地方，一次性读取所有数据
         Account account=accountManageDao.selectById(id);
-        if (account.getCreatEmpId()!=null){
+        if (account!=null&&account.getCreatEmpId()!=null){
             Account account1=accountManageDao.selectById(account.getCreatEmpId());
            String createName=accountManageDao.getStaffNameByAccountId(account.getCreatEmpId());
-            account.setCreatEmpName(account1.getAccountName()+"("+createName+")");
+           if (createName!=null){
+			   account.setCreatEmpName(account1.getAccountName()+"("+createName+")");
+		   }
         }
-        if (account.getModifyEmpId()!=null){
+        if (account!=null&&account.getModifyEmpId()!=null){
             Account account1=accountManageDao.selectById(account.getModifyEmpId());
             String modifyName=accountManageDao.getStaffNameByAccountId(account.getModifyEmpId());
-            account.setModifyEmpName(account1.getAccountName()+"("+modifyName+")");
+            if (modifyName!=null){
+				account.setModifyEmpName(account1.getAccountName()+"("+modifyName+")");
+			}
         }
         return account;
     }

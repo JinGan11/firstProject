@@ -249,12 +249,16 @@ public class DepartmentController {
         if (departmentDto!=null&&departmentDto.getCreateEmp()!=null){
             Account account1=accountManageDao.selectById(departmentDto.getCreateEmp());
             String createName=accountManageDao.getStaffNameByAccountId(departmentDto.getCreateEmp());
-           departmentDto.setCreateEmpName(account1.getAccountName()+"("+createName+")");
+            if (createName!=null){
+                departmentDto.setCreateEmpName(account1.getAccountName()+"("+createName+")");
+            }
         }
         if (departmentDto!=null&&departmentDto.getModifyEmp()!=null){
             Account account1=accountManageDao.selectById(departmentDto.getModifyEmp());
             String modifyName=accountManageDao.getStaffNameByAccountId(departmentDto.getModifyEmp());
-            departmentDto.setModifyEmpName(account1.getAccountName()+"("+modifyName+")");
+            if (modifyName!=null){
+                departmentDto.setModifyEmpName(account1.getAccountName()+"("+modifyName+")");
+            }
         }
         return new Result().ok().put("department", departmentDto).put("CompanyTypeEnum", CommonEnums.toEnumMap(CommonEnums.CompanyType.values())).put("CompanyStatusEnum", CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values())).put("CompanyMarkEnum", CommonEnums.toEnumMap(CommonEnums.CompanyMark.values())).put("CompanyNatureEnum", CommonEnums.toEnumMap(CommonEnums.CompanyNature.values())).put("DepartmentTypeEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentType.values())).put("LevelEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentLevel.values())).put("DepartmentStatusEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentStatus.values()));
     }

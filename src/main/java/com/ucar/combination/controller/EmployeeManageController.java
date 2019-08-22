@@ -175,8 +175,10 @@ public class EmployeeManageController {
         accountStaff.setStaffNum(staff.getStaffNum());
         if (staff.getAccountId()!=null){
             Account account=accountManagerService.selectById(staff.getAccountId());
-            accountStaff.setPermissions(account.getPremissions());
-            accountStaff.setAccountState(account.getaccountState());
+            if (account!=null){
+                accountStaff.setPermissions(account.getPremissions());
+                accountStaff.setAccountState(account.getaccountState());
+            }
         }
         accountStaff.setOperationType("离职");
         accountStaff.setCreateEmp((Long)(request.getSession().getAttribute("accountId")));
