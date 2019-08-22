@@ -5,6 +5,8 @@ import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.dao.AccountManageDao;
+import com.ucar.combination.model.Account;
 import com.ucar.combination.model.Department;
 import com.ucar.combination.model.Staff;
 import com.ucar.combination.model.dto.*;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -46,6 +49,8 @@ public class DepartmentController {
 
     @Autowired
     EmployeeManageService employeeManageService;
+    @Resource
+    AccountManageDao accountManageDao;
     /**
      * description: 构建树结构的部门
      *
@@ -242,12 +247,14 @@ public class DepartmentController {
     public Result selectDepartment(HttpServletRequest request, @RequestParam(defaultValue = "") String id) {
         DepartmentDto departmentDto = departmentService.getDepartmentDtoById(id);
         if (departmentDto!=null&&departmentDto.getCreateEmp()!=null){
-            StaffAccountDTO staffAccountDTO=employeeManageService.getInfoByStaffId(departmentDto.getCreateEmp());
-            departmentDto.setCreateEmpName(staffAccountDTO.getCreateEmpName());
+            Account account1=accountManageDao.selectById(departmentDto.getCreateEmp());
+            String createName=accountManageDao.getStaffNameByAccountId(departmentDto.getCreateEmp());
+           departmentDto.setCreateEmpName(account1.getAccountName()+"("+createName+")");
         }
         if (departmentDto!=null&&departmentDto.getModifyEmp()!=null){
-            StaffAccountDTO staffAccountDTO1=employeeManageService.getInfoByStaffId(departmentDto.getModifyEmp());
-            departmentDto.setModifyEmpName(staffAccountDTO1.getModifyEmpName());
+            Account account1=accountManageDao.selectById(departmentDto.getModifyEmp());
+            String modifyName=accountManageDao.getStaffNameByAccountId(departmentDto.getModifyEmp());
+            departmentDto.setModifyEmpName(account1.getAccountName()+"("+modifyName+")");
         }
         return new Result().ok().put("department", departmentDto).put("CompanyTypeEnum", CommonEnums.toEnumMap(CommonEnums.CompanyType.values())).put("CompanyStatusEnum", CommonEnums.toEnumMap(CommonEnums.CompanyStatus.values())).put("CompanyMarkEnum", CommonEnums.toEnumMap(CommonEnums.CompanyMark.values())).put("CompanyNatureEnum", CommonEnums.toEnumMap(CommonEnums.CompanyNature.values())).put("DepartmentTypeEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentType.values())).put("LevelEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentLevel.values())).put("DepartmentStatusEnum", CommonEnums.toEnumMap(CommonEnums.DepartmentStatus.values()));
     }

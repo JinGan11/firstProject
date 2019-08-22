@@ -173,8 +173,8 @@ public class EmployeeManageController {
         accountStaff.setAccountId(staff.getAccountId());
         accountStaff.setStaffName(staff.getStaffName());
         accountStaff.setStaffNum(staff.getStaffNum());
-        Account account=accountManagerService.selectById(staff.getAccountId());
-        if (account!=null){
+        if (staff.getAccountId()!=null){
+            Account account=accountManagerService.selectById(staff.getAccountId());
             accountStaff.setPermissions(account.getPremissions());
             accountStaff.setAccountState(account.getaccountState());
         }
