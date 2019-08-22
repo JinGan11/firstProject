@@ -6,6 +6,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.AccountManageDao;
 import com.ucar.combination.dao.RoleApplyManageDao;
+import com.ucar.combination.model.Account;
 import com.ucar.combination.model.dto.*;
 import com.ucar.combination.service.DepartmentService;
 import com.ucar.combination.service.RoleApplyManageService;
@@ -14,8 +15,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * description:角色申请管理
@@ -198,6 +201,8 @@ public class RoleApplyManageServiceImpl implements RoleApplyManageService {
         }
         return applyNum.toString();
     }
+
+
 
 
 }

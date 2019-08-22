@@ -615,6 +615,12 @@
 
       fetchData() { //获取数据
         var self = this;
+        if(self.form.applyTime==null){
+          self.form.applyTime=['',''];
+        }
+        if(self.form.modifyTime==null){
+          self.form.modifyTime=['',''];
+        }
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
@@ -648,6 +654,9 @@
           commonUtils.Log("roleApply/querylist.do_:"+error);
           self.$message.error("获取数据错误");
         });
+
+        this.selection=[];
+        this.disabledDelete=true;
       },
       createRoleApply(){//新建角色申请
         this.$router.replace('/createRoleApply')

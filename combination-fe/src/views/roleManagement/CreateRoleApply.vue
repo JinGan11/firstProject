@@ -514,11 +514,18 @@
         roleId: '',
         applyOperationList: [],
         accountChangesList: [],
+        accountStateList:[],
+        accountDuplicateList:[],
+        accountDeletedList:[],
         roleStatus: '',
         chooseDepartmentFlag: false,
         disabledSelectRole:true,
         disabledSelectAccount:true,
         roleInfoDetailFlag:false,
+        flagAccountState:'',
+        state:'',
+        accountQueryIdList: [],//用于查询
+
 
         accountStatusList: [
           {
@@ -608,6 +615,7 @@
           modifyStaffName: "",
           modifyTime: "",
           accountIdList: [],
+
           // tableDataAccount:[],
           applyOperationList: [],
         },
@@ -803,7 +811,7 @@
 
       },
 
-      fetchData() {//账户列表
+       fetchData() {//账户列表
         var self = this;
         var param = {
           page: self.currentPage,
@@ -830,6 +838,7 @@
           commonUtils.Log("account/querylist.do_:" + error);
           self.$message.error("获取数据错误")
         });
+        return Promise.resolve(result);
       },
       cancelSelectAccount() {
         //取消按钮
@@ -849,16 +858,157 @@
           for (let j = 0; j < this.accountChangesList.length; j++) {
             if (this.multipleSelection[i].id == this.accountChangesList[j].id) {
               flag = 1;
-              this.$message.info('账号 '+this.multipleSelection[i].accountName+' 已存在，不可重复添加');
+              this.accountDuplicateList.push(this.multipleSelection[i].accountName);
             }
           }
           if (flag == 0) {
             this.accountChangesList.push(this.multipleSelection[i]);
           }
         }
+        if(this.accountDuplicateList.length>0){
+          this.$message.info('账号    '+this.accountDuplicateList+'    已存在，不可重复添加');
+        }
         this.tableDataAccount = this.accountChangesList;
         this.dialogVisibleAccount = false;
       },
+        // var param= {
+        //   accountQueryIdList: this.accountQueryIdList.toString(),
+        // };
+        // this.$http.get("roleApply/queryByAccountQueryIdList.do_", {
+        //   params:param
+        // }).then((result) => {
+        //
+        //
+        // }).catch(function (error) {
+        //   commonUtils.Log("roleApply/queryByAccountQueryIdList.do_" + error);
+        //   this.$message.error("获取数据错误");
+        // });
+
+
+
+
+
+        //  var param = {
+        //     id: this.multipleSelection[i].id,
+        //   };
+        //   this.$http.get('account/selectAccountById.do_', {
+        //     params: param
+        //   }).then((result) => {
+        //     if(result.account.accountState==3){
+        //       this.accountDeletedList.push(result.account.accountName)
+        //       this.$message.info('账号 '+this.multipleSelection[i].accountName+' 已被删除，请重新选择！');
+        //     }else{
+        //       let flag = 0;
+        //       for (let j = 0; j < this.accountChangesList.length; j++) {
+        //         if (this.multipleSelection[i].id == this.accountChangesList[j].id) {
+        //           flag = 1;
+        //           this.accountDuplicateList.push(this.multipleSelection[i].accountName);
+        //         }
+        //       }
+        //       if (flag == 0) {
+        //         this.accountChangesList.push(this.multipleSelection[i]);
+        //       }
+        //
+        //     }
+        //   }).catch(function (error) {
+        //     commonUtils.Log("account/selectAccountById.do_" + error);
+        //     this.$message.error("获取数据错误");
+        //   });
+        // },
+        //
+
+
+
+      //  fetchDataAccountState(){
+      //   for(let i=0;i<this.multipleSelection.length;i++) {
+      //     var param = {
+      //       id: this.multipleSelection[i].id,
+      //     };
+      //     this.$http.get('account/selectAccountById.do_', {
+      //       params: param
+      //     }).then((result) => {
+      //       this.accountStateList.push(result.account.accountState);
+      //       if(result.account.accountState==3){
+      //         this.$message.info('账号 '+this.multipleSelection[i].accountName+' 已被删除，请重新选择！');
+      //         this.flagAccountState=3;
+      //       }
+      //     }).catch(function (error) {
+      //       commonUtils.Log("account/selectAccountById.do_" + error);
+      //       this.$message.error("获取数据错误");
+      //     });
+      //   }
+      //   return Promise.resolve(this.flagAccountState);
+      // },
+
+
+      // selectAccountConfirm() {//点击添加按钮，将选择的账户 回显
+      //   this.fetchDataAccountState().then((result) => {
+      //     alert('llll');
+      //     alert(this.flagAccountState);
+      //     if(this.flagAccountState==3){
+      //       alert('卧槽');
+      //       this.fetchData();
+      //       this.multipleSelection=[];
+      //       this.dialogVisibleAccount = true;
+      //     }else{
+      //       alert("到底咋写啊");
+      //     }
+      //
+      //   });
+      //   this.fetchDataAccountState().then(function (state) {
+      //     alert('tell me');
+      //     alert(state);
+      //     if(state==3){
+      //       alert('卧槽');
+      //       this.fetchData();
+      //       this.multipleSelection=[];
+      //       this.dialogVisibleAccount = true;
+      //
+      //     }else{
+      //       alert("十八啊");
+      //     }
+      //   });
+      //   console.log(this.accountStateList);
+      //   for(let i = 0; i < this.accountStateList.length; i++){
+      //     if(this.accountStateList[i]==3){
+      //       this.$message.info('账号 '+this.multipleSelection[i].accountName+' 已被删除，请重新选择！');
+      //     }
+      //   }
+      //   alert(111);
+      //   alert(this.flagAccountState);
+      //   if(this.flagAccountState==3){
+      //     alert(1111);
+      //     this.fetchData();
+      //     // alert(222);
+      //     this.dialogVisibleAccount = true;
+      //   }else{
+      //     for (let i = 0; i < this.multipleSelection.length; i++) {
+      //       let flag = 0;
+      //       for (let j = 0; j < this.accountChangesList.length; j++) {
+      //         if (this.multipleSelection[i].id == this.accountChangesList[j].id) {
+      //           flag = 1;
+      //           this.$message.info('账号 '+this.multipleSelection[i].accountName+' 已存在，不可重复添加');
+      //         }
+      //       }
+      //       if (flag == 0) {
+      //         this.accountChangesList.push(this.multipleSelection[i]);
+      //       }
+      //     }
+      //     this.tableDataAccount = this.accountChangesList;
+      //     this.dialogVisibleAccount = false;
+      //   }
+      //
+      //   this.multipleSelection=[];
+      //
+      //
+      //   self.fetchData();
+      //   this.dialogVisibleAccount = true;
+      //
+      //   alert(2222);
+      //   alert(this.accountStateList);
+      //
+      //
+      // },
       deleteSelect(index) { //移除添加的账户 删除行
         this.tableDataAccount.splice(index, 1)
       },

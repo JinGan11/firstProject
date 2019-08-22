@@ -63,7 +63,7 @@
 <!--    </select>-->
 
     <select id="queryList" resultType="com.ucar.combination.model.dto.RoleApplyDto">
-        select t1.id                id,
+        select t1.id                       id,
         t1.apply_num                roleApplyNum,
         t1.role_id                  roleId,
         t2.role_name                roleName,
@@ -72,8 +72,8 @@
         t2.approver_account_name    approverAccountName,
         t2.business_line            businessLine,
         t1.apply_account_name       applyAccountName,
-        t1.apply_staff_num          applyStaffNum,
-        t1.apply_staff_name         applyStaffName,
+        t4.staff_num                applyStaffNum,
+        t4.staff_name               applyStaffName,
         t5.department_name          applyDepartmentName,
         t1.apply_time               applyTime,
         t1.status                   applyStatus,
@@ -81,9 +81,10 @@
         t1.modify_time              modifyTime,
         t1.reject_reason            rejectReason,
         t1.approval_time            approveTime
-        from t_role_apply t1 LEFT JOIN t_role_info t2 on t1.role_id = t2.id
-        LEFT JOIN t_account t3 on t3.id = t1.modify_emp
-        LEFT JOIN t_staff t4 on t1.apply_staff_num = t4.staff_num
+        from t_role_apply t1
+        LEFT JOIN t_role_info t2 on t1.role_id = t2.id
+        LEFT JOIN t_account t3 on t3.account_name = t1.apply_account_name
+        LEFT JOIN t_staff t4 on t3.staff_id=t4.id
         LEFT JOIN t_department t5 on t5.id = t4.department_id
         where 1=1
         <if test="loginAccountName!=null and loginAccountName.trim()!=''">
@@ -275,14 +276,23 @@
          where DATEDIFF(apply_time,NOW()) =0;
     </select>
 
+    <select id="queryByAccountQueryIdList"  resultType="com.ucar.combination.model.Account">
+         SELECT T.id,
+                T.account_name,
+                T.account_state,
+         FROM t_account T
+         where T.id in
+        <foreach collection="accountQueryIdList" open="(" separator="," close=")" item="item">
+            #{item}
+        </foreach>
 
-<!--    &lt;!&ndash;查询权限&ndash;&gt;-->
-<!--    <select id="selectPermissionsById" resultType="Integer">-->
-<!--        select t1.permissions-->
-<!--        from t_account t1,t_role_apply t2-->
-<!--        where t1.account_name=t2.apply_account_name-->
-<!--        and t1.id=#{accountId}-->
-<!--    </select>-->
+
+    </select>
+
+
+
+
+
 
 
 

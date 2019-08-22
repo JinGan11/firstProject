@@ -2,9 +2,11 @@ package com.ucar.combination.service;
 
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.Account;
 import com.ucar.combination.model.dto.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * description:
@@ -121,5 +123,7 @@ public interface RoleApplyManageService {
     * @Date  19:10 2019/8/14
     */
     String getApplyNum();
+
+
 
 }

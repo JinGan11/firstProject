@@ -524,6 +524,7 @@
         accountLength:'',
         applyOperationList:[],
         accountChangesList:[],
+        accountDuplicateList:[],
         chooseDepartmentFlag: false,
         roleStatus:'',
         disabledSelectRole:true,
@@ -840,22 +841,23 @@
         this.disabledSelectAccount=false;
       },
       selectAccountConfirm() {//确定添加账户
-
-        for(let i=0;i<this.multipleSelection.length;i++){
-          let flag=0;
-          for(let j=0;j<this.accountChangesList.length;j++){
-            if(this.multipleSelection[i].id==this.accountChangesList[j].id){
-              flag=1;
-              this.$message.info('账号 '+this.multipleSelection[i].accountName+' 已存在，不可重复添加');
+        for (let i = 0; i < this.multipleSelection.length; i++) {
+          let flag = 0;
+          for (let j = 0; j < this.accountChangesList.length; j++) {
+            if (this.multipleSelection[i].id == this.accountChangesList[j].id) {
+              flag = 1;
+              this.accountDuplicateList.push(this.multipleSelection[i].accountName);
             }
           }
-          if(flag==0){
+          if (flag == 0) {
             this.accountChangesList.push(this.multipleSelection[i]);
           }
-
         }
-        this.tableDataAccount=this.accountChangesList;
-        this.dialogVisibleAccount=false;
+        if(this.accountDuplicateList.length>0){
+          this.$message.info('账号    '+this.accountDuplicateList+'    已存在，不可重复添加');
+        }
+        this.tableDataAccount = this.accountChangesList;
+        this.dialogVisibleAccount = false;
       },
 
       deleteSelect(index) { //移除添加的账户 删除行

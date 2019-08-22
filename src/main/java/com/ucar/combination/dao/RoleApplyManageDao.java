@@ -1,4 +1,5 @@
 package com.ucar.combination.dao;
+import com.ucar.combination.model.Account;
 import com.ucar.combination.model.dto.*;
 
 import java.util.List;
@@ -54,6 +55,7 @@ public interface RoleApplyManageDao {
      */
     List<AccountListByApplyIdDto> showAccountListByApplyId(Long applyId);
 
+
     /**
      * @Description: 角色申请  获取当前登录账号的 具体信息
      * @Author: min.zhang08@ucarinc.com
@@ -108,5 +110,17 @@ public interface RoleApplyManageDao {
      * @Date 14:31 2019/8/15
      */
     Integer selectPermissionsById(Long accountId);
+
+
+    /**
+     * @Description:  查询添加账号里 的  账号状态
+     * @Author: min.zhang08@ucarinc.com
+     * @Params
+     * @Return
+     * @Date  10:39 2019/8/21
+     */
+    List<Account> queryByAccountQueryIdList(Map<String, Object> map);
+
+
 
 }

@@ -4,6 +4,7 @@ import com.ucar.combination.common.CommonEnums;
 import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
+import com.ucar.combination.model.Account;
 import com.ucar.combination.model.RoleApply;
 import com.ucar.combination.model.dto.*;
 import com.ucar.combination.service.RoleApplyManageService;
@@ -257,4 +258,5 @@ public class RoleApplyManageController {
             roleApplyManageService.createApplyRoleAccount(applyRoleAccountDto);
         }
     }
+
 }
