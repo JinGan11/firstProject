@@ -38,7 +38,13 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
     private CompanyManageDao companyManageDao;
     @Autowired
     private DepartmentService departmentService;
-
+    /**
+     * description: 方法描述信息
+     * @author: jianan.shu@ucarinc.com
+     * @param: queryParam 公司查询条件
+     * @date: 2019/8/22 13:35
+     * @return：resultPage 分页查询公司的结果集
+     */
     @Override
     public ResultPage queryList(QueryParam queryParam) {
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
@@ -107,9 +113,9 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
     /**
      * description: 依据公司Id获取公司信息
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: companyId 公司id
      * @date: 2019/8/8 9:25
-     * @return：
+     * @return： map 根据公司id获取的公司信息
      */
 
     public Map getCompanyById(int companyId){
@@ -150,7 +156,8 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
     /**
      * description: 修改公司信息
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: file 附件地址信息
+     * @param: str 修改的公司信息
      * @date: 2019/8/8 9:26
      * @return：
      */
@@ -184,18 +191,10 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
     /**
      * description: 校验统一社会信用代码
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: creditCode 社会信用代码
      * @date: 2019/8/8 15:36
-     * @return：
+     * @return： map 校验结果
      */
-    /*public int creditCodeValidate(String creditCode){
-        Integer validate ;
-        validate = companyManageDao.creditCodeValidate(creditCode);
-        if(validate == null){
-            return 0;
-        }
-        return validate.intValue();
-    }*/
     public Map<String, Object> creditCodeValidate(String creditCode){
         Map<String, Object> map = new HashMap<>();
         map.put("result", true);
@@ -210,9 +209,9 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
     /**
      * description: 查询未关联公司
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: queryParam 查询未关联公司的条件
      * @date: 2019/8/14 11:15
-     * @return：
+     * @return： resultPage 查询未关联公司的结果
      */
     @Override
     public ResultPage queryRelationList(QueryParam queryParam){
@@ -229,11 +228,11 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
     }
     /**
-     * description: 关联公司
+     * description: 获取部门的关联公司
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: map 包含部门信息
      * @date: 2019/8/14 11:16
-     * @return：
+     * @return： list 关联公司列表
      */
     public List<CompanyDto> relationCompanyList(Map<String,Object>map){
         List<CompanyDto> list = companyManageDao.relationCompanyList(map);
@@ -250,9 +249,9 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
     /**
      * description: 关联公司保存
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: queryParam
      * @date: 2019/8/14 11:16
-     * @return：
+     * @return： map
      */
     public Map<String,Object> saveRelations(Map<String ,Object>queryParam){
         Map<String,Object>resultMap=new HashMap<>();
@@ -314,8 +313,6 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
             }
 
         }
-
-
         return resultMap;
     }
 

@@ -24,7 +24,7 @@ public interface CompanyManageService {
      * @author: jianan.shu@ucarinc.com
      * @param: queryParam
      * @date: 2019/8/3 10:17
-     * @return：
+     * @return：resultPage 公司列表分页集
      */
     ResultPage queryList(QueryParam queryParam);
     /*
@@ -39,7 +39,8 @@ public interface CompanyManageService {
     /**
      * description: 插入公司信息
      * @author: jianan.shu@ucarinc.com
-     * @param: company
+     * @param: file 附件地址
+     * @param: str 公司信息
      * @date: 2019/8/6 15:12
      * @return：
      */
@@ -48,9 +49,9 @@ public interface CompanyManageService {
     /**
      * description: 根据公司id获取单一公司信息
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: companyId 公司id
      * @date: 2019/8/14 11:17
-     * @return：
+     * @return： Map 公司信息
      */
     Map getCompanyById(int companyId);
 
@@ -65,34 +66,33 @@ public interface CompanyManageService {
     /**
      * description: 校验统一社会信用代码
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: creditCode 社会信用代码
      * @date: 2019/8/8 15:31
-     * @return：
+     * @return： Map 校验结果
      */
-    //int creditCodeValidate(String creditCode);
     public Map<String, Object> creditCodeValidate(String creditCode);
     /**
      * description: 查询未关联公司
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: queryParam 查询未关联公司的条件
      * @date: 2019/8/14 11:17
-     * @return：
+     * @return： ResultPage 未关联公司分页集
      */
     ResultPage queryRelationList(QueryParam queryParam);
     /**
      * description: 获取关联公司列表
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: map 部门id等信息
      * @date: 2019/8/14 11:17
-     * @return：
+     * @return： List<CompanyDto> 关联公司列表
      */
     List<CompanyDto> relationCompanyList(Map<String,Object>map);
     /**
      * description: 关联公司保存
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: queryParam
      * @date: 2019/8/14 11:18
-     * @return：
+     * @return： Map
      */
     Map<String,Object> saveRelations(Map<String, Object> queryParam);
 

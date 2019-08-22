@@ -1,17 +1,5 @@
 <template>
   <home>
-    <!--    <div class="block">-->
-    <!--      <span class="demonstration">选择日期</span>-->
-    <!--      <el-date-picker-->
-    <!--        v-model="birthdayName"-->
-    <!--        type="datetimerange"-->
-    <!--        range-separator="至"-->
-    <!--        start-placeholder="开始日期"-->
-    <!--        end-placeholder="结束日期">-->
-    <!--      </el-date-picker>-->
-
-    <!--    </div>-->
-
     <div style="width:95%; margin-left: 10px">
       <el-form ref="form" :model="form" label-width="100px">
         <el-row>
@@ -65,7 +53,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="时间" label-width="115px">
+            <el-form-item label="修改时间" label-width="115px">
               <el-date-picker
                 v-model="form.time"
                 type="datetimerange"

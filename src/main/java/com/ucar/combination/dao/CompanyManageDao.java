@@ -21,7 +21,7 @@ public interface CompanyManageDao<mcmt> {
      * @author: jianan.shu@ucarinc.com
      * @param: map
      * @date: 2019/8/3 9:30
-     * @return：公司列表
+     * @return：list 公司列表
      */
     List<Company> queryList(Map<String, Object> map);
     /**
@@ -36,7 +36,7 @@ public interface CompanyManageDao<mcmt> {
     /**
      * description: 插入公司信息
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: company 公司信息
      * @date: 2019/8/6 15:17
      * @return：
      */
@@ -44,15 +44,15 @@ public interface CompanyManageDao<mcmt> {
     /**
      * description: 得到修改的公司信息
      * @author: jianan.shu@ucarinc.com
-     * @param: id
+     * @param: id 公司id
      * @date: 2019/8/7 14:07
-     * @return：
+     * @return： company 公司类对象
      */
     Company getCompanyById(@Param("companyId") int companyId);
     /**
      * description: 修改公司信息
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: company 公司对象
      * @date: 2019/8/8 9:08
      * @return：
      */
@@ -60,39 +60,39 @@ public interface CompanyManageDao<mcmt> {
     /**
      * description: 获取账户姓名
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: accountId 账号id
      * @date: 2019/8/8 12:30
-     * @return：
+     * @return： 账号姓名
      */
     String getEmpById(long accountId);
     /**
      * description: 统一社会信用代码校验
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: creditCode
      * @date: 2019/8/8 15:32
-     * @return：
+     * @return： 记录个数
      */
     Integer creditCodeValidate(@Param("creditCode") String creditCode);
     /**
      * description: 查询未关联到部门的公司
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: map
      * @date: 2019/8/14 11:13
-     * @return：
+     * @return： companyDto对象
      */
     List<CompanyDto> queryRelationList(Map<String, Object> map);
     /**
      * description: 获取和部门关联的公司
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param:  map
      * @date: 2019/8/14 11:13
-     * @return：
+     * @return：list companyDto列表
      */
     List<CompanyDto>relationCompanyList(Map<String, Object> map);
     /**
      * description: 添加关联公司
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: map
      * @date: 2019/8/14 11:14
      * @return：
      */
@@ -100,7 +100,7 @@ public interface CompanyManageDao<mcmt> {
     /**
      * description: 更新关联公司
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: map
      * @date: 2019/8/14 11:14
      * @return：
      */
@@ -108,9 +108,9 @@ public interface CompanyManageDao<mcmt> {
     /**
      * description: 得知表中是否已有该关联公司
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: map
      * @date: 2019/8/14 11:14
-     * @return：
+     * @return： 记录个数
      */
     Integer getRelationCount(Map<String, Object> map);
 
@@ -135,7 +135,21 @@ public interface CompanyManageDao<mcmt> {
     String getFileUrlById(Long id);
 
     List<BusinessLicense> getIdsByCompanyId(int id);
+    /**
+     * description: 方法描述信息
+     * @author: jianan.shu@ucarinc.com
+     * @param: id 公司id
+     * @date: 2019/8/22 12:49
+     * @return： 创建人账号id
+     */
     Long getCreateStaffId(@Param("companyId")int id);
+    /**
+     * description: 方法描述信息
+     * @author: jianan.shu@ucarinc.com
+     * @param: id 公司id
+     * @date: 2019/8/22 12:49
+     * @return： 修改人账号id
+     */
     Long getModifyStaffId(@Param("companyId")int id);
 
     void deleteLicenseById(Long id);

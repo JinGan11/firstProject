@@ -39,7 +39,7 @@ public class CompanyManageController {
     /**
      * description: 依据查询条件获取公司信息
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: request 请求对象
      * @date: 2019/8/8 9:01
      * @return：
      */
@@ -74,7 +74,8 @@ public class CompanyManageController {
     /**
      * description: 新建公司
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: businessLicenses 附件地址
+     * @param: data 公司
      * @date: 2019/8/8 11:23
      * @return：
      */
@@ -89,9 +90,9 @@ public class CompanyManageController {
     /**
      * description: 获取单一公司信息
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: request
      * @date: 2019/8/7 14:20
-     * @return：
+     * @return： Result 结果集
      */
     @ResponseBody
     @RequestMapping("/getCompanyById.do_")
@@ -105,7 +106,8 @@ public class CompanyManageController {
     /**
      * description: 修改公司信息
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: businessLicenses 附件地址
+     * @param: data 公司
      * @date: 2019/8/8 9:26
      * @return：
      */
@@ -121,9 +123,9 @@ public class CompanyManageController {
     /**
      * description: 查询未关联公司列表
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: request
      * @date: 2019/8/14 11:12
-     * @return：
+     * @return： Result 结果集
      */
     @ResponseBody
     @RequestMapping("/queryRelationList.do_")
@@ -159,9 +161,9 @@ public class CompanyManageController {
     /**
      * description: 查询部门关联公司列表
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: request
      * @date: 2019/8/14 11:11
-     * @return：
+     * @return： Rusult结果集
      */
     @ResponseBody
     @RequestMapping("/querylistRel.do_")
@@ -181,9 +183,9 @@ public class CompanyManageController {
     /**
      * description: 处理关联公司保存
      * @author: jianan.shu@ucarinc.com
-     * @param:
+     * @param: request
      * @date: 2019/8/14 11:11
-     * @return：
+     * @return： Result 结果集
      */
     @ResponseBody
     @RequestMapping(value = "/saveRelation.do_")
@@ -266,6 +268,14 @@ public class CompanyManageController {
         ResultPage resultPage = companyManageService.getCompanyList(new QueryParam(params));
         return Result.ok().put("page", resultPage);
     }
+    /**
+     * description: 创建公司处的信用代码唯一性校验
+     * @author: jianan.shu@ucarinc.com
+     * @param: businessLicenses 附件地址
+     * @param: data 公司类
+     * @date: 2019/8/22 12:35
+     * @return： Rusult 结果集
+     */
     @ResponseBody
     @RequestMapping(value = "/validateCompanyInfo",method = RequestMethod.POST)
     public Result validateCompany(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
@@ -278,6 +288,13 @@ public class CompanyManageController {
         Map<String,Object>map=companyManageService.creditCodeValidate(company.getCreditCode());
         return new Result().ok().put("list",map);
     }
+    /**
+     * description: 修改公司信用代码唯一性校验
+     * @author: jianan.shu@ucarinc.com
+     * @param: businessLicense
+     * @date: 2019/8/22 12:36
+     * @return： Result 结果集
+     */
     @ResponseBody
     @RequestMapping(value = "/validateModifyCompany",method = RequestMethod.POST)
     public Result validateModifyCompany(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
