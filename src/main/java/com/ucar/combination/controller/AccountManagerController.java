@@ -144,7 +144,7 @@ public class AccountManagerController {
         if(limit==null){
             limit = "10";
         }
-        if(request.getParameter("defaultStatus") != null && request.getParameter("status")=="") {
+        if(request.getParameter("defaultStatus") != null && (request.getParameter("status")==""||request.getParameter("status")==null)) {
             params.put("defaultStatus", "12");
         }
         String accountName = request.getParameter("accountName");
