@@ -27,7 +27,7 @@
           <div style="float: left">
             <el-col>
               <el-form-item label="数据权限类型" label-width="120px">
-                <el-select style="width:180px;" v-model="form.permissions" clearable placeholder="请选择">
+                <el-select style="width:180px;" v-model="form.permissions" placeholder="请选择">
                   <el-option
                     v-for="item in form.permissionsList"
                     :key="item.value"
@@ -56,7 +56,7 @@
           <div style="float: left;">
             <el-col>
               <el-form-item label="是否关联员工" label-width="118px">
-                <el-select style="width: 180px" v-model="form.isRelStaff" clearable placeholder="请选择">
+                <el-select style="width: 180px" v-model="form.isRelStaff" placeholder="请选择">
                   <el-option
                     v-for="item in form.isRelStaffoptions"
                     :key="item.value"
