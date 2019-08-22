@@ -984,7 +984,7 @@
           accountName: self.form.accountName,
           upper_department_no: self.form.upperDepartmentNo,
           relAccount: self.relAccount,
-          date:new Date().getTime()
+          date:new Date().getTime(),
         };
         self.$http.get('employee/querylist.do_', {
           params: param
