@@ -684,6 +684,7 @@
             this.exportDialogVisible = false;
             this.checkRoles = [];
             this.filterVal = [];
+            this.checkAll=false;
           })
         }
       },

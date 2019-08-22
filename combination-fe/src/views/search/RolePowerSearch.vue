@@ -610,6 +610,7 @@
             this.rolePowerDialogVisible=false;
             this.checkRolePowers=[];
             this.filterVal=[];
+            this.checkAll=false;
           })
         }
       },
