@@ -713,15 +713,12 @@
           staffNum: [{required: true, validator: checkNum, trigger: 'blur'}],
           staffName: [{required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur'},
             {min: 1, max: 30, message: '员工姓名不满足录入条件，需为1-30个字符', trigger: 'blur'}],
-
           staffTelephone: [{required: true, validator: checkphone, trigger: "blur"}],
           staffEmail: [
             {type: 'email', message: '邮箱不满足录入条件', trigger: ['blur', 'change']}],
           departmentName: [{required: true, message: '归属部门为必填项，不允许为空'}],
-
         },
         modifyForm: {
-          /* accountId:'',*/
           accountName: '',
           staffNum: '',
           staffName: '',

@@ -287,7 +287,8 @@
         <hr style="height: 1px">
         <div>
           <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">部门及部门下属所在城市</div>
-              <el-input style="width: 90%;text-align: center" v-model="this.departmentListById.toString()" disabled></el-input>
+          <el-input style="width: 90%;text-align: center" v-model="this.departmentListById.toString()"
+                    disabled></el-input>
         </div>
         <hr style="height: 1px">
         <div>
@@ -320,10 +321,10 @@
             </el-col>
             <br>
           </el-row>
-          <el-row >
-            <el-col >
-              <el-form-item label="备注" >
-                <el-input type="textarea"  v-model="formDetail.remark" disabled></el-input>
+          <el-row>
+            <el-col>
+              <el-form-item label="备注">
+                <el-input type="textarea" v-model="formDetail.remark" disabled></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -335,7 +336,7 @@
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         <div style="margin: 15px 0;"></div>
         <el-checkbox-group v-model="checkdepartment" @change="handlecheckRolesChange">
-          <el-checkbox v-for="city in department" :label="city" :key="city">{{city}}</el-checkbox>
+          <el-checkbox   v-for="city in department" :label="city" :key="city">{{city}}</el-checkbox>
         </el-checkbox-group>
       </template>
       <template slot="footer">
@@ -374,7 +375,7 @@
         options: [],
         value: [],
         list: [],
-        state:'',
+        state: '',
         loading: false,
         total: 0,
         currentPage: 1,
@@ -382,8 +383,8 @@
         totalCompany: 0,
         currentPageCompany: 1,
         pageSizeCompany: 5,
-        companyId:'',
-        departmentId:'',
+        companyId: '',
+        departmentId: '',
         formDetail: {
           departmentNo: '',
           departmentName: '',
@@ -401,10 +402,10 @@
           workplace: '',
           createTime: '',
           createEmp: '',
-          createEmpName:'',
+          createEmpName: '',
           modifyTime: '',
           modifyEmp: '',
-          modifyEmpName:'',
+          modifyEmpName: '',
           status: '',
           remark: '',
           longitude: '',
@@ -454,7 +455,7 @@
         list: [],
         disabled: true,
         departmentList: [],
-        departmentListById:'',
+        departmentListById: '',
       }
     },
     /*这里在关联部门多出两个的时候用'...'表示，现在还不能实现此功能
@@ -471,26 +472,26 @@
       }
     }
       },*/
-    filters:{
-    ellipsis(value){
-      if(value&& value.length > 10) {
-        value= value.substring(0,10)+ '...';
+    filters: {
+      ellipsis(value) {
+        if (value && value.length > 10) {
+          value = value.substring(0, 10) + '...';
+        }
+        return value;
       }
-      return value;
-    }
-  },
+    },
     methods: {
       //编号点击开始详情页
       ChooseOnDetail(val) {
         // alert(this.row.tableData[0].departmentNo);
-        this.departmentListById='';
-        this.departmentId=val;
+        this.departmentListById = '';
+        this.departmentId = val;
         var param = {
           //id: this.selection,
           id: val,
           page: this.currentPageCompany,
           limit: this.pageSizeCompany,
-          date:new Date().getTime(),
+          date: new Date().getTime(),
         };
         this.$http.get("/department/selectDepartment.do_", {
           params: param
@@ -511,46 +512,46 @@
         });
         this.SearchCompany();
         this.SearchCityList();
-        this.departmentId='';
+        this.departmentId = '';
         this.dialogVisibleDetail = true;
       },
 
       //查找公司的集合，用于分页
-      SearchCompany(){
-        var param={
-        id:this.departmentId,
-        page:this.currentPageCompany,
-        limit:this.pageSizeCompany,
-        date:new Date().getTime(),
-       }
-       this.$http.get('/company/queryCompanyList.do_',{
-       params:param,
-      }).then((result)=>{
-         this.totalCompany = result.page.totalCount;
-         this.tableCity = result.page.list;
-      });
+      SearchCompany() {
+        var param = {
+          id: this.departmentId,
+          page: this.currentPageCompany,
+          limit: this.pageSizeCompany,
+          date: new Date().getTime(),
+        }
+        this.$http.get('/company/queryCompanyList.do_', {
+          params: param,
+        }).then((result) => {
+          this.totalCompany = result.page.totalCount;
+          this.tableCity = result.page.list;
+        });
       },
 
       //查找本部门即下属部门所在城市
-      SearchCityList(){
-      var param={
-        id:this.departmentId,
-        date:new Date().getTime(),
-      }
-      this.$http.get('/regionManage/citySearchListById.do_',{
-        params:param,
-      }).then((result)=>{
-        this.departmentListById=result.cityList;
-      })
+      SearchCityList() {
+        var param = {
+          id: this.departmentId,
+          date: new Date().getTime(),
+        }
+        this.$http.get('/regionManage/citySearchListById.do_', {
+          params: param,
+        }).then((result) => {
+          this.departmentListById = result.cityList;
+        })
 
-    },
+      },
       handleSelectionChange(val) {
         this.selection = val;
       },
       Search() {
         //this.formInline.cityName='全部';
-        if (this.formInline.cityName=='全部'){
-          this.formInline.cityName='';
+        if (this.formInline.cityName == '全部') {
+          this.formInline.cityName = '';
         }
         var self = this;
         var param = {
@@ -565,7 +566,7 @@
           upperDepartmentNo: self.formInline.upperDepartmentNo,
           status: self.formInline.status,
           departmentType: self.formInline.departmentType,
-          date:new Date().getTime(),
+          date: new Date().getTime(),
         };
         self.$http.get('/department/searchDepartment.do_', {
           params: param
@@ -582,9 +583,9 @@
       },
       Search1() {
         //this.formInline.cityName='全部';
-        this.currentPage=1;
-        if (this.formInline.cityName=='全部'){
-          this.formInline.cityName='';
+        this.currentPage = 1;
+        if (this.formInline.cityName == '全部') {
+          this.formInline.cityName = '';
         }
         var self = this;
         var param = {
@@ -599,7 +600,7 @@
           upperDepartmentNo: self.formInline.upperDepartmentNo,
           status: self.formInline.status,
           departmentType: self.formInline.departmentType,
-          date:new Date().getTime(),
+          date: new Date().getTime(),
         };
         self.$http.get('/department/searchDepartment.do_', {
           params: param
@@ -667,7 +668,7 @@
             }
             var currentdate = year + seperator1 + month + seperator1 + strDate;
             const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '部门管理 '+currentdate);
+            export_json_to_excel(tHeader, data, '部门管理 ' + currentdate);
             this.$message({
               showClose: true,
               message: '文件导出成功',
@@ -680,11 +681,14 @@
         }
       },
       exportDepartment() {
-        this.checkAll=false;
+        this.checkAll = false;
+        this.isIndeterminate = false;
         this.exportDialogVisible = true;
       },
       cancel() {
         this.exportDialogVisible = false;
+        this.checkdepartment = [];
+        this.filterVal = [];
       },
       //将每列与数据对应
       exportField(val) {
@@ -737,7 +741,7 @@
       },
       clearDepartment() {//清除部门的值
         this.formInline.upperDepartmentName = '';
-        this.formInline.upperDepartmentNo='';
+        this.formInline.upperDepartmentNo = '';
       },
       loadNode(node, resolve) {
         var self = this;
@@ -807,12 +811,12 @@
     },
     mounted() {
       this.$http.get("/department/getCityList.do_").then((result) => {
-        this.list.push({value:'全部'});
-       result.cityList.map(item => {
-         //对象转换为数组
-         this.list.push({value: item});
+        this.list.push({value: '全部'});
+        result.cityList.map(item => {
+          //对象转换为数组
+          this.list.push({value: item});
+        });
       });
-    });
       this.Search();
 
     }

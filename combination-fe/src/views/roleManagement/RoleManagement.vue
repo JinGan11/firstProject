@@ -689,6 +689,8 @@
       },
       cancel() {
         this.exportDialogVisible = false;
+        this.checkRoles = [];
+        this.filterVal = [];
       },
       exportRole() {
         this.checkAll=false;
