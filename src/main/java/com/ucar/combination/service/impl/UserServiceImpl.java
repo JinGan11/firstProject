@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     public Result login(User loginUser) {
         List<User> list = userDao.qryAccountByAccountName(loginUser);
         if (list.size() == 0) {
-            return Result.ok().put("code", 300)
+            return Result.ok().put("code", 304)
                     .put("Msg", "没有该用户");
         } else {
             if (list.get(0).getAccountState() == 3) {

@@ -76,7 +76,7 @@
                   utils.$emit("loginSuccess",true,result.accountName, result.powerList);
                   self.$router.replace("/index");
                   // self.visible = true
-                } else if (result.code === 300) {
+                } else if (result.code === 304) {
                   self.$alert("没有该用户", '消息提醒', {
                     confirmButtonText: '确定',
                   });
@@ -127,7 +127,7 @@
                       message: '取消'
                     });
                   });
-                } else {
+                } else if (result.code === 300) {
                   self.$alert("账号或者密码错误", '消息提醒', {
                     confirmButtonText: '确定',
                   });
