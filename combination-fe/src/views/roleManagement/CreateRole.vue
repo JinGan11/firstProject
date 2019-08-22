@@ -409,7 +409,7 @@
           params: param
         }).then((result) => {
           if (result.account.accountState === 3){
-            alert("该账户已被删除，不可选择");
+            self.$message.info("该账户已被删除，不可选择");
             this.isChoose = true;
             this.fetchData();
           }
@@ -454,7 +454,7 @@
                     params: param
                   }).then((result) => {
                     if (result.account.accountState === 3){
-                      alert("该账户已被删除，不可选择");
+                      self.$message.info("该账户已被删除，不可选择");
                     }
                     else{
                       self.form.businessLine = self.form.businessLine.join(';');

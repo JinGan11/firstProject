@@ -67,7 +67,7 @@
           <el-col :span="6">
             <el-form-item label="时间" label-width="115px">
               <el-date-picker
-                v-model="form.birthdayName"
+                v-model="form.time"
                 type="datetimerange"
                 format="yyyy-MM-dd HH:mm:ss"
                 value-format="yyyy-MM-dd HH:mm:ss"
@@ -81,7 +81,7 @@
         <el-row>
           <el-col style="text-align: center">
             <el-form-item>
-              <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
+              <el-button type="primary" @click="search" style="width:100px">查询</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -408,7 +408,7 @@
           companyType: '',
           companyNature: '',
           companyStatus: '',
-          birthdayName:[],
+          time:[],
         },
 
         companyButtonPermission: {
@@ -533,6 +533,9 @@
       },
       fetchData() { //获取数据
         var self = this;
+        if(self.form.time==null){
+            self.form.time=['',''];
+        }
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
@@ -541,8 +544,8 @@
           companyType:self.form.companyType,
           companyNature:self.form.companyNature,
           companyStatus:self.form.companyStatus,
-          startTime:self.form.birthdayName[0],
-          endTime:self.form.birthdayName[1],
+          startTime:self.form.time[0],
+          endTime:self.form.time[1],
         };
         self.$http.get('company/querylist.do_', {
           params: param
@@ -609,6 +612,10 @@
         this.preview=true;
         this.previewId=id;
       },
+        search(){
+          this.currentPage=1;
+          this.fetchData();
+        },
     },
 
   }

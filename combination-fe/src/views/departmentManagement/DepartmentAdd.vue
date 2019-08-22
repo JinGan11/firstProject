@@ -515,7 +515,8 @@
           status: 1,
           remark: '',
           longitude: '',
-          latitude: ''
+          latitude: '',
+          forIEFresh: new Date().getTime()
         },
         upperDepartmentName: '',
         cityName: '',
@@ -658,7 +659,8 @@
       // 设置可选择的业务线
       var self = this;
       var param = {
-        departmentNo: self.form.upperDepartmentNo
+        departmentNo: self.form.upperDepartmentNo,
+        forIEFresh: new Date().getTime()
       }
       self.$http.get("department/getSupportBusiness.do_",{ params: param })
         .then(result => {
@@ -914,7 +916,8 @@
           limit:10,
           regionCode:'',
           regionName:'',
-          regionStatus: ''
+          regionStatus: '',
+          forIEFresh: new Date().getTime()
         };
         self.$http.get('/regionManage/provinceSearch',{
           params:param
@@ -941,6 +944,7 @@
           page:1,
           limit:10,
           upperRegionID:self.chooseCityForm.provinceChosen,
+          forIEFresh: new Date().getTime()
         };
         self.$http.get('/regionManage/citySearch',{
           params:param
@@ -966,7 +970,8 @@
           regionName: '',
           upperRegion: '',
           upperRegionID:self.chooseCityForm.cityChosen,
-          regionStatus: ''
+          regionStatus: '',
+          forIEFresh: new Date().getTime()
         };
         self.$http.get('/regionManage/countySearch', {
           params: param

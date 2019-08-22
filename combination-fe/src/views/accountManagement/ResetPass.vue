@@ -4,13 +4,13 @@
       <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="100px"
                class="login-container">
         <h2 class="login_title" style="color: white">密码重置</h2>
-        <el-form-item label="账号" prop="accountName" class="whiteFont">
+        <el-form-item label="账号" prop="accountName">
           <el-input type="text" v-model="ruleForm.accountName" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="新密码" prop="newPass" class="whiteFont">
+        <el-form-item label="新密码" prop="newPass" >
           <el-input type="password" v-model="ruleForm.newPass" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="确认新密码" prop="checkPass" class="whiteFont">
+        <el-form-item label="确认新密码" prop="checkPass" >
           <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item style="text-align: center;margin-left: -50px">
@@ -31,8 +31,10 @@
       var validateName =  (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入用户名'));
+        }else {
+          callback();
         }
-      }
+      };
       var validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));

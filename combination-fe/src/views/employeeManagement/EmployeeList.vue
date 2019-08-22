@@ -140,7 +140,7 @@
           {{scope.row.staffTelephone|protect}}
         </template>
       </el-table-column>
-      <el-table-column prop="staffEmail" label="员工邮箱" width="200"></el-table-column>
+      <el-table-column prop="staffEmail" label="员工邮箱" width="200" @blur="sendEmail"></el-table-column>
       <el-table-column prop="departmentName" label="所属部门" width="120"></el-table-column>
       <el-table-column prop="upperDepartmentName" label="上级部门" width="150"></el-table-column>
       <el-table-column prop="isDimission" label="是否离职" width="100">
@@ -715,7 +715,8 @@
             {min: 1, max: 30, message: '员工姓名不满足录入条件，需为1-30个字符', trigger: 'blur'}],
           staffTelephone: [{required: true, validator: checkphone, trigger: "blur"}],
           staffEmail: [
-            {type: 'email', message: '邮箱不满足录入条件', trigger: ['blur', 'change']}],
+            {type: 'email',message: '邮箱不满足录入条件', trigger: ['blur', 'change']},
+            {min: 1,max:30,message:'邮箱不满足录入条件，需为1-30个字符',trigger: 'blur'}],
           departmentName: [{required: true, message: '归属部门为必填项，不允许为空'}],
         },
         modifyForm: {
@@ -753,7 +754,8 @@
 
           staffTelephone: [{required: true, validator: checkphone, trigger: "blur"}],
           staffEmail: [
-            {type: 'email', message: '邮箱不满足录入条件', trigger: ['blur', 'change']}],
+            {type: 'email',  message: '邮箱不满足录入条件', trigger: ['blur', 'change']},
+            {min: 1,max:30,message:'邮箱不满足录入条件，需为1-30个字符',trigger: 'blur'}],
           departmentName: [{required: true, message: '归属部门为必填项，不允许为空'}],
         },
 
@@ -878,6 +880,8 @@
           no: 'departmentNo',
         },
         updateStaffNum:'',
+        modifyEmp:'',
+        modifyTime:'',
       }
     },
     filters: {
@@ -1011,7 +1015,7 @@
 
       modifyEmployee() {//点击修改按钮，跳转到修改页面
 
-        this.modifyDialogVisible = true;
+         this.modifyDialogVisible = true;
       },
       saveEmployee() {
 
@@ -1024,6 +1028,17 @@
                   self.createDialogVisible = false;
                   self.$message.success("新建用户成功");
                   self.fetchData();
+                  self.$refs['createForm'].resetFields();
+                  self.createForm.accountId='';
+                  self.createForm.departmentId='';
+                  self.createForm.departmentName='';
+                  self.createForm.isDimission='';
+                  self.createForm.remark='';
+                  self.createForm.staffEmail='';
+                  self.createForm.staffName='';
+                  self.createForm.staffNum='';
+                  self.createForm.staffSex='';
+                  self.createForm.staffTelephone='';
               })
               .catch(function (error) {
                 commonUtils.Log("employee/insertStaff:" + error);
@@ -1033,9 +1048,7 @@
             console.log('error submit!!');
             return false;
           }
-
         })
-
       },
       cancelEmployee() {
         this.createDialogVisible = false;
@@ -1075,6 +1088,12 @@
                 self.modifyDialogVisible = false;
                 self.$message.success("修改成功");
                 self.fetchData();
+                self.selection='';
+                self.isDiss=true;
+                self.disabled=true;
+                self.quitDisabled=true;
+                self.departmentDisabled=true;
+
               })
               .catch(function (error) {
                 commonUtils.Log("employee/updateStaff:" + error);
@@ -1086,7 +1105,17 @@
           }
 
         })
-
+        self.$refs['modifyForm'].resetFields();
+        self.modifyForm.accountId='';
+        self.modifyForm.departmentId='';
+        self.modifyForm.departmentName='';
+        self.modifyForm.isDimission='';
+        self.modifyForm.remark='';
+        self.modifyForm.staffEmail='';
+        self.modifyForm.staffName='';
+        self.modifyForm.staffNum='';
+        self.modifyForm.staffSex='';
+        self.modifyForm.staffTelephone='';
       },
       cancelUpdate() {
         this.modifyDialogVisible = false;
@@ -1354,11 +1383,7 @@
         }
         return this.filterVal;
       },
-      /*  approvalInfo(val){
-          this.disabled = false;
-          this.id = val.id;
-          this.accountId = val.accountId;
-        },*/
+
       loadNode(node, resolve) {
         var self = this;
         self.$http.get('department/buildTree2.do_', {
@@ -1609,6 +1634,16 @@
         }
 
       },
+     /* sendEmail: function() {
+        var regEmail = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+        if (this.createForm.staffEmail != '' && !regEmail.test(this.createForm.staffEmail)) {
+          this.$message({
+            message: '邮箱格式不正确',
+            type: 'error'
+          })
+          this.createForm.staffEmail = ''
+        }
+      },*/
       staffNumBtn(val) {
         this.contentDialogVisible = true;
         this.contentForm.accountId = val.accountId;
@@ -1695,6 +1730,15 @@
         //alert("清空上级部门");
         this.searchDeptUpperName = "";
         this.form.upperDepartmentNo = "";
+      },
+      initializationForm(){
+          this.form.staffNum = '',
+          this.form.staffName = '',
+          this.form.accountName = '',
+          this.form.isDimission = '0',
+          this.form.departmentId = '',
+          this.form.upperDepartmentNo = '',
+          this.fetchData();
       }
     }
   }

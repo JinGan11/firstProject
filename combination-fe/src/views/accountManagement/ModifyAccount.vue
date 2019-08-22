@@ -151,7 +151,7 @@
       </div>
     </div>
     <el-dialog fullscreen :visible.sync="dialogEmployee" :close-on-click-modal="false" width="700px">
-      <employee-list :relAccount="relAccount" ></employee-list>
+      <employee-list ref="ref" :relAccount="relAccount" ></employee-list>
     </el-dialog>
   </home>
 </template>
@@ -305,7 +305,8 @@
       fetchData(){ //根据accountId查询界面要显示的数据
         const self = this;
         var param = {
-          id: self.modifyForm.accountId
+          id: self.modifyForm.accountId,
+          date:new Date().getTime()
         }
         self.$http.get('account/selectAccountById.do_',{
           params: param
@@ -353,6 +354,7 @@
       //保存修改账户信息
       save() {
         const self = this;
+
         self.$refs["modifyForm"].validate(function(valid) {
           if (valid) {
             if (self.modifyForm.permissions == 5 && self.$refs.tree.getCheckedNodes().length == 0) {
@@ -390,6 +392,9 @@
       },
       changeDialogVisible() {//选择员工界面的开关
         const self = this;
+        if(self.$refs.ref != undefined) {
+          self.$refs.ref.initializationForm();
+        }
         self.dialogEmployee = !this.dialogEmployee;
       },
       clearStaffInf(){//清除选择关联的员工
@@ -407,7 +412,6 @@
         const self = this;
         self.modifyForm.staffNum = staffData.staffNum;
         self.modifyForm.staffName = staffData.staffName;
-        self.modifyForm.staffId = staffData.id;
         if(staffData.staffEmail == '' || staffData.staffEmail == null){
           this.modifyForm.secretEmail ='';
           self.emailDisabled = false;
@@ -415,6 +419,7 @@
           this.modifyForm.secretEmail = staffData.staffEmail;
           self.emailDisabled = true;
         }
+        self.modifyForm.staffId = staffData.id;
       },
       pressionChange(){//当数据权限为手动选择是，选择部门框可见
         const self = this;

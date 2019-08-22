@@ -631,7 +631,8 @@
           modifyTimeStart: self.form.modifyTime[0],
           modifyTimeEnd: self.form.modifyTime[1],
           loginAccountName: sessionStorage.getItem('loginUsername'),
-          type:'角色申请'
+          type:'角色申请',
+          date : new Date().getTime(),
         };
         self.$http.get('roleApply/querylist.do_', {
           params: param
@@ -823,7 +824,7 @@
 
       loadNode(node,resolve){
         var self = this;
-        self.$http.get('department/buildTree.do_', {
+        self.$http.get('department/buildTree2.do_', {
           params: null
         }).then((result) => {
           resolve([result.departmentDto]);

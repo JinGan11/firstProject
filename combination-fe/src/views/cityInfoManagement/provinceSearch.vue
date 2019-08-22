@@ -50,7 +50,7 @@
           <el-row>
             <el-col :span="3" :offset="8">
               <el-form-item>
-                <el-button type="primary" style="width: 100px" @click="fetchData" size="medium">查询</el-button>
+                <el-button type="primary" style="width: 100px" @click="search" size="medium">查询</el-button>
               </el-form-item>
             </el-col>
             <el-col :span="3" >
@@ -197,17 +197,22 @@
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;
-        this.fetchData(1, val);
+        this.fetchData();
       },
       handleCurrentChange(val) {
         this.currentPage = val;
-        this.fetchData(val, this.pageSize);
+        this.fetchData();
       },
       handleSelectionChange(val) {
         this.selection = val;
       },
+
+        search(){
+          this.currentPage=1;
+          this.fetchData();
+        },
       //根据查询条件获取数据
-      fetchData() {
+      fetchData(pagesize) {
         var self=this;
         var param={
           page:self.currentPage,
@@ -239,6 +244,7 @@
           commonUtils.Log("/regionManage/provinceSearch:" + error);
           self.$message.error("获取数据错误");
         });
+
       },
       // 导出execl
         cancel() {

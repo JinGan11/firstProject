@@ -75,7 +75,7 @@
           <el-row>
             <el-col :span="6" :offset="6">
               <el-form-item>
-                <el-button type="primary" style="width: 100px" @click="fetchData" size="medium">查询</el-button>
+                <el-button type="primary" style="width: 100px" @click="search" size="medium">查询</el-button>
               </el-form-item>
             </el-col>
             <el-col :span="6" >
@@ -223,6 +223,10 @@
               this.selection = val;
           },
           //根据查询条件获取数据
+          search(){
+              this.currentPage=1;
+              this.fetchData();
+          },
           fetchData() {
               var self=this;
               var param={

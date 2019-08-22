@@ -92,8 +92,11 @@
       },
       loadNode(node,resolve){
         var self = this;
+        var param = {
+          forIEFresh: new Date().getTime()
+        };
         self.$http.post('department/buildTree.do_', {
-          params: null
+          params: param
         }).then((result) => {
           resolve([result.departmentDto]);
       }).catch(function (error) {
@@ -130,7 +133,8 @@
           return;
         }
         var params = {
-          id: check_node.id
+          id: check_node.id,
+          forIEFresh: new Date().getTime()
         };
         self.$http.get('department/deleteDepartment.do_', {
           params: params
