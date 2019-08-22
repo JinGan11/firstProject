@@ -57,7 +57,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-
         </el-row>
         <el-row>
           <el-col :span="6" :offset="6">
@@ -76,9 +75,9 @@
 
     <el-table ref="multipleTable" :data="tableData" stripe @selection-change="handleSelectionChange">
       <el-table-column prop="regionCode" label="国际代码"  width="200px"></el-table-column>
-      <el-table-column prop="regionName" label="城市名称"  width="200px"></el-table-column>
-      <el-table-column prop="regionPinyin" label="名字拼音"  width="200px"></el-table-column>
-      <el-table-column prop="upperRegion" label="所属省份"  width="200px"></el-table-column>
+      <el-table-column prop="regionName" label="城市"  width="200px"></el-table-column>
+      <el-table-column prop="regionPinyin" label="拼音全称"  width="200px"></el-table-column>
+      <el-table-column prop="upperRegion" label="省/市"  width="200px"></el-table-column>
       <el-table-column prop="regionStatus" label="状态"  width="200px">
         <template slot-scope="scope">
           {{RegionStatus[scope.row.regionStatus]}}
@@ -116,7 +115,7 @@
 </template>
 <script>
   import commonUtils from '../../common/commonUtils'
-  const regionPropsEnums = ['国际代码','城市名字','名字拼音', '所属省市', '状态', '修改人', '修改时间'];
+  const regionPropsEnums = ['国际代码','城市','拼音全称', '省/市', '状态', '修改人', '修改时间'];
   export default {
     data(){
       return{
@@ -314,11 +313,11 @@
             for (let i = 0; i < val.length; i++) {
                 if (this.checkedRegionProps[i] === '国际代码') {
                     this.filterVal.push('regionCode')
-                } else if (this.checkedRegionProps[i] === '城市名字') {
+                } else if (this.checkedRegionProps[i] === '城市') {
                     this.filterVal.push('regionName')
-                } else if (this.checkedRegionProps[i] === '名字拼音') {
+                } else if (this.checkedRegionProps[i] === '拼音全称') {
                     this.filterVal.push('regionPinyin')
-                } else if (this.checkedRegionProps[i] === '所属省市') {
+                } else if (this.checkedRegionProps[i] === '省/市') {
                     this.filterVal.push('upperRegion')
                 } else if (this.checkedRegionProps[i] === '状态') {
                     this.filterVal.push('regionStatus')

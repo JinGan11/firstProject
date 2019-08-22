@@ -92,12 +92,12 @@
 
     <el-table ref="multipleTable" :data="tableData" stripe @selection-change="handleSelectionChange">
       <el-table-column prop="regionCode" label="国际代码"  width="150px"></el-table-column>
-      <el-table-column prop="regionAreaCode" label="区号"  width="100px"></el-table-column>
-      <el-table-column prop="regionName" label="区/县名称"  width="150px"></el-table-column>
-      <el-table-column prop="regionPinyin" label="名字拼音"  width="150px"></el-table-column>
-      <el-table-column prop="upperRegion" label="所属城市"  width="150px"></el-table-column>
+<!--      <el-table-column prop="regionAreaCode" label="区号"  width="100px"></el-table-column>-->
+      <el-table-column prop="regionName" label="区/县"  width="150px"></el-table-column>
+      <el-table-column prop="regionPinyin" label="拼音全称"  width="150px"></el-table-column>
+      <el-table-column prop="upperRegion" label="城市"  width="150px"></el-table-column>
 
-      <el-table-column prop="upperRegionTwice" label="所属省/直辖市"  width="200px"></el-table-column>
+      <el-table-column prop="upperRegionTwice" label="省/市"  width="200px"></el-table-column>
 
       <el-table-column prop="regionStatus" label="状态"  width="100px">
         <template slot-scope="scope">
@@ -136,7 +136,7 @@
 </template>
 <script>
   import commonUtils from '../../common/commonUtils'
-  const regionPropsEnums = ['国际代码','区号','区县名称','名字拼音', '所属城市','所属省市', '状态', '修改人', '修改时间'];
+  const regionPropsEnums = ['国际代码','区/县','拼音全称', '城市','省/市', '状态', '修改人', '修改时间'];
   export default {
     data(){
       return{
@@ -337,16 +337,13 @@
               for (let i = 0; i < val.length; i++) {
                   if (this.checkedRegionProps[i] === '国际代码') {
                       this.filterVal.push('regionCode')
-                  }else if (this.checkedRegionProps[i] === '区号') {
-                      this.filterVal.push('regionAreaCode')
-
-                  } else if (this.checkedRegionProps[i] === '区/县名称') {
+                  } else if (this.checkedRegionProps[i] === '区/县') {
                       this.filterVal.push('regionName')
-                  } else if (this.checkedRegionProps[i] === '名字拼音') {
+                  } else if (this.checkedRegionProps[i] === '拼音全称') {
                       this.filterVal.push('regionPinyin')
-                  } else if (this.checkedRegionProps[i] === '所属城市') {
+                  } else if (this.checkedRegionProps[i] === '城市') {
                       this.filterVal.push('upperRegion')
-                  } else if (this.checkedRegionProps[i] === '所属省市') {
+                  } else if (this.checkedRegionProps[i] === '省/市') {
                       this.filterVal.push('upperRegionTwice')
                   }else if (this.checkedRegionProps[i] === '状态') {
                       this.filterVal.push('regionStatus')
@@ -354,8 +351,6 @@
                       this.filterVal.push('modifyEmpName')
                   } else if (this.checkedRegionProps[i] === '修改时间') {
                       this.filterVal.push('modifyTime')
-                  } else if (this.checkedRegionProps[i] === '区县名称') {
-                      this.filterVal.push('regionName')
                   }
               }
               return this.filterVal;

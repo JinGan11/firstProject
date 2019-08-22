@@ -66,9 +66,9 @@
     <!--查询结果表格-->
     <el-table ref="multipleTable" :data="tableData"  @selection-change="handleSelectionChange" stripe>
       <el-table-column prop="regionCode" label="国际代码"  width="200px"></el-table-column>
-      <el-table-column prop="regionName" label="省/直辖市"  width="200px"></el-table-column>
-      <el-table-column prop="regionPinyin" label="名字拼音"  width="200px"></el-table-column>
-      <el-table-column prop="upperRegion" label="上级区划"  width="200px"></el-table-column>
+      <el-table-column prop="regionName" label="省/市"  width="200px"></el-table-column>
+      <el-table-column prop="regionPinyin" label="拼音全称"  width="200px"></el-table-column>
+<!--      <el-table-column prop="upperRegion" label="上级区划"  width="200px"></el-table-column>-->
       <el-table-column prop="regionStatus" label="状态"  width="200px">
         <template slot-scope="scope">
           {{RegionStatus[scope.row.regionStatus]}}
@@ -108,7 +108,7 @@
 <script>
   import commonUtils from '../../common/commonUtils'
 
-  const regionPropsEnums = ['国际代码','省/直辖市','名字拼音', '上级区划', '状态', '修改人', '修改时间'];
+  const regionPropsEnums = ['国际代码','省/市','拼音全称', '状态', '修改人', '修改时间'];
   export default {
     data(){
       return{
@@ -316,12 +316,10 @@
             for (let i = 0; i < val.length; i++) {
                 if (this.checkedRegionProps[i] === '国际代码') {
                     this.filterVal.push('regionCode')
-                } else if (this.checkedRegionProps[i] === '省/直辖市') {
+                } else if (this.checkedRegionProps[i] === '省/市') {
                     this.filterVal.push('regionName')
-                } else if (this.checkedRegionProps[i] === '名字拼音') {
+                } else if (this.checkedRegionProps[i] === '拼音全称') {
                     this.filterVal.push('regionPinyin')
-                } else if (this.checkedRegionProps[i] === '上级区划') {
-                    this.filterVal.push('upperRegion')
                 } else if (this.checkedRegionProps[i] === '状态') {
                     this.filterVal.push('regionStatus')
                 } else if (this.checkedRegionProps[i] === '修改人') {
