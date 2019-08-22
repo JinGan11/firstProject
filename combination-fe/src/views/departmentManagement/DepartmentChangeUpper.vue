@@ -53,7 +53,8 @@
       loadNode(node,resolve){
         var self = this;
         var params = {
-          id: window.localStorage.getItem("dept_id")
+          id: window.localStorage.getItem("dept_id"),
+          forIEFresh: new Date().getTime()
         };
         self.$http.get('department/buildUpperTree.do_', {
           params: params
@@ -94,7 +95,8 @@
         var self = this;
         var params = {
           id: '',
-          upperDepartmentNo: ''
+          upperDepartmentNo: '',
+          forIEFresh: new Date().getTime()
         };
         params.id=self.dept_id;
         params.upperDepartmentNo=self.$refs.tree.getCheckedNodes()[0].departmentNo;

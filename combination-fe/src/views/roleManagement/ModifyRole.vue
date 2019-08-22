@@ -429,7 +429,7 @@
           params: param
         }).then((result) => {
           if (result.account.accountState === 3){
-            alert("该账户已被删除，不可选择");
+            self.$message.info("该账户已被删除，不可选择");
             this.isChoose = true;
             this.fetchAccountData();
           }
@@ -469,7 +469,7 @@
                   };
                   self.$http.get('account/querylist.do_',{params:param}).then((result) => {
                     if (result.page.list[0].accountState === 3){
-                      alert("该账户已被删除，不可选择");
+                      self.$message.info("该账户已被删除，不可选择");
                     }
                     else{
                       var param = {
@@ -480,7 +480,7 @@
                         params: param
                       }).then((result) => {
                         if (result.page.roleStatus ===0){
-                          alert("该角色已经被删除，不可修改");
+                          self.$message.info("该角色已经被删除，不可修改");
                         }
                         else{
                           self.form.businessLine = self.form.businessLine.join(';');

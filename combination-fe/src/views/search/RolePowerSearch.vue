@@ -468,7 +468,7 @@
 
       loadNode(node,resolve){
         var self = this;
-        self.$http.get('department/buildTree.do_', {
+        self.$http.get('department/buildTree2.do_', {
           params: null
         }).then((result) => {
           resolve([result.departmentDto]);
@@ -610,6 +610,7 @@
             this.rolePowerDialogVisible=false;
             this.checkRolePowers=[];
             this.filterVal=[];
+            this.checkAll=false;
           })
         }
       },
@@ -664,7 +665,7 @@
         }).then((result) => {
           self.formInfo=result.page;
           self.RoleStatusEnum = result.RoleStatusEnum;
-          self.formInfo.businessLine=self.formInfo.businessLine.split(',');
+          self.formInfo.businessLine=self.formInfo.businessLine.split(';');
         }).catch(function (error) {
           commonUtils.Log("roleManage/getOneInf.do_:" + error);
           self.$message.error("获取数据错误");

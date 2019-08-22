@@ -30,10 +30,11 @@ public class UserServiceImpl implements UserService {
 
     /**
      * description: 登陆
-     * @author peng.zhang11@ucarinc.com
-     * @date   2019/7/31 16:48
-     * @params loginUser 用户登陆信息
+     *
      * @return 登陆结果
+     * @author peng.zhang11@ucarinc.com
+     * @date 2019/7/31 16:48
+     * @params loginUser 用户登陆信息
      */
     @Override
     public Result login(User loginUser) {
@@ -42,6 +43,10 @@ public class UserServiceImpl implements UserService {
             return Result.ok().put("code", 300)
                     .put("Msg", "没有该用户");
         } else {
+            if (list.get(0).getAccountState() == 3) {
+                return Result.ok().put("code", 303)
+                        .put("Msg", "登录失败，账号失效");
+            }
             String md5Password = DigestUtils.md5DigestAsHex(loginUser.getAccountPassword().getBytes());
             if (md5Password.equals(list.get(0).getAccountPassword())) {
                 return Result.ok().put("code", 200)
@@ -56,10 +61,11 @@ public class UserServiceImpl implements UserService {
 
     /**
      * description: 修改密码
+     *
+     * @return 结果集
      * @author peng.zhang11@ucarinc.com
      * @date 2019/7/30 16:57
      * @params user 用户信息
-     * @return 结果集
      */
     @Override
     public ReturnResult updatePassword(UpdateUserPwd userPwd) {
@@ -85,7 +91,7 @@ public class UserServiceImpl implements UserService {
         try {
             // 获取完整的账号信息
             list = userDao.qryAccountByAccountName(oldUser);
-            if (list.size() != 0){
+            if (list.size() != 0) {
                 userInfo = list.get(0);
                 userPwd.setStaffId(userInfo.getStaffId());
             }
@@ -97,14 +103,14 @@ public class UserServiceImpl implements UserService {
             if (!md5NewPassword.equals(userInfo.getAccountPassword())) {
                 // 查询历史密码
                 list2 = userDao.qryHistoryPwdById(list.get(0));
-                if (list2.size() == 0){
+                if (list2.size() == 0) {
                     //插入旧密码表
                     userDao.insertHisPwd(userInfo);
                     //更新新密码
                     userDao.updatePwdById(userPwd);
                     return result;
                 } else {
-                    if (list2.size() == 1 && !md5NewPassword.equals(list2.get(0).getHistoryPassword())){
+                    if (list2.size() == 1 && !md5NewPassword.equals(list2.get(0).getHistoryPassword())) {
                         //插入旧密码表
                         userDao.insertHisPwd(userInfo);
                         //更新新密码
@@ -112,7 +118,7 @@ public class UserServiceImpl implements UserService {
                         return result;
                     }
                     if (list2.size() > 1 && !md5NewPassword.equals(list2.get(1).getHistoryPassword())
-                            && !md5NewPassword.equals(list2.get(0).getHistoryPassword())){
+                            && !md5NewPassword.equals(list2.get(0).getHistoryPassword())) {
                         //插入旧密码表
                         userDao.insertHisPwd(userInfo);
                         //更新新密码
@@ -131,10 +137,11 @@ public class UserServiceImpl implements UserService {
 
     /**
      * description: 重置密码
+     *
+     * @return 结果集
      * @author peng.zhang11@ucarinc.com
      * @date 2019/7/30 16:57
      * @params user 用户信息
-     * @return 结果集
      */
     @Override
     public ReturnResult resetPassword(UpdateUserPwd userPwd) {
@@ -158,21 +165,21 @@ public class UserServiceImpl implements UserService {
         try {
             // 获取完整的账号信息
             list = userDao.qryAccountByAccountName(oldUser);
-            if (list.size() != 0){
+            if (list.size() != 0) {
                 userInfo = list.get(0);
                 userPwd.setId(userInfo.getId());
             }
             if (!md5NewPassword.equals(userInfo.getAccountPassword())) {
                 // 查询历史密码
                 list2 = userDao.qryHistoryPwdById(list.get(0));
-                if (list2.size() == 0){
+                if (list2.size() == 0) {
                     //插入旧密码表
                     userDao.insertHisPwd(userInfo);
                     //更新新密码
                     userDao.updatePwdById(userPwd);
                     return result;
                 } else {
-                    if (list2.size() == 1 && !md5NewPassword.equals(list2.get(0).getHistoryPassword())){
+                    if (list2.size() == 1 && !md5NewPassword.equals(list2.get(0).getHistoryPassword())) {
                         //插入旧密码表
                         userDao.insertHisPwd(userInfo);
                         //更新新密码
@@ -180,7 +187,7 @@ public class UserServiceImpl implements UserService {
                         return result;
                     }
                     if (list2.size() > 1 && !md5NewPassword.equals(list2.get(1).getHistoryPassword())
-                            && !md5NewPassword.equals(list2.get(0).getHistoryPassword())){
+                            && !md5NewPassword.equals(list2.get(0).getHistoryPassword())) {
                         //插入旧密码表
                         userDao.insertHisPwd(userInfo);
                         //更新新密码
@@ -199,10 +206,11 @@ public class UserServiceImpl implements UserService {
 
     /**
      * description: 获取员工信息
-     * @author peng.zhang11@ucarinc.com
-     * @date   2019/7/31 16:11
-     * @params user 用户的账户
+     *
      * @return 员工信息结果集
+     * @author peng.zhang11@ucarinc.com
+     * @date 2019/7/31 16:11
+     * @params user 用户的账户
      */
     @Override
     public Result getEmpInfo(User user) {
@@ -213,14 +221,14 @@ public class UserServiceImpl implements UserService {
             staffList = employeeManageDao.qryStaffById(list.get(0));
             String sex = null;
             String isDimission = null;
-            if (staffList.get(0).getStaffSex() == 1){
+            if (staffList.get(0).getStaffSex() == 1) {
                 sex = "男";
-            } else if (staffList.get(0).getStaffSex() == 2){
+            } else if (staffList.get(0).getStaffSex() == 2) {
                 sex = "女";
             }
-            if (staffList.get(0).getIsDimission() == 0 ) {
+            if (staffList.get(0).getIsDimission() == 0) {
                 isDimission = "在职";
-            }else {
+            } else {
                 isDimission = "离职";
             }
             result.put("list", staffList)
@@ -242,10 +250,11 @@ public class UserServiceImpl implements UserService {
 
     /**
      * description: 获取所有账号密码快到期（提前7天）信息
-     * @author peng.zhang11@ucarinc.com
-     * @date   2019/8/12 11:22
-     * @params
+     *
      * @return
+     * @author peng.zhang11@ucarinc.com
+     * @date 2019/8/12 11:22
+     * @params
      */
     @Override
     public Result getAllAccountListByModifyTime() {
@@ -255,16 +264,17 @@ public class UserServiceImpl implements UserService {
 
     /**
      * description:
-     * @author peng.zhang11@ucarinc.com
-     * @date   2019/8/19 20:42
-     * @params
+     *
      * @return
+     * @author peng.zhang11@ucarinc.com
+     * @date 2019/8/19 20:42
+     * @params
      */
     @Override
     public Result isLogin(Long accountId) {
         User user = new User();
         user.setId(accountId);
         List<User> list = userDao.qryAccountByAccountName(user);
-        return Result.ok().put("list",list);
+        return Result.ok().put("list", list);
     }
 }

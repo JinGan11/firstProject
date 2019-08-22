@@ -74,7 +74,7 @@
           <el-col style="text-align: center">
             <el-form-item>
               <div>
-                <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
+                <el-button type="primary" @click="search" style="width:100px">查询</el-button>
                 <el-button type="primary" @click="exportVisible=true" style="width:100px">导出</el-button>
               </div>
             </el-form-item>
@@ -195,11 +195,6 @@
               <el-row>
                 <el-col :span="15">
                   <el-form-item label="支持业务线">
-                    <!--<template v-for="item in chks">
-                      <input type="checkbox" name="hobby" :value="item.id"
-                           :checked="form.loopsss.indexOf(item.id) > -1"/>{{item.name}}
-                    </template>
-                    -->
                     <input type="checkbox" :disabled="true" v-model="formInfo.businessLine" value="买买车">买买车
                     <input type="checkbox" :disabled="true" v-model="formInfo.businessLine" value="租车">租车
                     <input type="checkbox" :disabled="true" v-model="formInfo.businessLine" value="闪贷">闪贷
@@ -433,6 +428,10 @@
         });
 
       },
+      search(){
+        this.currentPage = 1;
+        this.fetchData();
+      },
       handleSizeChange(val) {
         this.pageSize = val;
         this.fetchData();
@@ -494,7 +493,6 @@
             this.exportVisible = false;
             this.checkedRoleAccount = [];
             this.filterVal = [];
-            this.checkAll=false;
           })
         }
       },
@@ -587,7 +585,7 @@
         }).then((result) => {
           self.formInfo=result.page;
           self.RoleStatusEnum = result.RoleStatusEnum;
-          self.formInfo.businessLine=self.formInfo.businessLine.split(',');
+          self.formInfo.businessLine=self.formInfo.businessLine.split(';');
         }).catch(function (error) {
           commonUtils.Log("roleManage/getOneInf.do_:" + error);
           self.$message.error("获取数据错误");

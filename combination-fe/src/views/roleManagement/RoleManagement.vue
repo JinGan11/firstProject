@@ -537,7 +537,7 @@
           params: param
         }).then((result) => {
           if (result.page.roleStatus ===0){
-            alert("该角色已经被删除，不可修改");
+            self.$message.info("该角色已经被删除，不可修改");
             this.isModify = true;
             this.isAddCount = true;
             this.fetchData();
@@ -566,7 +566,7 @@
             params: param
           }).then((result) => {
             if (result.page.roleStatus ===0){
-              alert("该角色已经被删除，不可修改");
+              self.$message.info("该角色已经被删除，不可修改");
               this.isModify = true;
               this.isAddCount = true;
               this.fetchData();
@@ -684,11 +684,14 @@
             this.exportDialogVisible = false;
             this.checkRoles = [];
             this.filterVal = [];
+            this.checkAll=false;
           })
         }
       },
       cancel() {
         this.exportDialogVisible = false;
+        this.checkRoles = [];
+        this.filterVal = [];
       },
       exportRole() {
         this.checkAll=false;

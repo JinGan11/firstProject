@@ -657,7 +657,8 @@
       self.form.id=window.localStorage.getItem("dept_id");
       // 获取当前部门的信息
       var deptParam = {
-        id: self.form.id
+        id: self.form.id,
+        forIEFresh: new Date().getTime()
       };
       self.$http.get("department/selectDepartmentById.do_",{ params: deptParam })
         .then(result => {
@@ -681,7 +682,8 @@
           return;
         }
         var supParam = {
-          departmentNo: data.upperDepartmentNo
+          departmentNo: data.upperDepartmentNo,
+          forIEFresh: new Date().getTime()
         };
         self.$http.get("department/getSupportBusiness.do_",{ params: supParam })
           .then(result => {
@@ -740,7 +742,8 @@
         if(data.level!=5) self.haveWorkplace=false;
         //设置因下级部门导致的业务线不可选
         var lowerParam = {
-          departmentNo: data.departmentNo
+          departmentNo: data.departmentNo,
+          forIEFresh: new Date().getTime()
         };
         self.$http.get("department/getLowerSupports.do_",{ params: lowerParam })
           .then(result => {
@@ -964,7 +967,8 @@
           limit:10,
           regionCode:'',
           regionName:'',
-          regionStatus: ''
+          regionStatus: '',
+          forIEFresh: new Date().getTime()
         };
         self.$http.get('/regionManage/provinceSearch',{
           params:param
@@ -991,6 +995,7 @@
           page:1,
           limit:10,
           upperRegionID:self.chooseCityForm.provinceChosen,
+          forIEFresh: new Date().getTime()
         };
         self.$http.get('/regionManage/citySearch',{
           params:param
@@ -1016,7 +1021,8 @@
           regionName: '',
           upperRegion: '',
           upperRegionID:self.chooseCityForm.cityChosen,
-          regionStatus: ''
+          regionStatus: '',
+          forIEFresh: new Date().getTime()
         };
         self.$http.get('/regionManage/countySearch', {
           params: param

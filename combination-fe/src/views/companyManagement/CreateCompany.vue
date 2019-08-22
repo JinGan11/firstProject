@@ -304,8 +304,8 @@
           ],
           creditCode: [
             { required: true, message: '请输入统一社会信用代码', trigger: 'blur' },
-            { min: 15, max: 18, message: '长度在 15 到 18 个字符或数字', trigger: 'blur' },
-            { pattern:/(^[^ \da-zA-Z]{15}$)|(^[\da-zA-Z]{18}$)/,message: '长度为15或18位，且只支持字母和数字,不能输入空格', trigger: 'blur' }
+            { min:15,max: 18, message: '长度在 15 到 18 个字符或数字', trigger: 'blur' },
+            { pattern:/(^[A-Za-z0-9]{15}$)|(^[A-Za-z0-9]{18}$)/,message: '长度为15或18位，且只支持字母和数字,不能输入空格', trigger: 'blur' }
           ],
           companyType:[
             { required: false, message: '公司类型', trigger: 'blur' },
@@ -319,7 +319,6 @@
             { required: false, message: '请选择数据类型'},
             { min: 1, max: 20, message: '长度在 1 到 20 位数字', trigger: 'blur' },
             { pattern:/(^[1-9]{1}[\d]+$)/,message: '只支持不以0开头的整数，请勿输入其他字符', trigger: 'blur' }
-
           ],
           companyAddress:[
             { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' },
@@ -412,6 +411,9 @@
       save: function () {//保存新建公司信息
           this.$refs.upload.submit();
           const self = this;
+          if(self.businessTerm==null){
+              self.businessTerm=['',''];
+          }
           if(this.iscommit){
               self.$refs["ruleForm"].validate(function (valid) {
                   if (valid) {
@@ -531,6 +533,15 @@
                           self.$message.error("新建公司失败");
                           self.formData=new FormData();
                       });
+                  this.$message({
+                      type: 'success',
+                      message: '创建成功!'
+                  });
+              }).catch(() => {
+                  this.$message({
+                      type: 'info',
+                      message: '已取消保存'
+                  });
               });
           }
       },

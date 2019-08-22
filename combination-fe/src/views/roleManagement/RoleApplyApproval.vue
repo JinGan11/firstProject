@@ -38,7 +38,7 @@
 
             </el-form-item>
           </el-col>
-          <el-col :span="6">
+          <el-col :span="12">
             <el-form-item label="申请人所属部门">
               <el-input placeholder="申请人所属部门" style="width:150px;" v-model="form.applyDepartmentName"></el-input>
               <el-button type="text" @click="selectDepartment">选择</el-button>
@@ -50,11 +50,10 @@
           <el-col :span="100">
             <el-form-item label="申请时间">
               <el-date-picker
-                v-model="applyTime"
-                unlink-panels
-                size="mini"
-                type="daterange"
-                value-format="yyyy-MM-dd"
+                v-model="form.applyTime"
+                type="datetimerange"
+                format="yyyy-MM-dd HH:mm:ss"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期">
@@ -64,11 +63,10 @@
           <el-col :span="200">
             <el-form-item label="操作时间">
               <el-date-picker
-                v-model="modifyTime"
-                unlink-panels
-                size="mini"
-                type="daterange"
-                value-format="yyyy-MM-dd"
+                v-model="form.modifyTime"
+                type="datetimerange"
+                format="yyyy-MM-dd HH:mm:ss"
+                value-format="yyyy-MM-dd HH:mm:ss"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期">
@@ -244,6 +242,8 @@
            <el-input
              type="textarea"
              :rows="4"
+             maxlength="200"
+             show-word-limit
              placeholder="请输入内容"
              v-model="rejectReason">
            </el-input>
@@ -440,8 +440,8 @@
           applyStaffNum:'',
           applyStaffName:'',
           applyDepartmentName:'',
-          applyTime:'',
-          modifyTime:'',
+          applyTime:[],
+          modifyTime:[],
         },
         apply:{
           role_apply_id:'',
@@ -551,8 +551,10 @@
           applyStaffName: self.form.applyStaffName,
           applyDepartmentName:self.form.applyDepartmentName,
           applyStatus: '2',
-          applyTime:self.form.applyTime ,
-          modifyTime: self.form.modifyTime,
+          applyTimeStart:self.form.applyTime[0],
+          applyTimeEnd:self.form.applyTime[1],
+          modifyTimeStart: self.form.modifyTime[0],
+          modifyTimeEnd: self.form.modifyTime[1],
           type:'角色审核',
           date : new Date().getTime(),
         };
@@ -652,6 +654,10 @@
       },
       approvalReject(){
         var self = this;
+        if(self.rejectReason ===""){
+          self.$message.error("操作失败，拒绝原因不允许为空");
+          return;
+        }
         var param = {
           id:self.selection,
           rejectReason:self.rejectReason,
@@ -737,7 +743,7 @@
       },
       loadNode(node,resolve){
         var self = this;
-        self.$http.get('department/buildTree.do_', {
+        self.$http.get('department/buildTree2.do_', {
           params: null
         }).then((result) => {
           resolve([result.departmentDto]);

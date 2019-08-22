@@ -428,6 +428,8 @@
       },
       cancel() {
         this.exportDialogVisible = false;
+        this.checkRoles = [];
+        this.filterVal = [];
       },
       //将每列与数据对应
       exportField(val) {
