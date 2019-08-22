@@ -152,7 +152,7 @@ public interface AccountManageDao {
 
     void updateModifyTimeAndModifyName(@Param("a") Account account);
     /**
-     * description: 查询账户名是否存在 
+     * description: 查询账户名是否存在
      * @author junqiang.zhang@ucarinc.com
      * @date:  2019/8/13 10:41
      * @params: accountName 账户名
@@ -196,4 +196,13 @@ public interface AccountManageDao {
 
     //根据员工ID获取员工状态
     //int selectAccountStatusById(long accountId);
+    /**
+     * description: 根据账户ID查询员工名字
+     * @author jing.luo01@ucarinc.com
+     * @date   2019/8/22 15:36
+     * @params id 账户ID
+
+     * @return
+     */
+    String getStaffNameByAccountId(Long id);
 }

@@ -202,5 +202,4 @@
         SELECT is_dimission,status,account_id FROM t_staff
         WHERE id = #{staffId}
     </select>
-
 </mapper>
