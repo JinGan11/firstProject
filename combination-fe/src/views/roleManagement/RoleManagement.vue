@@ -160,7 +160,7 @@
           <el-row>
             <el-col :span="6">
               <el-form-item label="登陆账号" >
-                <el-input style="width:140px;" v-model="form.accountNo" placeholder="登陆账号" clearable></el-input>
+                <el-input style="width:150px;" v-model="form.accountNo" placeholder="登陆账号" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -170,12 +170,12 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="员工姓名">
-                <el-input style="width:180px;" v-model="form.name" placeholder="员工姓名" clearable></el-input>
+                <el-input style="width:150px;" v-model="form.name" placeholder="员工姓名" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="数据权限类型">
-                <el-select style="width:180px;" v-model="form.permissions" clearable placeholder="全选">
+                <el-select style="width:150px;" v-model="form.permissions" clearable placeholder="全选">
                   <el-option
                     v-for="item in form.permissionsList"
                     :key="item.value"
@@ -189,7 +189,7 @@
           <el-row>
             <el-col :span="6">
               <el-form-item label="员工所属部门">
-                <el-input style="width:180px;" v-model="form.department" placeholder="员工所属部门"></el-input>
+                <el-input style="width:150px;" v-model="form.department" placeholder="员工所属部门"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -202,7 +202,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="是否关联员工">
-                <el-select style="width: 180px" v-model="form.isRelStaff" clearable placeholder="全部">
+                <el-select style="width: 150px" v-model="form.isRelStaff" clearable placeholder="全部">
                   <el-option
                     v-for="item in form.isRelStaffoptions"
                     :key="item.value"
@@ -214,7 +214,7 @@
             </el-col>
             <el-col :span="6">
               <el-form-item label="账号状态">
-                <el-select style="width:180px;" v-model="form.status" clearable placeholder="全部">
+                <el-select style="width:150px;" v-model="form.status" clearable placeholder="全部">
                   <el-option
                     v-for="item in StatusList"
                     :key="item.value"
@@ -942,16 +942,7 @@
           if(result.msg === "添加成功") {
             this.chooseAccountPage = false;
             this.fetchAccountData();
-            this.currentAddPage=1;
-            this.pageAddSize=10;
-            this.form.accountNo='';
-            this.form.staffNo='';
-            this.form.name='';
-            this.form.permissions='';
-            this.form.department='';
-            this.form.departmentId='';
-            this.form.isRelStaff='';
-            this.form.status='';
+            this.clear();
           }else{
             self.$message.error("添加失败，该角色已失效！")
             this.fetchAccountData();
@@ -966,8 +957,13 @@
       cancelAdd(){
         this.chooseAccountPage = false;
         this.selectAccountIds=[];
+        this.clear();
       },
       handleClose(done) {
+        this.clear();
+        done();
+      },
+      clear(){
         this.currentAddPage=1;
         this.pageAddSize=10;
         this.form.accountNo='';
@@ -978,7 +974,6 @@
         this.form.departmentId='';
         this.form.isRelStaff='';
         this.form.status='';
-        done();
       },
       chooseDepartment(){
         this.chooseDepartmentFlag = true;
