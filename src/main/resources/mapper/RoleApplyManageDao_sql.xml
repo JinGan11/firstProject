@@ -111,13 +111,13 @@
             AND t1.apply_account_name=#{applyAccountName}
         </if>
         <if test="applyStaffNum!=null and applyStaffNum.trim()!=''">
-            AND t1.apply_staff_num =#{applyStaffNum}
+            AND t4.staff_num =#{applyStaffNum}
         </if>
         <if test="applyStaffName!=null and applyStaffName.trim()!=''">
-            AND t1.apply_staff_name=#{applyStaffName}
+            AND t4.staff_name=#{applyStaffName}
         </if>
         <if test="applyDepartmentName!=null and applyDepartmentName.trim()!=''">
-            AND t1.apply_department_name=#{applyDepartmentName}
+            AND t5.department_name=#{applyDepartmentName}
         </if>
         <if test="applyStatus!=null and applyStatus.trim()!=''">
             AND t1.status=#{applyStatus}
@@ -296,13 +296,11 @@
 
 
     <!--查询所选账户的状态-->
-    <select id="getAccountStateById" parameterType="java.util.List" resultType="java.util.List">
+    <select id="getAccountStateById" parameterType="Long" resultType="Integer">
         select account_state
         from t_account
         where id in
-        <foreach collection="accountIds" item="item" open="(" close=")" separator=",">
-            #{item}
-        </foreach>
+        <foreach collection="accountIds" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
     </select>
 
 
