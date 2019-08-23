@@ -7,6 +7,7 @@ import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.RegionManageDao;
 import com.ucar.combination.model.Region;
 import com.ucar.combination.model.dto.RegionDto;
+import com.ucar.combination.model.dto.RegionSimpleDto;
 import com.ucar.combination.service.RegionManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -112,5 +113,10 @@ public class RegionManageServiceImpl implements RegionManageService {
     @Override
     public List<String> citySearchListById(String id) {
         return regionManageDao.citySearchListById(id);
+    }
+
+    @Override
+    public List<RegionSimpleDto> selectCityByKeyword(String keyword) {
+        return regionManageDao.selectCityByKeyword(keyword);
     }
 }

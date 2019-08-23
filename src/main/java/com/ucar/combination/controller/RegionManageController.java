@@ -7,6 +7,7 @@ import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Region;
 import com.ucar.combination.model.dto.RegionDto;
+import com.ucar.combination.model.dto.RegionSimpleDto;
 import com.ucar.combination.service.RegionManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -327,4 +328,17 @@ public class RegionManageController {
         return Result.ok().put("cityList",cityList);
     }
 
+    /**
+     * description: 根据关键词搜索城市
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/22 15:18
+     * @params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/searchCityByKeyword.do_")
+    public List<RegionSimpleDto> selectCityAll(HttpServletRequest request){
+        String keyword = request.getParameter("keyword");
+        return regionManageService.selectCityByKeyword(keyword);
+    }
 }
