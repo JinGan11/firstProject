@@ -806,7 +806,7 @@
         },
         ruleDepartment: {
           staffAfterDepartmentName: [
-            {required: true,message:'请选择部门',trigger:['blur','change']}
+            {required: true,message:'调整后归属部门不允许为空',trigger:['blur','change']}
           ]
         },
         distributionDepartmentFlag: false,
