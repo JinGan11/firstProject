@@ -19,11 +19,14 @@
         t2.create_emp ,
         t1.account_name,
         t2.create_time,
-        t2.account_id
+        t2.account_id,
+        t2.creater,
+        t3.staff_name staff_name1
         from
-        t_account t1,t_account_history t2
+        t_account t1,t_account_history t2,t_staff t3
         where t2.account_id = #{accountId}
         and t2.create_emp = t1.id
+        and t2.creater = t3.id
         order by create_time DESC
     </select>
 </mapper>

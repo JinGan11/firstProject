@@ -258,7 +258,12 @@
         </template>
       </el-table-column>
       <el-table-column prop="historyOperationType" label="操作类型" width="120"></el-table-column>
-      <el-table-column prop="accountName" label="操作人" width="130"></el-table-column>
+      <el-table-column prop="accountName" label="操作人" width="130">
+        <template slot-scope="scope">
+          <p v-if="scope.row.accountName!=null">{{scope.row.accountName}}({{scope.row.staffName1}})</p>
+          <p v-else>{{scope.row.accountName}}</p>
+        </template>
+      </el-table-column>
       <el-table-column prop="createTime" label="操作时间" width="200"></el-table-column>
     </el-table>
   </el-dialog>

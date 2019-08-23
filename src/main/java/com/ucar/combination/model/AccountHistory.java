@@ -25,6 +25,12 @@ public class AccountHistory {
 
     private Long creater;
 
+    private String staffName1;
+
+    public String getStaffName1() { return staffName1; }
+
+    public void setStaffName1(String staffName1) { this.staffName1 = staffName1; }
+
     public Long getCreater() {
         return creater;
     }
