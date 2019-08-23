@@ -419,9 +419,10 @@
         callback();
       };
       var validCityName = (rule, value, callback) => {
-        if (this.cityName == '')
+        if (this.cityName == '' || this.cityName==null) // 空串 空格 以及NUll 影响后续isNan判断
           return callback(new Error("请选择城市"));
-        this.form.cityId=this.cityName;
+        if(!isNaN(this.cityName))
+          this.form.cityId=this.cityName;
         callback();
       };
       return {
