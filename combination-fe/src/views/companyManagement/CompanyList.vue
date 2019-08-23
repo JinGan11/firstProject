@@ -389,6 +389,7 @@
 <script>
   import commonUtils from '../../common/commonUtils'
   import license from './component/license';
+  import global from '../../common/global.js'
   export default {
     name:"ModifyCompany",
     components: {license},
@@ -494,7 +495,7 @@
           label: '无效'
         }],
         licenses:[],
-        fileUrl:"http://localhost:8081/combination/company/getLicense?id=",
+        fileUrl:"http://"+global.host+":8081/combination/company/getLicense?id=",
       }
     },
     activated() {

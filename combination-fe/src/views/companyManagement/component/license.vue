@@ -11,15 +11,15 @@
     </div>
   </div>
 </template>
-
 <script>
+  import global from '../../../common/global.js'
   export default {
     name: "license",
     props: ['license','isShow'],
     data() {
       return {
         licenseUrl: '',
-        fileUrl:"http://localhost:8081/combination/company/getLicense?id=",
+        fileUrl:"http://"+global.host+":8081/combination/company/getLicense?id=",
       }
     },
     methods: {

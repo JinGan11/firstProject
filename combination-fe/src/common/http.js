@@ -1,6 +1,7 @@
 import axios from 'axios'
 axios.defaults.withCredentials=true;
 import router from '../router'
+import global from './global.js'
 import qs from 'qs'
 export default {
   install (Vue) {
@@ -12,7 +13,7 @@ export default {
 }
 
 axios.defaults.timeout = 30000; // 1分钟
-axios.defaults.baseURL = "http://localhost:8081/combination/";
+axios.defaults.baseURL = "http://"+global.host+":8081/combination/";
 
 // 添加请求拦截器
 var myInterceptor = axios.interceptors.request.use(function (config) {
