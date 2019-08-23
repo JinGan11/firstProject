@@ -141,6 +141,14 @@ public interface RoleApplyManageService {
     * @Date  19:50 2019/8/22
     */
     List<String> getAccountDeletedById(List<Long> accountIds);
+    
+    /**
+    * @Description:  
+    * @Author: min.zhang08@ucarinc.com  
+    * @Params  
+    * @Return  
+    * @Date  17:39 2019/8/23
+    */
 
 
 }

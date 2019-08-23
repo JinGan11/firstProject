@@ -257,7 +257,6 @@
         set role_id=#{roleId},
             role_name=#{roleName},
             status=#{applyStatus},
-            apply_time=now(),
             modify_time=now()
         where id=#{id}
     </update>
@@ -302,7 +301,6 @@
         where account_state=3
         and id in
         <foreach collection="accountIds" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
-
     </select>
 
 

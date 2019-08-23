@@ -6,7 +6,7 @@
           申请信息
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" size="mini" @click="saveRoleApply">保存</el-button>
+          <el-button type="primary" size="mini" @click="checkRoleState">保存</el-button>
         </el-col>
         <el-col :span="3">
           <el-button type="primary" size="mini" @click="createSaveCommitRoleApply">保存并提交</el-button>
@@ -60,8 +60,8 @@
     <div style="margin-left: 40px;">
       <el-table ref="multipleTable" :data="tableDataAccount" border>
         <!--        <el-table-column type="selection" width="35"></el-table-column>-->
-        <!--        <el-table-column prop="accountId" v-if="false" label="隐藏账号id"></el-table-column>-->
-        <!--        <el-table-column prop="id"  label="隐藏账号id"></el-table-column>-->
+<!--                <el-table-column prop="accountId" v-if="false" label="隐藏账号id"></el-table-column>-->
+        <el-table-column prop="id"  label="隐藏账号id"></el-table-column>
         <el-table-column prop="accountName" label="申请账号" width="150"></el-table-column>
         <el-table-column prop="staffName" label="关联员工姓名"width="150"></el-table-column>
         <el-table-column prop="staffNum" label="关联员工编号"  width="150"></el-table-column>
@@ -511,6 +511,8 @@
         accountIds: [],
         tableDataAccount: [],
         accountIdList: [],
+        accountIdList1: [],
+
         accountLength: '',
         roleId: '',
         applyOperationList: [],
@@ -520,6 +522,7 @@
         accountStateDeletedList: [],
         accountDuplicateList: [],
         accountDeletedList: [],
+        accountDeletedList1: [],
         roleStatus: '',
         chooseDepartmentFlag: false,
         disabledSelectRole: true,
@@ -749,6 +752,7 @@
           limit: self.pageSize,
           roleName: self.formSelectRole.name,
           flag: 1,
+          date : new Date().getTime(),
         };
         self.$http.get("roleManage/querylist.do_", {
           params: param
@@ -778,6 +782,7 @@
         var self = this;
         var param = {
           roleID: self.roleId,
+          date : new Date().getTime(),
         };
         self.$http.get('roleManage/getOneInf.do_', {
           params: param
@@ -810,7 +815,6 @@
         //清楚表格所选的记录
         this.$refs.multipleTable.clearSelection();
         //设置下拉框默认
-        //
         this.disabledSelectAccount = true;
 
         this.form.permissions = '';
@@ -938,16 +942,16 @@
         this.tableDataAccount.splice(index, 1)
       },
 
-      saveRoleApply() {//保存角色申请
-        this.otherInfo.applyAccountName = sessionStorage.getItem('loginUsername');
-        this.otherInfo.modifyStaffName = sessionStorage.getItem('loginUsername');
-        for (let i = 0; i < this.tableDataAccount.length; i++) {//账号ID
-          this.accountIdList.push(this.tableDataAccount[i].id);
+      saveRoleApply(self) {//保存角色申请
+        var self=this;
+        self.otherInfo.applyAccountName = sessionStorage.getItem('loginUsername');
+        self.otherInfo.modifyStaffName = sessionStorage.getItem('loginUsername');
+        for (let i = 0; i < self.tableDataAccount.length; i++) {//账号ID
+          self.accountIdList.push(self.tableDataAccount[i].id);
         }
-        for (let i = 0; i < this.tableDataAccount.length; i++) {
-          this.applyOperationList.push(this.tableDataAccount[i].applyOperation)
+        for (let i = 0; i < self.tableDataAccount.length; i++) {
+          self.applyOperationList.push(this.tableDataAccount[i].applyOperation)
         }
-        var self = this;
         self.forms.roleApplyNum = self.formRoleInfo.roleApplyNum;
         self.forms.roleId = self.roleId;
         self.forms.roleName = self.formRoleInfo.roleName;
@@ -962,11 +966,14 @@
         self.forms.accountIdList = self.accountIdList;
         self.forms.applyOperationList = self.applyOperationList;
 
-        if (!self.$options.methods.checkInput(self)) {
+        if (!self.$options.methods.checkInput(self)) {//校验
           self.accountIdList = [];
           self.applyOperationList = [];
           return;
         }
+        alert("wolaila");
+        alert(self.accountIdList);
+
         self.$http.post("roleApply/createRoleApply.do_", self.forms)
           .then(result => {
             self.$message.info("新建角色申请成功");
@@ -974,8 +981,55 @@
           }).catch(function (error) {
           commonUtils.Log("/roleManagement/apply" + error);
           self.$message.error("角色申请新建保存失败");
-        })
+        });
       },
+
+      checkRoleState(){//检查角色是否失效
+        let self = this;
+        var param1 = {
+          roleID: self.roleId,
+          date : new Date().getTime(),
+        };
+        self.$http.get('roleManage/getOneInf.do_', {
+          params: param1
+        }).then((result) => {
+          self.roleStatus = result.page.roleStatus;
+          if (self.roleStatus == 0) {
+            self.$message.error("该角色已失效，保存失败！请重新选择角色！！");
+          }else{
+            self.checkAccountState(self);
+          }
+        }).catch(function (error) {
+          commonUtils.Log("roleManage/getOtherOneInf.do_" + error);
+          self.$message.error("获取数据错误");
+        });
+
+      },
+      checkAccountState(self){
+        var self=this;
+        for (let i = 0; i < self.tableDataAccount.length; i++) {//账号ID
+          self.accountIdList1.push(self.tableDataAccount[i].id);
+        }
+        var param = {
+          accountIds: self.accountIdList1.toString(),
+          date : new Date().getTime(),
+        };
+        self.$http.get('roleApply/getAccountDeletedById.do_', {
+          params: param
+        }).then((result) => {
+          self.accountDeletedList1 = result.accountDeletedList;
+          if (self.accountDeletedList1.length > 0) {
+            self.$message.error('账号    ' + self.accountDeletedList1 + '    已失效,保存失败！请重新选择账号！！');
+            self.tableDataAccount=[];
+          }else{
+            self.saveRoleApply(self);
+          }
+        }).catch(function (error) {
+          commonUtils.Log("roleApply/getAccountStateById.do_" + error);
+          self.$message.error("获取添加账号数据失败")
+        });
+      },
+
 
       createSaveCommitRoleApply() {
         this.otherInfo.applyAccountName = sessionStorage.getItem('loginUsername');

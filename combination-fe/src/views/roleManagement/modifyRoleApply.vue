@@ -749,6 +749,7 @@
           page: self.currentPage,
           limit: self.pageSize,
           roleName: self.formSelectRole.name,
+          date : new Date().getTime(),
           flag: 1,
         };
         self.$http.get("roleManage/querylist.do_", {
@@ -768,6 +769,7 @@
         var self=this;
         var param={
           roleID: self.roleId,
+          date : new Date().getTime(),
         };
         self.$http.get('roleManage/getOneInf.do_', {
           params: param
