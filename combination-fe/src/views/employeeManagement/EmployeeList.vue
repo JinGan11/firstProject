@@ -1095,6 +1095,17 @@
                 self.disabled=true;
                 self.quitDisabled=true;
                 self.departmentDisabled=true;
+                self.$refs['modifyForm'].resetFields();
+                self.modifyForm.accountId='';
+                self.modifyForm.departmentId='';
+                self.modifyForm.departmentName='';
+                self.modifyForm.isDimission='';
+                self.modifyForm.remark='';
+                self.modifyForm.staffEmail='';
+                self.modifyForm.staffName='';
+                self.modifyForm.staffNum='';
+                self.modifyForm.staffSex='';
+                self.modifyForm.staffTelephone='';
 
               })
               .catch(function (error) {
@@ -1103,21 +1114,11 @@
               })
           } else {
             console.log('error submit!!');
-            return false;
+            // return false;
           }
 
-        })
-        self.$refs['modifyForm'].resetFields();
-        self.modifyForm.accountId='';
-        self.modifyForm.departmentId='';
-        self.modifyForm.departmentName='';
-        self.modifyForm.isDimission='';
-        self.modifyForm.remark='';
-        self.modifyForm.staffEmail='';
-        self.modifyForm.staffName='';
-        self.modifyForm.staffNum='';
-        self.modifyForm.staffSex='';
-        self.modifyForm.staffTelephone='';
+        });
+
       },
       cancelUpdate() {
         this.modifyDialogVisible = false;
