@@ -82,7 +82,7 @@
               :remote-method="remoteMethod"
               @focus="cityFocus"
               @change="cityChangeValid"
-              @blur="cityChangeValid"
+              @blur="cityBlurValid"
               :loading="loading">
               <el-option
                 v-for="item in cityOptions"
@@ -550,6 +550,7 @@
         },
         upperDepartmentName: '',
         cityName: '',
+        cityNameForMap: '',
         supports: [],
         longitudeNum: '',
         longitudeDirection: 'E',
@@ -1019,6 +1020,17 @@
         });
       },
       cityChangeValid(){
+        // cityName原本存String的城市名，由于改用select，现在存Long的id
+        var self = this;
+        self.$options.methods.checkInputByHand(self,'cityName');
+        for(var i=0;i<self.cityOptions.length;i++){
+          if(self.cityOptions[i].cityId==self.cityName){
+            self.cityNameForMap=self.cityOptions[i].cityName;
+            break;
+          }
+        }
+      },
+      cityBlurValid(){
         var self = this;
         self.$options.methods.checkInputByHand(self,'cityName');
       },

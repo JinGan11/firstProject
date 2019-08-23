@@ -72,7 +72,7 @@
               :remote-method="remoteMethod"
               @focus="cityFocus"
               @change="cityChangeValid"
-              @blur="cityChangeValid"
+              @blur="cityBlurValid"
               :loading="loading">
               <el-option
                 v-for="item in cityOptions"
@@ -540,6 +540,7 @@
           createName: '',
           modifyName: ''
         },
+        cityNameForMap:'',
         supports: [],
         longitudeNum: '',
         longitudeDirection: 'E',
@@ -726,6 +727,7 @@
       fillData(self,data){
         self.form=data;
         self.cityName=data.cityName;
+        self.cityNameForMap=data.cityName;
         //设置已选业务线
         if(data.departmentNo == "Z000001"){ // 总公司无上级公司，情况不同
           self.supports.push("闪贷");
@@ -1060,6 +1062,16 @@
         });
       },
       cityChangeValid(){
+        var self = this;
+        self.$options.methods.checkInputByHand(self,'cityName');
+        for(var i=0;i<self.cityOptions.length;i++){
+          if(self.cityOptions[i].cityId==self.cityName){
+            self.cityNameForMap=self.cityOptions[i].cityName;
+            break;
+          }
+        }
+      },
+      cityBlurValid(){
         var self = this;
         self.$options.methods.checkInputByHand(self,'cityName');
       },
