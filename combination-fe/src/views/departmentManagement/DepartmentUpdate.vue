@@ -3,7 +3,7 @@
 
     <div style="float: right; position: relative; right: 200px; top: 0px">
       <div>
-        <el-button type="primary" @click="save">修改</el-button>
+        <el-button type="primary" @click="save">保存</el-button>
         <el-button type="primary" @click="cancel">取消</el-button>
       </div>
     </div>

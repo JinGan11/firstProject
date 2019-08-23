@@ -3,7 +3,7 @@
 
     <div style="float: right; position: relative; right: 200px; top: 0px">
       <div>
-        <el-button type="primary" @click="save">添加</el-button>
+        <el-button type="primary" @click="save">保存</el-button>
         <el-button type="primary" @click="cancel">取消</el-button>
       </div>
     </div>
@@ -203,12 +203,14 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="新建时间">
-            <el-input style="width:200px;" :disabled="true" v-model="nowTime"></el-input>
+<!--            <el-input style="width:200px;" :disabled="true" v-model="nowTime"></el-input>-->
+            <el-input style="width:200px;" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="新建人">
-            <el-input style="width:200px;" :disabled="true" v-model="createEmpName"></el-input>
+<!--            <el-input style="width:200px;" :disabled="true" v-model="createEmpName"></el-input>-->
+            <el-input style="width:200px;" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -216,12 +218,14 @@
       <el-row>
         <el-col :span="8">
           <el-form-item label="修改时间">
-            <el-input style="width:200px;" :disabled="true" v-model="nowTime"></el-input>
+<!--            <el-input style="width:200px;" :disabled="true" v-model="nowTime"></el-input>-->
+            <el-input style="width:200px;" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="8">
           <el-form-item label="修改人">
-            <el-input style="width:200px;" :disabled="true" v-model="modifyEmpName"></el-input>
+<!--            <el-input style="width:200px;" :disabled="true" v-model="modifyEmpName"></el-input>-->
+            <el-input style="width:200px;" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
