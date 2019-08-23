@@ -1086,28 +1086,33 @@
           if (valid) {
             self.$http.post("employee/updateStaff", param)
               .then(result => {
-
-                self.modifyDialogVisible = false;
-                self.$message.success("修改成功");
-                self.fetchData();
-                self.selection='';
-                self.isDiss=true;
-                self.disabled=true;
-                self.quitDisabled=true;
-                self.departmentDisabled=true;
-                self.$refs['modifyForm'].resetFields();
-                self.modifyForm.accountId='';
-                self.modifyForm.departmentId='';
-                self.modifyForm.departmentName='';
-                self.modifyForm.isDimission='';
-                self.modifyForm.remark='';
-                self.modifyForm.staffEmail='';
-                self.modifyForm.staffName='';
-                self.modifyForm.staffNum='';
-                self.modifyForm.staffSex='';
-                self.modifyForm.staffTelephone='';
-
-              })
+                if (result.status == "success") {
+                  self.modifyDialogVisible = false;
+                  self.$message.success("修改成功");
+                  self.fetchData();
+                  self.selection = '';
+                  self.isDiss = true;
+                  self.disabled = true;
+                  self.quitDisabled = true;
+                  self.departmentDisabled = true;
+                  self.$refs['modifyForm'].resetFields();
+                  self.modifyForm.accountId = '';
+                  self.modifyForm.departmentId = '';
+                  self.modifyForm.departmentName = '';
+                  self.modifyForm.isDimission = '';
+                  self.modifyForm.remark = '';
+                  self.modifyForm.staffEmail = '';
+                  self.modifyForm.staffName = '';
+                  self.modifyForm.staffNum = '';
+                  self.modifyForm.staffSex = '';
+                  self.modifyForm.staffTelephone = '';
+                }else{
+                  self.$message.error("该用户已不存在，请重新操作");
+                  self.modifyDialogVisible=false;
+                  self.fetchData();
+                  }
+                }
+              )
               .catch(function (error) {
                 commonUtils.Log("employee/updateStaff:" + error);
                 self.$message.error("修改用户信息失败");

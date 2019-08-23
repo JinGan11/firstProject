@@ -218,16 +218,22 @@ public class EmployeeManageController {
      */
     @ResponseBody
     @RequestMapping("/updateStaff")
-    public  void updateStaff(HttpServletRequest request,@RequestBody Staff staff){
-        staff.setModifyEmp((Long)(request.getSession().getAttribute("accountId")));
-        employeeManageService.updateStaff(staff);
-        Long accountId=staff.getAccountId();
-        if(accountId != null && accountId !=0 &&staff.getStaffEmail()!=null){
-            Account account=accountManagerService.selectAccountById(String.valueOf(accountId));
-            if(account.getaccountState()==1){
-                accountManagerService.updateAccountSecretEmailById(staff.getStaffEmail(), String.valueOf(accountId));
-            }
+    public  Result updateStaff(HttpServletRequest request,@RequestBody Staff staff){
 
+       Staff staff1=employeeManageService.selectById(String.valueOf(staff.getId()));
+        if(staff1.getStatus()==1) {
+            staff.setModifyEmp((Long) (request.getSession().getAttribute("accountId")));
+            employeeManageService.updateStaff(staff);
+            Long accountId = staff.getAccountId();
+            if (accountId != null && accountId != 0 && staff.getStaffEmail() != null) {
+                Account account = accountManagerService.selectAccountById(String.valueOf(accountId));
+                if (account.getaccountState() == 1) {
+                    accountManagerService.updateAccountSecretEmailById(staff.getStaffEmail(), String.valueOf(accountId));
+                }
+            }
+            return Result.ok().put("status","success");
+        }else{
+            return Result.ok().put("status","error");
         }
     }
     @ResponseBody
