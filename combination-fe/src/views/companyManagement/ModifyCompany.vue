@@ -411,11 +411,6 @@
       this.fetchData();
     },
     methods: {
-      // bigPic(val){
-      //   var viewer = new Viewer(document.getElementById(val), {
-      //     url: val
-      //   });
-      // },
       //覆盖默认上传事件
       uploadLicenses(file) {
         this.formData.append("businessLicenses", file.file);
@@ -431,6 +426,7 @@
         companyId=window.localStorage.getItem('companyId');
         var param = {
           companyId: companyId,
+          date : new Date().getTime(),
         };
         self.$http.get('company/getCompanyById.do_', {
           params: param
@@ -473,8 +469,6 @@
           if(self.iscommit){
               self.$refs["ruleForm"].validate(function (valid) {
                   if (valid) {
-                      // console.log(self.form.registeredCapital)
-                      //if(self.$options.methods.checkInput(self)==false) return;
                           var companyId=window.localStorage.getItem('companyId');
                           self.form.companyId=companyId;
                           self.form.businessStartTime=self.businessTerm[0];
@@ -529,7 +523,8 @@
           type: 'warning',
         }).then(() => {
           let param={
-            id:id
+            id:id,
+            date : new Date().getTime(),
           }
           self.$http.get('company/deleteLicense.do_', {
             params: param

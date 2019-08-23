@@ -535,6 +535,7 @@
         //window.localStorage.setItem("departmentId",1);
         var param = {
           departmentId:window.localStorage.getItem("departmentRelId"),
+          date : new Date().getTime(),
         };
         self.$http.get('company/querylistRel.do_', {
           params: param
@@ -575,6 +576,7 @@
           companyStatus:self.form.companyStatus,
           startTime:self.form.birthdayName[0],
           endTime:self.form.birthdayName[1],
+          date : new Date().getTime(),
         };
         self.$http.get('company/queryRelationList.do_', {
           params: param
@@ -666,6 +668,7 @@
 
           newRelationList:self.newRelationList+'',
           oldRelationList:self.oldRelationList+'',
+          date : new Date().getTime(),
         };
         self.$http.get("company/saveRelation.do_", {
           params: param
@@ -696,6 +699,7 @@
         self.companyContentFlag=true;
         var param = {
           companyId: companyId,
+          date : new Date().getTime(),
         };
         self.$http.get('company/getCompanyById.do_', {
           params: param

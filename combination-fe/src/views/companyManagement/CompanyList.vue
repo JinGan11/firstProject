@@ -535,6 +535,7 @@
           companyStatus:self.form.companyStatus,
           startTime:self.form.time[0],
           endTime:self.form.time[1],
+          date : new Date().getTime(),
         };
         self.$http.get('company/querylist.do_', {
           params: param
@@ -568,6 +569,7 @@
         self.companyFlag=true;
         var param = {
           companyId: companyId,
+          date : new Date().getTime(),
         };
         self.$http.get('company/getCompanyById.do_', {
           params: param
