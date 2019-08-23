@@ -18,6 +18,8 @@ public interface UserDao {
      */
     List<User> qryAccountByAccountName(User user);
 
+    List<Account> getAccountHisPwdTime(User user);
+
     /**
      * description: 通过用户名查询密码
      * @author peng.zhang11@ucarinc.com

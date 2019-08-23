@@ -11,6 +11,16 @@
         where account_name = #{accountName}
     </select>
 
+    <select id="getAccountHisPwdTime" parameterType="String" resultType="com.ucar.combination.model.Account">
+        SELECT
+        t1.id, t1.account_name, t1.account_password, t1.staff_id, t1.permissions, t1.account_secret_email,
+        t2.modify_time, t1.modify_emp, t1.account_state, t1.account_remark
+        FROM t_account t1 left join t_history_password t2 on t1.id = t2.account_id
+        where t1.account_name = #{accountName}
+		ORDER BY t2.modify_time desc
+        LIMIT 1
+    </select>
+
     <select id="qryAccountPwdByAccountName" parameterType="String" resultType="com.ucar.combination.model.User">
         SELECT
         account_name,account_password
@@ -39,11 +49,14 @@
 
     <select id="getAllAccountListByModifyTime" resultType="com.ucar.combination.model.Account">
         select
-        account_name,
-        account_secret_email
-        from t_account
-        where 53 = DATEDIFF(NOW(),modify_time)
-        and account_state != 3
+          t2.account_name,
+          t2.account_secret_email,
+          t1.modify_time
+        from t_history_password t1 left join t_account t2 on t1.account_id = t2.id
+        where 53 = DATEDIFF(NOW(),t1.modify_time)
+        and t2.account_state != 3
+        GROUP BY t2.account_name
+        ORDER BY t1.modify_time DESC
     </select>
 
 </mapper>
