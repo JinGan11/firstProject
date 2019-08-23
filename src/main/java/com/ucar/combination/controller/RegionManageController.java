@@ -117,7 +117,7 @@ public class RegionManageController {
         String upperRegionID = request.getParameter("upperRegionID");
         String regionStatus = request.getParameter("regionStatus");
         String upperRegionTwice = request.getParameter("upperRegionTwice");
-        String string = request.getParameter("");
+        String isGetAll = request.getParameter("isGetAll");
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("page", page);
@@ -129,10 +129,16 @@ public class RegionManageController {
         params.put("upperRegionID",upperRegionID);
         params.put("regionStatus", regionStatus);
         ResultPage resultPage=regionManageService.countySearchList(new QueryParam(params));
+        if(isGetAll!=null && isGetAll.equals("true")){
+            return new Result().ok().put("page",resultPage).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
+
+        }
+
         List<Object> countySearchList = regionManageService.getCountySearchList(new QueryParam(params));
         int size=countySearchList.size();
-
         return new Result().ok().put("size",size).put("page",resultPage).put("countySearchList",countySearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
+
+
     }
 
     /**
