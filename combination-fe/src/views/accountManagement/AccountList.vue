@@ -926,6 +926,7 @@
             });
             this.exportVisible = false;
             this.checkedAccounts = [];
+            this.checkAll = false;
             this.filterVal = [];
           })
         }

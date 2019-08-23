@@ -5,9 +5,9 @@
     <insert id="insert" parameterType="com.ucar.combination.model.AccountHistory">
         insert into
         t_account_history
-        (account_id,history_operation_type,create_time,create_emp,staff_name,staff_num,permissions,account_state)
+        (account_id,history_operation_type,create_time,create_emp,staff_name,staff_num,permissions,account_state,creater)
         values
-        (#{acc.accountId},#{acc.historyOperationType},#{acc.createTime},#{acc.createEmp},#{acc.staffName},#{acc.staffNum},#{acc.permissions},#{acc.accountState})
+        (#{acc.accountId},#{acc.historyOperationType},#{acc.createTime},#{acc.createEmp},#{acc.staffName},#{acc.staffNum},#{acc.permissions},#{acc.accountState},#{acc.creater})
     </insert>
     <select id="selectAccountHistoryByAccountId" parameterType="String" resultType="com.ucar.combination.model.AccountHistory">
         select

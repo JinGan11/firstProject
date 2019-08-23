@@ -23,6 +23,16 @@ public class AccountHistory {
 
     private Byte accountState;
 
+    private Long creater;
+
+    public Long getCreater() {
+        return creater;
+    }
+
+    public void setCreater(Long creater) {
+        this.creater = creater;
+    }
+
     public Long getId() {
         return id;
     }

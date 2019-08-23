@@ -53,11 +53,11 @@ public class Account {
     private  int accountState;
     //备注
     private String remark;
-
+    //创建人员工
     private String creater;
-
+    //修改人员工
     private String modifier;
-
+    //修改人员工id
     private Long modifierId;
 
     public Long getModifierId() {
