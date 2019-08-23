@@ -59,7 +59,7 @@ public class RegionManageController {
         params.put("regionName", regionName);
         params.put("regionStatus", regionStatus);
         ResultPage resultPage=regionManageService.provinceSearchList(new QueryParam(params));
-        List<?> provinceSearchList = resultPage.getList();
+        List<Object> provinceSearchList = regionManageService.getProvinceSearchList(new QueryParam(params));
         int size=provinceSearchList.size();
         return new Result().ok().put("page",resultPage).put("provinceSearchList",provinceSearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values())).put("size",size);
     }
@@ -94,7 +94,7 @@ public class RegionManageController {
 //        params.put("upperRegionTwice",upperRegionTwice);
         params.put("regionStatus", regionStatus);
         ResultPage resultPage=regionManageService.citySearchList(new QueryParam(params));
-        List<?> citySearchList = resultPage.getList();
+        List<Object> citySearchList = regionManageService.getCitySearchList(new QueryParam(params));
         int size=citySearchList.size();
         return new Result().ok().put("size",size).put("page",resultPage).put("citySearchList",citySearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
     }
@@ -109,8 +109,6 @@ public class RegionManageController {
     @ResponseBody
     @RequestMapping("/countySearch")
     public Result countySearchList(HttpServletRequest request) throws IllegalAccessException{
-
-
         String page = request.getParameter("page");
         String limit = request.getParameter("limit");
         String regionCode = request.getParameter("regionCode");
@@ -119,6 +117,7 @@ public class RegionManageController {
         String upperRegionID = request.getParameter("upperRegionID");
         String regionStatus = request.getParameter("regionStatus");
         String upperRegionTwice = request.getParameter("upperRegionTwice");
+        String string = request.getParameter("");
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("page", page);
@@ -130,8 +129,9 @@ public class RegionManageController {
         params.put("upperRegionID",upperRegionID);
         params.put("regionStatus", regionStatus);
         ResultPage resultPage=regionManageService.countySearchList(new QueryParam(params));
-        List<?> countySearchList = resultPage.getList();
+        List<Object> countySearchList = regionManageService.getCountySearchList(new QueryParam(params));
         int size=countySearchList.size();
+
         return new Result().ok().put("size",size).put("page",resultPage).put("countySearchList",countySearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
     }
 
@@ -303,7 +303,7 @@ public class RegionManageController {
         if(region.getRegionStatus()!=1 ){
             List<Region> getRegionByUpperCityID=regionManageService.getRegionByUpperCityID(region);
             if(getRegionByUpperCityID.size()>0)
-                {return "存在子节点有效，不能修改本节点为无效。";}
+            {return "存在子节点有效，不能修改本节点为无效。";}
         }
 
 

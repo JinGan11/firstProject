@@ -12,6 +12,7 @@ import com.ucar.combination.service.RegionManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -88,6 +89,21 @@ public class RegionManageServiceImpl implements RegionManageService {
         Page<?> page = PageHelper.startPage(queryParam.getPage(), queryParam.getLimit());
         List<Object> list = regionManageDao.countySearchList(queryParam);
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
+    }
+
+    @Override
+    public List<Object> getProvinceSearchList(QueryParam queryParam) {
+        return regionManageDao.provinceSearchList(queryParam);
+    }
+
+    @Override
+    public List<Object> getCitySearchList(QueryParam queryParam) {
+        return regionManageDao.citySearchList(queryParam);
+    }
+
+    @Override
+    public List<Object> getCountySearchList(QueryParam queryParam) {
+        return regionManageDao.countySearchList(queryParam);
     }
 
     @Override

@@ -25,6 +25,7 @@ public interface RegionManageService {
      * @return <com.ucar.combination.common.ResultPage><返回值说明>
      */
     ResultPage provinceSearchList(QueryParam queryParam);
+    List<Object> getProvinceSearchList(QueryParam queryParam);
 
     /**
      * description: 城市查询
@@ -34,6 +35,8 @@ public interface RegionManageService {
      * @return <com.ucar.combination.common.ResultPage><返回值说明>
      */
     ResultPage citySearchList(QueryParam queryParam);
+    List<Object> getCitySearchList(QueryParam queryParam);
+
 
     /**
      * description: 区县查询
@@ -43,6 +46,7 @@ public interface RegionManageService {
      * @return <com.ucar.combination.common.ResultPage><返回值说明>
      */
     ResultPage countySearchList(QueryParam queryParam);
+    List<Object> getCountySearchList(QueryParam queryParam);
 
 
     /**
