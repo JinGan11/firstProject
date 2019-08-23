@@ -23,7 +23,6 @@ import utils from './common/util'
 // const router = new VueRouter({
 //   routes
 // })
-
 // Vue.use(Vuex);
 import VueAMap from 'vue-amap';
 import global from './common/global.js'

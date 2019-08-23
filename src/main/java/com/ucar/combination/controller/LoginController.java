@@ -50,6 +50,7 @@ public class LoginController {
         if (202 == code) {
             return result1;
         }
+
         HttpSession session = request.getSession();
         Result result = userService.login(loginUser);
         List<User> list = (List<User>) result.get("list");
