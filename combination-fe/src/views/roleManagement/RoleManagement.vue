@@ -612,6 +612,7 @@
             self.$message.info("该角色已经被删除，不可修改");
             this.isModify = true;
             this.isAddCount = true;
+            this.form.name = '';
             this.fetchData();
           }
           else{
@@ -638,9 +639,10 @@
             params: param
           }).then((result) => {
             if (result.page.roleStatus ===0){
-              this.$message.info("该角色已经被修改或删除，不可修改删除");
+              this.$message.info("角色删除失败，角色已经被删除");
               this.isModify = true;
               this.isAddCount = true;
+              this.form.name = '';
               this.fetchData();
             }
             else{
@@ -653,6 +655,7 @@
                 params: param
               }).then(() => {
                 self.$message.info("角色删除成功")
+                this.form.name = '';
                 this.fetchData();
                 this.isAddCount = true;
                 this.isModify = true;
