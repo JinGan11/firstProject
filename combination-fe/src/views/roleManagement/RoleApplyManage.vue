@@ -438,7 +438,7 @@
 </template>
 <script>
   import commonUtils from '../../common/commonUtils'
-  const roleOptions = ['角色申请编号', '申请角色ID', '申请角色名称', '审批负责人', '角色支持业务线', '申请人登录账号', '申请人员工姓名', '申请人所属部门', '申请时间','状态','操作人','操作时间','拒绝理由'];
+  const roleOptions = ['角色申请编号', '申请角色ID', '申请角色名称', '审批负责人', '角色支持业务线', '申请人登录账号', '申请人员工编号','申请人员工姓名', '申请人所属部门', '申请时间','状态','操作人','操作时间','拒绝理由'];
   export default {
     data() {
       return {
@@ -691,6 +691,8 @@
                   break;
               }
             }
+            console.log(tHeader)
+            console.log(filterVal)
             console.log(list);
             //获取当前时间
             var date = new Date();
@@ -715,6 +717,7 @@
             this.dialogVisibleRole=false;
             this.checkedRoles=[];
             this.filterVal=[];
+            this.checkAll=false;
           })
         }
       },
@@ -740,7 +743,7 @@
             this.filterVal.push('roleName')
           } else if (this.checkedRoles[i] === '审批负责人') {
             this.filterVal.push('approverStaffName')
-          } else if (this.checkedRoles[i] === '角色审批业务线') {
+          } else if (this.checkedRoles[i] === '角色支持业务线') {
             this.filterVal.push('businessLine')
           } else if (this.checkedRoles[i] === '申请人登录账号') {
             this.filterVal.push('applyAccountName')
