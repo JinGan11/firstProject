@@ -596,7 +596,7 @@
       }
     },
     mounted() {
-      this.Search();
+      //this.Search();
       this.judgmentAuthority();
     }
   }
