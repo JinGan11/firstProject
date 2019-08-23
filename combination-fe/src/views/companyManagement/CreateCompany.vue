@@ -414,7 +414,7 @@
           if(self.businessTerm==null){
               self.businessTerm=['',''];
           }
-          if(this.iscommit){
+          if(self.iscommit){
               self.$refs["ruleForm"].validate(function (valid) {
                   if (valid) {
                       self.form.businessStartTime = self.businessTerm[0];
@@ -448,6 +448,9 @@
                       return false;
                   }
               })
+          } else {
+            self.iscommit = true;
+            self.formData=new FormData();
           }
       },
       cancel(){//关闭新建公司页面，返回公司管理列表页面
@@ -488,7 +491,7 @@
         const isLt2M = file.size / 1024 / 1024 ;
         if(!extension && !extension2 && !extension3) {
           this.$message({
-            message: '上传文件只能是jpg/png/gif格式!',
+            message: '上传文件只能是jpg/png/gif格式，请调整后再保存!',
             type: 'warning'
           });
           this.iscommit=false;
@@ -496,21 +499,20 @@
         }
         if(isLt2M >2) {
           this.$message({
-            message: '上传文件大小不能超过 2MB!',
+            message: '上传文件大小不能超过 2MB,请调整后再保存!',
             type: 'warning'
           });
           this.iscommit=false;
           this.formData=new FormData();
         }
         if((extension || extension2 ||extension3)&& (isLt2M<2)){
-          this.iscommit=true;
+          this.iscommit=true && this.iscommit;
         }
-        return (extension || extension2 ||extension3)&& (isLt2M<2)
+    //    return (extension || extension2 ||extension3)&& (isLt2M<2)
       } ,
       saveCompanyInfo(){
           this.$refs.upload.submit();
           const self = this;
-          if(this.iscommit){
               self.$confirm('此操作将保存公司基本信息, 是否继续?', '提示', {
                   confirmButtonText: '确定',
                   cancelButtonText: '取消',
@@ -543,7 +545,6 @@
                       message: '已取消保存'
                   });
               });
-          }
       },
     },
   }

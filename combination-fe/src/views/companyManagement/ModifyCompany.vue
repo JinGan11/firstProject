@@ -470,7 +470,7 @@
               self.businessTerm=['',''];
           }
           //    console.log(self.form.registeredCapital)
-          if(this.iscommit){
+          if(self.iscommit){
               self.$refs["ruleForm"].validate(function (valid) {
                   if (valid) {
                       // console.log(self.form.registeredCapital)
@@ -512,6 +512,9 @@
                       return false;
                   }
               })
+          }else{
+            self.iscommit = true;
+            self.formData=new FormData();
           }
           },
       cancel(){//关闭新建公司页面，返回公司管理列表页面
@@ -547,7 +550,7 @@
         const isLt2M = file.size / 1024 / 1024 ;
         if(!extension && !extension2 && !extension3) {
           this.$message({
-            message: '上传文件只能是jpg/png/gif格式!',
+            message: '上传文件只能是jpg/png/gif格式,请调整后再保存!',
             type: 'warning'
           });
           this.iscommit=false;
@@ -555,16 +558,16 @@
         }
         if(isLt2M >2) {
           this.$message({
-            message: '上传文件大小不能超过 2MB!',
+            message: '上传文件大小不能超过 2MB,请调整后再保存!',
             type: 'warning'
           });
           this.iscommit=false;
           this.formData=new FormData();
         }
         if((extension || extension2 ||extension3)&& (isLt2M<2)){
-          this.iscommit=true;
+          this.iscommit=true && this.iscommit;
         }
-        return (extension || extension2 ||extension3)&& (isLt2M<2)
+       // return (extension || extension2 ||extension3)&& (isLt2M<2)
       } ,
       previewLicense(id){
         this.preview=true;
