@@ -46,10 +46,10 @@ public class LoginController {
     @RequestMapping("/login.do_")
     public Result login(@RequestBody(required = false) User loginUser, HttpServletRequest request) {
         Result result1 = isLogin(request.getSession());
-//        int code = (int) result1.get("code");
-//        if (202 == code) {
-//            return result1;
-//        }
+        int code = (int) result1.get("code");
+        if (202 == code) {
+            return result1;
+        }
         HttpSession session = request.getSession();
         Result result = userService.login(loginUser);
         List<User> list = (List<User>) result.get("list");
