@@ -638,7 +638,7 @@
             params: param
           }).then((result) => {
             if (result.page.roleStatus ===0){
-              self.$message.info("该角色已经被删除，不可修改");
+              this.$message.info("该角色已经被删除，不可修改");
               this.isModify = true;
               this.isAddCount = true;
               this.fetchData();
