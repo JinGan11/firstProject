@@ -100,7 +100,7 @@
         <el-col :span="16">
           <el-form-item label="详细地址" prop="address">
             <div><span :hidden="!haveWorkplace" style="color: #FF0000;">*</span>
-            <el-input style="width:500px;" v-model="form.address" maxlength="255" @focus="baiduMapFlag=true"></el-input></div>
+            <el-input :disabled="isDepartmentNameNull" style="width:500px;" v-model="form.address" maxlength="255" @focus="openAmap"></el-input></div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -440,6 +440,7 @@
       };
       return {
         loading: false,
+        isDepartmentNameNull: true,
         address: null,
         searchKey: '',
         amapManager,
@@ -490,30 +491,6 @@
         },
         // 一些工具插件
         plugin: [
-          // {
-          //   // 定位
-          //   pName: 'Geolocation',
-          //   events: {
-          //     init (o) {
-          //       // o是高德地图定位插件实例
-          //       o.getCurrentPosition((status, result) => {
-          //         if (result && result.position) {
-          //           // 设置经度
-          //           self.lng = result.position.lng
-          //           // 设置维度
-          //           self.lat = result.position.lat
-          //           // 设置坐标
-          //           self.center = [self.lng, self.lat]
-          //           self.markers.push([self.lng, self.lat])
-          //           // load
-          //           self.loaded = true
-          //           // 页面渲染好后
-          //           self.$nextTick()
-          //         }
-          //       })
-          //     }
-          //   }
-          // },
           {
             // 搜索
             pName: 'PlaceSearch',
@@ -1019,9 +996,13 @@
           self.$message.error("获取数据错误");
         });
       },
+      isDepartmentNameNull(self){
+        self.isDepartmentNameNull = false;
+      },
       cityChangeValid(){
         // cityName原本存String的城市名，由于改用select，现在存Long的id
         var self = this;
+        self.$options.methods.isDepartmentNameNull(self);
         self.$options.methods.checkInputByHand(self,'cityName');
         for(var i=0;i<self.cityOptions.length;i++){
           if(self.cityOptions[i].cityId==self.cityName){
@@ -1111,12 +1092,25 @@
       initSearch () {
         let vm = this;
         let map = this.amapManager.getMap();
+        let mapCity = vm.cityNameForMap;
+        map.setCity(mapCity);
+        // map.setCity('北京');
+        // let bounds = map.getBounds();
+        // map.setLimitBounds(bounds);
+
         AMapUI.loadUI(['misc/PoiPicker'], function (PoiPicker) {
           var poiPicker = new PoiPicker({
             input: 'search',
+            city: mapCity,
+            autocompleteOptions: {
+              city: mapCity,
+              citylimit: true
+            },
             placeSearchOptions: {
               map: map,
-              pageSize: 10
+              city: mapCity,
+              citylimit: true,
+              pageSize: 5
             },
             suggestContainer: 'searchTip',
             searchResultsContainer: 'searchTip'
@@ -1162,6 +1156,14 @@
         self.form.address = self.searchKey
         self.baiduMapFlag = false;
         this.$options.methods.checkInputByHand(this,'address'); // 校验输入地址
+      },
+      openAmap() {
+        const self = this;
+        // lazyAMapApiLoaderInstance.load().then(() => {
+        //   self.initSearch()
+        // });
+        self.events.init();
+        self.baiduMapFlag=true;
       }
     }
   }
