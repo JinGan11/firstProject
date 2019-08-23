@@ -71,6 +71,8 @@
               placeholder="请输入关键词"
               :remote-method="remoteMethod"
               @focus="cityFocus"
+              @change="cityChangeValid"
+              @blur="cityChangeValid"
               :loading="loading">
               <el-option
                 v-for="item in cityOptions"
@@ -1055,6 +1057,10 @@
           commonUtils.Log("/regionManage/countySearch:" + error);
           self.$message.error("获取数据错误");
         });
+      },
+      cityChangeValid(){
+        var self = this;
+        self.$options.methods.checkInputByHand(self,'cityName');
       },
       cityFocus(){
         var self = this;
