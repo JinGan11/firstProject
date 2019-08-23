@@ -508,34 +508,36 @@
         dialogVisibleAccount: false,
         dialogCategory: '',//控制显示对应的具体弹窗
         multipleSelection: [],
-        accountIds:[],
+        accountIds: [],
         tableDataAccount: [],
         accountIdList: [],
         accountLength: '',
         roleId: '',
         applyOperationList: [],
         accountChangesList: [],
-        accountStateList:[],
-        accountDuplicateList:[],
+        accountStateList: [],
         accountDeletedList:[],
+        accountStateDeletedList: [],
+        accountDuplicateList: [],
+        accountDeletedList: [],
         roleStatus: '',
         chooseDepartmentFlag: false,
-        disabledSelectRole:true,
-        disabledSelectAccount:true,
-        roleInfoDetailFlag:false,
-        flagAccountState:'',
-        state:'',
+        disabledSelectRole: true,
+        disabledSelectAccount: true,
+        roleInfoDetailFlag: false,
+        flagAccountState: '',
+        state: '',
         accountQueryIdList: [],//用于查询
 
 
         accountStatusList: [
           {
-          value: '1',
-          label: '正常'
-        }, {
-          value: '2',
-          label: '冻结'
-        }],
+            value: '1',
+            label: '正常'
+          }, {
+            value: '2',
+            label: '冻结'
+          }],
 
 
         formRoleInfo: {//申请信息
@@ -575,13 +577,13 @@
           accountStatusEnum: {},
           permissions: null,
           department: null,
-          isRelStaffoptions:[{
+          isRelStaffoptions: [{
             value: 2,
             label: '全部'
-          },{
+          }, {
             value: 1,
             label: '是'
-          },{
+          }, {
             value: 0,
             label: '否'
           }],
@@ -635,15 +637,15 @@
           departmentName: '',
           description: '',
         },
-        otherForm:{
-          createEmp:'',
-          createEmpNum:'',
-          createEmpName:'',
-          createEmpTime:'',
-          modifyEmp:'',
-          modifyEmpNum:'',
-          modifyEmpName:'',
-          modifyEmpTime:'',
+        otherForm: {
+          createEmp: '',
+          createEmpNum: '',
+          createEmpName: '',
+          createEmpTime: '',
+          modifyEmp: '',
+          modifyEmpNum: '',
+          modifyEmpName: '',
+          modifyEmpTime: '',
         },
 
       }
@@ -659,7 +661,7 @@
 
 
     methods: {
-      loadNodeDepartment(node,resolve){
+      loadNodeDepartment(node, resolve) {
         var self = this;
         self.$http.get('department/buildTree2.do_')
           .then((result) => {
@@ -668,9 +670,9 @@
         });
       },
 
-      handleClick1(data,checked,node){
+      handleClick1(data, checked, node) {
         // 手动设置单选
-        if(checked === true) {
+        if (checked === true) {
           this.checkedId = data.id;
           this.$refs.tree.setCheckedKeys([data.id]);
           this.form.departmentId = data.id;
@@ -705,11 +707,11 @@
       },
 
       //弹出部门对话框
-      chooseDepartment(){
+      chooseDepartment() {
         this.chooseDepartmentFlag = true;
       },
-      clearDepartment(){//清除部门的值
-        this.form.department='';
+      clearDepartment() {//清除部门的值
+        this.form.department = '';
       },
 
       selectRoleForRoleApply() {
@@ -718,9 +720,9 @@
         //显示所有角色列表
         this.fetchDataRole();
         //清除选中状态
-        this.selectionRoleInfo=[];
+        this.selectionRoleInfo = [];
         //
-        this.disabledSelectRole=true;
+        this.disabledSelectRole = true;
       },
 
       queryLoginInRoleApply() {//获取当前登录账号 部门 员工
@@ -761,9 +763,9 @@
         });
       },
 
-      selectInfoRow(row){
+      selectInfoRow(row) {
         //激活选择按钮
-        this.disabledSelectRole=false;
+        this.disabledSelectRole = false;
         this.roleId = row.roleId;
         this.formRoleInfo.roleName = row.roleName;
         this.roleStatus = row.roleStatus;
@@ -773,15 +775,15 @@
       },
 
       selectRole() {    //确认选择按钮 选择角色
-        var self=this;
-        var param={
+        var self = this;
+        var param = {
           roleID: self.roleId,
         };
         self.$http.get('roleManage/getOneInf.do_', {
           params: param
         }).then((result) => {
-          this.roleStatus=result.page.roleStatus;
-          if(result.page.roleStatus==0){
+          this.roleStatus = result.page.roleStatus;
+          if (result.page.roleStatus == 0) {
             self.$message.info("角色已被删除，添加角色失败！请重新选择");
             this.formRoleInfo.roleName = '';
             this.formRoleInfo.approverStaffName = '';
@@ -809,16 +811,14 @@
         this.$refs.multipleTable.clearSelection();
         //设置下拉框默认
         //
-        this.disabledSelectAccount=true;
+        this.disabledSelectAccount = true;
 
-        this.form.permissions='';
-        this.form.status='';
-        this.form.isRelStaff='';
+        this.form.permissions = '';
+        this.form.status = '';
+        this.form.isRelStaff = '';
 
       },
-
-       fetchData() {//账户列表
-        var self = this;
+      fetchData2(self) {//账户列表
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
@@ -829,7 +829,7 @@
           department: self.form.departmentId,
           isRelStaff: self.form.isRelStaff,
           status: self.form.status,
-          flag : 1,
+          flag: 1,
         };
         self.$http.get('account/querylist.do_', {
           params: param
@@ -842,214 +842,98 @@
           self.total = result.page.totalCount;
         }).catch(function (error) {
           commonUtils.Log("account/querylist.do_:" + error);
-          self.$message.error("获取数据错误")
+          self.$message.error("获取账号数据错误")
         });
-        return Promise.resolve(result);
+      },
+      fetchData() {//账户列表
+        var self = this;
+        var param = {
+          page: self.currentPage,
+          limit: self.pageSize,
+          accountName: self.form.accountNo,
+          staffNo: self.form.staffNo,
+          name: self.form.name,
+          permissions: self.form.permissions,
+          department: self.form.departmentId,
+          isRelStaff: self.form.isRelStaff,
+          status: self.form.status,
+          flag: 1,
+        };
+        self.$http.get('account/querylist.do_', {
+          params: param
+        }).then((result) => {
+          self.tableData = result.page.list;
+          self.form.permissionsList = result.permissionList;
+          self.form.permissionsEnum = result.permissionEnum;
+          self.form.accountStatusEnum = result.accountStatusEnum;
+          // self.form.accountStatusList = result.accountStatusList;
+          self.total = result.page.totalCount;
+        }).catch(function (error) {
+          commonUtils.Log("account/querylist.do_:" + error);
+          self.$message.error("获取账号数据错误")
+        });
       },
       cancelSelectAccount() {//添加账号
         //取消按钮
         this.dialogVisibleAccount = false;
         //取消之前选中的
-        this.form.permissions='';
-        this.form.status='';
-        this.isRelStaff='';
+        this.form.permissions = '';
+        this.form.status = '';
+        this.isRelStaff = '';
 
       },
       cancelRoleApply() {//取消 退回角色申请列表
         this.$router.replace('/roleManagement/apply')
       },
       handleSelectAccount(val) {
-        this.disabledSelectAccount=false;
+        this.disabledSelectAccount = false;
         this.multipleSelection = val;
-        this.accountIds=[];
-        for(let i=0;i<this.multipleSelection.length;i++){
+        this.accountIds = [];
+        for (let i = 0; i < this.multipleSelection.length; i++) {
           this.accountIds.push(val[i].id);
         }
       },
 
       selectAccountConfirm() {//点击添加按钮，将选择的账户 回显
-        var self=this;
-        var param={
+        var self = this;
+        var param = {
           accountIds: self.accountIds.toString(),
         };
-        alert(param.accountIds);
-        self.$http.get('roleApply/getAccountStateById.do_',{
+        self.$http.get('roleApply/getAccountDeletedById.do_', {
           params: param
         }).then((result) => {
-            alert(1111111);
-            this.accountStateList=result.accountStateList;
-            console.log(this.accountStateList);
-          }).catch(function (error) {
+          this.accountDeletedList = result.accountDeletedList;
+          if (this.accountDeletedList.length > 0) {
+            this.$message.info('账号    ' + this.accountDeletedList.toString() + '    已失效');
+            this.accountDeletedList=[];
+            self.$options.methods.fetchData2(self);
+          }else{
+            this.accountDuplicateList=[];
+            for (let i = 0; i < this.multipleSelection.length; i++) {
+              let flag = 0;
+              for (let j = 0; j < this.accountChangesList.length; j++) {
+                if (this.multipleSelection[i].id == this.accountChangesList[j].id) {
+                  flag = 1;
+                  this.accountDuplicateList.push(this.multipleSelection[i].accountName);
+                }
+              }
+              if (flag == 0) {
+                this.accountChangesList.push(this.multipleSelection[i]);
+              }
+            }
+            if(this.accountDuplicateList.length>0){
+              this.$message.info('账号    '+this.accountDuplicateList+'    已存在,请勿重复添加！');
+            }
+            this.tableDataAccount = this.accountChangesList;
+            this.dialogVisibleAccount = false;
+          }
+        }).catch(function (error) {
           commonUtils.Log("roleApply/getAccountStateById.do_" + error);
-          self.$message.error("获取数据失败")
+          self.$message.error("获取添加账号数据失败")
         });
-
-        // for(let i=0;i<this.accountStateList.length;i++){
-        //   if(this.accountStateList[i]==3){
-        //     this.$message.error('账号    '+this.multipleSelection[i].accountName+'    失效');
-        //   }
-        // }
-
-
-
-        //
-        // this.accountDuplicateList=[];
-        // for (let i = 0; i < this.multipleSelection.length; i++) {
-        //   let flag = 0;
-        //   for (let j = 0; j < this.accountChangesList.length; j++) {
-        //     if (this.multipleSelection[i].id == this.accountChangesList[j].id) {
-        //       flag = 1;
-        //       this.accountDuplicateList.push(this.multipleSelection[i].accountName);
-        //     }
-        //   }
-        //   if (flag == 0) {
-        //     this.accountChangesList.push(this.multipleSelection[i]);
-        //   }
-        // }
-        // if(this.accountDuplicateList.length>0){
-        //   this.$message.info('账号    '+this.accountDuplicateList+'    已存在，不可重复添加');
-        // }
-        // this.tableDataAccount = this.accountChangesList;
-        // this.dialogVisibleAccount = false;
       },
-        // var param= {
-        //   accountQueryIdList: this.accountQueryIdList.toString(),
-        // };
-        // this.$http.get("roleApply/queryByAccountQueryIdList.do_", {
-        //   params:param
-        // }).then((result) => {
-        //
-        //
-        // }).catch(function (error) {
-        //   commonUtils.Log("roleApply/queryByAccountQueryIdList.do_" + error);
-        //   this.$message.error("获取数据错误");
-        // });
 
 
-
-
-
-        //  var param = {
-        //     id: this.multipleSelection[i].id,
-        //   };
-        //   this.$http.get('account/selectAccountById.do_', {
-        //     params: param
-        //   }).then((result) => {
-        //     if(result.account.accountState==3){
-        //       this.accountDeletedList.push(result.account.accountName)
-        //       this.$message.info('账号 '+this.multipleSelection[i].accountName+' 已被删除，请重新选择！');
-        //     }else{
-        //       let flag = 0;
-        //       for (let j = 0; j < this.accountChangesList.length; j++) {
-        //         if (this.multipleSelection[i].id == this.accountChangesList[j].id) {
-        //           flag = 1;
-        //           this.accountDuplicateList.push(this.multipleSelection[i].accountName);
-        //         }
-        //       }
-        //       if (flag == 0) {
-        //         this.accountChangesList.push(this.multipleSelection[i]);
-        //       }
-        //
-        //     }
-        //   }).catch(function (error) {
-        //     commonUtils.Log("account/selectAccountById.do_" + error);
-        //     this.$message.error("获取数据错误");
-        //   });
-        // },
-        //
-
-
-
-      //  fetchDataAccountState(){
-      //   for(let i=0;i<this.multipleSelection.length;i++) {
-      //     var param = {
-      //       id: this.multipleSelection[i].id,
-      //     };
-      //     this.$http.get('account/selectAccountById.do_', {
-      //       params: param
-      //     }).then((result) => {
-      //       this.accountStateList.push(result.account.accountState);
-      //       if(result.account.accountState==3){
-      //         this.$message.info('账号 '+this.multipleSelection[i].accountName+' 已被删除，请重新选择！');
-      //         this.flagAccountState=3;
-      //       }
-      //     }).catch(function (error) {
-      //       commonUtils.Log("account/selectAccountById.do_" + error);
-      //       this.$message.error("获取数据错误");
-      //     });
-      //   }
-      //   return Promise.resolve(this.flagAccountState);
-      // },
-
-
-      // selectAccountConfirm() {//点击添加按钮，将选择的账户 回显
-      //   this.fetchDataAccountState().then((result) => {
-      //     alert('llll');
-      //     alert(this.flagAccountState);
-      //     if(this.flagAccountState==3){
-      //       alert('卧槽');
-      //       this.fetchData();
-      //       this.multipleSelection=[];
-      //       this.dialogVisibleAccount = true;
-      //     }else{
-      //       alert("到底咋写啊");
-      //     }
-      //
-      //   });
-      //   this.fetchDataAccountState().then(function (state) {
-      //     alert('tell me');
-      //     alert(state);
-      //     if(state==3){
-      //       alert('卧槽');
-      //       this.fetchData();
-      //       this.multipleSelection=[];
-      //       this.dialogVisibleAccount = true;
-      //
-      //     }else{
-      //       alert("十八啊");
-      //     }
-      //   });
-      //   console.log(this.accountStateList);
-      //   for(let i = 0; i < this.accountStateList.length; i++){
-      //     if(this.accountStateList[i]==3){
-      //       this.$message.info('账号 '+this.multipleSelection[i].accountName+' 已被删除，请重新选择！');
-      //     }
-      //   }
-      //   alert(111);
-      //   alert(this.flagAccountState);
-      //   if(this.flagAccountState==3){
-      //     alert(1111);
-      //     this.fetchData();
-      //     // alert(222);
-      //     this.dialogVisibleAccount = true;
-      //   }else{
-      //     for (let i = 0; i < this.multipleSelection.length; i++) {
-      //       let flag = 0;
-      //       for (let j = 0; j < this.accountChangesList.length; j++) {
-      //         if (this.multipleSelection[i].id == this.accountChangesList[j].id) {
-      //           flag = 1;
-      //           this.$message.info('账号 '+this.multipleSelection[i].accountName+' 已存在，不可重复添加');
-      //         }
-      //       }
-      //       if (flag == 0) {
-      //         this.accountChangesList.push(this.multipleSelection[i]);
-      //       }
-      //     }
-      //     this.tableDataAccount = this.accountChangesList;
-      //     this.dialogVisibleAccount = false;
-      //   }
-      //
-      //   this.multipleSelection=[];
-      //
-      //
-      //   self.fetchData();
-      //   this.dialogVisibleAccount = true;
-      //
-      //   alert(2222);
-      //   alert(this.accountStateList);
-      //
-      //
-      // },
       deleteSelect(index) { //移除添加的账户 删除行
         this.tableDataAccount.splice(index, 1)
       },
@@ -1078,9 +962,9 @@
         self.forms.accountIdList = self.accountIdList;
         self.forms.applyOperationList = self.applyOperationList;
 
-        if (!self.$options.methods.checkInput(self)){
-          self.accountIdList=[];
-          self.applyOperationList=[];
+        if (!self.$options.methods.checkInput(self)) {
+          self.accountIdList = [];
+          self.applyOperationList = [];
           return;
         }
         self.$http.post("roleApply/createRoleApply.do_", self.forms)
@@ -1093,7 +977,7 @@
         })
       },
 
-      createSaveCommitRoleApply(){
+      createSaveCommitRoleApply() {
         this.otherInfo.applyAccountName = sessionStorage.getItem('loginUsername');
         this.otherInfo.modifyStaffName = sessionStorage.getItem('loginUsername');
 
@@ -1116,9 +1000,9 @@
         self.forms.accountIdList = self.accountIdList;
         self.forms.applyOperationList = self.applyOperationList;
 
-        if (!self.$options.methods.checkInput(self)){
-          self.accountIdList=[];
-          self.applyOperationList=[];
+        if (!self.$options.methods.checkInput(self)) {
+          self.accountIdList = [];
+          self.applyOperationList = [];
           return;
         }
         self.$http.post("roleApply/createSaveCommitRoleApply.do_", self.forms)
@@ -1136,17 +1020,17 @@
           self.$message.info("申请角色为必填项，不允许为空");
           return false;
         }
-        if(self.roleStatus==0){
+        if (self.roleStatus == 0) {
           self.$message.info("申请角色已失效，请重新选择");
           return false;
         }
-        if(self.tableDataAccount.length==0){
+        if (self.tableDataAccount.length == 0) {
           self.$message.info("申请账号不允许为空");
           return false;
         }
-        for(let i=0;i<self.tableDataAccount.length;i++){
+        for (let i = 0; i < self.tableDataAccount.length; i++) {
           console.log(self.tableDataAccount[i].applyOperation);
-          if(self.tableDataAccount[i].applyOperation==null){
+          if (self.tableDataAccount[i].applyOperation == null) {
             self.$message.info('账号申请操作不允许为空');
             return false;
           }
@@ -1174,9 +1058,9 @@
         self.$http.get('roleManage/getOneInf.do_', {
           params: param
         }).then((result) => {
-          self.formInfo=result.page;
+          self.formInfo = result.page;
           self.RoleStatusEnum = result.RoleStatusEnum;
-          self.formInfo.businessLine=self.formInfo.businessLine.split(';');
+          self.formInfo.businessLine = self.formInfo.businessLine.split(';');
         }).catch(function (error) {
           commonUtils.Log("roleManage/getOneInf.do_:" + error);
           self.$message.error("获取数据错误");

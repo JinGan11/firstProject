@@ -273,17 +273,16 @@ public class RoleApplyManageController {
     * @Date  19:54 2019/8/22
     */
     @ResponseBody
-    @RequestMapping(value = "/getAccountStateById.do_")
-    public Result getAccountStateById(HttpServletRequest request) {
-        System.out.println("HAHAHAHAHAHHA");
+    @RequestMapping(value = "/getAccountDeletedById.do_")
+    public Result getAccountDeletedById(HttpServletRequest request) {
         String strIds = request.getParameter("accountIds");
-        System.out.println(strIds);
         String[] arrStrIds = strIds.split(",");
+        if (arrStrIds.length==1 && arrStrIds[0].equals("")) arrStrIds=new String[0];
         List<Long> accountIds = new ArrayList<Long>();
         for(int i=0;i<arrStrIds.length;i++){
             accountIds.add(Long.valueOf(arrStrIds[i]).longValue());
         }
-        List<Integer> accountStateList = roleApplyManageService.getAccountStateById(accountIds);
-        return Result.ok().put("accountStateList", accountStateList);
+        List<String> accountDeletedList = roleApplyManageService.getAccountDeletedById(accountIds);
+        return Result.ok().put("accountDeletedList", accountDeletedList);
     }
 }

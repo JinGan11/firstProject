@@ -1,6 +1,7 @@
 package com.ucar.combination.dao;
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.dto.*;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -128,7 +129,7 @@ public interface RoleApplyManageDao {
     * @Return
     * @Date  19:48 2019/8/22
     */
-    List<Integer> getAccountStateById(List<Long> accountIds);
+    List<String> getAccountDeletedById(@Param("accountIds") List<Long> accountIds);
 
 
 

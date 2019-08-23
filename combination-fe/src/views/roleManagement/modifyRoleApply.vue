@@ -514,6 +514,8 @@
         dialogVisibleAccount: false,
         dialogCategory: '',//控制显示对应的具体弹窗
         multipleSelection: [],
+        accountIds: [],
+        accountDeletedList:[],
         tableDataAccount: [],
         data: [],
         defaultProps: '',
@@ -844,6 +846,34 @@
           self.$message.error("获取数据错误")
         });
       },
+
+      fetchData2(self) {//账户列表
+        var param = {
+          page: self.currentPage,
+          limit: self.pageSize,
+          accountName: self.form.accountNo,
+          staffNo: self.form.staffNo,
+          name: self.form.name,
+          permissions: self.form.permissions,
+          department: self.form.departmentId,
+          isRelStaff: self.form.isRelStaff,
+          status: self.form.status,
+          flag: 1,
+        };
+        self.$http.get('account/querylist.do_', {
+          params: param
+        }).then((result) => {
+          self.tableData = result.page.list;
+          self.form.permissionsList = result.permissionList;
+          self.form.permissionsEnum = result.permissionEnum;
+          self.form.accountStatusEnum = result.accountStatusEnum;
+          // self.form.accountStatusList = result.accountStatusList;
+          self.total = result.page.totalCount;
+        }).catch(function (error) {
+          commonUtils.Log("account/querylist.do_:" + error);
+          self.$message.error("获取账号数据错误")
+        });
+      },
       cancelSelectAccount() {
         //取消按钮
         this.dialogVisibleAccount = false;
@@ -851,26 +881,49 @@
       handleSelectAccount(val) {
         this.multipleSelection = val;
         this.disabledSelectAccount=false;
-      },
-      selectAccountConfirm() {//确定添加账户
-        this.accountDuplicateList=[];
+        this.accountIds = [];
         for (let i = 0; i < this.multipleSelection.length; i++) {
-          let flag = 0;
-          for (let j = 0; j < this.accountChangesList.length; j++) {
-            if (this.multipleSelection[i].id == this.accountChangesList[j].id) {
-              flag = 1;
-              this.accountDuplicateList.push(this.multipleSelection[i].accountName);
+          this.accountIds.push(val[i].id);
+        }
+      },
+
+      selectAccountConfirm() {//确定添加账户
+        var self = this;
+        var param = {
+          accountIds: self.accountIds.toString(),
+        };
+        self.$http.get('roleApply/getAccountDeletedById.do_', {
+          params: param
+        }).then((result) => {
+          this.accountDeletedList = result.accountDeletedList;
+          if (this.accountDeletedList.length > 0) {
+            this.$message.info('账号    ' + this.accountDeletedList.toString() + '    已失效');
+            this.accountDeletedList=[];
+            self.$options.methods.fetchData2(self);
+          }else{
+            this.accountDuplicateList=[];
+            for (let i = 0; i < this.multipleSelection.length; i++) {
+              let flag = 0;
+              for (let j = 0; j < this.accountChangesList.length; j++) {
+                if (this.multipleSelection[i].id == this.accountChangesList[j].id) {
+                  flag = 1;
+                  this.accountDuplicateList.push(this.multipleSelection[i].accountName);
+                }
+              }
+              if (flag == 0) {
+                this.accountChangesList.push(this.multipleSelection[i]);
+              }
             }
+            if(this.accountDuplicateList.length>0){
+              this.$message.info('账号    '+this.accountDuplicateList+'    已存在,请勿重复添加！');
+            }
+            this.tableDataAccount = this.accountChangesList;
+            this.dialogVisibleAccount = false;
           }
-          if (flag == 0) {
-            this.accountChangesList.push(this.multipleSelection[i]);
-          }
-        }
-        if(this.accountDuplicateList.length>0){
-          this.$message.info('账号    '+this.accountDuplicateList+'    已存在，不可重复添加');
-        }
-        this.tableDataAccount = this.accountChangesList;
-        this.dialogVisibleAccount = false;
+        }).catch(function (error) {
+          commonUtils.Log("roleApply/getAccountStateById.do_" + error);
+          self.$message.error("获取添加账号数据失败")
+        });
       },
 
       deleteSelect(index) { //移除添加的账户 删除行
@@ -937,9 +990,9 @@
         self.forms.applyStaffNum=self.otherInfo.applyStaffNum;
         self.forms.applyStaffName=self.otherInfo.applyStaffName;
         self.forms.applyDepartmentName=self.otherInfo.applyDepartmentName;
-        self.forms.applyTime=self.otherInfo.applyTime;
+        self.forms.applyTime='';
         self.forms.modifyStaffName='';
-        self.forms.modifyTime=self.otherInfo.modifyTime;
+        self.forms.modifyTime='';
         self.forms.accountIdList=self.accountIdList;
         self.forms.applyOperationList=self.applyOperationList;
 

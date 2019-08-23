@@ -208,8 +208,8 @@ public class RoleApplyManageServiceImpl implements RoleApplyManageService {
     }
 
     @Override
-    public List<Integer> getAccountStateById(List<Long> accountIds) {
-        return roleApplyManageDao.getAccountStateById(accountIds);
+    public List<String> getAccountDeletedById(List<Long> accountIds) {
+        return roleApplyManageDao.getAccountDeletedById(accountIds);
     }
 
 

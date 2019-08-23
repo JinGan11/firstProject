@@ -140,7 +140,7 @@ public interface RoleApplyManageService {
     * @Return
     * @Date  19:50 2019/8/22
     */
-    List<Integer> getAccountStateById(List<Long> accountIds);
+    List<String> getAccountDeletedById(List<Long> accountIds);
 
 
 }

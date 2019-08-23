@@ -295,12 +295,14 @@
     </select>
 
 
-    <!--查询所选账户的状态-->
-    <select id="getAccountStateById" parameterType="Long" resultType="Integer">
-        select account_state
+    <!--查询已失效的账号-->
+    <select id="getAccountDeletedById" parameterType="Long" resultType="String">
+        select account_name
         from t_account
-        where id in
+        where account_state=3
+        and id in
         <foreach collection="accountIds" index="index" item="item" open="(" separator="," close=")">#{item}</foreach>
+
     </select>
 
 
