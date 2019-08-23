@@ -250,7 +250,8 @@
                 regionCode:self.form.regionCode,
                 regionName:self.form.regionName,
                 upperRegion:self.form.upperRegion,
-                regionStatus: self.form.regionStatus
+                regionStatus: self.form.regionStatus,
+                isGetAll:true
             };
             self.$http.get('/regionManage/citySearch',{
                 params:param
