@@ -749,8 +749,11 @@
       },
       loadNode(node,resolve){
         var self = this;
+        var param = {
+          date : new Date().getTime(),
+        };
         self.$http.get('department/buildTree2.do_', {
-          params: null
+          params: param
         }).then((result) => {
           resolve([result.departmentDto]);
         }).catch(function (error) {
