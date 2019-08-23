@@ -446,6 +446,8 @@
             this.form.staffNum = this.selection.staffNum;
             this.form.staffName = this.selection.staffName;
             this.form.departmentName = this.selection.department;
+            this.isChoose = true;
+            this.selection = '';
             this.dialogVisibleAccount=false;
           }
         }).catch(function (error) {
@@ -454,6 +456,8 @@
         });
       },
       selectionCancel() {
+        this.isChoose = true;
+        this.selection = '';
         this.dialogVisibleAccount = false;
       },
       handleSelectionChange(val) {
@@ -543,6 +547,7 @@
         this.accountForm.isRelStaff = '';
         this.accountForm.status = 0;
         this.accountForm.permissions = 0;
+        this.isChoose = true;
         this.dialogVisibleAccount = true;
         this.fetchAccountData();
       },
