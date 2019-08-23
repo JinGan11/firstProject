@@ -27,6 +27,7 @@ import utils from './common/util'
 // Vue.use(Vuex);
 import VueAMap from 'vue-amap';
 import global from './common/global.js'
+import commonUtils from "./common/commonUtils";
 
 
 window.addEventListener("visibilitychange",function(){ //这个方法是监测浏览器窗口发生变化的时候执行
@@ -95,6 +96,21 @@ router.beforeEach((to, from, next) => {
     }else if (to.path === '/') {
         utils.$emit("loginSuccess",false);
         window.sessionStorage.removeItem("loginUsername");
+        // Http.$http.post("login/logout.do_",{
+        //   time: new Date().getTime()
+        // })
+        // .then(result => {
+        //   self.loginIn = false;
+        //   window.sessionStorage.removeItem("loginUsername");
+        //   window.sessionStorage.removeItem("powerList");
+        //   self.$store.state.loginUserName = '';
+        //   self.$store.state.powerList = '';
+        //   self.loginUserName = window.sessionStorage.getItem("loginUsername");
+        // })
+        // .catch(function (error) {
+        //   commonUtils.Log("user/updatePwd:" + error);
+        //   self.$message.error("系统故障，请联系管理员！");
+        // });
         next()
     }else {
       next({
