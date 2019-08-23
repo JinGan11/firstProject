@@ -35,21 +35,6 @@ public class RegionManageServiceImpl implements RegionManageService {
     }
 
     @Override
-    public List<Object> getProvinceSearchList(QueryParam queryParam) {
-        return regionManageDao.provinceSearchList(queryParam);
-    }
-
-    @Override
-    public List<Object> getCitySearchList(QueryParam queryParam) {
-        return regionManageDao.citySearchList(queryParam);
-    }
-
-    @Override
-    public List<Object> getCountySearchList(QueryParam queryParam) {
-        return regionManageDao.countySearchList(queryParam);
-    }
-
-    @Override
     public int createRegion(Region region) {
         return regionManageDao.createRegion(region);
     }
