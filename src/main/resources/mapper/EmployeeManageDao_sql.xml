@@ -126,7 +126,7 @@
     </update>
 
     <update id="updateDimissionRecovery" parameterType="java.lang.String">
-        UPDATE t_staff T set T.is_dimission=0,T.account_id = 0 WHERE T.id=#{id};
+        UPDATE t_staff T set T.is_dimission=0,T.account_id = null WHERE T.id=#{id};
     </update>
     <update id="updateStaff" parameterType="com.ucar.combination.model.Staff">
        update t_staff t1
