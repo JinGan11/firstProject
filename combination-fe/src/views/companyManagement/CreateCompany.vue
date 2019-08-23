@@ -275,7 +275,7 @@
           companyStatus:'1',
           remark:'',
           liscensePath:'',
-
+          forIEFresh: new Date().getTime(),
         },
         nowTime: '',
         options1: [{
@@ -523,6 +523,7 @@
                   self.form.liscensePath = 'dfs';
                   self.form.createEmp = '';
                   self.form.modifyEmp = '';
+                  self.form.forIEFresh=new Date().getTime();
                   self.formData.append("company", JSON.stringify(self.form));
                   self.$http.post("company/createCompany", self.formData)
                       .then((result) => {

@@ -18,7 +18,7 @@
             </el-col>
             <el-col :span="10">
               <el-form-item label="统一社会信用代码:" prop="creditCode">
-                <el-input style="width:200px;" v-model.trim="form.creditCode"></el-input>
+                <el-input style="width:200px;" maxlength="18" v-model.trim="form.creditCode"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -46,7 +46,6 @@
                   start-placeholder="开始日期"
                   end-placeholder="结束日期">
                 </el-date-picker>
-
               </el-form-item>
             </el-col>
           </el-row>
@@ -292,6 +291,7 @@
           companyStatus:'',
           remark:'',
           liscensePath:'',
+          forIEFresh: new Date().getTime(),
         },
         options1: [{
           value: '',
@@ -427,6 +427,7 @@
         var param = {
           companyId: companyId,
           date : new Date().getTime(),
+          forIEFresh: new Date().getTime(),
         };
         self.$http.get('company/getCompanyById.do_', {
           params: param
@@ -587,6 +588,7 @@
                             self.form.liscensePath='dfs';
                             self.form.createEmp='';
                             self.form.modifyEmp='';
+                            self.form.forIEFresh=new Date().getTime();
                             self.formData.append("company", JSON.stringify(self.form));
                             //     console.log(self.formData.get("businessLicenses"));
                             self.$http.post("company/modifyCompany",self.formData)

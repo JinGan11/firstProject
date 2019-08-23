@@ -52,10 +52,10 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
 
         //修改人格式
         for(int i=0;i<list.size();i++) {
-            if (companyManageDao.getModifyStaffId(list.get(i).getId().intValue()) != null && companyManageDao.getModifyStaffId(list.get(i).getId().intValue()) > 0) {
+            if (companyManageDao.getModifyStaffId(list.get(i).getId()) != null && companyManageDao.getModifyStaffId(list.get(i).getId()) > 0) {
                 Map<String, Object> map = new HashMap<>();
                 //int long格式不对
-                map = companyManageDao.getModifyInfo(list.get(i).getId().intValue());
+                map = companyManageDao.getModifyInfo(list.get(i).getId());
                 list.get(i).setModifyName(map.get("accountName") + "(" + map.get("staffName") + ")");
             }
         }
@@ -118,7 +118,7 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
      * @return： map 根据公司id获取的公司信息
      */
 
-    public Map getCompanyById(int companyId){
+    public Map getCompanyById(Long companyId){
         Company company=companyManageDao.getCompanyById(companyId);
         Long createStaffId=companyManageDao.getCreateStaffId(companyId);
         Long modifyStaffId=companyManageDao.getModifyStaffId(companyId);
@@ -128,7 +128,7 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
         String modifyEmp="";
 
         //判断账号是否关联员工
-        if(createStaffId==null||createStaffId.intValue()==0){
+        if(createStaffId==null||createStaffId==0){
             String createAccountName=companyManageDao.getEmpById(company.getCreateEmp());
             createEmp=createAccountName;
         }else{
@@ -138,7 +138,7 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
             createEmp=createAccountName+"("+createStaffName+")";
         }
 
-        if(modifyStaffId==null||modifyStaffId.intValue()==0){
+        if(modifyStaffId==null||modifyStaffId==0){
             String modifyAccountName=companyManageDao.getEmpById(company.getModifyEmp());
             modifyEmp=modifyAccountName;
         }else{
@@ -219,10 +219,10 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
         List<CompanyDto> list = companyManageDao.queryRelationList(queryParam);
         //修改人样式
         for(int i=0;i<list.size();i++)
-            if (companyManageDao.getModifyStaffId(list.get(i).getId().intValue())!=null&&companyManageDao.getModifyStaffId(list.get(i).getId().intValue()) > 0) {
+            if (companyManageDao.getModifyStaffId(list.get(i).getId())!=null&&companyManageDao.getModifyStaffId(list.get(i).getId()) > 0) {
                 Map<String, Object> map = new HashMap<>();
                 //int long格式不对
-                map = companyManageDao.getModifyInfo(list.get(i).getId().intValue());
+                map = companyManageDao.getModifyInfo(list.get(i).getId());
                 list.get(i).setModifyName(map.get("accountName") + "(" + map.get("staffName") + ")");
             }
         return new ResultPage(list, (int) page.getTotal(), queryParam.getLimit(), queryParam.getPage());
@@ -238,10 +238,10 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
         List<CompanyDto> list = companyManageDao.relationCompanyList(map);
         //修改人样式
         for(int i=0;i<list.size();i++)
-            if (companyManageDao.getModifyStaffId(list.get(i).getId().intValue())!=null&&companyManageDao.getModifyStaffId(list.get(i).getId().intValue()) > 0) {
+            if (companyManageDao.getModifyStaffId(list.get(i).getId())!=null&&companyManageDao.getModifyStaffId(list.get(i).getId()) > 0) {
                 Map<String, Object> resultMap = new HashMap<>();
                 //int long格式不对
-                resultMap = companyManageDao.getModifyInfo(list.get(i).getId().intValue());
+                resultMap = companyManageDao.getModifyInfo(list.get(i).getId());
                 list.get(i).setModifyName(resultMap.get("accountName") + "(" + resultMap.get("staffName") + ")");
             }
         return  list;
@@ -322,7 +322,7 @@ public class CompanyManageServiceImpl<updateCompanyById> implements CompanyManag
     }
 
     @Override
-    public List<BusinessLicense> getIdsByCompanyId(int id) {
+    public List<BusinessLicense> getIdsByCompanyId(Long id) {
         return companyManageDao.getIdsByCompanyId(id);
     }
 

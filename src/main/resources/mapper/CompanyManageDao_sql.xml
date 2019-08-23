@@ -154,7 +154,7 @@
         )
     </insert>
 
-    <select id="getCompanyById" parameterType="int" resultType="com.ucar.combination.model.Company">
+    <select id="getCompanyById" parameterType="Long" resultType="com.ucar.combination.model.Company">
         SELECT
         T.id  companyId,
         T.company_name,
@@ -358,14 +358,14 @@
         from t_license
          WHERE id=#{id}
     </select>
-    <select id="getCreateInfo" parameterType="int" resultType="java.util.Map">
+    <select id="getCreateInfo" parameterType="Long" resultType="java.util.Map">
         select
         t2.account_name accountName,
         t3.staff_name staffName
         from t_company t1,t_account t2,t_staff t3
         where t1.create_emp=t2.id and t2.staff_id=t3.id and t1.id=#{companyId}
     </select>
-    <select id="getModifyInfo" parameterType="int" resultType="java.util.Map">
+    <select id="getModifyInfo" parameterType="Long" resultType="java.util.Map">
         select
         t2.account_name accountName,
         t3.staff_name staffName
@@ -373,20 +373,20 @@
         where t1.modify_emp=t2.id and t2.staff_id=t3.id and t1.id=#{companyId}
     </select>
 
-    <select id="getIdsByCompanyId" parameterType="int" resultType="com.ucar.combination.model.dto.BusinessLicense">
+    <select id="getIdsByCompanyId" parameterType="Long" resultType="com.ucar.combination.model.dto.BusinessLicense">
         SELECT
         id,
         companyId ,
         url fileLocation
         from t_license WHERE companyId=#{companyId}
     </select>
-    <select id="getCreateStaffId" parameterType="int" resultType="Long">
+    <select id="getCreateStaffId" parameterType="Long" resultType="Long">
         SELECT
         t2.staff_id staffId
         from t_company t1,t_account t2
         WHERE t1.id=#{companyId} and t1.create_emp=t2.id
     </select>
-    <select id="getModifyStaffId" parameterType="int" resultType="Long">
+    <select id="getModifyStaffId" parameterType="Long" resultType="Long">
         SELECT
         t2.staff_id staffId
         from t_company t1,t_account t2

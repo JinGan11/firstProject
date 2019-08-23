@@ -48,7 +48,7 @@ public interface CompanyManageDao<mcmt> {
      * @date: 2019/8/7 14:07
      * @return： company 公司类对象
      */
-    Company getCompanyById(@Param("companyId") int companyId);
+    Company getCompanyById(@Param("companyId") Long companyId);
     /**
      * description: 修改公司信息
      * @author: jianan.shu@ucarinc.com
@@ -122,8 +122,8 @@ public interface CompanyManageDao<mcmt> {
      * @return：
      */
     void insertLicenses(List list);
-    Map<String,Object> getCreateInfo(@Param("companyId") int companyId);
-    Map<String,Object> getModifyInfo(@Param("companyId") int companyId);
+    Map<String,Object> getCreateInfo(@Param("companyId") Long companyId);
+    Map<String,Object> getModifyInfo(@Param("companyId") Long companyId);
 
     /**
      * description: 通过id找文件路径
@@ -134,7 +134,7 @@ public interface CompanyManageDao<mcmt> {
      */
     String getFileUrlById(Long id);
 
-    List<BusinessLicense> getIdsByCompanyId(int id);
+    List<BusinessLicense> getIdsByCompanyId(Long id);
     /**
      * description: 方法描述信息
      * @author: jianan.shu@ucarinc.com
@@ -142,7 +142,7 @@ public interface CompanyManageDao<mcmt> {
      * @date: 2019/8/22 12:49
      * @return： 创建人账号id
      */
-    Long getCreateStaffId(@Param("companyId")int id);
+    Long getCreateStaffId(@Param("companyId")Long id);
     /**
      * description: 方法描述信息
      * @author: jianan.shu@ucarinc.com
@@ -150,7 +150,7 @@ public interface CompanyManageDao<mcmt> {
      * @date: 2019/8/22 12:49
      * @return： 修改人账号id
      */
-    Long getModifyStaffId(@Param("companyId")int id);
+    Long getModifyStaffId(@Param("companyId")Long id);
 
     void deleteLicenseById(Long id);
 }

@@ -98,7 +98,7 @@ public class CompanyManageController {
     @RequestMapping("/getCompanyById.do_")
     public Result getOneCompanyById(HttpServletRequest request){
         String id = request.getParameter("companyId");
-        int companyId = Integer.parseInt(id);
+        Long companyId = Long.valueOf(id);
         List<BusinessLicense> licenses = companyManageService.getIdsByCompanyId(companyId);
         Map<String,Object>list=companyManageService.getCompanyById(companyId);
         return Result.ok().put("list",list).put("licenses",licenses);
@@ -301,7 +301,7 @@ public class CompanyManageController {
                                     @RequestParam("company") String data ,HttpSession session) {
         Company company = JSON.parseObject(data, Company.class);
         Long companyId = company.getCompanyId();
-        List<BusinessLicense> licenses = companyManageService.getIdsByCompanyId(companyId.intValue());
+        List<BusinessLicense> licenses = companyManageService.getIdsByCompanyId(companyId);
         if (businessLicenses.length + licenses.size() > 20) {
             return new Result().ok().put("error", "outLimit");
         }

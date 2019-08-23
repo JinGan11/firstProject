@@ -53,7 +53,7 @@ public interface CompanyManageService {
      * @date: 2019/8/14 11:17
      * @return： Map 公司信息
      */
-    Map getCompanyById(int companyId);
+    Map getCompanyById(Long companyId);
 
     /**
      * description: 修改公司信息
@@ -105,7 +105,7 @@ public interface CompanyManageService {
      */
     String getFileUrlById(Long id);
 
-    List<BusinessLicense> getIdsByCompanyId(int id);
+    List<BusinessLicense> getIdsByCompanyId(Long id);
 
     void deleteLicense(Long id);
 
