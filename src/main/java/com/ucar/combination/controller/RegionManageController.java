@@ -82,6 +82,7 @@ public class RegionManageController {
 //        String upperRegionTwice = request.getParameter("upperRegionTwice");
         String regionStatus = request.getParameter("regionStatus");
         String upperRegionID = request.getParameter("upperRegionID");
+        String isGetAll = request.getParameter("isGetAll");
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("page", page);
@@ -94,6 +95,13 @@ public class RegionManageController {
 //        params.put("upperRegionTwice",upperRegionTwice);
         params.put("regionStatus", regionStatus);
         ResultPage resultPage=regionManageService.citySearchList(new QueryParam(params));
+
+        if(isGetAll!=null && isGetAll.equals("true")){
+            return new Result().ok().put("page",resultPage).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
+
+        }
+
+
         List<Object> citySearchList = regionManageService.getCitySearchList(new QueryParam(params));
         int size=citySearchList.size();
         return new Result().ok().put("size",size).put("page",resultPage).put("citySearchList",citySearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));

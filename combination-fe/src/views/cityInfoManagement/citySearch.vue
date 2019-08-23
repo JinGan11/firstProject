@@ -175,12 +175,10 @@
       commonUtils.Log("页面激活");
     },
     mounted() {
-
       this.judgmentAuthority();
       commonUtils.Log("页面进来");
+      this.fetchDataForInput();
       this.fetchData();
-
-
     },
     methods: {
       judgmentAuthority() {
@@ -209,7 +207,7 @@
             this.currentPage=1;
             this.fetchData();
         },
-      async fetchData() {
+       fetchData() {
         var self=this;
         var param={
           page:self.currentPage,
@@ -244,6 +242,36 @@
           self.$message.error("获取数据错误");
         });
       },
+        fetchDataForInput() {
+            var self=this;
+            var param={
+                page:self.currentPage,
+                limit:self.pageSize,
+                regionCode:self.form.regionCode,
+                regionName:self.form.regionName,
+                upperRegion:self.form.upperRegion,
+                regionStatus: self.form.regionStatus
+            };
+            self.$http.get('/regionManage/citySearch',{
+                params:param
+            }).then((result)=>{
+                //对取回来的数据进行处理
+                self.tableData=result.page.list;
+                self.total = result.page.totalCount;
+                self.RegionStatus=result.RegionStatus;
+                if(result.size>0){
+                    self.exportDisabled=false;
+                }
+                else{
+                    self.exportDisabled=true;
+                }
+
+            }).catch(function (error) {
+                commonUtils.Log("/regionManage/citySearch:" + error);
+                self.$message.error("获取数据错误");
+            });
+        },
+
         cancel() {
             this.exportVisible = false;
         },
