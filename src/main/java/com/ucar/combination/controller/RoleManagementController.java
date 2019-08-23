@@ -91,10 +91,14 @@ public class RoleManagementController {
 
 	@ResponseBody
 	@RequestMapping("/updateStatus.do_")
-	public void update(HttpServletRequest request) {
+	public void update(HttpServletRequest request,HttpSession session ) {
 		String strid = request.getParameter("selection");
 		int id = Integer.parseInt(strid);
-		roleManagementService.updateStatus(id);
+		Long accountId = (Long) session.getAttribute("accountId");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		params.put("accountId", accountId);
+		roleManagementService.updateStatus(params);
 	}
 
 	/**

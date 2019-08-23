@@ -503,10 +503,6 @@
                           self.$message.info("该角色已经被删除，不可修改");
                         }
                         else{
-                          self.form.accountNum = result.account.accountName;
-                          self.form.staffNum = result.account.staffNum;
-                          self.form.staffName = result.account.staffName;
-                          self.form.departmentName = result.account.department;
                           self.form.businessLine = self.form.businessLine.join(';');
                           self.$http.post("roleManage/updateByModify.do_", self.form)
                             .then((result) => {

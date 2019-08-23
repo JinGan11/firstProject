@@ -45,7 +45,10 @@
 
     <update id="updateStatus">
         update t_role_info t1
-        set t1.role_status=0
+        set
+        t1.role_status=0,
+        t1.modify_emp = #{accountId},
+        t1.modify_time = now()
         where t1.id = #{id}
     </update>
 

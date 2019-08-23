@@ -47,13 +47,13 @@ public class RoleManagementServiceImpl implements RoleManagementService {
      * description:依据传入参数主键id逻辑删除
      * @author gan.jin@ucarinc.com
      * @date 2019/8/7 15:26
-     * @param id  传入参数主键id
+     * @param params  传入params集合
      * @return void
      */
 
     @Override
-    public void updateStatus(int id){
-        roleManagementDao.updateStatus(id);
+    public void updateStatus(Map<String, Object> params){
+        roleManagementDao.updateStatus(params);
     }
 
     @Override

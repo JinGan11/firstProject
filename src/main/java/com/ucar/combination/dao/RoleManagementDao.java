@@ -37,10 +37,10 @@ public interface RoleManagementDao {
      * description:依据主键ID逻辑删除数据
      * @author gan.jin@ucarinc.com
      * @date 2019/8/10 15:35
-     * @param id 主键
+     * @param params
      * @return
      */
-    void updateStatus(int id);
+    void updateStatus(Map<String, Object> params);
 
     /**
      * description:插入新的角色信息数据到数据库
