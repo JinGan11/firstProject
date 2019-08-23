@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Result login(User loginUser) {
         List<User> list = userDao.qryAccountByAccountName(loginUser);
+        List<Account> accountList = userDao.getAccountHisPwdTime(loginUser);
         if (list.size() == 0) {
             return Result.ok().put("code", 304)
                     .put("Msg", "没有该用户");
@@ -51,7 +52,8 @@ public class UserServiceImpl implements UserService {
             if (md5Password.equals(list.get(0).getAccountPassword())) {
                 return Result.ok().put("code", 200)
                         .put("Msg", "登陆成功")
-                        .put("list", list);
+                        .put("list", list)
+                        .put("accountList", accountList);
             } else {
                 return Result.ok().put("code", 300)
                         .put("Msg", "密码错误");
@@ -221,15 +223,19 @@ public class UserServiceImpl implements UserService {
             staffList = employeeManageDao.qryStaffById(list.get(0));
             String sex = null;
             String isDimission = null;
-            if (staffList.get(0).getStaffSex() == 1) {
-                sex = "男";
-            } else if (staffList.get(0).getStaffSex() == 2) {
-                sex = "女";
+            if (staffList.get(0).getStaffSex() != null) {
+                if (staffList.get(0).getStaffSex() == 1) {
+                    sex = "男";
+                } else if (staffList.get(0).getStaffSex() == 2) {
+                    sex = "女";
+                }
             }
-            if (staffList.get(0).getIsDimission() == 0) {
-                isDimission = "在职";
-            } else {
-                isDimission = "离职";
+            if (staffList.get(0).getIsDimission() != null) {
+                if (staffList.get(0).getIsDimission() == 0) {
+                    isDimission = "在职";
+                } else {
+                    isDimission = "离职";
+                }
             }
             result.put("list", staffList)
                     .put("sex", sex)

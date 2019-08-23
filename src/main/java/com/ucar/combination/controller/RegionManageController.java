@@ -7,6 +7,7 @@ import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Region;
 import com.ucar.combination.model.dto.RegionDto;
+import com.ucar.combination.model.dto.RegionSimpleDto;
 import com.ucar.combination.service.RegionManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -81,6 +82,7 @@ public class RegionManageController {
 //        String upperRegionTwice = request.getParameter("upperRegionTwice");
         String regionStatus = request.getParameter("regionStatus");
         String upperRegionID = request.getParameter("upperRegionID");
+        String isGetAll = request.getParameter("isGetAll");
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("page", page);
@@ -93,6 +95,13 @@ public class RegionManageController {
 //        params.put("upperRegionTwice",upperRegionTwice);
         params.put("regionStatus", regionStatus);
         ResultPage resultPage=regionManageService.citySearchList(new QueryParam(params));
+
+        if(isGetAll!=null && isGetAll.equals("true")){
+            return new Result().ok().put("page",resultPage).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
+
+        }
+
+
         List<Object> citySearchList = regionManageService.getCitySearchList(new QueryParam(params));
         int size=citySearchList.size();
         return new Result().ok().put("size",size).put("page",resultPage).put("citySearchList",citySearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
@@ -116,6 +125,7 @@ public class RegionManageController {
         String upperRegionID = request.getParameter("upperRegionID");
         String regionStatus = request.getParameter("regionStatus");
         String upperRegionTwice = request.getParameter("upperRegionTwice");
+        String isGetAll = request.getParameter("isGetAll");
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("page", page);
@@ -127,9 +137,16 @@ public class RegionManageController {
         params.put("upperRegionID",upperRegionID);
         params.put("regionStatus", regionStatus);
         ResultPage resultPage=regionManageService.countySearchList(new QueryParam(params));
+        if(isGetAll!=null && isGetAll.equals("true")){
+            return new Result().ok().put("page",resultPage).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
+
+        }
+
         List<Object> countySearchList = regionManageService.getCountySearchList(new QueryParam(params));
         int size=countySearchList.size();
         return new Result().ok().put("size",size).put("page",resultPage).put("countySearchList",countySearchList).put("RegionStatus", CommonEnums.toEnumMap(CommonEnums.RegionStatus.values()));
+
+
     }
 
     /**
@@ -300,7 +317,7 @@ public class RegionManageController {
         if(region.getRegionStatus()!=1 ){
             List<Region> getRegionByUpperCityID=regionManageService.getRegionByUpperCityID(region);
             if(getRegionByUpperCityID.size()>0)
-                {return "存在子节点有效，不能修改本节点为无效。";}
+            {return "存在子节点有效，不能修改本节点为无效。";}
         }
 
 
@@ -327,4 +344,17 @@ public class RegionManageController {
         return Result.ok().put("cityList",cityList);
     }
 
+    /**
+     * description: 根据关键词搜索城市
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/22 15:18
+     * @params
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/searchCityByKeyword.do_")
+    public List<RegionSimpleDto> selectCityAll(HttpServletRequest request){
+        String keyword = request.getParameter("keyword");
+        return regionManageService.selectCityByKeyword(keyword);
+    }
 }

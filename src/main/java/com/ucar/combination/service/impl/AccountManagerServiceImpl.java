@@ -213,6 +213,8 @@ public class AccountManagerServiceImpl implements AccountManagerService {
      */
     @Override
     public int insertAccountHistory(AccountStaff accountStaff) {
+        Long creater = accountManageDao.selectStaffIdById(accountStaff.getCreateEmp());
+        accountStaff.setCreater(creater);
         return accountManageDao.insertAccountHistory(accountStaff);
     }
 
@@ -335,6 +337,7 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         accountHistory.setCreateTime(date);
         accountHistory.setAccountState(Byte.parseByte(String.valueOf(status)));
         accountHistory.setHistoryOperationType(historyOperationType);
+        accountHistory.setCreater(selectStaffIdById(accountHistory.getCreateEmp()));
 
         accountManageDao.updateModifyTimeAndModifyName(account);
         accountManageDao.updateStatus(id, status);

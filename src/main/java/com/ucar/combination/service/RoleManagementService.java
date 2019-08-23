@@ -25,7 +25,7 @@ public interface RoleManagementService {
 
     ResultPage queryList(QueryParam queryParam);
     ResultPage getRoleList();
-    void updateStatus(int id);
+    void updateStatus(Map<String, Object> params);
     void insertRole(RoleDto role);
     Role judgeExist(String roleName);
     ResultPage getOwnedRoleList(Account account);

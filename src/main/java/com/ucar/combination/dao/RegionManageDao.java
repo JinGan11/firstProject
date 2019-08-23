@@ -2,6 +2,8 @@ package com.ucar.combination.dao;
 
 import com.ucar.combination.model.Region;
 import com.ucar.combination.model.dto.RegionDto;
+import com.ucar.combination.model.dto.RegionSimpleDto;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -80,4 +82,14 @@ public interface RegionManageDao {
      * @return
      */
     List<String> citySearchListById(String id);
+
+
+    /**
+     * description: 根据关键词查找城市
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/22 15:15
+     * @params
+     * @return
+     */
+    List<RegionSimpleDto> selectCityByKeyword(@Param(value="keyword")String keyword);
 }

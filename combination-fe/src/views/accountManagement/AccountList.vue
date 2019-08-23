@@ -243,7 +243,7 @@
 
 
 
-    <el-dialog :title='"【"+row.accountName+"】的历史记录"' :visible.sync="historyRecordsVisible" width="1000px">
+    <el-dialog :title='"账号【"+row.accountName+"】的历史记录"' :visible.sync="historyRecordsVisible" width="1000px">
     <el-table ref="multipleTable" :data="historyRecords" border height="550px">
       <el-table-column prop="staffNum" label="员工编号" width="130"></el-table-column>
       <el-table-column prop="staffName" label="员工姓名" width="120"></el-table-column>
@@ -926,6 +926,7 @@
             });
             this.exportVisible = false;
             this.checkedAccounts = [];
+            this.checkAll = false;
             this.filterVal = [];
           })
         }

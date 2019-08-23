@@ -103,7 +103,7 @@
           <el-radio v-model="selection" @change="selectRow(scope.row)" :label="scope.row.id" ><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
-      <!--      <el-table-column prop="id"  label="隐藏id"></el-table-column>-->
+      <el-table-column prop="id"  label="隐藏id"></el-table-column>
       <el-table-column prop="roleApplyNum" label="角色申请编号" width="150">
         <template slot-scope="scope">
           <el-button type="text" @click="roleApplyNumBtn(scope.row)">{{scope.row.roleApplyNum}}</el-button>
@@ -438,7 +438,7 @@
 </template>
 <script>
   import commonUtils from '../../common/commonUtils'
-  const roleOptions = ['角色申请编号', '申请角色ID', '申请角色名称', '审批负责人', '角色支持业务线', '申请人登录账号', '申请人员工姓名', '申请人所属部门', '申请时间','状态','操作人','操作时间','拒绝理由'];
+  const roleOptions = ['角色申请编号', '申请角色ID', '申请角色名称', '审批负责人', '角色支持业务线', '申请人登录账号', '申请人员工编号','申请人员工姓名', '申请人所属部门', '申请时间','状态','操作人','操作时间','拒绝理由'];
   export default {
     data() {
       return {
@@ -691,6 +691,8 @@
                   break;
               }
             }
+            console.log(tHeader)
+            console.log(filterVal)
             console.log(list);
             //获取当前时间
             var date = new Date();
@@ -715,6 +717,7 @@
             this.dialogVisibleRole=false;
             this.checkedRoles=[];
             this.filterVal=[];
+            this.checkAll=false;
           })
         }
       },
@@ -740,7 +743,7 @@
             this.filterVal.push('roleName')
           } else if (this.checkedRoles[i] === '审批负责人') {
             this.filterVal.push('approverStaffName')
-          } else if (this.checkedRoles[i] === '角色审批业务线') {
+          } else if (this.checkedRoles[i] === '角色支持业务线') {
             this.filterVal.push('businessLine')
           } else if (this.checkedRoles[i] === '申请人登录账号') {
             this.filterVal.push('applyAccountName')
@@ -807,10 +810,15 @@
             selection:self.selection,
             date : new Date().getTime(),
           };
+          console.log(param.selection);
           self.$http.get('roleApply/commitRoleApply.do_', {
             params: param
-          }).then(() => {
-            self.$message.success("提交角色申请成功");
+          }).then((result) => {
+            if(result.roleState==0){
+              self.$message.error("角色已失效，提交审核失败！");
+            }else{
+              self.$message.success("提交角色申请成功");
+            }
             self.fetchData();
             self.disabledDelete=true;
             self.selection=[];

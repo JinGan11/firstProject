@@ -23,8 +23,8 @@
     </div>
     <div style="margin-bottom: 10px">
       <el-button type="primary" @click="createRole" v-if="!buttonPermission.createPermission" style="width:100px">新建</el-button>
-      <el-button type="primary" @click="modifyRole(selection)" v-if="!buttonPermission.modifyPermission" :disabled="isModify" style="width:100px">修改</el-button>
-      <el-button type="primary" @click="deleteRole(selection)" v-if="!buttonPermission.deletePermission" :disabled="isModify" style="width:100px">删除</el-button>
+      <el-button type="primary" @click="modifyRole(selection.roleId)" v-if="!buttonPermission.modifyPermission" :disabled="isModify" style="width:100px">修改</el-button>
+      <el-button type="primary" @click="deleteRole(selection.roleId)" v-if="!buttonPermission.deletePermission" :disabled="isModify" style="width:100px">删除</el-button>
       <el-button type="primary" @click="addAccount" v-if="!buttonPermission.addAccountPermission" :disabled="isAddCount" style="width:100px">添加账号</el-button>
       <el-button type="primary" @click="roleAssignPermission" v-if="!buttonPermission.assignPermission" :disabled="isModify" style="width:100px">分配权限</el-button>
     </div>
@@ -32,7 +32,7 @@
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <el-table-column label="选择" width="50px">
         <template slot-scope="scope">
-          <el-radio v-model="selection" :label="scope.row.roleId" @change="selectionActive(scope.row)"><span
+          <el-radio v-model="selection" :label="scope.row" @change="selectionActive(scope.row)"><span
             width="0px;"></span></el-radio>
         </template>
       </el-table-column>
@@ -313,7 +313,7 @@
       }],
         tableData: [],
         RoleStatusEnum: {},
-        selection: '',
+        selection: {},
         id: '',
         roleId: '',
         roleName: '',
@@ -612,6 +612,7 @@
             self.$message.info("该角色已经被删除，不可修改");
             this.isModify = true;
             this.isAddCount = true;
+            this.form.name = '';
             this.fetchData();
           }
           else{
@@ -638,21 +639,23 @@
             params: param
           }).then((result) => {
             if (result.page.roleStatus ===0){
-              this.$message.info("该角色已经被删除，不可修改");
+              this.$message.info("角色删除失败，角色已经被删除");
               this.isModify = true;
               this.isAddCount = true;
+              this.form.name = '';
               this.fetchData();
             }
             else{
               var self = this;
               var param = {
-                selection: self.selection,
+                selection: self.selection.roleId,
                 date : new Date().getTime(),
               };
               self.$http.get('roleManage/updateStatus.do_', {
                 params: param
               }).then(() => {
                 self.$message.info("角色删除成功")
+                this.form.name = '';
                 this.fetchData();
                 this.isAddCount = true;
                 this.isModify = true;
@@ -696,7 +699,7 @@
         var param = {
           page: self.currentAccounytPage,
           limit: self.accountPageSize,
-          roleId:self.selection,
+          roleId:self.selection.roleId,
           accountName:self.loginAccount,
           date : new Date().getTime(),
         };

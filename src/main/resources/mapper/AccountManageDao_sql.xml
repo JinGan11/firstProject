@@ -261,7 +261,8 @@
             history_operation_type,
             create_emp,
             create_time,
-            account_state
+            account_state,
+            creater
         )
         values(
             #{accountId},
@@ -271,7 +272,8 @@
             #{operationType},
             #{createEmp},
             now(),
-            #{accountState}
+            #{accountState},
+            #{creater}
         )
     </insert>
 

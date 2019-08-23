@@ -4,6 +4,7 @@ import com.ucar.combination.common.QueryParam;
 import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.model.Region;
 import com.ucar.combination.model.dto.RegionDto;
+import com.ucar.combination.model.dto.RegionSimpleDto;
 
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,7 @@ public interface RegionManageService {
      */
     ResultPage citySearchList(QueryParam queryParam);
     List<Object> getCitySearchList(QueryParam queryParam);
+
 
     /**
      * description: 区县查询
@@ -97,4 +99,13 @@ public interface RegionManageService {
      * @return
      */
     List<String> citySearchListById(String id);
+
+    /**
+     * description: 获取所有省市县
+     * @author 郑开添（kaitian.zheng@ucarinc.com）
+     * @date 2019/8/22 15:10
+     * @params
+     * @return
+     */
+    List<RegionSimpleDto> selectCityByKeyword(String keyword);
 }

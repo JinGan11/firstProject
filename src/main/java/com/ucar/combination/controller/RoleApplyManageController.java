@@ -108,10 +108,16 @@ public class RoleApplyManageController {
     */
     @ResponseBody
     @RequestMapping("/commitRoleApply.do_")
-    public void commitRoleApply(HttpServletRequest request){
+    public Result commitRoleApply(HttpServletRequest request){
         String stringId = request.getParameter("selection");
+        //String roleID=request.getParameter("roleId");//获取角色ID
         int id = Integer.parseInt(stringId);
-        roleApplyManageService.commitRoleApply(id);
+        Long roleId=Long.parseLong(stringId);
+        int roleState=roleApplyManageService.getRoleStateById(roleId);
+        if(roleState!=0){//角色ID有效 提交审核
+            roleApplyManageService.commitRoleApply(id);
+        }
+        return Result.ok().put("roleState",roleState);
     }
 
     /**
@@ -259,4 +265,25 @@ public class RoleApplyManageController {
         }
     }
 
+    /**
+    * @Description:  查询所选账号的账号状态
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  19:54 2019/8/22
+    */
+    @ResponseBody
+    @RequestMapping(value = "/getAccountStateById.do_")
+    public Result getAccountStateById(HttpServletRequest request) {
+        System.out.println("HAHAHAHAHAHHA");
+        String strIds = request.getParameter("accountIds");
+        System.out.println(strIds);
+        String[] arrStrIds = strIds.split(",");
+        List<Long> accountIds = new ArrayList<Long>();
+        for(int i=0;i<arrStrIds.length;i++){
+            accountIds.add(Long.valueOf(arrStrIds[i]).longValue());
+        }
+        List<Integer> accountStateList = roleApplyManageService.getAccountStateById(accountIds);
+        return Result.ok().put("accountStateList", accountStateList);
+    }
 }

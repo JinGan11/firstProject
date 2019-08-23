@@ -233,4 +233,14 @@
 	 	FROM  t_b_city t1
 	 	WHERE t1.upper_city_id=#{cityID} AND t1.`status`= 1
 	</select>
+
+	<select id="selectCityByKeyword" resultType="com.ucar.combination.model.dto.RegionSimpleDto">
+		select city_id,city_name
+		from t_b_city
+		where status=1
+		<if test="keyword!=null and keyword.trim()!=''">
+			and city_name like '%${keyword}%'
+		</if>
+		limit 250
+	</select>
 </mapper>

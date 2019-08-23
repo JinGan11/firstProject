@@ -62,8 +62,23 @@
         </el-col>
         <el-col :span="8">
           <el-form-item label="所在城市" prop="cityName">
-            <el-input style="width:200px;" v-model="cityName" :disabled="true" maxlength="20"></el-input>
-            <a style="color: blue;cursor: pointer" @click="chooseCityVisible = true">选择</a>
+<!--            <el-input style="width:200px;" v-model="cityName" :disabled="true" maxlength="20"></el-input>-->
+<!--            <a style="color: blue;cursor: pointer" @click="chooseCityVisible = true">选择</a>-->
+            <el-select
+              v-model="cityName"
+              filterable
+              remote
+              placeholder="请输入关键词"
+              :remote-method="remoteMethod"
+              @focus="cityFocus"
+              :loading="loading">
+              <el-option
+                v-for="item in cityOptions"
+                :key="item.cityId"
+                :label="item.cityName"
+                :value="item.cityId">
+              </el-option>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -404,9 +419,11 @@
       var validCityName = (rule, value, callback) => {
         if (this.cityName == '')
           return callback(new Error("请选择城市"));
+        this.form.cityId=this.cityName;
         callback();
       };
       return {
+        loading: false,
         address: null,
         searchKey: '',
         amapManager,
@@ -596,6 +613,8 @@
         chooseCityForm:{ provinceChosen:'',cityChosen:'',countyChosen:'' },
         isCityDisable:true,
         isCountyDisable:true,
+        // 城市选择_new
+        cityOptions:[],
         //员工选择
         dialogEmployee: false,
         relAccount: 1,
@@ -1037,6 +1056,39 @@
           self.$message.error("获取数据错误");
         });
       },
+      cityFocus(){
+        var self = this;
+        self.$http.get('/regionManage/searchCityByKeyword.do_', {
+          params: null
+        }).then((result) => {
+          self.cityOptions = result;
+        }).catch(function (error) {
+          self.$message.error("获取数据错误");
+        });
+      },
+      remoteMethod(query) {
+        var self = this;
+        self.loading = true;
+        setTimeout(() => {
+          // this.loading = false;
+          // this.cityOptions = this.list.filter(item => {
+          //   return item.label.toLowerCase()
+          //     .indexOf(query.toLowerCase()) > -1;
+          // });
+          var param = {
+            keyword: query
+          }
+          this.$http.get('/regionManage/searchCityByKeyword.do_', {
+            params: param
+          }).then((result) => {
+            self.loading = false;
+            self.cityOptions = result;
+          }).catch(function (error) {
+            self.loading = false;
+            self.$message.error("获取数据错误");
+          });
+        }, 200);
+      },
       chooseCityDo2(){
         self.$message.error(this.countySearchList[2].regionName);
       },
@@ -1128,9 +1180,7 @@
       },
       mapConfirm() {
         const self = this
-        if (self.form.address === '') {
-          self.form.address = self.searchKey
-        }
+        self.form.address = self.searchKey
         self.baiduMapFlag = false;
         self.$options.methods.checkInputByHand(self,'cityName');
       },

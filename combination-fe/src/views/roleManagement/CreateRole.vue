@@ -418,6 +418,16 @@
         }).then((result) => {
           if (result.account.accountState === 3){
             self.$message.info("该账户已被删除，不可选择");
+            this.accountForm.accountNo = null;
+            this.accountForm.staffNo = null;
+            this.accountForm.name = null;
+            this.accountForm.permissions = null;
+            this.accountForm.department = null;
+            this.accountForm.isRelStaff = null;
+            this.accountForm.status = null;
+            this.accountForm.isRelStaff = '';
+            this.accountForm.status = 0;
+            this.accountForm.permissions = 0;
             this.isChoose = true;
             this.fetchData();
           }
@@ -426,6 +436,7 @@
             this.form.staffNum = this.selection.staffNum;
             this.form.staffName = this.selection.staffName;
             this.form.departmentName = this.selection.department;
+            this.isChoose = true;
             this.dialogVisibleAccount=false;
           }
         }).catch(function (error) {
@@ -434,6 +445,7 @@
         });
       },
       selectionCancel(){
+        this.isChoose = true;
         this.dialogVisibleAccount=false;
       },
       handleSelectionChange(val) {
@@ -465,6 +477,10 @@
                       self.$message.info("该账户已被删除，不可选择");
                     }
                     else{
+                      self.form.accountNum = result.account.accountName;
+                      self.form.staffNum = result.account.staffNum;
+                      self.form.staffName = result.account.staffName;
+                      self.form.departmentName = result.account.department;
                       self.form.businessLine = self.form.businessLine.join(';');
                       self.$http.post("roleManage/insertRole.do_", self.form)
                         .then((result) => {
@@ -512,6 +528,7 @@
         this.accountForm.isRelStaff = '';
         this.accountForm.status = 0;
         this.accountForm.permissions = 0;
+        this.isChoose = true;
         this.dialogVisibleAccount=true;
         this.fetchData();
       },

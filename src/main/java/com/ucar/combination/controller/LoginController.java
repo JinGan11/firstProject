@@ -2,6 +2,7 @@ package com.ucar.combination.controller;
 
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ReturnResult;
+import com.ucar.combination.model.Account;
 import com.ucar.combination.model.User;
 import com.ucar.combination.service.PowerService;
 import com.ucar.combination.service.UserService;
@@ -61,7 +62,7 @@ public class LoginController {
             //设置为当前系统时间
             dateOne.setTime(new Date());
             // 获取数据库中的时间
-            dateTwo.setTime(list.get(0).getModifyTime());
+            dateTwo.setTime(((List<Account>)result.get("accountList")).get(0).getModifyTime());
             long timeOne = dateOne.getTimeInMillis();
             long timeTwo = dateTwo.getTimeInMillis();
             //转化day

@@ -23,7 +23,7 @@ public class CrosXssFilter implements Filter{
     public static final String[] ALLOW_DOMAIN = {"http://localhost:8081","http://10.104.118.111:8082",
             "http://10.104.118.111:8080","http://10.104.118.111:8081","http://10.104.118.111:8083",
             "http://localhost:8082", "http://localhost:8083", "http://localhost:8084",
-            "http://localhost:17957"};
+            "http://localhost:36078"};
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
