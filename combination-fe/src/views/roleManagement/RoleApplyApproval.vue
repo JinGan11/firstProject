@@ -540,6 +540,12 @@
       },
       fetchData() { //获取数据
         var self = this;
+        if(self.form.applyTime==null){
+          self.form.applyTime=['',''];
+        }
+        if(self.form.modifyTime==null){
+          self.form.modifyTime=['',''];
+        }
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
