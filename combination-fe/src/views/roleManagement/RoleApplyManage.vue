@@ -103,7 +103,7 @@
           <el-radio v-model="selection" @change="selectRow(scope.row)" :label="scope.row.id" ><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
-      <!--      <el-table-column prop="id"  label="隐藏id"></el-table-column>-->
+      <el-table-column prop="id"  label="隐藏id"></el-table-column>
       <el-table-column prop="roleApplyNum" label="角色申请编号" width="150">
         <template slot-scope="scope">
           <el-button type="text" @click="roleApplyNumBtn(scope.row)">{{scope.row.roleApplyNum}}</el-button>
@@ -810,10 +810,15 @@
             selection:self.selection,
             date : new Date().getTime(),
           };
+          console.log(param.selection);
           self.$http.get('roleApply/commitRoleApply.do_', {
             params: param
-          }).then(() => {
-            self.$message.success("提交角色申请成功");
+          }).then((result) => {
+            if(result.roleState==0){
+              self.$message.error("角色已失效，提交审核失败！");
+            }else{
+              self.$message.success("提交角色申请成功");
+            }
             self.fetchData();
             self.disabledDelete=true;
             self.selection=[];

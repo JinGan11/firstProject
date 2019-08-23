@@ -113,13 +113,23 @@ public interface RoleApplyManageDao {
 
 
     /**
-     * @Description:  查询添加账号里 的  账号状态
+     * @Description:  根据角色ID   查询角色状态
      * @Author: min.zhang08@ucarinc.com
      * @Params
      * @Return
      * @Date  10:39 2019/8/21
      */
-    List<Account> queryByAccountQueryIdList(Map<String, Object> map);
+    int getRoleStateById(Long roleId);
+
+    /**
+    * @Description:  查询账号状态
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  19:48 2019/8/22
+    */
+    List<Integer> getAccountStateById(List<Long> accountIds);
+
 
 
 

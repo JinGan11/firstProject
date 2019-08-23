@@ -53,7 +53,7 @@
           申请账号明细
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" size="mini" @click="addAccountForApply()">添加</el-button>
+          <el-button type="primary" size="mini" @click="addAccountForApply">添加</el-button>
         </el-col>
       </el-row>
     </div>
@@ -252,7 +252,7 @@
               </el-col>
               <el-col :span="6">
                 <el-form-item label="数据权限类型" label-width="150px">
-                  <el-select style="width:180px;" v-model="form.permissions" clearable placeholder="请选择">
+                  <el-select style="width:180px;" v-model="form.permissions" clearable placeholder="全选">
                     <el-option
                       v-for="item in form.permissionsList"
                       :key="item.value"
@@ -271,11 +271,11 @@
               </el-col>
               <el-col :span="6">
                 <el-button type="text" @click="chooseDepartment">选择</el-button>
-                <el-button type="text">取消</el-button>
+                <el-button type="text" @click="clearDepartment">清空</el-button>
               </el-col>
               <el-col :span="6">
                 <el-form-item label="是否关联员工">
-                  <el-select style="width: 180px" v-model="form.isRelStaff" clearable placeholder="请选择">
+                  <el-select style="width: 180px" v-model="form.isRelStaff" clearable="" placeholder="全部">
                     <el-option
                       v-for="item in form.isRelStaffoptions"
                       :key="item.value"
@@ -287,7 +287,7 @@
               </el-col>
               <el-col :span="6">
                 <el-form-item label="账号状态">
-                  <el-select style="width:180px;" v-model="form.status" clearable placeholder="请选择">
+                  <el-select style="width:180px;" v-model="form.status" clearable placeholder="全部">
                     <el-option
                       v-for="item in accountStatusList"
                       :key="item.value"
@@ -577,11 +577,14 @@
           accountStatusEnum: {},
           permissions: null,
           department: null,
-          isRelStaffoptions: [{
-            value: '1',
+          isRelStaffoptions:[{
+            value: 2,
+            label: '全部'
+          },{
+            value: 1,
             label: '是'
-          }, {
-            value: '0',
+          },{
+            value: 0,
             label: '否'
           }],
           isRelStaff: null,
@@ -700,6 +703,11 @@
       chooseDepartment(){
         this.chooseDepartmentFlag = true;
       },
+      clearDepartment(){//清除部门的值
+        this.form.department='';
+      },
+
+
       handleSizeChangeRole(val) {
         this.pageSize = val;
         this.currentPage = 1;
@@ -802,6 +810,10 @@
         this.fetchData();
         //清楚表格所选的记录
         this.$refs.multipleTable.clearSelection();
+        //
+        this.form.permissions='';
+        this.form.status='';
+        this.form.isRelStaff='';
       },
 
       fetchData() {//账户列表

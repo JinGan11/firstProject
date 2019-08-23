@@ -53,7 +53,7 @@
           申请账号明细
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" size="mini" @click="addAccountForApply()">添加</el-button>
+          <el-button type="primary" size="mini" @click="addAccountForApply">添加</el-button>
         </el-col>
       </el-row>
     </div>
@@ -255,7 +255,7 @@
               </el-col>
               <el-col :span="6">
                 <el-form-item label="数据权限类型" label-width="150px">
-                  <el-select style="width:180px;" v-model="form.permissions" clearable placeholder="请选择">
+                  <el-select style="width:180px;" v-model="form.permissions" clearable placeholder="全选">
                     <el-option
                       v-for="item in form.permissionsList"
                       :key="item.value"
@@ -274,11 +274,11 @@
               </el-col>
               <el-col :span="6">
                 <el-button type="text" @click="chooseDepartment">选择</el-button>
-                <el-button type="text">取消</el-button>
+                <el-button type="text" @click="clearDepartment">清空</el-button>
               </el-col>
               <el-col :span="6">
                 <el-form-item label="是否关联员工">
-                  <el-select style="width: 180px" v-model="form.isRelStaff" clearable placeholder="请选择">
+                  <el-select style="width: 180px" v-model="form.isRelStaff"  clearable placeholder="全部">
                     <el-option
                       v-for="item in form.isRelStaffoptions"
                       :key="item.value"
@@ -290,7 +290,7 @@
               </el-col>
               <el-col :span="6">
                 <el-form-item label="账号状态">
-                  <el-select style="width:180px;" v-model="form.status" clearable placeholder="请选择">
+                  <el-select style="width:180px;" v-model="form.status" clearable placeholder="全部">
                     <el-option
                       v-for="item in accountStatusList"
                       :key="item.value"
@@ -508,6 +508,7 @@
         dialogVisibleAccount: false,
         dialogCategory: '',//控制显示对应的具体弹窗
         multipleSelection: [],
+        accountIds:[],
         tableDataAccount: [],
         accountIdList: [],
         accountLength: '',
@@ -528,10 +529,6 @@
 
 
         accountStatusList: [
-          {
-            value: '',
-            label: '全部',
-          },
           {
           value: '1',
           label: '正常'
@@ -578,11 +575,14 @@
           accountStatusEnum: {},
           permissions: null,
           department: null,
-          isRelStaffoptions: [{
-            value: '1',
+          isRelStaffoptions:[{
+            value: 2,
+            label: '全部'
+          },{
+            value: 1,
             label: '是'
-          }, {
-            value: '0',
+          },{
+            value: 0,
             label: '否'
           }],
           isRelStaff: null,
@@ -653,8 +653,6 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
-      this.otherInfo.applyAccountName = sessionStorage.getItem('loginUsername');
-      this.otherInfo.modifyStaffName = sessionStorage.getItem('loginUsername');
       this.queryLoginInRoleApply();
       // window.localStorage.setItem("tableDataAccount",tableDataAccount)
     },
@@ -709,6 +707,9 @@
       //弹出部门对话框
       chooseDepartment(){
         this.chooseDepartmentFlag = true;
+      },
+      clearDepartment(){//清除部门的值
+        this.form.department='';
       },
 
       selectRoleForRoleApply() {
@@ -806,8 +807,13 @@
         this.fetchData();
         //清楚表格所选的记录
         this.$refs.multipleTable.clearSelection();
+        //设置下拉框默认
         //
         this.disabledSelectAccount=true;
+
+        this.form.permissions='';
+        this.form.status='';
+        this.form.isRelStaff='';
 
       },
 
@@ -840,9 +846,14 @@
         });
         return Promise.resolve(result);
       },
-      cancelSelectAccount() {
+      cancelSelectAccount() {//添加账号
         //取消按钮
         this.dialogVisibleAccount = false;
+        //取消之前选中的
+        this.form.permissions='';
+        this.form.status='';
+        this.isRelStaff='';
+
       },
       cancelRoleApply() {//取消 退回角色申请列表
         this.$router.replace('/roleManagement/apply')
@@ -850,27 +861,56 @@
       handleSelectAccount(val) {
         this.disabledSelectAccount=false;
         this.multipleSelection = val;
+        this.accountIds=[];
+        for(let i=0;i<this.multipleSelection.length;i++){
+          this.accountIds.push(val[i].id);
+        }
       },
 
       selectAccountConfirm() {//点击添加按钮，将选择的账户 回显
-        this.accountDuplicateList=[];
-        for (let i = 0; i < this.multipleSelection.length; i++) {
-          let flag = 0;
-          for (let j = 0; j < this.accountChangesList.length; j++) {
-            if (this.multipleSelection[i].id == this.accountChangesList[j].id) {
-              flag = 1;
-              this.accountDuplicateList.push(this.multipleSelection[i].accountName);
-            }
-          }
-          if (flag == 0) {
-            this.accountChangesList.push(this.multipleSelection[i]);
-          }
-        }
-        if(this.accountDuplicateList.length>0){
-          this.$message.info('账号    '+this.accountDuplicateList+'    已存在，不可重复添加');
-        }
-        this.tableDataAccount = this.accountChangesList;
-        this.dialogVisibleAccount = false;
+        var self=this;
+        var param={
+          accountIds: self.accountIds.toString(),
+        };
+        alert(param.accountIds);
+        self.$http.get('roleApply/getAccountStateById.do_',{
+          params: param
+        }).then((result) => {
+            alert(1111111);
+            this.accountStateList=result.accountStateList;
+            console.log(this.accountStateList);
+          }).catch(function (error) {
+          commonUtils.Log("roleApply/getAccountStateById.do_" + error);
+          self.$message.error("获取数据失败")
+        });
+
+        // for(let i=0;i<this.accountStateList.length;i++){
+        //   if(this.accountStateList[i]==3){
+        //     this.$message.error('账号    '+this.multipleSelection[i].accountName+'    失效');
+        //   }
+        // }
+
+
+
+        //
+        // this.accountDuplicateList=[];
+        // for (let i = 0; i < this.multipleSelection.length; i++) {
+        //   let flag = 0;
+        //   for (let j = 0; j < this.accountChangesList.length; j++) {
+        //     if (this.multipleSelection[i].id == this.accountChangesList[j].id) {
+        //       flag = 1;
+        //       this.accountDuplicateList.push(this.multipleSelection[i].accountName);
+        //     }
+        //   }
+        //   if (flag == 0) {
+        //     this.accountChangesList.push(this.multipleSelection[i]);
+        //   }
+        // }
+        // if(this.accountDuplicateList.length>0){
+        //   this.$message.info('账号    '+this.accountDuplicateList+'    已存在，不可重复添加');
+        // }
+        // this.tableDataAccount = this.accountChangesList;
+        // this.dialogVisibleAccount = false;
       },
         // var param= {
         //   accountQueryIdList: this.accountQueryIdList.toString(),
@@ -1015,6 +1055,8 @@
       },
 
       saveRoleApply() {//保存角色申请
+        this.otherInfo.applyAccountName = sessionStorage.getItem('loginUsername');
+        this.otherInfo.modifyStaffName = sessionStorage.getItem('loginUsername');
         for (let i = 0; i < this.tableDataAccount.length; i++) {//账号ID
           this.accountIdList.push(this.tableDataAccount[i].id);
         }
@@ -1052,6 +1094,8 @@
       },
 
       createSaveCommitRoleApply(){
+        this.otherInfo.applyAccountName = sessionStorage.getItem('loginUsername');
+        this.otherInfo.modifyStaffName = sessionStorage.getItem('loginUsername');
 
         for (let i = 0; i < this.tableDataAccount.length; i++) {//账号ID
           this.accountIdList.push(this.tableDataAccount[i].id);

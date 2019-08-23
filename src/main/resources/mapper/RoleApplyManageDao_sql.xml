@@ -276,17 +276,33 @@
          where DATEDIFF(apply_time,NOW()) =0;
     </select>
 
-    <select id="queryByAccountQueryIdList"  resultType="com.ucar.combination.model.Account">
-         SELECT T.id,
-                T.account_name,
-                T.account_state,
-         FROM t_account T
-         where T.id in
-        <foreach collection="accountQueryIdList" open="(" separator="," close=")" item="item">
+<!--    <select id="queryByAccountQueryIdList"  resultType="com.ucar.combination.model.Account">-->
+<!--         SELECT T.id,-->
+<!--                T.account_name,-->
+<!--                T.account_state,-->
+<!--         FROM t_account T-->
+<!--         where T.id in-->
+<!--        <foreach collection="accountQueryIdList" open="(" separator="," close=")" item="item">-->
+<!--            #{item}-->
+<!--        </foreach>-->
+<!--    </select>-->
+
+    <select id="getRoleStateById" parameterType="Long" resultType="int">
+        select t2.role_status
+        from t_role_apply t1,t_role_info t2
+        where t1.role_id=t2.id
+        and t1.id=#{id}
+    </select>
+
+
+    <!--查询所选账户的状态-->
+    <select id="getAccountStateById" parameterType="java.util.List" resultType="java.util.List">
+        select account_state
+        from t_account
+        where id in
+        <foreach collection="accountIds" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
-
-
     </select>
 
 

@@ -124,6 +124,23 @@ public interface RoleApplyManageService {
     */
     String getApplyNum();
 
+    /**
+    * @Description:  根据角色ID 获取角色状态
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  18:09 2019/8/22
+    */
+    int getRoleStateById(Long roleId);
+
+    /**
+    * @Description:  一次查询多个账号状态
+    * @Author: min.zhang08@ucarinc.com
+    * @Params
+    * @Return
+    * @Date  19:50 2019/8/22
+    */
+    List<Integer> getAccountStateById(List<Long> accountIds);
 
 
 }

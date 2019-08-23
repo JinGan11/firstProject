@@ -202,7 +202,15 @@ public class RoleApplyManageServiceImpl implements RoleApplyManageService {
         return applyNum.toString();
     }
 
+    @Override
+    public int getRoleStateById(Long roleId) {
+        return roleApplyManageDao.getRoleStateById(roleId);
+    }
 
+    @Override
+    public List<Integer> getAccountStateById(List<Long> accountIds) {
+        return roleApplyManageDao.getAccountStateById(accountIds);
+    }
 
 
 }
