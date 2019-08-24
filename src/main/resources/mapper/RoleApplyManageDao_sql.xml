@@ -137,7 +137,12 @@
         <if test="modifyTimeEnd!=null and modifyTimeEnd.trim()!=''">
             AND t1.modify_time<![CDATA[ <= ]]> #{modifyTimeEnd}
         </if>
-        order by t1.modify_time desc
+        <if test="accountName!=null and accountName.trim()!=''">
+            order by t1.modify_time asc
+        </if>
+        <if test="accountName == null or accountName.trim() ==''">
+            order by t1.modify_time desc
+        </if>
     </select>
 
 
