@@ -287,7 +287,7 @@
         <hr style="height: 1px">
         <div>
           <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">部门及部门下属所在城市</div>
-          <el-input style="width: 90%;text-align: center" v-model="this.departmentListById.toString()"
+          <el-input type="textarea" style="width: 90%;text-align: center" v-model="this.departmentListById.toString()"
                     disabled></el-input>
         </div>
         <hr style="height: 1px">
