@@ -10,7 +10,9 @@
         (#{acc.accountId},#{acc.historyOperationType},#{acc.createTime},#{acc.createEmp},#{acc.staffName},#{acc.staffNum},#{acc.permissions},#{acc.accountState},#{acc.creater})
     </insert>
     <select id="selectAccountHistoryByAccountId" parameterType="String" resultType="com.ucar.combination.model.AccountHistory">
-        select
+        select t11.staff_num,t11.staff_name,t11.history_operation_type,t11.permissions,t11.account_state,t11.create_emp ,t11.account_name,t11.create_time,t11.account_id,t11.creater,t3.staff_name staff_name1
+        from
+       (select
         t2.staff_num,
         t2.staff_name,
         t2.history_operation_type,
@@ -20,13 +22,13 @@
         t1.account_name,
         t2.create_time,
         t2.account_id,
-        t2.creater,
-        t3.staff_name staff_name1
+        t2.creater
         from
-        t_account t1,t_account_history t2,t_staff t3
+        t_account t1,t_account_history t2
         where t2.account_id = #{accountId}
-        and t2.create_emp = t1.id
-        and t2.creater = t3.id
-        order by create_time DESC
+        and t2.create_emp = t1.id) t11
+        left join t_staff t3
+        on t11.creater = t3.id
+        order by t11.create_time DESC
     </select>
 </mapper>

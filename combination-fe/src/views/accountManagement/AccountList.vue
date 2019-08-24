@@ -260,7 +260,7 @@
       <el-table-column prop="historyOperationType" label="操作类型" width="120"></el-table-column>
       <el-table-column prop="accountName" label="操作人" width="130">
         <template slot-scope="scope">
-          <p v-if="scope.row.accountName!=null">{{scope.row.accountName}}({{scope.row.staffName1}})</p>
+          <p v-if="scope.row.staffName1!=null">{{scope.row.accountName}}({{scope.row.staffName1}})</p>
           <p v-else>{{scope.row.accountName}}</p>
         </template>
       </el-table-column>
