@@ -416,7 +416,6 @@
         .then((result) => {
           self.departmentDto = result.departmentDto;
         }).catch(function (error) {
-
       });
     },
     mounted() {
@@ -811,6 +810,7 @@
           if (self.strict) {
             self.checkStrictly = false;
           }
+          self.strict = true;
         }).catch(function (error) {
           commonUtils.Log("roleManage/getRolePower.do_" + error);
           self.$message.error("获取数据错误")
@@ -823,13 +823,14 @@
           params: null
         }).then((result) => {
           resolve([result.powerTree]);
-          self.checkStrictly = false;
-          self.strict = true;
+          if (self.strict) {
+            self.checkStrictly = false;
+            self.strict = true;
+          }
         }).catch(function (error) {
           commonUtils.Log("account/querylist.do_:" + error);
           self.$message.error("获取数据错误")
         });
-
       },
       handleCheckChange(data, checked, indeterminate) {
       },

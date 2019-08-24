@@ -729,6 +729,7 @@
           if (self.strict) {
             self.checkStrictly = false;
           }
+          self.strict = true;
         }).catch(function (error) {
           commonUtils.Log("power/getAccountPower.do_" + error);
           self.$message.error("获取数据错误")
@@ -790,8 +791,10 @@
           params: null
         }).then((result) => {
           resolve([result.powerTree]);
-          self.checkStrictly = false;
-          self.strict = true;
+          if (self.strict) {
+            self.checkStrictly = false;
+            self.strict = true;
+          }
         }).catch(function (error) {
 
         });
