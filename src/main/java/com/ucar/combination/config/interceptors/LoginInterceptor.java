@@ -1,5 +1,8 @@
 package com.ucar.combination.config.interceptors;
 
+import com.ucar.combination.service.AccountManagerService;
+import com.ucar.combination.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,6 +21,9 @@ import java.io.PrintWriter;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
+    @Autowired
+    AccountManagerService accountManagerService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpSession session = request.getSession();
@@ -26,8 +32,16 @@ public class LoginInterceptor implements HandlerInterceptor {
            int errorCode = 100;
            writer.print(errorCode);
            return false;
+       } else {
+           int status = accountManagerService.getAccountStateById((Long) session.getAttribute("accountId"));
+           if (status == 3){
+               PrintWriter writer = response.getWriter();
+               int errorCode = 100;
+               writer.print(errorCode);
+               return false;
+           }
+           return true;
        }
-        return true;
     }
 
     @Override
