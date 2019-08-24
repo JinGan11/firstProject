@@ -909,11 +909,12 @@
         sessionStorage.setItem('roleNameFromApply', row.roleName);//角色名字
         sessionStorage.setItem('approverStaffNameFromApply', row.approverStaffName);//审批人
         sessionStorage.setItem('businessLineFromApply', row.businessLine);
-        sessionStorage.setItem('applyTimeFromApply', row.applyTime);//申请人
-        sessionStorage.setItem('applyTimeFromApply', row.applyTime);//申请人
+        sessionStorage.setItem('applyTimeFromApply', row.applyTime);//申请时间
+        sessionStorage.setItem('applyTimeFromApply', row.applyTime);//申请人applyAccountName
         sessionStorage.setItem('modifyTimeFromApply', row.modifyTime);//修改时间
         sessionStorage.setItem('modifyEmpFromApply', row.modifyEmp);//修改人applyStaffName
-        sessionStorage.setItem('applyStaffNameFromApply', row.applyStaffName);//修改人applyStaffName
+        sessionStorage.setItem('applyStaffNameFromApply', row.applyStaffName);//申请人名字
+        sessionStorage.setItem('applyAccountNameFromApply', row.applyAccountName);//申请人账号
       },
 
       roleApplyNumBtn(row){ //弹出框 角色申请详情
@@ -925,11 +926,11 @@
         this.formRoleInfo.businessLine = row.businessLine;//业务线
         this.otherInfo.applyAccountName =row.applyAccountName;//申请人登录账号
         this.otherInfo.applyStaffNum=row.applyStaffNum;//员工编号
-        this.otherInfo.applyStaffName=row.applyStaffName;//员工姓名
+        this.otherInfo.applyStaffName=row.applyAccountName;//员工姓名   //账号名字
         this.otherInfo.applyDepartmentName=row.applyDepartmentName;//部门
         this.otherInfo.applyTime = row.applyTime;//申请时间
         this.otherInfo.modifyTime = row.modifyTime;//修改时间
-        this.otherInfo.modifyStaffName =row.modifyEmp;//修改人员工姓名
+        this.otherInfo.modifyStaffName =row.modifyEmp;//修改人账号
         this.otherInfo.approveTime=row.approveTime;//审批时间
         this.formRoleInfo.approverStaffName = row.approverStaffName;//审批人
         switch (row.applyStatus) {

@@ -61,7 +61,7 @@
       <el-table ref="multipleTable" :data="tableDataAccount" border>
         <!--        <el-table-column type="selection" width="35"></el-table-column>-->
 <!--                <el-table-column prop="accountId" v-if="false" label="隐藏账号id"></el-table-column>-->
-        <el-table-column prop="id"  label="隐藏账号id"></el-table-column>
+<!--        <el-table-column prop="id"  label="隐藏账号id"></el-table-column>-->
         <el-table-column prop="accountName" label="申请账号" width="150"></el-table-column>
         <el-table-column prop="staffName" label="关联员工姓名"width="150"></el-table-column>
         <el-table-column prop="staffNum" label="关联员工编号"  width="150"></el-table-column>
@@ -104,7 +104,7 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="申请人">
-              <el-input style="width:300px;" v-model="otherInfo.applyStaffName" :disabled="true"></el-input>
+              <el-input style="width:300px;" v-model="otherInfo.applyStaffName1" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -116,7 +116,7 @@
           </el-col>
           <el-col :span="10">
             <el-form-item label="修改人">
-              <el-input style="width:300px;" v-model="otherInfo.modifyStaffName" :disabled="true"></el-input>
+              <el-input style="width:300px;" v-model="otherInfo.modifyStaffName1" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -556,11 +556,13 @@
           applyAccountName: '',
           applyStaffNum: '',
           applyStaffName: '',
+          applyStaffName1: '',
           applyDepartmentName: '',
           applyStatus: '',
           applyTime: '',
           modifyTime: '',
           modifyStaffName: '',
+          modifyStaffName1: '',
           approveTime: '',
           approverStaffName: '',
         },
@@ -954,19 +956,19 @@
         for (let i = 0; i < self.tableDataAccount.length; i++) {
           self.applyOperationList.push(this.tableDataAccount[i].applyOperation)
         }
-        self.forms.roleApplyNum = self.formRoleInfo.roleApplyNum;
-        self.forms.roleId = self.roleId;
-        self.forms.roleName = self.formRoleInfo.roleName;
-        self.forms.applyStatus = self.otherInfo.applyStatus;
-        self.forms.applyAccountName = self.otherInfo.applyAccountName;
+        self.forms.roleApplyNum = self.formRoleInfo.roleApplyNum;//申请编号
+        self.forms.roleId = self.roleId;//角色ID
+        self.forms.roleName = self.formRoleInfo.roleName;//角色名字
+        self.forms.applyStatus = self.otherInfo.applyStatus;//申请状态
+        self.forms.applyAccountName = self.otherInfo.applyAccountName;//申请人账号名字
         self.forms.applyStaffNum = self.otherInfo.applyStaffNum;
         self.forms.applyStaffName = self.otherInfo.applyStaffName;
         self.forms.applyDepartmentName = self.otherInfo.applyDepartmentName;
-        self.forms.applyTime = self.otherInfo.applyTime;
+        self.forms.applyTime = self.otherInfo.applyTime;//新建时间
         self.forms.modifyStaffName = '';
-        self.forms.modifyTime = self.otherInfo.modifyTime;
-        self.forms.accountIdList = self.accountIdList;
-        self.forms.applyOperationList = self.applyOperationList;
+        self.forms.modifyTime = self.otherInfo.modifyTime;//修改时间
+        self.forms.accountIdList = self.accountIdList;//账户ID
+        self.forms.applyOperationList = self.applyOperationList;//操作ID
 
         if (!self.$options.methods.checkInput(self)) {//校验
           self.accountIdList = [];
@@ -994,7 +996,8 @@
         }).then((result) => {
           self.roleStatus = result.page.roleStatus;
           if (self.roleStatus == 0) {
-            self.$message.error("该角色已失效，保存失败！请重新选择角色！！");
+            self.$message.error("该角色已失效，保存失败！！");
+            self.$router.replace("/roleManagement/apply");
           }else{
             self.checkAccountState(self,msgs);
           }
@@ -1018,9 +1021,11 @@
         }).then((result) => {
           self.accountDeletedList1 = result.accountDeletedList;
           if (self.accountDeletedList1.length > 0) {
-            self.$message.error('账号    ' + self.accountDeletedList1 + '    已失效,保存失败！请重新选择账号！！');
-            self.tableDataAccount=[];
-            self.accountChangesList=[];
+            self.$message.error('账号    ' + self.accountDeletedList1 + '    已失效,保存失败！！');
+            self.$router.replace("/roleManagement/apply");
+            // self.tableDataAccount=[];
+            // self.accountChangesList=[];
+            // self.accountIdList1=[];
           }else{
             if(msgs=='flagBtn1'){
               self.saveRoleApply(self);

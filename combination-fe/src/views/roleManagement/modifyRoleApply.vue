@@ -672,8 +672,8 @@
       this.otherInfo.applyTime = sessionStorage.getItem('applyTimeFromApply');//申请时间
       this.otherInfo.modifyTime = sessionStorage.getItem('modifyTimeFromApply');//修改时间
       this.otherInfo.applyAccountName = sessionStorage.getItem('loginUsername');//申请人员工姓名
-      this.otherInfo.modifyStaffName = sessionStorage.getItem('modifyEmpFromApply');//修改人员工姓名
-      this.otherInfo.applyStaffName = sessionStorage.getItem('applyStaffNameFromApply');//修改人员工姓名
+      this.otherInfo.modifyStaffName = sessionStorage.getItem('modifyEmpFromApply');//修改人账号
+      this.otherInfo.applyStaffName = sessionStorage.getItem('applyAccountNameFromApply');//申请人账号
       this.otherInfo.applyStatus='已新建';//状态
       this.showAccountListByApplyId();//查询改申请编号 包含的账号列表
       // this.queryLoginInRoleApply();//申请人  具体信息
@@ -988,7 +988,8 @@
         }).then((result) => {
           self.roleStatus = result.page.roleStatus;
           if (self.roleStatus == 0) {
-            self.$message.error("该角色已失效，保存失败！请重新选择角色！！");
+            self.$message.error("该角色已失效，保存修改失败！！！");
+            self.$router.replace("/roleManagement/apply");
           }else{
             self.checkAccountState(self,msgs);
           }
@@ -1012,10 +1013,11 @@
         }).then((result) => {
           self.accountDeletedList1 = result.accountDeletedList;
           if (self.accountDeletedList1.length > 0) {
-            self.$message.error('账号    ' + self.accountDeletedList1 + '    已失效,保存失败！请重新选择账号！！');
-            self.tableDataAccount=[];
-            self.accountChangesList=[];
-            self.accountIdList1=[];
+            self.$message.error('账号    ' + self.accountDeletedList1 + '    已失效,保存修改失败！！！');
+            self.$router.replace("/roleManagement/apply");
+            // self.tableDataAccount=[];
+            // self.accountChangesList=[];
+            // self.accountIdList1=[];
           }else{
             if(msgs=='flagBtn1'){
               self.saveModifyRoleApply(self);
