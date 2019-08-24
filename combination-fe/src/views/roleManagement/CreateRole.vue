@@ -432,16 +432,7 @@
         }).then((result) => {
           if (result.account.accountState === 3){
             self.$message.info("该账户已被删除，不可选择");
-            this.accountForm.accountNo = null;
-            this.accountForm.staffNo = null;
-            this.accountForm.name = null;
-            this.accountForm.permissions = null;
-            this.accountForm.department = null;
-            this.accountForm.isRelStaff = null;
-            this.accountForm.status = null;
-            this.accountForm.isRelStaff = '';
-            this.accountForm.status = 0;
-            this.accountForm.permissions = 0;
+            this.formatForm();
             this.isChoose = true;
             this.fetchData();
           }
@@ -533,16 +524,7 @@
       },
       chooseAccount(){
         //this.accountForm = {};
-        this.accountForm.accountNo = null;
-        this.accountForm.staffNo = null;
-        this.accountForm.name = null;
-        this.accountForm.permissions = null;
-        this.accountForm.department = null;
-        this.accountForm.isRelStaff = null;
-        this.accountForm.status = null;
-        this.accountForm.isRelStaff = '';
-        this.accountForm.status = 0;
-        this.accountForm.permissions = 0;
+        this.formatForm();
         this.isChoose = true;
         this.dialogVisibleAccount=true;
         this.fetchData();
