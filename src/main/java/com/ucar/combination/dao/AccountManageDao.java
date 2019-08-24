@@ -205,4 +205,6 @@ public interface AccountManageDao {
      * @return
      */
     String getStaffNameByAccountId(Long id);
+
+    Account selectAccountByNum(String accountName);
 }
