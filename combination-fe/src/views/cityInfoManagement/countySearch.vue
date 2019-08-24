@@ -188,7 +188,15 @@
                     exportPermission: true
                 },
 
-                flags:'1'
+                flags:'1',
+
+                lastInputData:{
+                    regionCode:'',
+                    regionName:'',
+                    upperRegion:'',
+                    upperRegionTwice:'',
+                    regionStatus: '',
+                }
             }
         },
         activated() {
@@ -198,7 +206,7 @@
             this.judgmentAuthority();
             commonUtils.Log("页面进来");
             this.fetchData();
-            this.fetchDataForInput();
+            this.fetchDataForTable();
 
         },
         methods: {
@@ -214,11 +222,11 @@
             handleSizeChange(val) {
                 this.pageSize = val;
                 this.currentPage = 1;
-                this.fetchData(1, val);
+                this.fetchDataForTable(1, val);
             },
             handleCurrentChange(val) {
                 this.currentPage = val;
-                this.fetchData(val, this.pageSize);
+                this.fetchDataForTable(val, this.pageSize);
             },
             handleSelectionChange(val) {
                 this.selection = val;
@@ -230,6 +238,11 @@
             },
             fetchData() {
                 var self=this;
+                self.lastInputData.regionCode=self.form.regionCode;
+                self.lastInputData.regionName=self.form.regionName;
+                self.lastInputData.upperRegion=self.form.upperRegion;
+                self.lastInputData.upperRegionTwice=self.form.upperRegionTwice;
+                self.lastInputData.regionStatus=self.form.regionStatus;
                 var param={
                     page:self.currentPage,
                     limit:self.pageSize,
@@ -264,16 +277,18 @@
                 });
 
             },
-            fetchDataForInput() {
+            fetchDataForTable() {
                 var self=this;
                 var param={
                     page:self.currentPage,
                     limit:self.pageSize,
-                    regionCode:self.form.regionCode,
-                    regionName:self.form.regionName,
-                    upperRegion:self.form.upperRegion,
-                    upperRegionTwice:self.form.upperRegionTwice,
-                    regionStatus: self.form.regionStatus,
+
+                    regionCode:self.lastInputData.regionCode,
+                    regionName:self.lastInputData.regionName,
+                    upperRegion:self.lastInputData.upperRegion,
+                    upperRegionTwice:self.lastInputData.upperRegionTwice,
+                    regionStatus: self.lastInputData.regionStatus,
+
                     isGetAll:true
                 };
                 self.$http.get('/regionManage/countySearch',{

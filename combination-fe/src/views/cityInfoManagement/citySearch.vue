@@ -168,7 +168,14 @@
         },
 
           flags:'1',
-          exportDisabled:false
+          exportDisabled:false,
+
+          lastInputData:{
+              regionCode:'',
+              regionName:'',
+              upperRegion:'',
+              regionStatus: '',
+          }
       }
     },
     activated() {
@@ -177,7 +184,7 @@
     mounted() {
       this.judgmentAuthority();
       commonUtils.Log("页面进来");
-      this.fetchDataForInput();
+      this.fetchDataForTable();
       this.fetchData();
     },
     methods: {
@@ -193,11 +200,11 @@
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;
-        this.fetchData(1, val);
+        this.fetchDataForTable(1, val);
       },
       handleCurrentChange(val) {
         this.currentPage = val;
-        this.fetchData(val, this.pageSize);
+        this.fetchDataForTable(val, this.pageSize);
       },
       handleSelectionChange(val) {
         this.selection = val;
@@ -209,6 +216,10 @@
         },
        fetchData() {
         var self=this;
+           self.lastInputData.regionCode=self.form.regionCode;
+           self.lastInputData.regionName=self.form.regionName;
+           self.lastInputData.upperRegion=self.form.upperRegion;
+           self.lastInputData.regionStatus=self.form.regionStatus;
         var param={
           page:self.currentPage,
           limit:self.pageSize,
@@ -242,15 +253,17 @@
           self.$message.error("获取数据错误");
         });
       },
-        fetchDataForInput() {
+        fetchDataForTable() {
             var self=this;
             var param={
                 page:self.currentPage,
                 limit:self.pageSize,
-                regionCode:self.form.regionCode,
-                regionName:self.form.regionName,
-                upperRegion:self.form.upperRegion,
-                regionStatus: self.form.regionStatus,
+
+                regionCode:self.lastInputData.regionCode,
+                regionName:self.lastInputData.regionName,
+                upperRegion:self.lastInputData.upperRegion,
+                regionStatus: self.lastInputData.regionStatus,
+
                 isGetAll:true
             };
             self.$http.get('/regionManage/citySearch',{
