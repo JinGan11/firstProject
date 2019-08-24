@@ -249,6 +249,9 @@ public class DepartmentController {
         if (departmentDto!=null&&departmentDto.getCreateEmp()!=null){
             Account account1=accountManageDao.selectById(departmentDto.getCreateEmp());
             String createName=accountManageDao.getStaffNameByAccountId(departmentDto.getCreateEmp());
+            if (account1!=null&&account1.getAccountName()!=null){
+                departmentDto.setCreateEmpName(account1.getAccountName());
+            }
             if (createName!=null){
                 departmentDto.setCreateEmpName(account1.getAccountName()+"("+createName+")");
             }
@@ -256,6 +259,9 @@ public class DepartmentController {
         if (departmentDto!=null&&departmentDto.getModifyEmp()!=null){
             Account account1=accountManageDao.selectById(departmentDto.getModifyEmp());
             String modifyName=accountManageDao.getStaffNameByAccountId(departmentDto.getModifyEmp());
+            if (account1!=null&&account1.getAccountName()!=null){
+                departmentDto.setModifyEmpName(account1.getAccountName());
+            }
             if (modifyName!=null){
                 departmentDto.setModifyEmpName(account1.getAccountName()+"("+modifyName+")");
             }

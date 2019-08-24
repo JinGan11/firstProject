@@ -120,6 +120,9 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         if (account!=null&&account.getCreatEmpId()!=null){
             Account account1=accountManageDao.selectById(account.getCreatEmpId());
            String createName=accountManageDao.getStaffNameByAccountId(account.getCreatEmpId());
+            if (account1!=null&&account1.getAccountName()!=null){
+                account.setCreatEmpName(account1.getAccountName());
+            }
            if (createName!=null){
 			   account.setCreatEmpName(account1.getAccountName()+"("+createName+")");
 		   }
@@ -127,9 +130,12 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         if (account!=null&&account.getModifyEmpId()!=null){
             Account account1=accountManageDao.selectById(account.getModifyEmpId());
             String modifyName=accountManageDao.getStaffNameByAccountId(account.getModifyEmpId());
+            if (account1!=null&&account1.getAccountName()!=null){
+                account.setModifyEmpName(account1.getAccountName());
+            }
             if (modifyName!=null){
-				account.setModifyEmpName(account1.getAccountName()+"("+modifyName+")");
-			}
+                account.setModifyEmpName(account1.getAccountName()+"("+modifyName+")");
+            }
         }
         return account;
     }
