@@ -192,7 +192,7 @@ public interface DepartmentDao {
      * @params id 传入一个LONG型的ID进行查找
      * @return Department返回一个部门类。
      */
-    DepartmentDto getDepartmentDtoById(Long id);
+    DepartmentDto getDepartmentDtoById(String id);
 
     /**
      * description: 校验有效性是否更改

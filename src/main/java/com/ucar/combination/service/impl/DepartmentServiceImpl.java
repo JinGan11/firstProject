@@ -279,7 +279,7 @@ public class DepartmentServiceImpl implements DepartmentService {
      */
     @Override
     public DepartmentDto getDepartmentDtoById(String id) {
-        return departmentDao.getDepartmentDtoById(Long.valueOf(id));
+        return departmentDao.getDepartmentDtoById(id);
     }
 
     /**

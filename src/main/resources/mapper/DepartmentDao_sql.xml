@@ -237,75 +237,6 @@
     </select>
 
     <select id="searchDepartment" resultType="com.ucar.combination.model.dto.SearchDepartmentDto">
-       <!-- SELECT A.id,
-        A.department_no,
-        A.workplace,
-        A.department_name,
-        A.staff_id,
-        A.staff_name,
-        A.city_id,
-        A.address,
-        A.telephone,
-        A.email,
-        A.landline,
-        A.level,
-        A.upper_department_no,
-        A.support_business,
-        A.department_type,
-        A.status,
-        A.create_emp,
-        A.create_time,
-        A.modify_emp,
-        A.modify_time,
-        A.remark,
-        A.city_name,
-        A.company_name
-        FROM(
-        SELECT T.id,
-        T.department_no,
-        T.workplace,
-        T.department_name,
-        T.staff_id,
-        T.staff_name,
-        T.city_id,
-        T.address,
-        T.telephone,
-        T.email,
-        T.landline,
-        T.level,
-        T.upper_department_no,
-        T.support_business,
-        T.department_type,
-        T.status,
-        T.create_emp,
-        T.create_time,
-        T.modify_emp,
-        T.modify_time,
-        T.remark,
-        T1.city_name,
-        group_concat(T3.company_name SEPARATOR';') as company_name
-        from t_department T JOIN t_b_city T1 on T.city_id=T1.city_id
-        join t_r_department_company T2 on T.id = T2.department_id
-        JOIN t_company T3 ON T2.company_id=T3.id
-        <where>
-            <if test="staffId !=null and staffId.trim()!=''">AND T.staff_id=#{staffId}</if>
-            <if test="departmentName != null and departmentName.trim()!=''">AND T.department_name=#{departmentName}</if>
-            <if test="staffName != null and staffName.trim()!=''">AND T.staff_name=#{staffName}</if>
-            <if test="staffId != null and staffId.trim()!=''">AND T.staff_id=#{staffId}</if>
-            <if test="telephone != null and telephone.trim()!=''">AND T.telephone=#{telephone}</if>
-            <if test="cityName != null and cityName.trim()!=''">AND T1.city_name=#{cityName}</if>
-            <if test="level != null and level.trim()!=''">AND T.level=#{level}</if>
-            <if test="upperDepartmentNo != null and upperDepartmentNo.trim()!=''">AND
-                T.upper_department_no=#{upperDepartmentNo}
-            </if>
-            <if test="status != null and status.trim()!=''">AND T.status=#{status}</if>
-            <if test="departmentType != 0 and departmentType != null and departmentType.trim()!=''">
-                AND T.department_type=#{departmentType}
-            </if>
-        </where>
-        GROUP BY T.id) AS A
-        GROUP BY A.status,A.create_time ORDER BY A.status DESC ,A.create_time DESC
-       -->
         SELECT A.id,
         A.department_no,
         A.workplace,
@@ -375,9 +306,9 @@
         GROUP BY T.id) AS A
         GROUP BY A.status,A.create_time ORDER BY A.status DESC ,A.create_time DESC
     </select>
-    <select id="getDepartmentDtoById" parameterType="java.lang.Long"
+    <select id="getDepartmentDtoById" parameterType="java.lang.String"
             resultType="com.ucar.combination.model.dto.DepartmentDto">
-        SELECT T.id,
+         SELECT T.id,
         T.department_no,
         T.workplace,
         T.department_name,
@@ -403,9 +334,9 @@
         T1.city_name,
 		T2.account_name createEmpName,
 		T3.account_name modifyEmpName
-        from  t_department T JOIN t_b_city T1 on T.city_id=T1.city_id
-		JOIN t_account T2 on T2.id=T.create_emp
-        JOIN t_account T3 on T3.id=T.modify_emp
+        from  t_department T LEFT JOIN t_b_city T1 on T.city_id=T1.city_id
+		LEFT JOIN t_account T2 on T2.id=T.create_emp
+        LEFT JOIN t_account T3 on T3.id=T.modify_emp
         where T.id=#{id};
     </select>
 </mapper>
