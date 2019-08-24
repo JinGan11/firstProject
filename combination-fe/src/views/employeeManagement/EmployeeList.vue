@@ -1657,7 +1657,7 @@
       },*/
       staffNumBtn(val) {
         this.contentDialogVisible = true;
-        this.contentForm.accountId = val.accountId;
+        this.contentForm.accountId = val.accountName;
         this.contentForm.staffNum = val.staffNum;
         this.contentForm.staffName = val.staffName;
         this.contentForm.staffSex = val.staffSex;
