@@ -630,22 +630,7 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          var self = this;
-          var param = {
-            roleID: val,
-            date : new Date().getTime(),
-          };
-          self.$http.get('roleManage/getOneInf.do_', {
-            params: param
-          }).then((result) => {
-            if (result.page.roleStatus ===0){
-              this.$message.info("角色删除失败，角色已经被删除");
-              this.isModify = true;
-              this.isAddCount = true;
-              this.form.name = '';
-              this.fetchData();
-            }
-            else{
+
               var self = this;
               var param = {
                 selection: self.selection.roleId,
@@ -653,8 +638,13 @@
               };
               self.$http.get('roleManage/updateStatus.do_', {
                 params: param
-              }).then(() => {
-                self.$message.info("角色删除成功")
+              }).then((result) => {
+                if(result.msg === "角色删除失败，角色已经被删除"){
+                  this.$message.info("角色删除失败，角色已经被删除");
+                }
+                else{
+                  self.$message.info("角色删除成功");
+                }
                 this.form.name = '';
                 this.fetchData();
                 this.isAddCount = true;
@@ -664,11 +654,6 @@
                 commonUtils.Log("roleManage/updateStatus.do_:" + error);
                 self.$message.error("角色删除失败");
               });
-            }
-          }).catch(function (error) {
-            commonUtils.Log("roleManage/getOneInf.do_" + error);
-            self.$message.error("获取数据错误");
-          });
         }).catch(() => {
           this.$message({
             type: 'info',

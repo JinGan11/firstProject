@@ -91,14 +91,19 @@ public class RoleManagementController {
 
 	@ResponseBody
 	@RequestMapping("/updateStatus.do_")
-	public void update(HttpServletRequest request,HttpSession session ) {
+	public Result update(HttpServletRequest request,HttpSession session ) {
 		String strid = request.getParameter("selection");
 		int id = Integer.parseInt(strid);
-		Long accountId = (Long) session.getAttribute("accountId");
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
-		params.put("accountId", accountId);
-		roleManagementService.updateStatus(params);
+		if(roleManagementService.getOneInf(id).getRoleStatus() ==0){
+			return Result.ok().put("msg","角色删除失败，角色已经被删除");
+		}else{
+			Long accountId = (Long) session.getAttribute("accountId");
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("id", id);
+			params.put("accountId", accountId);
+			roleManagementService.updateStatus(params);
+			return Result.ok().put("msg","1");
+		}
 	}
 
 	/**
