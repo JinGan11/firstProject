@@ -624,8 +624,6 @@
           modifyStaffName: "",
           modifyTime: "",
           accountIdList: [],
-
-          // tableDataAccount:[],
           applyOperationList: [],
         },
 
@@ -737,6 +735,7 @@
         var applyAccountName = sessionStorage.getItem('loginUsername');
         var param = {
           applyAccountName: applyAccountName,
+          date : new Date().getTime(),
         };
         self.$http.get('roleApply/queryLoginInRoleApply.do_', {
           params: param
@@ -828,6 +827,7 @@
       },
       fetchData2(self) {//账户列表
         var param = {
+          date : new Date().getTime(),
           page: self.currentPage,
           limit: self.pageSize,
           accountName: self.form.accountNo,
@@ -856,6 +856,7 @@
       fetchData() {//账户列表
         var self = this;
         var param = {
+          date : new Date().getTime(),
           page: self.currentPage,
           limit: self.pageSize,
           accountName: self.form.accountNo,
@@ -906,6 +907,7 @@
         var self = this;
         var param = {
           accountIds: self.accountIds.toString(),
+          date : new Date().getTime(),
         };
         self.$http.get('roleApply/getAccountDeletedById.do_', {
           params: param
@@ -1106,6 +1108,7 @@
         self.roleInfoDetailFlag = true;
         var param = {
           roleID: roleId,
+          date : new Date().getTime(),
         };
         self.$http.get('roleManage/getOtherOneInf.do_', {
           params: param
