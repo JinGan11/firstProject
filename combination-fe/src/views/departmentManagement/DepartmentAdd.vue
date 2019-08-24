@@ -97,10 +97,16 @@
       </el-row>
 
       <el-row>
-        <el-col :span="16">
+        <el-col :span="8">
           <el-form-item label="详细地址" prop="address">
             <div><span :hidden="!haveWorkplace" style="color: #FF0000;">*</span>
-            <el-input :disabled="isDepartmentNameNull" style="width:500px;" v-model="form.address" maxlength="255" @focus="openAmap"></el-input></div>
+            <el-input :disabled="isDepartmentNameNull" style="width:300px;" v-model="form.address" maxlength="255" @focus="openAmap"></el-input></div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="">
+            <div><span :hidden="!haveWorkplace" style="color: #FF0000;">*</span>
+              <el-input style="width:300px;" v-model="form.addressDetail" maxlength="255"></el-input></div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -483,7 +489,7 @@
                 if (result && result.regeocode) {
                   console.log(result.regeocode.formattedAddress)
                   self.address = result.regeocode.addressComponent
-                  self.form.address = self.address.township + self.address.street + self.address.streetNumber;
+                  self.form.addressDetail = self.address.township + self.address.street + self.address.streetNumber;
                   self.searchKey = result.regeocode.formattedAddress
                   self.longitudeNum = lng;
                   self.latitudeNum = lat
@@ -516,6 +522,7 @@
           staffName: '',
           cityId: '',
           address: '',
+          addressDetail: '',
           telephone: '',
           email: '',
           landline: '',
