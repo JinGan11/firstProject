@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
@@ -70,15 +69,6 @@ public class RoleManagementController {
 		List<Role> roleList = roleManagementService.queryroleList();
 		return Result.ok().put("page", resultPage).put("RoleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values())).put("roleList",roleList);
 	}
-
-	/**
-	 * description:获取有效的角色信息
-	 * @author gan.jin@ucarinc.com
-	 * @date 2019/8/15 10:57
-	 * @param request
-	 * @return com.ucar.combination.common.Result
-	 */
-
 
 	/**
 	 * description:用于逻辑删除数据
@@ -198,11 +188,21 @@ public class RoleManagementController {
 
 	@ResponseBody
 	@RequestMapping(value = "/updateByModify.do_", method = RequestMethod.POST)
-	public void updateByModify(@RequestBody RoleDto role,HttpSession session ) {
-		Long accountId = (Long) session.getAttribute("accountId");
-		role.setModifyEmp(accountId);
-		//System.out.println("updateByModify:"+ JSON.toJSONString(role));
-		roleManagementService.updateByModify(role);
+	public Result updateByModify(@RequestBody RoleDto role,HttpSession session ) {
+		Account account = accountManagerService.selectAccountByNum(role.getAccountNum());
+		if (account.getaccountState() == 3) {
+			return Result.ok().put("msg", "该账户已被删除，不可选择");
+		}
+		int id = Integer.parseInt(String.valueOf(role.getRoleID()));
+		if(roleManagementService.getOneInf(id).getRoleStatus() ==0){
+			return Result.ok().put("msg","该角色已被删除，不可修改");
+		}
+		else{
+			Long accountId = (Long) session.getAttribute("accountId");
+			role.setModifyEmp(accountId);
+			roleManagementService.updateByModify(role);
+			return Result.ok().put("msg","1");
+		}
 	}
 
 	/**
@@ -256,13 +256,13 @@ public class RoleManagementController {
 		return roleManagementService.getRolePower(rolePower);
 	}
 
-    /**
-     * description:
-     * @author qingyu.lan@ucarinc.com
-     * @date 2019/8/12 13:17
-     * @param request
-     * @return
-     */
+	/**
+	 * description:
+	 * @author qingyu.lan@ucarinc.com
+	 * @date 2019/8/12 13:17
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/getRoleAccountList.do_")
 	public Result getRoleAccountList(HttpServletRequest request){
@@ -280,28 +280,28 @@ public class RoleManagementController {
 				.put("accountStatusEnum",CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()));
 	}
 
-    /**
-     * description:删除角色关联账号
-     * @author qingyu.lan@ucarinc.com
-     * @date 2019/8/12 13:17
-     * @param request
-     * @return
-     */
+	/**
+	 * description:删除角色关联账号
+	 * @author qingyu.lan@ucarinc.com
+	 * @date 2019/8/12 13:17
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
-    @RequestMapping("/removeRoleAccount.do_")
+	@RequestMapping("/removeRoleAccount.do_")
 	public Result removeAddAccount(HttpServletRequest request){
-        String roleId = request.getParameter("roleId");
-        String ids = request.getParameter("accountIds");
+		String roleId = request.getParameter("roleId");
+		String ids = request.getParameter("accountIds");
 		String list = request.getParameter("accountNameList");
-        String[] accountIds = ids.split(",");
-        String[] accountNameList =list.split(",");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("roleId", roleId);
-        params.put("accountIds", accountIds);
+		String[] accountIds = ids.split(",");
+		String[] accountNameList =list.split(",");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("roleId", roleId);
+		params.put("accountIds", accountIds);
 		params.put("accountNameList", accountNameList);
 		List<String> romoveAccounts = roleManagementService.removeRoleAccount(params);
-	    return new Result().ok().put("msg", "成功删除").put("romoveAccounts", romoveAccounts);
-    }
+		return new Result().ok().put("msg", "成功删除").put("romoveAccounts", romoveAccounts);
+	}
 
 	/**
 	 * description:添加角色关联账号
@@ -312,7 +312,7 @@ public class RoleManagementController {
 	 */
 	@ResponseBody
 	@RequestMapping("/addRoleAccount.do_")
-    public Result addRoleAccount(HttpServletRequest request,HttpSession session) {
+	public Result addRoleAccount(HttpServletRequest request,HttpSession session) {
 		String roleId = request.getParameter("roleId");
 		String ids = request.getParameter("accountIds");
 		String[] accountIds = ids.split(",");

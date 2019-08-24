@@ -96,14 +96,14 @@
             <el-row>
               <el-col :span="1">
                 <el-form-item label="状态">
-                    <el-select v-model="form.roleStatus" :disabled="true" style="width:150px;">
-                      <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                      </el-option>
-                    </el-select>
+                  <el-select v-model="form.roleStatus" :disabled="true" style="width:150px;">
+                    <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -192,49 +192,49 @@
             </el-col>
           </el-row>
         </el-form>
-      <div style="margin-bottom: 10px">
-        <el-button type="primary" @click="selectionConfirm" :disabled="isChoose" style="width:70px">确认选择</el-button>
-        <el-button type="primary" @click="selectionCancel" style="width:70px">取消</el-button>
-      </div>
-      <el-table ref="multipleTable" :data="tableData" border @current-change="handleSelectionChange" >
-        <!--      <el-table-column type="selection" width="35"></el-table-column>-->
-        <el-table-column label="选择" width="45">
-          <template slot-scope="scope">
-            <el-radio v-model="selection" :label="scope.row"><span width="0px;"></span></el-radio>
-          </template>
-        </el-table-column>
-        <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
-        <el-table-column prop="accountName" label="登陆账号" style="width:auto"></el-table-column>
-        <el-table-column prop="staffNum" label="员工编号" style="width:auto"></el-table-column>
-        <el-table-column prop="staffName" label="员工姓名" style="width:auto"></el-table-column>
-        <el-table-column prop="department" label="所属部门" style="width:auto"></el-table-column>
-        <el-table-column prop="premissions" label="数据权限类型" style="width:auto">
-          <template slot-scope="scope">
-            {{accountForm.permissionsEnum[scope.row.premissions]}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="accountState" label="账号状态" style="width:auto">
-          <template slot-scope="scope">
-            {{accountForm.accountStatusEnum[scope.row.accountState]}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="modifyTime" label="操作时间" style="width:auto"></el-table-column>
-        <el-table-column prop="modifyEmpName" label="操作人" style="width:auto">
-          <template slot-scope="scope">
-            <p v-if="scope.row.modifier!=null">{{scope.row.modifyEmpName}}({{scope.row.modifier}})</p>
-            <p v-else>{{scope.row.modifyEmpName}}</p>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination background
-                     @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page="currentPage"
-                     :page-sizes="[10, 50, 100, 200]"
-                     :page-size="pageSize"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="total">
-      </el-pagination>
+        <div style="margin-bottom: 10px">
+          <el-button type="primary" @click="selectionConfirm" :disabled="isChoose" style="width:70px">确认选择</el-button>
+          <el-button type="primary" @click="selectionCancel" style="width:70px">取消</el-button>
+        </div>
+        <el-table ref="multipleTable" :data="tableData" border @current-change="handleSelectionChange" >
+          <!--      <el-table-column type="selection" width="35"></el-table-column>-->
+          <el-table-column label="选择" width="45">
+            <template slot-scope="scope">
+              <el-radio v-model="selection" :label="scope.row"><span width="0px;"></span></el-radio>
+            </template>
+          </el-table-column>
+          <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
+          <el-table-column prop="accountName" label="登陆账号" style="width:auto"></el-table-column>
+          <el-table-column prop="staffNum" label="员工编号" style="width:auto"></el-table-column>
+          <el-table-column prop="staffName" label="员工姓名" style="width:auto"></el-table-column>
+          <el-table-column prop="department" label="所属部门" style="width:auto"></el-table-column>
+          <el-table-column prop="premissions" label="数据权限类型" style="width:auto">
+            <template slot-scope="scope">
+              {{accountForm.permissionsEnum[scope.row.premissions]}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="accountState" label="账号状态" style="width:auto">
+            <template slot-scope="scope">
+              {{accountForm.accountStatusEnum[scope.row.accountState]}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="modifyTime" label="操作时间" style="width:auto"></el-table-column>
+          <el-table-column prop="modifyEmpName" label="操作人" style="width:auto">
+            <template slot-scope="scope">
+              <p v-if="scope.row.modifier!=null">{{scope.row.modifyEmpName}}({{scope.row.modifier}})</p>
+              <p v-else>{{scope.row.modifyEmpName}}</p>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination background
+                       @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-sizes="[10, 50, 100, 200]"
+                       :page-size="pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="total">
+        </el-pagination>
       </div>
     </el-dialog>
     <el-dialog title="选择部门" :visible.sync="chooseDepartmentFlag" width="300px">
@@ -251,397 +251,361 @@
       </el-tree>
     </el-dialog>
   </div>
-
-
 </template>
 
 <script>
-  import commonUtils from '../../common/commonUtils'
+    import commonUtils from '../../common/commonUtils'
 
-  export default {
-    data() {
-      var validatePass = (rule, value, callback) => {
-        const self = this;
-        var roleid = this.$route.query.roleID;
-        var param = {
-          roleName: value,
-          date : new Date().getTime(),
-        };
-        self.$http.get("roleManage/judgeExist.do_", {
-          params: param
-        }).then((result) => {
-          if (( result.page.roleStatus ===0||result.page.roleStatus===1 )&&(result.page.roleId !== roleid)) {
-            callback(new Error('角色名称已存在'));
-          }else{
-            if (self.form.checkPass !== '') {
-              self.$refs.form.validateField('checkPass');
-            }
-            callback();
-          }
-        }).catch(function (error) {
-          commonUtils.Log("roleManage/judgeExist.do_" + error);
-          self.$message.error("角色名称校验错误");
-        });
-      };
-      return {
-        defaultPropsTree: {
-          label: 'departmentName',
-          children: 'children',
-          isLeaf: 'nodeIsLeaf',
-          id: 'id',
-          no: 'departmentNo',
-        },
-        chooseDepartmentFlag: false,
-        isChoose: true,
-        rules: {
-          roleName: [{required: true, message: '角色名不能为空', trigger: ['blur','change']},
-                     {validator: validatePass, trigger: 'blur'}],
-          accountNum: [{required: true, message: '账户不能为空', trigger: ['blur','change']}],
-          businessLine: [{required: true, message: '支持业务线不能为空', trigger: ['blur','change']}]
-        },
-        total: 0,
-        currentPage: 1,
-        pageSize: 10,
-        title:'选择账户',
-        dialogVisibleAccount:false,
-        otherForm:{
-          createEmp:'',
-          createEmpNum:'',
-          createEmpName:'',
-          createEmpTime:'',
-          modifyEmp:'',
-          modifyEmpNum:'',
-          modifyEmpName:'',
-          modifyEmpTime:'',
-        },
-        form: {
-          roleID:'',
-          roleName:'',
-          businessLine:[],
-          roleStatus:'',
-          accountNum:'',
-          staffNum:'',
-          staffName:'',
-          departmentName:'',
-          description:'',
-        },
-        RoleStatusEnum:{},
-        options:[
-          {
-            value:0,
-            label:'无效',
-          },{
-            value:1,
-            label:'有效',
-          }],
-        accountForm: {//选择账户
-          accountNo: null,
-          staffNo: null,
-          name: null,
-          permissionsList:[
-            {
-              value: 0,
-              label: '全选'
-            },{
-              value: 1,
-              label: "全部"
-            },{
-              value: 2,
-              label: "递归"
-            },{
-              value: 3,
-              label: "本部门"
-            },{
-              value: 4,
-              label: "本人"
-            },{
-              value: 5,
-              label: "手动选择"
-            }
-          ],
-          permissionsEnum:{},
-          accountStatusList:[
-            {
-              value: 0,
-              label: '全部'
-            },{
-              value: 1,
-              label: "正常"
-            },{
-              value: 2,
-              label: "冻结"
-            }
-          ],
-          accountStatusEnum:{},
-          permissions: null,
-          department:null,
-          departmentId:'',
-          isRelStaff: null,
-          status:null
-        },
-        isRelStaffoptions:[{
-          value: '',
-          label: '全部'
-        },{
-          value: '1',
-          label: '是'
-        },{
-          value: '0',
-          label: '否'
-        }],
-        tableData:[],
-        selection:{},
-      }
-    },
-    activated() {
-      commonUtils.Log("页面激活");
-    },
-    mounted() {
-      commonUtils.Log("页面进来");
-      this.fetchData();
-      this.fetchOtherData();
-    },
-    methods: {
-
-      chooseDepartment(){
-        this.chooseDepartmentFlag = true;
-      },
-      clearDepartment(){
-        this.accountForm.departmentId = '';
-        this.accountForm.department = '';
-      },
-      closeChooseDepartment(){
-        this.chooseDepartmentFlag = false;
-      },
-
-      loadNodeDepartment(node,resolve){
-        var self = this;
-        self.$http.get('department/buildTree2.do_')
-          .then((result) => {
-            resolve([result.departmentDto]);
-          }).catch(function (error) {
-
-        });
-      },
-
-      handleClickChange(data,checked,node){
-        // 手动设置单选
-        if(checked === true) {
-          this.checkedId = data.id;
-          this.$refs.tree.setCheckedKeys([data.id]);
-          this.accountForm.departmentId = data.id;
-          this.accountForm.department = data.departmentName;
-        } else {
-          if (this.checkedId == data.id) {
-            this.$refs.tree.setCheckedKeys([data.id]);
-          }
-        }
-        this.closeChooseDepartment();
-      },
-
-      fetchOtherData() {
-        var roleid;
-        var self = this;
-        roleid = this.$route.query.roleID;
-        var param = {
-          roleID: roleid,
-          date : new Date().getTime(),
-        };
-        self.$http.get('roleManage/getOtherOneInf.do_', {
-          params: param
-        }).then((result) => {
-          self.otherForm = result.page;
-          self.otherForm.createEmp = `${self.otherForm.createEmpNum}(${self.otherForm.createEmpName})`;
-          self.otherForm.modifyEmp = `${self.otherForm.modifyEmpNum}(${self.otherForm.modifyEmpName})`;
-        }).catch(function (error) {
-          commonUtils.Log("roleManage/getOtherOneInf.do_" + error);
-          self.$message.error("获取数据错误");
-        });
-      },
-      selectionConfirm() {
-        const self = this;
-        var param = {
-          id: self.selection.id,
-          date : new Date().getTime(),
-        };
-        self.$http.get('account/selectAccountById.do_',{
-          params: param
-        }).then((result) => {
-          if (result.account.accountState === 3){
-            self.$message.info("该账户已被删除，不可选择");
-            this.isChoose = true;
-            this.formatForm();
-            this.fetchAccountData();
-          }
-          else{
-            this.form.accountNum = this.selection.accountName;
-            this.form.staffNum = this.selection.staffNum;
-            this.form.staffName = this.selection.staffName;
-            this.form.departmentName = this.selection.department;
-            this.isChoose = true;
-            this.dialogVisibleAccount=false;
-          }
-        }).catch(function (error) {
-          commonUtils.Log("account/selectAccountById.do_:"+error);
-          self.$message.error("获取数据错误")
-        });
-      },
-      selectionCancel() {
-        this.isChoose = true;
-        this.dialogVisibleAccount = false;
-      },
-      handleSelectionChange(val) {
-        this.selection = val;
-        this.isChoose = false;
-      },
-      save(formName) {//保存修改角色信息
-        const self = this;
-        self.$refs[formName].validate((valid) => {
-          if (valid) {
-                self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
-                  confirmButtonText: '确定',
-                  cancelButtonText: '取消',
-                  type: 'warning'
-                }).then(() => {
-
-                  const self = this;
-                  var param = {
-                    accountName: self.form.accountNum,
+    export default {
+        data() {
+            var validatePass = (rule, value, callback) => {
+                const self = this;
+                var roleid = this.$route.query.roleID;
+                var param = {
+                    roleName: value,
                     date : new Date().getTime(),
-                  };
-                  self.$http.get('account/querylist.do_',{params:param}).then((result) => {
-                    if (result.page.list[0].accountState === 3){
-                      self.$message.info("该账户已被删除，不可选择");
+                };
+                self.$http.get("roleManage/judgeExist.do_", {
+                    params: param
+                }).then((result) => {
+                    if (( result.page.roleStatus ===0||result.page.roleStatus===1 )&&(result.page.roleId !== roleid)) {
+                        callback(new Error('角色名称已存在'));
+                    }else{
+                        if (self.form.checkPass !== '') {
+                            self.$refs.form.validateField('checkPass');
+                        }
+                        callback();
+                    }
+                }).catch(function (error) {
+                    commonUtils.Log("roleManage/judgeExist.do_" + error);
+                    self.$message.error("角色名称校验错误");
+                });
+            };
+            return {
+                defaultPropsTree: {
+                    label: 'departmentName',
+                    children: 'children',
+                    isLeaf: 'nodeIsLeaf',
+                    id: 'id',
+                    no: 'departmentNo',
+                },
+                chooseDepartmentFlag: false,
+                isChoose: true,
+                rules: {
+                    roleName: [{required: true, message: '角色名不能为空', trigger: ['blur','change']},
+                        {validator: validatePass, trigger: 'blur'}],
+                    accountNum: [{required: true, message: '账户不能为空', trigger: ['blur','change']}],
+                    businessLine: [{required: true, message: '支持业务线不能为空', trigger: ['blur','change']}]
+                },
+                total: 0,
+                currentPage: 1,
+                pageSize: 10,
+                title:'选择账户',
+                dialogVisibleAccount:false,
+                otherForm:{
+                    createEmp:'',
+                    createEmpNum:'',
+                    createEmpName:'',
+                    createEmpTime:'',
+                    modifyEmp:'',
+                    modifyEmpNum:'',
+                    modifyEmpName:'',
+                    modifyEmpTime:'',
+                },
+                form: {
+                    roleID:'',
+                    roleName:'',
+                    businessLine:[],
+                    roleStatus:'',
+                    accountNum:'',
+                    staffNum:'',
+                    staffName:'',
+                    departmentName:'',
+                    description:'',
+                },
+                RoleStatusEnum:{},
+                options:[
+                    {
+                        value:0,
+                        label:'无效',
+                    },{
+                        value:1,
+                        label:'有效',
+                    }],
+                accountForm: {//选择账户
+                    accountNo: null,
+                    staffNo: null,
+                    name: null,
+                    permissionsList:[
+                        {
+                            value: 0,
+                            label: '全选'
+                        },{
+                            value: 1,
+                            label: "全部"
+                        },{
+                            value: 2,
+                            label: "递归"
+                        },{
+                            value: 3,
+                            label: "本部门"
+                        },{
+                            value: 4,
+                            label: "本人"
+                        },{
+                            value: 5,
+                            label: "手动选择"
+                        }
+                    ],
+                    permissionsEnum:{},
+                    accountStatusList:[
+                        {
+                            value: 0,
+                            label: '全部'
+                        },{
+                            value: 1,
+                            label: "正常"
+                        },{
+                            value: 2,
+                            label: "冻结"
+                        }
+                    ],
+                    accountStatusEnum:{},
+                    permissions: null,
+                    department:null,
+                    departmentId:'',
+                    isRelStaff: null,
+                    status:null
+                },
+                isRelStaffoptions:[{
+                    value: '',
+                    label: '全部'
+                },{
+                    value: '1',
+                    label: '是'
+                },{
+                    value: '0',
+                    label: '否'
+                }],
+                tableData:[],
+                selection:{},
+            }
+        },
+        activated() {
+            commonUtils.Log("页面激活");
+        },
+        mounted() {
+            commonUtils.Log("页面进来");
+            this.fetchData();
+            this.fetchOtherData();
+        },
+        methods: {
+            chooseDepartment(){
+                this.chooseDepartmentFlag = true;
+            },
+            clearDepartment(){
+                this.accountForm.departmentId = '';
+                this.accountForm.department = '';
+            },
+            closeChooseDepartment(){
+                this.chooseDepartmentFlag = false;
+            },
+            loadNodeDepartment(node,resolve){
+                var self = this;
+                self.$http.get('department/buildTree2.do_')
+                    .then((result) => {
+                        resolve([result.departmentDto]);
+                    }).catch(function (error) {
+
+                });
+            },
+            handleClickChange(data,checked,node){
+                // 手动设置单选
+                if(checked === true) {
+                    this.checkedId = data.id;
+                    this.$refs.tree.setCheckedKeys([data.id]);
+                    this.accountForm.departmentId = data.id;
+                    this.accountForm.department = data.departmentName;
+                } else {
+                    if (this.checkedId == data.id) {
+                        this.$refs.tree.setCheckedKeys([data.id]);
+                    }
+                }
+                this.closeChooseDepartment();
+            },
+            fetchOtherData() {
+                var roleid;
+                var self = this;
+                roleid = this.$route.query.roleID;
+                var param = {
+                    roleID: roleid,
+                    date : new Date().getTime(),
+                };
+                self.$http.get('roleManage/getOtherOneInf.do_', {
+                    params: param
+                }).then((result) => {
+                    self.otherForm = result.page;
+                    self.otherForm.createEmp = `${self.otherForm.createEmpNum}(${self.otherForm.createEmpName})`;
+                    self.otherForm.modifyEmp = `${self.otherForm.modifyEmpNum}(${self.otherForm.modifyEmpName})`;
+                }).catch(function (error) {
+                    commonUtils.Log("roleManage/getOtherOneInf.do_" + error);
+                    self.$message.error("获取数据错误");
+                });
+            },
+            selectionConfirm() {
+                const self = this;
+                var param = {
+                    id: self.selection.id,
+                    date : new Date().getTime(),
+                };
+                self.$http.get('account/selectAccountById.do_',{
+                    params: param
+                }).then((result) => {
+                    if (result.account.accountState === 3){
+                        self.$message.info("该账户已被删除，不可选择");
+                        this.isChoose = true;
+                        this.formatForm();
+                        this.fetchAccountData();
                     }
                     else{
-                      var param = {
-                        roleID: self.form.roleID,
-                        date : new Date().getTime(),
-                      };
-                      self.$http.get('roleManage/getOneInf.do_', {
-                        params: param
-                      }).then((result) => {
-                        if (result.page.roleStatus ===0){
-                          self.$message.info("该角色已经被删除，不可修改");
-                        }
-                        else{
-                          self.form.businessLine = self.form.businessLine.join(';');
-                          self.$http.post("roleManage/updateByModify.do_", self.form)
-                            .then((result) => {
-                              self.$router.replace("/roleManagement/roleManagement");
-                            })
-                            .catch(function (error) {
-                              commonUtils.Log("roleManage/updateByModify.do_" + error);
-                              self.$message.error("保存数据错误");
-                              self.$router.replace("/roleManagement/roleManagement");
-                            });
-                          self.$message({
-                            type: 'success',
-                            message: '保存成功!'
-                          });
-                        }
-                      }).catch(function (error) {
-                        commonUtils.Log("roleManage/getOneInf.do_" + error);
-                        self.$message.error("获取数据错误");
-                      });
-
+                        this.form.accountNum = this.selection.accountName;
+                        this.form.staffNum = this.selection.staffNum;
+                        this.form.staffName = this.selection.staffName;
+                        this.form.departmentName = this.selection.department;
+                        this.isChoose = true;
+                        this.dialogVisibleAccount=false;
                     }
-                  }).catch(function (error) {
-                    commonUtils.Log('account/querylist.do_'+error);
+                }).catch(function (error) {
+                    commonUtils.Log("account/selectAccountById.do_:"+error);
                     self.$message.error("获取数据错误")
-                  });
-
-                }).catch(() => {
-                  self.$message({
-                    type: 'info',
-                    message: '已取消保存'
-                  });
                 });
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-      cancel() {//关闭新建角色页面，返回角色管理列表页面
-        this.$router.replace('/roleManagement/roleManagement')
-      },
-      chooseAccount() {
-        this.formatForm();
-        this.isChoose = true;
-        this.dialogVisibleAccount = true;
-        this.fetchAccountData();
-      },
-      handleSizeChange(val) {
-        this.pageSize = val;
-        this.currentPage = 1;
-        var string = {};
-        string = this.accountForm;
-        this.accountForm = {};
-        this.fetchAccountData(1, val);
-        this.accountForm = string;
-      },
-      handleCurrentChange(val) {
-        this.currentPage = val;
-        var string = {};
-        string = this.accountForm;
-        this.accountForm = {};
-        this.fetchAccountData(val, this.pageSize);
-        this.accountForm = string;
-      },
-
-      fetchAccountData() {//获取账户信息
-        var self = this;
-        var param = {
-          page: self.currentPage,
-          limit: self.pageSize,
-          accountName: self.accountForm.accountNo,
-          staffNo: self.accountForm.staffNo,
-          name: self.accountForm.name,
-          permissions: self.accountForm.permissions,
-          department: self.accountForm.departmentId,
-          isRelStaff: self.accountForm.isRelStaff,
-          status: self.accountForm.status,
-          flag:1,
-          date : new Date().getTime(),
-        };
-        self.$http.get('account/querylist.do_', {
-          params: param
-        }).then((result) => {
-          self.tableData = result.page.list;
-          self.accountForm.permissionsEnum = result.permissionEnum;
-          self.accountForm.accountStatusEnum = result.accountStatusEnum;
-          self.total = result.page.totalCount;
-        }).catch(function (error) {
-          commonUtils.Log("account/querylist.do_:" + error);
-          self.$message.error("获取数据错误")
-        });
-      },
-
-      fetchData() {
-        var roleid;
-        var self = this;
-        roleid = this.$route.query.roleID;
-        var param = {
-          roleID: roleid,
-          date : new Date().getTime(),
-        };
-        self.$http.get('roleManage/getOneInf.do_', {
-          params: param
-        }).then((result) => {
-          self.form = result.page;
-          self.RoleStatusEnum = result.RoleStatusEnum;
-          self.form.businessLine = self.form.businessLine.split(';');
-        }).catch(function (error) {
-          commonUtils.Log("roleManage/getOneInf.do_" + error);
-          self.$message.error("获取数据错误");
-        });
-      },
-    },
-
-
-
-  }
+            },
+            selectionCancel() {
+                this.isChoose = true;
+                this.dialogVisibleAccount = false;
+            },
+            handleSelectionChange(val) {
+                this.selection = val;
+                this.isChoose = false;
+            },
+            save(formName) {//保存修改角色信息
+                const self = this;
+                self.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            self.form.businessLine = self.form.businessLine.join(';');
+                            self.$http.post("roleManage/updateByModify.do_", self.form)
+                                .then((result) => {
+                                    if (result.msg === "该账户已被删除，不可选择"){
+                                        self.$message.info("该账户已被删除，不可选择");
+                                    }
+                                    else if (result.msg === "该角色已被删除，不可修改"){
+                                        self.$message.info("该角色已被删除，不可修改");
+                                        self.$router.replace("/roleManagement/roleManagement");
+                                    }
+                                    else{
+                                        self.$message({
+                                            type: 'success',
+                                            message: '保存成功!'
+                                        });
+                                        self.$router.replace("/roleManagement/roleManagement");
+                                    }
+                                })
+                                .catch(function (error) {
+                                    commonUtils.Log("roleManage/updateByModify.do_" + error);
+                                    self.$message.error("保存数据错误");
+                                    self.$router.replace("/roleManagement/roleManagement");
+                                });
+                        }).catch(() => {
+                            self.$message({
+                                type: 'info',
+                                message: '已取消保存'
+                            });
+                        });
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            cancel() {//关闭新建角色页面，返回角色管理列表页面
+                this.$router.replace('/roleManagement/roleManagement')
+            },
+            chooseAccount() {
+                this.formatForm();
+                this.isChoose = true;
+                this.dialogVisibleAccount = true;
+                this.fetchAccountData();
+            },
+            handleSizeChange(val) {
+                this.pageSize = val;
+                this.currentPage = 1;
+                var string = {};
+                string = this.accountForm;
+                this.accountForm = {};
+                this.fetchAccountData(1, val);
+                this.accountForm = string;
+            },
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                var string = {};
+                string = this.accountForm;
+                this.accountForm = {};
+                this.fetchAccountData(val, this.pageSize);
+                this.accountForm = string;
+            },
+            fetchAccountData() {//获取账户信息
+                var self = this;
+                var param = {
+                    page: self.currentPage,
+                    limit: self.pageSize,
+                    accountName: self.accountForm.accountNo,
+                    staffNo: self.accountForm.staffNo,
+                    name: self.accountForm.name,
+                    permissions: self.accountForm.permissions,
+                    department: self.accountForm.departmentId,
+                    isRelStaff: self.accountForm.isRelStaff,
+                    status: self.accountForm.status,
+                    flag:1,
+                    date : new Date().getTime(),
+                };
+                self.$http.get('account/querylist.do_', {
+                    params: param
+                }).then((result) => {
+                    self.tableData = result.page.list;
+                    self.accountForm.permissionsEnum = result.permissionEnum;
+                    self.accountForm.accountStatusEnum = result.accountStatusEnum;
+                    self.total = result.page.totalCount;
+                }).catch(function (error) {
+                    commonUtils.Log("account/querylist.do_:" + error);
+                    self.$message.error("获取数据错误")
+                });
+            },
+            fetchData() {
+                var roleid;
+                var self = this;
+                roleid = this.$route.query.roleID;
+                var param = {
+                    roleID: roleid,
+                    date : new Date().getTime(),
+                };
+                self.$http.get('roleManage/getOneInf.do_', {
+                    params: param
+                }).then((result) => {
+                    self.form = result.page;
+                    self.RoleStatusEnum = result.RoleStatusEnum;
+                    self.form.businessLine = self.form.businessLine.split(';');
+                }).catch(function (error) {
+                    commonUtils.Log("roleManage/getOneInf.do_" + error);
+                    self.$message.error("获取数据错误");
+                });
+            },
+        },
+    }
 
 
 </script>
