@@ -1239,7 +1239,9 @@
       distributionDepartment() {
         this.distributionDepartmentFlag = true;
         this.departmentVisible = false;
+        this.$refs["formdiStributionDepartment"].resetFields();
       },
+      //保存部门，对部门进行表单验证后进行UPDATE
       saveDepartment() {
         var self=this;
         self.$refs["formdiStributionDepartment"].validate(function (valid) {
@@ -1259,6 +1261,7 @@
             }).catch(function (error) {
               commonUtils.Log("employee/updateDepartmentByEmployee.do_" + error);
             });
+            self.formdiStributionDepartment.staffBeforeDepartment=self.formdiStributionDepartment.staffAfterDepartmentName;
             self.formdiStributionDepartment.staffAfterDepartmentName = '';
             self.formdiStributionDepartment.staffAfterDepartment = '';
             self.distributionDepartmentFlag = false;
