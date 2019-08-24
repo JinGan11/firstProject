@@ -6,10 +6,10 @@
           申请信息
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" size="mini" @click="savaModifyRoleApply">保存</el-button>
+          <el-button type="primary" size="mini" @click="checkModifySaveRoleApply('flagBtn1')">保存</el-button>
         </el-col>
         <el-col :span="3">
-          <el-button type="primary" size="mini" @click="modifySaveCommitRoleApply">保存并提交</el-button>
+          <el-button type="primary" size="mini" @click="checkModifySaveRoleApply('flagBtn2')">保存并提交</el-button>
         </el-col>
         <el-col :span="2">
           <el-button type="primary" size="mini" @click="cancelRoleApply">取消</el-button>
@@ -523,6 +523,8 @@
         roleId:'',
         applyOperationEnum:{},
         accountIdList:[],
+        accountIdList1:[],
+        accountDeletedList1:[],
         accountLength:'',
         applyOperationList:[],
         accountChangesList:[],
@@ -621,6 +623,7 @@
           modifyStaffName:"",
           modifyTime:"",
           accountIdList:[],
+          accountIds:[],
           tableDataAccount:[],
           applyOperationList:[],
         },
@@ -670,11 +673,11 @@
       this.otherInfo.modifyTime = sessionStorage.getItem('modifyTimeFromApply');//修改时间
       this.otherInfo.applyAccountName = sessionStorage.getItem('loginUsername');//申请人员工姓名
       this.otherInfo.modifyStaffName = sessionStorage.getItem('modifyEmpFromApply');//修改人员工姓名
+      this.otherInfo.applyStaffName = sessionStorage.getItem('applyStaffNameFromApply');//修改人员工姓名
       this.otherInfo.applyStatus='已新建';//状态
       this.showAccountListByApplyId();//查询改申请编号 包含的账号列表
-      this.queryLoginInRoleApply();//申请人  具体信息
+      // this.queryLoginInRoleApply();//申请人  具体信息
       sessionStorage.setItem('roleIdFromSelectRole', this.roleId);//角色id
-
     },
     methods: {
       loadNodeDepartment(node,resolve){
@@ -941,11 +944,8 @@
         self.$http.get('roleApply/showAccountListByApplyId.do_', {
           params: param
         }).then((result) => {
-
-
           //请求成功回调
           self.tableDataAccount = result.list;
-          console.log( self.tableDataAccount)
           self.accountChangesList=result.list;
 
         }).catch(function (error) {
@@ -975,7 +975,62 @@
         });
       },
 
-      savaModifyRoleApply(){// 保存修改
+
+
+      checkModifySaveRoleApply(msgs){//检查
+        let self = this;
+        var param1 = {
+          roleID: self.roleId,
+          date : new Date().getTime(),
+        };
+        self.$http.get('roleManage/getOneInf.do_', {
+          params: param1
+        }).then((result) => {
+          self.roleStatus = result.page.roleStatus;
+          if (self.roleStatus == 0) {
+            self.$message.error("该角色已失效，保存失败！请重新选择角色！！");
+          }else{
+            self.checkAccountState(self,msgs);
+          }
+        }).catch(function (error) {
+          commonUtils.Log("roleManage/getOtherOneInf.do_" + error);
+          self.$message.error("获取数据错误");
+        });
+
+      },
+      checkAccountState(self,msgs){
+        var self=this;
+        for (let i = 0; i < self.tableDataAccount.length; i++) {//账号ID
+          self.accountIdList1.push(self.tableDataAccount[i].id);
+        }
+        var param = {
+          accountIds: self.accountIdList1.toString(),
+          date : new Date().getTime(),
+        };
+        self.$http.get('roleApply/getAccountDeletedById.do_', {
+          params: param
+        }).then((result) => {
+          self.accountDeletedList1 = result.accountDeletedList;
+          if (self.accountDeletedList1.length > 0) {
+            self.$message.error('账号    ' + self.accountDeletedList1 + '    已失效,保存失败！请重新选择账号！！');
+            self.tableDataAccount=[];
+            self.accountChangesList=[];
+            self.accountIdList1=[];
+          }else{
+            if(msgs=='flagBtn1'){
+              self.saveModifyRoleApply(self);
+            }else{
+              self.modifySaveCommitRoleApply(self);
+            }
+
+          }
+        }).catch(function (error) {
+          commonUtils.Log("roleApply/getAccountStateById.do_" + error);
+          self.$message.error("获取添加账号数据失败")
+        });
+      },
+
+      saveModifyRoleApply(){// 保存修改
         for(let i=0;i<this.tableDataAccount.length;i++){//账号ID
           this.accountIdList.push(this.tableDataAccount[i].id);
         }
@@ -1013,12 +1068,12 @@
         })
       },
 
-      modifySaveCommitRoleApply(){
-        for(let i=0;i<this.tableDataAccount.length;i++){//账号ID
-          this.accountIdList.push(this.tableDataAccount[i].id);
+      modifySaveCommitRoleApply(self){
+        for(let i=0;i<self.tableDataAccount.length;i++){//账号ID
+          self.accountIdList.push(self.tableDataAccount[i].id);
         }
-        for(let i=0;i<this.tableDataAccount.length;i++){//申请操作
-          this.applyOperationList.push(this.tableDataAccount[i].applyOperation)
+        for(let i=0;i<self.tableDataAccount.length;i++){//申请操作
+          self.applyOperationList.push(self.tableDataAccount[i].applyOperation)
         }
         var self=this;
         self.forms.id=self.applyId;

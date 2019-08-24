@@ -6,10 +6,10 @@
           申请信息
         </el-col>
         <el-col :span="2">
-          <el-button type="primary" size="mini" @click="checkRoleState">保存</el-button>
+          <el-button type="primary" size="mini"   @click="checkSaveRoleApply('flagBtn1')">保存</el-button>
         </el-col>
         <el-col :span="3">
-          <el-button type="primary" size="mini" @click="createSaveCommitRoleApply">保存并提交</el-button>
+          <el-button type="primary" size="mini"  @click="checkSaveRoleApply('flagBtn2')">保存并提交</el-button>
         </el-col>
         <el-col :span="2">
           <el-button type="primary" size="mini" @click="cancelRoleApply">取消</el-button>
@@ -512,6 +512,8 @@
         tableDataAccount: [],
         accountIdList: [],
         accountIdList1: [],
+        flagSaveBtn:'',
+        flagSaveCommitBtn:'',
 
         accountLength: '',
         roleId: '',
@@ -971,9 +973,6 @@
           self.applyOperationList = [];
           return;
         }
-        alert("wolaila");
-        alert(self.accountIdList);
-
         self.$http.post("roleApply/createRoleApply.do_", self.forms)
           .then(result => {
             self.$message.info("新建角色申请成功");
@@ -984,7 +983,7 @@
         });
       },
 
-      checkRoleState(){//检查角色是否失效
+      checkSaveRoleApply(msgs){//检查角色是否失效
         let self = this;
         var param1 = {
           roleID: self.roleId,
@@ -997,7 +996,7 @@
           if (self.roleStatus == 0) {
             self.$message.error("该角色已失效，保存失败！请重新选择角色！！");
           }else{
-            self.checkAccountState(self);
+            self.checkAccountState(self,msgs);
           }
         }).catch(function (error) {
           commonUtils.Log("roleManage/getOtherOneInf.do_" + error);
@@ -1005,7 +1004,7 @@
         });
 
       },
-      checkAccountState(self){
+      checkAccountState(self,msgs){
         var self=this;
         for (let i = 0; i < self.tableDataAccount.length; i++) {//账号ID
           self.accountIdList1.push(self.tableDataAccount[i].id);
@@ -1021,8 +1020,13 @@
           if (self.accountDeletedList1.length > 0) {
             self.$message.error('账号    ' + self.accountDeletedList1 + '    已失效,保存失败！请重新选择账号！！');
             self.tableDataAccount=[];
+            self.accountChangesList=[];
           }else{
-            self.saveRoleApply(self);
+            if(msgs=='flagBtn1'){
+              self.saveRoleApply(self);
+            }else{
+              self.createSaveCommitRoleApply(self)
+            }
           }
         }).catch(function (error) {
           commonUtils.Log("roleApply/getAccountStateById.do_" + error);
@@ -1030,14 +1034,13 @@
         });
       },
 
+      createSaveCommitRoleApply(self) {
+        self.otherInfo.applyAccountName = sessionStorage.getItem('loginUsername');
+        self.otherInfo.modifyStaffName = sessionStorage.getItem('loginUsername');
 
-      createSaveCommitRoleApply() {
-        this.otherInfo.applyAccountName = sessionStorage.getItem('loginUsername');
-        this.otherInfo.modifyStaffName = sessionStorage.getItem('loginUsername');
-
-        for (let i = 0; i < this.tableDataAccount.length; i++) {//账号ID
-          this.accountIdList.push(this.tableDataAccount[i].id);
-          this.applyOperationList.push(this.tableDataAccount[i].applyOperation)
+        for (let i = 0; i < self.tableDataAccount.length; i++) {//账号ID
+          self.accountIdList.push(self.tableDataAccount[i].id);
+          self.applyOperationList.push(self.tableDataAccount[i].applyOperation)
         }
         var self = this;
         self.forms.roleApplyNum = self.formRoleInfo.roleApplyNum;

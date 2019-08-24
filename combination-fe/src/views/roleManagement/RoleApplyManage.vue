@@ -912,7 +912,8 @@
         sessionStorage.setItem('applyTimeFromApply', row.applyTime);//申请人
         sessionStorage.setItem('applyTimeFromApply', row.applyTime);//申请人
         sessionStorage.setItem('modifyTimeFromApply', row.modifyTime);//修改时间
-        sessionStorage.setItem('modifyEmpFromApply', row.modifyEmp);//修改人
+        sessionStorage.setItem('modifyEmpFromApply', row.modifyEmp);//修改人applyStaffName
+        sessionStorage.setItem('applyStaffNameFromApply', row.applyStaffName);//修改人applyStaffName
       },
 
       roleApplyNumBtn(row){ //弹出框 角色申请详情
