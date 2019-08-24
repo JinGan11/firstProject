@@ -338,9 +338,40 @@
           accountNo: null,
           staffNo: null,
           name: null,
-          permissionsList:[],
+          permissionsList:[
+            {
+              value: 0,
+              label: '全选'
+            },{
+              value: 1,
+              label: "全部"
+            },{
+              value: 2,
+              label: "递归"
+            },{
+              value: 3,
+              label: "本部门"
+            },{
+              value: 4,
+              label: "本人"
+            },{
+              value: 5,
+              label: "手动选择"
+            }
+          ],
           permissionsEnum:{},
-          accountStatusList:[],
+          accountStatusList:[
+            {
+              value: 0,
+              label: '全部'
+            },{
+              value: 1,
+              label: "正常"
+            },{
+              value: 2,
+              label: "冻结"
+            }
+          ],
           accountStatusEnum:{},
           permissions: null,
           department:null,
@@ -596,10 +627,8 @@
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
-          self.accountForm.permissionsList = result.permissionList;
           self.accountForm.permissionsEnum = result.permissionEnum;
           self.accountForm.accountStatusEnum = result.accountStatusEnum;
-          self.accountForm.accountStatusList = result.accountStatusList;
           self.total = result.page.totalCount;
         }).catch(function (error) {
           commonUtils.Log("account/querylist.do_:" + error);

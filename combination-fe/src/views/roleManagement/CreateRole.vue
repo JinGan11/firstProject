@@ -311,9 +311,38 @@
           accountNo: null,
           staffNo: null,
           name: null,
-          permissionsList:[],
+          permissionsList:[{
+            value: 0,
+            label: '全选'
+          },{
+            value: 1,
+            label: "全部"
+          },{
+            value: 2,
+            label: "递归"
+          },{
+            value: 3,
+            label: "本部门"
+          },{
+            value: 4,
+            label: "本人"
+          },{
+            value: 5,
+            label: "手动选择"
+          }],
           permissionsEnum:{},
-          accountStatusList:[],
+          accountStatusList:[
+            {
+              value: 0,
+              label: '全部'
+            },{
+              value: 1,
+              label: "正常"
+            },{
+              value: 2,
+              label: "冻结"
+            }
+          ],
           accountStatusEnum:{},
           isRelStaffoptions:[{
             value: '',
@@ -391,21 +420,6 @@
         this.closeChooseDepartment();
       },
 
-      format(date, fmt) {//时间格式
-        let o = {
-          "M+": date.getMonth() + 1, //月份
-          "d+": date.getDate(), //日
-          "H+": date.getHours(), //小时
-          "m+": date.getMinutes(), //分
-          "s+": date.getSeconds(), //秒
-          "q+": Math.floor((date.getMonth() + 3) / 3), //季度
-          "S": date.getMilliseconds() //毫秒
-        };
-        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
-        for (let k in o)
-          if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-        return fmt;
-      },
 
       selectionConfirm(){
         const self = this;
@@ -452,6 +466,7 @@
         this.selection = val;
         this.isChoose = false;
       },
+
       save(formName) {//保存新建角色信息
         const self = this;
         var param = {
@@ -568,10 +583,8 @@
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
-          self.accountForm.permissionsList = result.permissionList;
           self.accountForm.permissionsEnum = result.permissionEnum;
           self.accountForm.accountStatusEnum = result.accountStatusEnum;
-          self.accountForm.accountStatusList = result.accountStatusList;
           self.total = result.page.totalCount;
         }).catch(function (error) {
           commonUtils.Log("account/querylist.do_:"+error);
