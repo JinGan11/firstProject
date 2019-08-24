@@ -12,6 +12,7 @@ import qs from "qs";
 import msg from './common/msg'
 // import DialogDrag from '../static/DialogDrag'
 import utils from './common/util'
+import 'babel-polyfill'
 // import Vuex from 'vuex'
 // import VueRouter from 'vue-router'
 
@@ -29,15 +30,33 @@ import global from './common/global.js'
 import commonUtils from "./common/commonUtils";
 
 
-window.addEventListener("visibilitychange",function(){ //这个方法是监测浏览器窗口发生变化的时候执行
-  if (document.hidden == false && global.accountName != localStorage.getItem('accountName')) {
-    global.accountName = localStorage.getItem('accountName') //只有当初始创建的aaa不等于localStorage里面的userId的时候去覆盖掉这个aaa
-    // window.sessionStorage.removeItem("loginUsername");
-    // window.sessionStorage.removeItem("powerList");
-    router.push({path:'/'});
+document.addEventListener("visibilitychange",function(){ //这个方法是监测浏览器窗口发生变化的时候执行
+  if (document.hidden === false) {
+    Http.$http.post("login/getLoginInfo.do_")
+      .then(result => {
+        localStorage.setItem("accountName",result.accountName);
+        if (global.accountName !== result.accountName) {
+          console.log("- - - - - asdasdasdas- ");
+          router.push({path: '/'});
+        }
+      })
+      .catch(function (error) {
+        commonUtils.Log("user/updatePwd:" + error);
+      });
   }
-  //不覆盖的话aaa永远都是我们设的初始值
 });
+
+// window.addEventListener("visibilitychange",function(){ //这个方法是监测浏览器窗口发生变化的时候执行
+//   localStorage.setItem("null_item",null);
+//   if (document.hidden == false && global.accountName != window.localStorage.getItem('accountName')) {
+//     global.accountName = localStorage.getItem('accountName') //只有当初始创建的aaa不等于localStorage里面的userId的时候去覆盖掉这个aaa
+//     // window.sessionStorage.removeItem("loginUsername");
+//     // window.sessionStorage.removeItem("powerList");
+//     console.log("- - - - - 23123- - -321-3-fd- ")
+//     router.push({path:'/'});
+//   }
+// });
+
 Vue.use(VueAMap);
 VueAMap.initAMapApiLoader({
   key: 'b2551e2e478785561d5d88081a58dfb3',
@@ -113,16 +132,11 @@ router.beforeEach((to, from, next) => {
         //   time: new Date().getTime()
         // })
         // .then(result => {
-        //   self.loginIn = false;
         //   window.sessionStorage.removeItem("loginUsername");
         //   window.sessionStorage.removeItem("powerList");
-        //   self.$store.state.loginUserName = '';
-        //   self.$store.state.powerList = '';
-        //   self.loginUserName = window.sessionStorage.getItem("loginUsername");
         // })
         // .catch(function (error) {
         //   commonUtils.Log("user/updatePwd:" + error);
-        //   self.$message.error("系统故障，请联系管理员！");
         // });
         next()
     }else {

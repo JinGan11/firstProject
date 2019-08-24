@@ -41,19 +41,24 @@
       }
     },
     created() {
-      const self = this
-      self.$http.get('login/isLogin')
-        .then(result => {
-          if (result.code === 202) {
-            utils.$emit("loginSuccess",true,result.accountName, result.powerList);
-            self.$router.replace("/index");
-          }
-        })
-        .catch(function (error) {
-          commonUtils.Log("user/updatePwd:" + error);
-          self.$message.error("登陆错误，请联系管理员！");
-        });
-      localStorage.setItem('isLogin', 'false');
+      // const self = this
+      // var param = {
+      //   date:new Date().getTime()
+      // }
+      // self.$http.get('login/isLogin',{
+      //   params: param
+      // })
+      //   .then(result => {
+      //     if (result.code === 202) {
+      //       utils.$emit("loginSuccess",true,result.accountName, result.powerList);
+      //       self.$router.replace("/index");
+      //     }
+      //   })
+      //   .catch(function (error) {
+      //     commonUtils.Log("user/updatePwd:" + error);
+      //     self.$message.error("登陆错误，请联系管理员！");
+      //   });
+      // localStorage.setItem('isLogin', 'false');
     },
     mounted() {
     },
@@ -70,9 +75,9 @@
             self.$http.post('login/login.do_', param)
               .then(result => {
                 if (result.code === 200) {
-                  localStorage.setItem("isLogin",1);
+                  window.localStorage.setItem("isLogin",1);
                   global.accountName = result.accountName;
-                  localStorage.setItem("accountName",result.accountName);
+                  window.localStorage.setItem("accountName",result.accountName);
                   utils.$emit("loginSuccess",true,result.accountName, result.powerList);
                   self.$router.replace("/index");
                   // self.visible = true
@@ -97,6 +102,8 @@
                   self.$confirm('首次登陆系统，请先修改密码', '提示', {
                     showCancelButton:false,
                     showClose:false,
+                    closeOnClickModal:false,
+                    closeOnPressEscape:false,
                     confirmButtonText: '确定',
                     cancelButtonText: '',
                     type: 'warning'
@@ -113,6 +120,8 @@
                 } else if (result.code === 507){
                   self.$confirm('已超过60天，请重置密码', '提示', {
                     showCancelButton:false,
+                    closeOnClickModal:false,
+                    closeOnPressEscape:false,
                     showClose:false,
                     confirmButtonText: '确定',
                     cancelButtonText: '',

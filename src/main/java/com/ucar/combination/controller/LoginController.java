@@ -45,12 +45,11 @@ public class LoginController {
      */
     @RequestMapping("/login.do_")
     public Result login(@RequestBody(required = false) User loginUser, HttpServletRequest request) {
-        Result result1 = isLogin(request.getSession());
-        int code = (int) result1.get("code");
-        if (202 == code) {
-            return result1;
-        }
-
+//        Result result1 = isLogin(request.getSession());
+//        int code = (int) result1.get("code");
+//        if (202 == code) {
+//            return result1;
+//        }
         HttpSession session = request.getSession();
         Result result = userService.login(loginUser);
         List<User> list = (List<User>) result.get("list");
@@ -141,5 +140,20 @@ public class LoginController {
             return Result.ok().put("code", 300)
                     .put("msg", "请重新登陆！");
         }
+    }
+
+    /**
+     * description: 获取登录信息
+     * @author peng.zhang11@ucarinc.com
+     * @date   2019/8/24 12:09
+     * @params session 描述
+     * @return
+     */
+    @RequestMapping("/getLoginInfo.do_")
+    public Result getLoginInfo(HttpSession session) {
+        if (session.getAttribute("accountName") != null){
+            return Result.ok().put("accountName",session.getAttribute("accountName"));
+        }
+        return Result.ok();
     }
 }
