@@ -1,65 +1,93 @@
 <template>
   <home>
-    <div style="width:95%;">
-      <el-form ref="form" :model="form" label-width="auto">
+    <div style="width:100%;">
+      <el-form ref="form" :model="form" label-width="80px">
         <el-row>
-          <el-col :span="6">
-            <el-form-item label="角色名称">
-              <el-input placeholder="角色名称"  v-model="form.roleName"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="支持业务线">
-              <el-select placeholder="全部"  v-model="form.businessLine"  >
-                <el-option label="全部" value=" "></el-option>
-                <el-option label="买买车" value="买买车"></el-option>
-                <el-option label="闪贷" value="闪贷"></el-option>
-                <el-option label="租车" value="租车"></el-option>
-                <el-option label="专车" value="专车"></el-option>
-                <el-option label="保险" value="保险"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="审批人账号">
-              <el-input placeholder="审批人账号"  v-model="form.approverAccountName"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="审批人员工编号">
-              <el-input placeholder="审批人员工编号"  v-model="form.approverStaffNum"></el-input>
-            </el-form-item>
-          </el-col>
+          <div style="float: left; margin-left: 40px">
+            <el-col>
+              <el-form-item label="角色名称:">
+                <el-input style="width:140px;"  placeholder="角色名称" v-model="form.roleName" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </div>
+          <div style="float: left">
+            <el-col>
+              <el-form-item label="支持业务线:" label-width="120px">
+                <el-select placeholder="全部"  style="width:160px;" v-model="form.businessLine" clearable >
+                  <el-option label="全部" value=" "></el-option>
+                  <el-option label="买买车" value="买买车"></el-option>
+                  <el-option label="闪贷" value="闪贷"></el-option>
+                  <el-option label="租车" value="租车"></el-option>
+                  <el-option label="专车" value="专车"></el-option>
+                  <el-option label="保险" value="保险"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </div>
+          <div style="float: left">
+            <el-col>
+              <el-form-item label="审批人账号:" label-width="120px">
+                <el-input style="width:120px;" v-model="form.approverAccountName" placeholder="审批人账号" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </div>
+          <div style="float: left">
+            <el-col>
+              <el-form-item label="审批人员工编号:" label-width="120px">
+                <el-input placeholder="审批人员工编号" style="width:180px;" v-model="form.approverStaffNum"></el-input>
+              </el-form-item>
+            </el-col>
+          </div>
         </el-row>
         <el-row>
-          <el-col :span="6">
-            <el-form-item label="审批人姓名">
-              <el-input placeholder="审批人姓名" v-model="form.approverStaffName"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="审批人所属部门" label-width="auto">
-              <el-input  v-model="form.approverDepartmentName" style="width: 60%"></el-input>
+          <div style="float: left; margin-left: 0px">
+            <el-col>
+              <el-form-item label="审批人姓名:" label-width="120px">
+                <el-input style="width:140px;"  placeholder="审批人姓名" v-model="form.approverStaffName" clearable></el-input>
+              </el-form-item>
+            </el-col>
+          </div>
+          <div style="float: left">
+            <el-col>
+              <el-form-item label="审批人所属部门:" label-width="120px">
+                <el-input style="width:100px;" v-model="form.approverDepartmentName" placeholder="审批人所属部门" clearable></el-input>
+                <el-button type="text" @click="selectDepartment" >选择</el-button>
+                <el-button type="text" @click="clearDepartment" style="margin-left: 0px;">清空</el-button>
+              </el-form-item>
+            </el-col>
+          </div>
+          <!--<el-col :span="6">
+            <el-form-item label="审批人所属部门:" label-width="150px;">
+              <el-input  v-model="form.approverDepartmentName" style="width:100px"></el-input>
               <el-button type="text" @click="selectDepartment" >选择</el-button>
               <el-button type="text" @click="clearDepartment" style="margin-left: 0px;">清空</el-button>
             </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="角色状态">
-              <el-select placeholder="全部" v-model="form.roleStatus" >
-                <el-option label="全部" value=" "></el-option>
-                <el-option label="无效" value="0"></el-option>
-                <el-option label="有效" value="1"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="权限名称">
-              <el-input placeholder="权限名称"  v-model="form.powerName" style="width: 60%"></el-input>
+          </el-col>-->
+          <div style="float: left">
+            <!--<el-col>
+              <el-form-item label="员工姓名">
+                <el-input style="width:180px;" v-model="form.name" placeholder="员工姓名" clearable></el-input>
+              </el-form-item>
+            </el-col>-->
+            <el-col>
+              <el-form-item label="角色状态:" label-width="120px">
+                <el-select placeholder="全部" style="width:120px;" v-model="form.roleStatus" >
+                  <el-option label="全部" value=" "></el-option>
+                  <el-option label="无效" value="0"></el-option>
+                  <el-option label="有效" value="1"></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </div>
+          <div style="float: left">
+          <el-col>
+            <el-form-item label="权限名称:" label-width="120px">
+              <el-input placeholder="权限名称"  v-model="form.powerName" style="width:120px"></el-input>
               <el-button type="text" @click="selectPermissions">选择</el-button>
               <el-button type="text" @click="clearPermission" style="margin-left: 0px;">清空</el-button>
             </el-form-item>
           </el-col>
+          </div>
         </el-row>
         <el-row>
           <el-col style="text-align: center">
