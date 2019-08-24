@@ -168,7 +168,6 @@
         StaffInfo: {
           staffNum:'',
           staffName:'',
-          staffName:'',
           staffTelephone:'',
           staffEmail:'',
           departmentName:''
@@ -338,6 +337,12 @@
               if (result.code === 200) {
                 if (result.list[0]) {
                   self.StaffInfo = result.list[0];
+                }else {
+                  self.StaffInfo.staffNum = '';
+                  self.StaffInfo.staffName = '';
+                  self.StaffInfo.staffTelephone = '';
+                  self.StaffInfo.staffEmail = '';
+                  self.StaffInfo.departmentName = '';
                 }
                 self.sex = result.sex;
                 self.isDimission = result.isDimission;
