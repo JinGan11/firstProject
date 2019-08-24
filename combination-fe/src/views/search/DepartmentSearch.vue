@@ -287,7 +287,7 @@
         <hr style="height: 1px">
         <div>
           <div style="font-family:Consolas;font-size:20px;margin-left: 50px;margin-bottom: 20px;">部门及部门下属所在城市</div>
-          <el-input type="textarea" style="width: 90%;text-align: center" v-model="this.departmentListById.toString()"
+          <el-input type="textarea" style="width: 100%;text-align: center" v-model="this.departmentListById.toString()"
                     disabled></el-input>
         </div>
         <hr style="height: 1px">
@@ -458,20 +458,6 @@
         departmentListById: '',
       }
     },
-    /*这里在关联部门多出两个的时候用'...'表示，现在还不能实现此功能
-    filters:{
-      ellipsis(value){
-      if(!value) return '';
-      else {
-        this.values=value.split(';');
-        if (this.values.length>2){
-        return this.values[0]+';'+this.values[1]+'...';
-         }else {
-        return value;
-        }
-      }
-    }
-      },*/
     filters: {
       ellipsis(value) {
         if (value && value.length > 10) {
@@ -483,7 +469,6 @@
     methods: {
       //编号点击开始详情页
       ChooseOnDetail(val) {
-        // alert(this.row.tableData[0].departmentNo);
         this.departmentListById = '';
         this.departmentId = val;
         var param = {
@@ -512,7 +497,6 @@
         });
         this.SearchCompany();
         this.SearchCityList();
-        this.departmentId = '';
         this.dialogVisibleDetail = true;
       },
 
@@ -549,7 +533,6 @@
         this.selection = val;
       },
       Search() {
-        //this.formInline.cityName='全部';
         if (this.formInline.cityName == '全部') {
           this.formInline.cityName = '';
         }
@@ -582,7 +565,6 @@
         });
       },
       Search1() {
-        //this.formInline.cityName='全部';
         this.currentPage = 1;
         if (this.formInline.cityName == '全部') {
           this.formInline.cityName = '';
@@ -618,20 +600,20 @@
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;
-        this.Search(1, val);
+        this.Search();
       },
       handleCurrentChange(val) {
         this.currentPage = val;
-        this.Search(val, this.pageSize);
+        this.Search();
       },
       handleSizeChangeCompany(val) {
         this.pageSizeCompany = val;
         this.currentPageCompany = 1;
-        //this.Search(1, val);
+        this.SearchCompany();
       },
       handleCurrentChangeCompany(val) {
         this.currentPageCompany = val;
-        //this.Search(val, this.pageSizeCompany);
+        this.SearchCompany();
       },
       exportExcel() {
         if (this.checkdepartment.length === 0) {
