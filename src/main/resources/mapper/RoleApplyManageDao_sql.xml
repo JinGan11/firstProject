@@ -90,6 +90,9 @@
         <if test="loginAccountName!=null and loginAccountName.trim()!=''">
             AND  t1.apply_account_name=#{loginAccountName}
         </if>
+        <if test="loginAccountName!=null and loginAccountName.trim()!=''">
+            AND  t2.approver_account_name=#{loginAccountName}
+        </if>
         <if test="userPermission == 4">
             and t3.id = #{accountId}
         </if>
