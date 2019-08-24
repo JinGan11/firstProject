@@ -227,6 +227,8 @@ public class AccountManagerServiceImpl implements AccountManagerService {
      */
     @Override
     public int modifyAccount(AccountStaff accountStaff) {
+        accountStaff.setOperationType("修改账号");
+        insertAccountHistory(accountStaff);
         accountStaff.setModifier(accountManageDao.selectStaffIdById(accountStaff.getModifyEmp()));
         return accountManageDao.modifyAccount(accountStaff);
     }
@@ -240,9 +242,7 @@ public class AccountManagerServiceImpl implements AccountManagerService {
      */
     @Override
     public int updateStaffAccount(AccountStaff accountStaff) {
-        accountStaff.setOperationType("修改账号");
         accountStaff.setModifier(accountManageDao.selectStaffIdById(accountStaff.getModifyEmp()));
-        insertAccountHistory(accountStaff);
         return employeeManageDao.updateAccount(accountStaff);
     }
 

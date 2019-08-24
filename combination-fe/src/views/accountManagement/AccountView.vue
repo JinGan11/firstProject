@@ -1,12 +1,12 @@
 <template>
   <home>
-    <div style="width:100%; margin-left: 110px">
+    <div style="width:100%; margin-left: 90px">
       <div>
         <div style="width: 60%; float:left">
           <h2 style="color: #409EFF">|账户信息</h2>
         </div>
       </div>
-      <hr style="width: 70%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
+      <hr style="width: 75%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
       <div style="width:85%;">
         <el-form  :model="modifyForm" status-icon ref="modifyForm" size="medium" label-width="120px"
                   class="demo-ruleForm">
@@ -86,7 +86,7 @@
           <h2 style="color: #409EFF">|其他信息</h2>
         </div>
       </div>
-      <hr style="width: 70%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
+      <hr style="width: 75%; float: left; border:1px solid #409EFF; margin-top: -5px; margin-bottom: 15px"></hr>
       <div style="width:85%;">
         <el-form :model="modifyForm" label-width="120px">
           <el-row>
@@ -117,7 +117,7 @@
           <el-row>
             <el-col :span="9">
               <el-form-item label="账号状态">
-                <el-select style="width:400px;" :disabled="true" v-model="modifyForm.accountState" clearable placeholder="请选择" >
+                <el-select style="width:440px;" :disabled="true" v-model="modifyForm.accountState" clearable placeholder="请选择" >
                   <el-option
                     v-for="item in statusList"
                     :key="item.value"
@@ -131,7 +131,7 @@
           <el-row>
             <el-col :span="9">
               <el-form-item label="备注">
-                <el-input style="width: 400px" :disabled="true" type="textarea" :rows="2" v-model="modifyForm.remark"></el-input>
+                <el-input style="width: 440px" :disabled="true" type="textarea" :rows="2" v-model="modifyForm.remark"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
