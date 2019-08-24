@@ -170,6 +170,10 @@ public class UserServiceImpl implements UserService {
             if (list.size() != 0) {
                 userInfo = list.get(0);
                 userPwd.setId(userInfo.getId());
+            } else {
+                result.setCode(212);
+                result.setMsg("账号不存在！");
+                return result;
             }
             if (!md5NewPassword.equals(userInfo.getAccountPassword())) {
                 // 查询历史密码

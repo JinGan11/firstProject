@@ -99,6 +99,10 @@
                   self.$alert("密码不能与前三次相同！", '消息提醒', {
                     confirmButtonText: '确定',
                   });
+                } else if (result.code === 212) {
+                  self.$alert("账号不存在，请重新输入！", '消息提醒', {
+                    confirmButtonText: '确定',
+                  });
                 } else {
                   self.$alert("旧密码输入错误！!", '消息提醒', {
                     confirmButtonText: '确定',
