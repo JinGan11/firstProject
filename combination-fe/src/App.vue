@@ -108,6 +108,26 @@
           </el-form>
         </div>
       </el-dialog>
+      <el-dialog title="密码重置" :show-close="showClose" :visible.sync="resetPasswordStaticFlag" :close-on-click-modal="false" width="700px">
+        <div class="dialog-main">
+          <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="100px"
+                   class="demo-ruleForm">
+            <el-form-item label="旧密码" prop="oldPass">
+              <el-input type="password" v-model="ruleForm.oldPass" autocomplete="off" style="width: 70%"></el-input>
+            </el-form-item>
+            <el-form-item label="新密码" prop="newPass">
+              <el-input type="password" v-model="ruleForm.newPass" autocomplete="off" style="width: 70%"></el-input>
+            </el-form-item>
+            <el-form-item label="确认新密码" prop="checkPass">
+              <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" style="width: 70%"></el-input>
+            </el-form-item>
+            <el-form-item style="text-align: center">
+              <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+              <el-button style="margin-bottom: 20px;margin-left: 20px" @click="resetForm('ruleForm')">重置</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-dialog>
     </el-container>
 
   </div>
@@ -165,6 +185,8 @@
         loginUserName: null,
         accountInfoFlag: false,
         resetPasswordFlag: false,
+        resetPasswordStaticFlag: false,
+        showClose:false,
         StaffInfo: {
           staffNum:'',
           staffName:'',
@@ -217,7 +239,7 @@
     mounted() {
       this.timer = setInterval(this.get, 1000);
       utils.$on('isFirstLogin', () => {
-        this.resetPasswordFlag = true;
+        this.resetPasswordStaticFlag = true;
       });
       utils.$on('loginSuccess', (loginFlag, username, powerList) => {
         this.loginSuccess(loginFlag, username, powerList);
