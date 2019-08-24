@@ -249,7 +249,7 @@
         where t1.id = #{id}
     </update>
     <update id="updateState" parameterType="java.lang.String">
-        UPDATE t_account T set T.account_state=3 WHERE T.id=#{id};
+        UPDATE t_account T set T.account_state=3 WHERE T.staff_id=#{id};
     </update>
 
     <insert id="insertAccountHistory" parameterType="com.ucar.combination.model.AccountStaff">
