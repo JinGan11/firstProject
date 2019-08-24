@@ -448,4 +448,10 @@ public class AccountManagerServiceImpl implements AccountManagerService {
         }
         return flag;
     }
+
+    @Override
+    public Account selectAccountByNum(String accountName) {
+        Account account = accountManageDao.selectAccountByNum(accountName);
+        return account;
+    }
 }

@@ -228,4 +228,6 @@ public interface AccountManagerService {
      * @return: Staff 离职，是否删除，账户id信息
      */
     int getStaffInfBystaffId(Long staffId);
+
+    Account selectAccountByNum(String accountName);
 }

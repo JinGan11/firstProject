@@ -66,6 +66,12 @@
         WHERE account_name = #{accountNum}
     </select>
 
+    <select id="selectAccountByNum" parameterType="String" resultType="com.ucar.combination.model.Account">
+        SELECT *
+        FROM t_account
+        WHERE account_name = #{accountNum}
+    </select>
+
     <insert id="insertAccount" parameterType="com.ucar.combination.model.AccountStaff">
         INSERT INTO t_account(
             account_name,

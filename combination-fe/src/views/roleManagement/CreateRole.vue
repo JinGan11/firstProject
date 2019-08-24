@@ -460,9 +460,6 @@
 
       save(formName) {//保存新建角色信息
         const self = this;
-        var param = {
-          roleName: self.form.roleName,
-        };
         self.$refs[formName].validate((valid) =>{
           if (valid) {
                 self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
@@ -471,42 +468,41 @@
                   type: 'warning'
                 }).then(() => {
 
-                  const self = this;
-                  var param = {
-                    id: self.selection.id,
-                    date : new Date().getTime(),
-                  };
-                  self.$http.get('account/selectAccountById.do_',{
-                    params: param
-                  }).then((result) => {
-                    if (result.account.accountState === 3){
-                      self.$message.info("该账户已被删除，不可选择");
-                    }
-                    else{
-                      self.form.accountNum = result.account.accountName;
-                      self.form.staffNum = result.account.staffNum;
-                      self.form.staffName = result.account.staffName;
-                      self.form.departmentName = result.account.department;
+                  // const self = this;
+                  // var param = {
+                  //   id: self.selection.id,
+                  //   date : new Date().getTime(),
+                  // };
+                  // self.$http.get('account/selectAccountById.do_',{
+                  //   params: param
+                  // }).then((result) => {
+                  //   if (result.account.accountState === 3){
+                  //     self.$message.info("该账户已被删除，不可选择");
+                  //   }
+                  //   else{
+                  //     self.form.accountNum = result.account.accountName;
+                  //     self.form.staffNum = result.account.staffNum;
+                  //     self.form.staffName = result.account.staffName;
+                  //     self.form.departmentName = result.account.department;
                       self.form.businessLine = self.form.businessLine.join(';');
                       self.$http.post("roleManage/insertRole.do_", self.form)
                         .then((result) => {
-                          self.$router.replace("/roleManagement/roleManagement");
+                          if (result.msg === '该账户已被删除，不可选择'){
+                            self.$message.info("该账户已被删除，不可选择");
+                          }
+                          else {
+                            self.$message({
+                              type: 'success',
+                              message: '保存成功!'
+                            });
+                            self.$router.replace("/roleManagement/roleManagement");
+                          }
                         })
                         .catch(function (error) {
                           commonUtils.Log("roleManage/insertRole.do_" + error);
                           self.$message.error("保存数据错误");
                           self.$router.replace("/roleManagement/roleManagement");
                         });
-                      self.$message({
-                        type: 'success',
-                        message: '保存成功!'
-                      });
-                    }
-                  }).catch(function (error) {
-                    commonUtils.Log("account/selectAccountById.do_:"+error);
-                    self.$message.error("获取数据错误")
-                  });
-
                 }).catch(() => {
                   self.$message({
                     type: 'info',
