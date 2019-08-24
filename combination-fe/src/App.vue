@@ -120,7 +120,6 @@
   import utils from './common/util'
   import ResetPass from './views/accountManagement/ResetPass'
   import global from './common/global.js'
-
   export default {
     data() {
       let validateOldPass = (rule, value, callback) => {
@@ -166,7 +165,14 @@
         loginUserName: null,
         accountInfoFlag: false,
         resetPasswordFlag: false,
-        StaffInfo: {},
+        StaffInfo: {
+          staffNum:'',
+          staffName:'',
+          staffName:'',
+          staffTelephone:'',
+          staffEmail:'',
+          departmentName:''
+        },
         sex: null,
         isDimission: null,
         ruleForm: {
@@ -292,7 +298,7 @@
       handleCommand(cmd) {
         var self = this;
         if (cmd == 'log') {
-          localStorage.setItem("log", true);
+          window.localStorage.setItem("log", true);
         } else if (cmd == 'logout') {
           self.$confirm('注销登录, 是否继续?', '提示', {
             confirmButtonText: '确定',
@@ -330,8 +336,9 @@
           self.$http.post('user/getEmpInfo', param)
             .then(result => {
               if (result.code === 200) {
-                console.log(result);
-                self.StaffInfo = result.list[0];
+                if (result.list[0]) {
+                  self.StaffInfo = result.list[0];
+                }
                 self.sex = result.sex;
                 self.isDimission = result.isDimission;
               } else {

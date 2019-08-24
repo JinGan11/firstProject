@@ -223,18 +223,20 @@ public class UserServiceImpl implements UserService {
             staffList = employeeManageDao.qryStaffById(list.get(0));
             String sex = null;
             String isDimission = null;
-            if (staffList.get(0).getStaffSex() != null) {
-                if (staffList.get(0).getStaffSex() == 1) {
-                    sex = "男";
-                } else if (staffList.get(0).getStaffSex() == 2) {
-                    sex = "女";
+            if ( staffList.size() != 0){
+                if (staffList.get(0).getStaffSex() != null) {
+                    if (staffList.get(0).getStaffSex() == 1) {
+                        sex = "男";
+                    } else if (staffList.get(0).getStaffSex() == 2) {
+                        sex = "女";
+                    }
                 }
-            }
-            if (staffList.get(0).getIsDimission() != null) {
-                if (staffList.get(0).getIsDimission() == 0) {
-                    isDimission = "在职";
-                } else {
-                    isDimission = "离职";
+                if (staffList.get(0).getIsDimission() != null) {
+                    if (staffList.get(0).getIsDimission() == 0) {
+                        isDimission = "在职";
+                    } else {
+                        isDimission = "离职";
+                    }
                 }
             }
             result.put("list", staffList)
