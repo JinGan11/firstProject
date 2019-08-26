@@ -4,11 +4,11 @@
              label-width="0px" v-loading="loading">
       <h3 class="login_title" style="color: white">系统登录</h3>
       <el-form-item prop="username">
-        <el-input type="text" v-model="usernameComputed"
+        <el-input type="text" v-model.trim="usernameComputed"
                   autocomplete="off" placeholder="账号"></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input type="password" v-model="loginForm.password"
+        <el-input type="password" v-model.trim="loginForm.password"
                   autocomplete="off" placeholder="密码"></el-input>
       </el-form-item>
       <el-form-item style="width: 100%">
