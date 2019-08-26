@@ -647,7 +647,11 @@
         }).catch(function (error) {
           //请求失败回调
           commonUtils.Log("roleApply/querylist.do_:"+error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
 
         this.selection=[];
@@ -789,7 +793,11 @@
             self.selection=[];
           }).catch(function (error) {
             commonUtils.Log("roleApply/deleteRoleApply.do_:" + error);
-            self.$message.error("获取数据错误");
+            if(error.message.includes('timeout')){
+              self.$message.error("请求超时！");
+            }else{
+              self.$message.error("获取数据错误");
+            }
           });
         }).catch(() => {
           this.$message({
@@ -824,7 +832,11 @@
             self.selection=[];
           }).catch(function (error) {
             commonUtils.Log("roleApply/commitRoleApply.do_:" + error);
-            self.$message.error("获取数据错误");
+            if(error.message.includes('timeout')){
+              self.$message.error("请求超时！");
+            }else{
+              self.$message.error("获取数据错误");
+            }
           });
         }).catch(() => {
           this.$message({
@@ -967,7 +979,11 @@
         }).catch(function (error) {
           //请求失败回调
           commonUtils.Log("roleApply/showAccountListByApplyId.do_:" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
       },
 
@@ -991,7 +1007,11 @@
           self.otherForm.modifyEmp = `${self.otherForm.modifyEmpNum}(${self.otherForm.modifyEmpName})`;
         }).catch(function (error) {
           commonUtils.Log("roleManage/getOtherOneInf.do_" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
         self.$http.get('roleManage/getOneInf.do_', {
           params: param
@@ -1001,7 +1021,11 @@
           self.formInfo.businessLine=self.formInfo.businessLine.split(';');
         }).catch(function (error) {
           commonUtils.Log("roleManage/getOneInf.do_:" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
       },
 
