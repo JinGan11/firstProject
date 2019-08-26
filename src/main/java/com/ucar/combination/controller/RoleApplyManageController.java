@@ -102,8 +102,6 @@ public class RoleApplyManageController {
         params.put("accountId", accountId);
         roleApplyManageService.deleteRoleApply(params);
         return Result.ok().put("msg","1");
-
-
     }
 
     /**

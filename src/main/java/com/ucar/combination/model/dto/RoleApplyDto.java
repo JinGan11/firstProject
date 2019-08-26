@@ -17,7 +17,9 @@ public class RoleApplyDto {
     private String roleName;
     private Integer roleStatus;
     private String approverStaffName;
+    private String approverStaffNum;
     private String approverAccountName;
+    private String approverDepartmentName;
     private String businessLine;
     private String applyAccountName;
     private String applyStaffNum;
@@ -97,6 +99,8 @@ public class RoleApplyDto {
     public void setApproverAccountName(String approverAccountName) {
         this.approverAccountName = approverAccountName;
     }
+
+
 
     public String getBusinessLine() {
         return businessLine;
@@ -184,5 +188,21 @@ public class RoleApplyDto {
 
     public void setApproveTime(Date approveTime) {
         this.approveTime = approveTime;
+    }
+
+    public String getApproverDepartmentName() {
+        return approverDepartmentName;
+    }
+
+    public void setApproverDepartmentName(String approverDepartmentName) {
+        this.approverDepartmentName = approverDepartmentName;
+    }
+
+    public String getApproverStaffNum() {
+        return approverStaffNum;
+    }
+
+    public void setApproverStaffNum(String approverStaffNum) {
+        this.approverStaffNum = approverStaffNum;
     }
 }

@@ -117,7 +117,9 @@
       <el-table-column prop="roleName" label="申请角色名称"  width="150"></el-table-column>
       <el-table-column prop="roleStatus" v-if="false" label="角色状态"  width="150"></el-table-column>
       <el-table-column prop="approverStaffName" label="审批负责人" width="150"></el-table-column>
+      <el-table-column prop="approverStaffNum" label="审批负责人员工编号" width="150"></el-table-column>
       <el-table-column prop="approverAccountName" v-if="false" label="审批负责人账号" width="150"></el-table-column>
+      <el-table-column prop="approverDepartmentName"  label="审批负责人部门" width="150"></el-table-column>
       <el-table-column prop="businessLine" label="角色支持业务线" width="150"></el-table-column>
       <el-table-column prop="applyAccountName" label="申请人登录账号" width="150"></el-table-column>
       <el-table-column prop="applyStaffNum" label="申请人员工编号" width="150"></el-table-column>
@@ -1030,7 +1032,7 @@
       },
 
       cancalShowRoleDetails(){
-        this.roleInfoDetailFlag = true;
+        this.roleInfoDetailFlag = false;
       },
 
     }
