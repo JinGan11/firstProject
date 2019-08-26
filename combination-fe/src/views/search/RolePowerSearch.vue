@@ -489,7 +489,11 @@
           self.RoleStatusEnum = result.RoleStatusEnum;
         }).catch(function (error) {
           commonUtils.Log("queryRolePowerlist.do_:" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){   // 判断请求异常信息中是否含有超时timeout字符串
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
       },
 
@@ -696,7 +700,11 @@
           self.formInfo.businessLine=self.formInfo.businessLine.split(';');
         }).catch(function (error) {
           commonUtils.Log("roleManage/getOneInf.do_:" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){   // 判断请求异常信息中是否含有超时timeout字符串
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
       },
       cancelRoleInfo() {
