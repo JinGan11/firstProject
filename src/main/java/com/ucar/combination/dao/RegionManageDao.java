@@ -83,6 +83,7 @@ public interface RegionManageDao {
      */
     List<String> citySearchListById(String id);
 
+    List<String> citySearchListById1(String id);
 
     /**
      * description: 根据关键词查找城市

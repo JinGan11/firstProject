@@ -332,7 +332,7 @@
           departmentName: this.accountForm.departmentName,
           powerId: this.accountForm.powerId,
           accountState: this.accountForm.accountState,
-          date:new Date().getTime(),
+          date: new Date().getTime(),
         };
         self.$http.get('/roleAccount/getAccountPowerList.do_', {
           params: param
@@ -348,7 +348,7 @@
         })
       },
       Search1() {
-        this.currentPage=1;
+        this.currentPage = 1;
         var self = this;
         var param = {
           page: self.currentPage,
@@ -359,7 +359,7 @@
           departmentName: this.accountForm.departmentName,
           powerId: this.accountForm.powerId,
           accountState: this.accountForm.accountState,
-          date:new Date().getTime(),
+          date: new Date().getTime(),
         };
         self.$http.get('/roleAccount/getAccountPowerList.do_', {
           params: param
@@ -378,7 +378,7 @@
         this.selection = val;
       },
       exportRole() {
-        this.checkAll=false;
+        this.checkAll = false;
         this.exportDialogVisible = true;
       },
       exportExcel() {
@@ -397,9 +397,9 @@
             const filterVal = this.exportField(this.checkRoles);
             // 上面的staffNum、accountId、staffName是tableData里对象的属性
             const list = this.accountPowerList;  //把data里的tableData存到list
-            for (let i = 0; i < list.length; i++) {
-              list[i].accountState = this.AccountStatusEnums[list[i].accountState];
-            }
+              for (let i = 0; i < list.length; i++) {
+                list[i].accountState = this.AccountStatusEnums[list[i].accountState];
+              }
             //获取当前时间
             var date = new Date();
             var seperator1 = "-";
@@ -466,7 +466,7 @@
       formDetails(val) {
         var param = {
           id: val.accountId,
-          date:new Date().getTime(),
+          date: new Date().getTime(),
         }
         this.$http.get("/account/selectById.do_", {
           params: param
@@ -579,7 +579,7 @@
       judgmentAuthority() {
         const self = this;
         let permission = self.$store.state.powerList;
-        permission.forEach(item=>{
+        permission.forEach(item => {
           if (item === 69) {
             self.BtnPermission.exportPermission = false
           }

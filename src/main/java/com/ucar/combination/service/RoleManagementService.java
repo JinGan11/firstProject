@@ -37,7 +37,7 @@ public interface RoleManagementService {
     Result getRolePower(RolePower rolePower);
     void updateByModify(RoleDto role);
     List<RolePower> getRolePowerList(Long roleInfoId);
-    List<Role> queryroleList();
+    List<Role> queryroleList(QueryParam queryParam);
 
     /**
      * description: 获取角色账户信息

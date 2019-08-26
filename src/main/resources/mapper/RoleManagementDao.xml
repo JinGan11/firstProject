@@ -34,6 +34,15 @@
         t1.role_status    roleStatus,
         t1.description    description
         from t_role_info t1
+        <where>
+            <if test="flag != null and flag.trim() !=''">
+                AND t1.role_status = 1
+            </if>
+            <if test="role_name != null and role_name.trim() != ''">
+                AND t1.role_name like concat('%',#{role_name},'%')
+            </if>
+        </where>
+        ORDER BY t1.create_time desc
     </select>
 
     <select id="getRoleList" resultType="com.ucar.combination.model.Role">

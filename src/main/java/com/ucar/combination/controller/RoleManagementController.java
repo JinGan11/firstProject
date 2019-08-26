@@ -67,7 +67,7 @@ public class RoleManagementController {
 		params.put("role_name", roleName);
 		params.put("flag",flag);
 		ResultPage resultPage = roleManagementService.queryList(new QueryParam(params));
-		List<Role> roleList = roleManagementService.queryroleList();
+		List<Role> roleList = roleManagementService.queryroleList(new QueryParam(params));
 		return Result.ok().put("page", resultPage).put("RoleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values())).put("roleList",roleList);
 	}
 
