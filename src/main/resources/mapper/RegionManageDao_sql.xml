@@ -209,11 +209,17 @@
     </update>
 
 	<select id="citySearchListById" resultType="java.lang.String">
-		SELECT T.city_name FROM t_b_city T JOIN t_department T1 on T.city_id=T1.city_id
-         WHERE T1.id=#{id} OR T1.upper_department_no =(
-	        SELECT T2.department_no FROM t_department T2
-		      WHERE T2.id=#{id}
-          );
+		SELECT DISTINCT T.city_name FROM t_b_city T JOIN t_department T1 on T.city_id=T1.city_id
+					JOIN t_department T4 ON T1.upper_department_no=T4.department_no
+          WHERE T.level=2 AND (T1.id=#{id} OR T4.id=#{id});
+	</select>
+
+
+	<select id="citySearchListById1" resultType="java.lang.String">
+		SELECT DISTINCT T3.city_name FROM t_b_city T JOIN t_department T1 on T.city_id=T1.city_id
+					JOIN t_b_city T3 ON T.upper_city_id=T3.city_id
+					JOIN t_department T4 ON T1.upper_department_no=T4.department_no
+          WHERE T3.level=2 AND (T1.id=#{id} OR T4.id=#{id});
 	</select>
 
 	<select id="matchRegionCode" resultType="com.ucar.combination.model.Region">

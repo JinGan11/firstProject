@@ -336,7 +336,7 @@
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
         <div style="margin: 15px 0;"></div>
         <el-checkbox-group v-model="checkdepartment" @change="handlecheckRolesChange">
-          <el-checkbox   v-for="city in department" :label="city" :key="city">{{city}}</el-checkbox>
+          <el-checkbox v-for="city in department" :label="city" :key="city">{{city}}</el-checkbox>
         </el-checkbox-group>
       </template>
       <template slot="footer">
@@ -456,6 +456,7 @@
         disabled: true,
         departmentList: [],
         departmentListById: '',
+        flag:true,
       }
     },
     filters: {
@@ -631,10 +632,14 @@
             const filterVal = this.exportField(this.checkdepartment);
             // 上面的staffNum、accountId、staffName是tableData里对象的属性
             const list = this.departmentList;  //把data里的tableData存到list
-            for (let i = 0; i < list.length; i++) {
-              list[i].departmentType = this.DepartmentTypeEnum[list[i].departmentType];
-              list[i].status = this.StatusEnum[list[i].status];
-              list[i].level = this.LevelEnum[list[i].level];
+            let flag = this.flag;
+            if (flag) {
+              this.flag = false;
+              for (let i = 0; i < list.length; i++) {
+                list[i].departmentType = this.DepartmentTypeEnum[list[i].departmentType];
+                list[i].status = this.StatusEnum[list[i].status];
+                list[i].level = this.LevelEnum[list[i].level];
+              }
             }
             //获取当前时间
             var date = new Date();

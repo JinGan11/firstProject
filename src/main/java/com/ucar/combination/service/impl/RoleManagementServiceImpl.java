@@ -266,8 +266,9 @@ public class RoleManagementServiceImpl implements RoleManagementService {
      * @return
      */
     @Override
-    public List<Role> queryroleList() {
-        return roleManagementDao.queryroleList();
+    public List<Role> queryroleList(QueryParam queryParam) {
+
+        return roleManagementDao.queryroleList(queryParam);
     }
 
     /**

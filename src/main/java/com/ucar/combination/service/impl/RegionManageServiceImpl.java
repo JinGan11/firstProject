@@ -12,9 +12,7 @@ import com.ucar.combination.service.RegionManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * description:
@@ -113,7 +111,11 @@ public class RegionManageServiceImpl implements RegionManageService {
 
     @Override
     public List<String> citySearchListById(String id) {
-        return regionManageDao.citySearchListById(id);
+        List<String> listCityLevel2=regionManageDao.citySearchListById(id);
+        List<String> listCityLevel3=regionManageDao.citySearchListById1(id);
+        listCityLevel2.addAll(listCityLevel3);
+        listCityLevel2=new ArrayList<String>(new LinkedHashSet<>(listCityLevel2));
+        return listCityLevel2;
     }
 
     @Override

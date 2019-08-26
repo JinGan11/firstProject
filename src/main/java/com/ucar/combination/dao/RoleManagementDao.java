@@ -139,7 +139,7 @@ public interface RoleManagementDao {
      * @params
      * @return
      */
-    List<Role> queryroleList();
+    List<Role> queryroleList(QueryParam param);
 
     /**
      * description: 获取角色账户信息

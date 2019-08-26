@@ -404,6 +404,7 @@
         isComfirmAdd:true,
         strict: false,
         chooseDepartmentFlag:false,
+        flag:true,
       }
     },
     activated() {
@@ -716,7 +717,7 @@
         });
       },
 
-
+      //导出文件
       exportExcel() {
         if (this.checkRoles.length === 0) {
           this.$message({
@@ -733,8 +734,12 @@
             const filterVal = this.exportField(this.checkRoles);
             // 上面的staffNum、accountId、staffName是tableData里对象的属性
             const list = this.roleDtoList;  //把data里的tableData存到list
-            for (let i = 0; i < list.length; i++) {
-              list[i].roleStatus = this.RoleStatusEnum[list[i].roleStatus];
+            let flag=this.flag;
+            if (flag){
+              this.flag=false;
+              for (let i = 0; i < list.length; i++) {
+                list[i].roleStatus = this.RoleStatusEnum[list[i].roleStatus];
+              }
             }
             //获取当前时间
             var date = new Date();
