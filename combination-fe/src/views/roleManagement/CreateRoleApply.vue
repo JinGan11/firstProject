@@ -717,6 +717,7 @@
       },
       clearDepartment() {//清除部门的值
         this.form.department = '';
+        this.form.departmentId = '';
       },
 
       selectRoleForRoleApply() {
@@ -777,7 +778,7 @@
         this.formRoleInfo.roleName = row.roleName;
         this.roleStatus = row.roleStatus;
         this.formRoleInfo.approverStaffName = row.staffName;
-        this.otherInfo.approverStaffName = row.staffName;
+        // this.otherInfo.approverStaffName = row.staffName;
         this.formRoleInfo.businessLine = row.businessLine;
       },
 
@@ -804,6 +805,7 @@
         });
         //隐藏弹出框
         this.dialogVisibleRole = false;
+        this.currentPage = 1;
       },
       cancelSelectRole() {
         //取消按钮
@@ -941,6 +943,7 @@
           commonUtils.Log("roleApply/getAccountStateById.do_" + error);
           self.$message.error("获取添加账号数据失败")
         });
+        this.currentPage = 1;
       },
 
 
@@ -998,8 +1001,7 @@
         }).then((result) => {
           self.roleStatus = result.page.roleStatus;
           if (self.roleStatus == 0) {
-            self.$message.error("该角色已失效，保存失败！！");
-            self.$router.replace("/roleManagement/apply");
+            self.$message.error("该角色已失效，保存失败！请重新选择！");
           }else{
             self.checkAccountState(self,msgs);
           }
@@ -1023,11 +1025,12 @@
         }).then((result) => {
           self.accountDeletedList1 = result.accountDeletedList;
           if (self.accountDeletedList1.length > 0) {
-            self.$message.error('账号    ' + self.accountDeletedList1 + '    已失效,保存失败！！');
-            self.$router.replace("/roleManagement/apply");
-            // self.tableDataAccount=[];
-            // self.accountChangesList=[];
-            // self.accountIdList1=[];
+            self.$message.error('账号    ' + self.accountDeletedList1 + '    已失效!!请重新选择！！');
+            // self.$router.replace("/roleManagement/apply");
+            self.tableDataAccount=[];
+            self.accountChangesList=[];
+            self.accountIdList1=[];
+
           }else{
             if(msgs=='flagBtn1'){
               self.saveRoleApply(self);

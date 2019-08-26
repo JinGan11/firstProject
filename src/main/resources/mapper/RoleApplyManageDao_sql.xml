@@ -69,7 +69,9 @@
         t2.role_name                roleName,
         t2.role_status              roleStatus,
         t2.approver_staff_name      approverStaffName,
+        t2.approver_staff_num       approverStaffNum,
         t2.approver_account_name    approverAccountName,
+        t2.approver_department_name approverDepartmentName,
         t2.business_line            businessLine,
         t1.apply_account_name       applyAccountName,
         t4.staff_num                applyStaffNum,
@@ -77,7 +79,7 @@
         t5.department_name          applyDepartmentName,
         t1.apply_time               applyTime,
         t1.status                   applyStatus,
-        t3.account_name             modifyEmp,
+        t6.account_name             modifyEmp,
         t1.modify_time              modifyTime,
         t1.reject_reason            rejectReason,
         t1.approval_time            approveTime
@@ -86,19 +88,27 @@
         LEFT JOIN t_account t3 on t3.account_name = t1.apply_account_name
         LEFT JOIN t_staff t4 on t3.staff_id=t4.id
         LEFT JOIN t_department t5 on t5.id = t4.department_id
+        LEFT JOIN t_account t6 on t6.id=t1.modify_emp
+        LEFT JOIN t_staff t7 on t2.approver_staff_num=t7.staff_num
         where 1=1
-        <if test="loginAccountName!=null and loginAccountName.trim()!=''">
-            AND  t1.apply_account_name=#{loginAccountName}
-        </if>
-        <if test="loginAccountName!=null and loginAccountName.trim()!=''">
-            AND  t2.approver_account_name=#{loginAccountName}
-        </if>
+<!--        <if test="loginAccountName!=null and loginAccountName.trim()!=''">-->
+<!--            AND  t1.apply_account_name=#{loginAccountName}-->
+<!--        </if>-->
+<!--        <if test="loginAccountName!=null and loginAccountName.trim()!=''">-->
+<!--            AND  t2.approver_account_name=#{loginAccountName}-->
+<!--        </if>-->
         <if test="userPermission == 4">
-            and t3.id = #{accountId}
+            and (t3.id = #{accountId} or t2.approver_account_name=#{loginAccountName})
         </if>
         <if test="userPermission == 2 or userPermission == 3 or userPermission == 5 ">
-            and t4.department_id in
+            and
+            (
+            t4.department_id in
             <foreach collection="departmentIdList" item="item" open="(" separator="," close=")">#{item}</foreach>
+            or
+            t7.department_id in
+            <foreach collection="departmentIdList" item="item" open="(" separator="," close=")">#{item}</foreach>
+            )
         </if>
 
         <if test="roleApplyNum!=null and roleApplyNum.trim()!=''">
@@ -157,14 +167,18 @@
     <!--删除角色申请-->
     <update id="deleteRoleApply">
         update t_role_apply t1
-        set t1.status=5
+        set t1.status=5,
+            t1.modify_time=now(),
+            t1.modify_emp=#{accountId}
         where t1.id= #{id}
     </update>
 
     <!--提交角色申请-->
     <update id="commitRoleApply">
         update t_role_apply t1
-        set t1.status=2
+        set t1.status=2,
+        t1.modify_time=now(),
+        t1.modify_emp=#{accountId}
         where t1.id = #{id}
     </update>
 
@@ -265,6 +279,7 @@
         set role_id=#{roleId},
             role_name=#{roleName},
             status=#{applyStatus},
+            modify_emp=#{modifyStaffName},
             modify_time=now()
         where id=#{id}
     </update>

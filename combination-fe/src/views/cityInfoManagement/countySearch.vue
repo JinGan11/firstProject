@@ -273,7 +273,11 @@
 
                 }).catch(function (error) {
                     commonUtils.Log("/regionManage/countySearch:" + error);
-                    self.$message.error("获取数据错误");
+                    if(error.message.includes('timeout')){
+                        self.$message.error("请求超时！");
+                    }else{
+                        self.$message.error("获取数据错误");
+                    }
                 });
 
             },
@@ -307,7 +311,11 @@
 
                 }).catch(function (error) {
                     commonUtils.Log("/regionManage/countySearch:" + error);
-                    self.$message.error("获取数据错误");
+                    if(error.message.includes('timeout')){
+                        self.$message.error("请求超时！");
+                    }else{
+                        self.$message.error("获取数据错误");
+                    }
                 });
 
             },

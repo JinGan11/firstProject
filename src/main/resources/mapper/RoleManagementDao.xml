@@ -2,17 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ucar.combination.dao.RoleManagementDao">
     <select id="queryList" resultType="com.ucar.combination.model.Role">
-    select
-    t1.id              roleId,
-    t1.role_name       roleName,
-    t1.business_line   businessLine,
-    t1.approver_account_name   accountNum,
-    t1.approver_staff_num     staffNum,
-    t1.approver_staff_name     staffName,
-    t1.approver_department_name  departmentName,
-    t1.role_status    roleStatus,
-    t1.description    description
-    from t_role_info t1
+        select
+        t1.id              roleId,
+        t1.role_name       roleName,
+        t1.business_line   businessLine,
+        t2.account_name   accountNum,
+        t3.staff_num     staffNum,
+        t3.staff_name     staffName,
+        t4.department_name  departmentName,
+        t1.role_status    roleStatus,
+        t1.description    description
+        from t_role_info t1
+        LEFT JOIN t_account t2 on t1.approver_account_name = t2.account_name
+        LEFT JOIN t_staff t3 on t2.staff_id=t3.id
+        LEFT JOIN t_department t4 on  t3.department_id =t4.id
     where 1=1
     <if test="flag != null and flag.trim() !=''">
         AND t1.role_status = 1
@@ -108,20 +111,23 @@
 
     <select id="getOneInf" resultType="com.ucar.combination.model.dto.RoleDto" parameterType="int">
                 select
-        t1.id              roleID,
+        t1.id              roleId,
         t1.role_name       roleName,
         t1.business_line   businessLine,
-        t1.role_status     roleStatus,
-        t1.approver_account_name  accountNum,
-        t1.approver_staff_num       staffNum,
-        t1.approver_staff_name     staffName,
-        t1.approver_department_name  departmentName,
-        t1.description               description,
+        t2.account_name   accountNum,
+        t3.staff_num     staffNum,
+        t3.staff_name     staffName,
+        t4.department_name  departmentName,
+        t1.role_status    roleStatus,
+        t1.description    description,
         t1.create_emp       createEmp,
         t1.create_time      createTime,
         t1.modify_emp       modifyEmp,
         t1.modify_time      modifyTime
         from t_role_info t1
+        LEFT JOIN t_account t2 on t1.approver_account_name = t2.account_name
+        LEFT JOIN t_staff t3 on t2.staff_id=t3.id
+        LEFT JOIN t_department t4 on  t3.department_id =t4.id
         where t1.id= #{id}
     </select>
 

@@ -309,6 +309,7 @@
         BtnPermission: {
           exportPermission: true,
         },
+        flag: true,
       }
     },
     methods: {
@@ -397,9 +398,13 @@
             const filterVal = this.exportField(this.checkRoles);
             // 上面的staffNum、accountId、staffName是tableData里对象的属性
             const list = this.accountPowerList;  //把data里的tableData存到list
+            let flag = this.flag;
+            if (flag) {
+              this.flag = false;
               for (let i = 0; i < list.length; i++) {
                 list[i].accountState = this.AccountStatusEnums[list[i].accountState];
               }
+            }
             //获取当前时间
             var date = new Date();
             var seperator1 = "-";

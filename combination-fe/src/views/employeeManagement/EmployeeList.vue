@@ -261,9 +261,9 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="归属部门:" prop="departmentName" placeholder="请选择归属部门" label-width="150px">
-                <el-input style="width:80px;" :disabled="true" v-model="createForm.departmentName"></el-input>
+                <el-input style="width:170px;" :disabled="true" v-model="createForm.departmentName"></el-input>
                 <el-button type="text" @click="selectDepartment">选择</el-button>
-                <el-button type="text" @click="clearDepartment">清空</el-button>
+                <!--<el-button type="text" @click="clearDepartment">清空</el-button>-->
               </el-form-item>
             </el-col>
           </el-row>
@@ -369,9 +369,9 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="归属部门:" prop="departmentName" label-width="150px">
-                <el-input style="width:80px;" :disabled="true" v-model="modifyForm.departmentName"></el-input>
+                <el-input style="width:170px;" :disabled="true" v-model="modifyForm.departmentName"></el-input>
                 <el-button type="text" @click="selectDepartmentModify">选择</el-button>
-                <el-button type="text" @click="clearDepartmentModify">清空</el-button>
+               <!-- <el-button type="text" @click="clearDepartmentModify">清空</el-button>-->
               </el-form-item>
             </el-col>
           </el-row>
@@ -925,7 +925,11 @@
           self.staffDtoList = result.staffDtoList;
         }).catch(function (error) {
           commonUtils.Log("employee/querylist.do_:" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         })
       } else {
         self.fetchData();
@@ -997,7 +1001,11 @@
           self.staffNumList=result.staffNumList;
         }).catch(function (error) {
           commonUtils.Log("employee/querylist.do_:" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){   // 判断请求异常信息中是否含有超时timeout字符串
+            self.$message.error("请求超时！");
+          }else{
+             self.$message.error("获取数据错误");
+          }
         });
       },
       save() {
@@ -1193,6 +1201,7 @@
               self.quitDisabled = true;
               self.departmentDisabled=true;
               self.recoveryDisabled = false;
+              self.selection = '';
             } else {
               self.$message.error("离职失败")
             }
@@ -1683,7 +1692,11 @@
           self.contentForm.modifyEmp = result.list.modifyEmpName;
         }).catch(function (error) {
           commonUtils.Log("employee/otherInfo.do_:" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){   // 判断请求异常信息中是否含有超时timeout字符串
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
       },
       confirmInfo() {

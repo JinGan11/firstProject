@@ -23,7 +23,7 @@ public class CreateRoleApplyDto {
     private String applyDepartmentName;//申请人部门名字
     private Integer applyStatus;//申请状态
     private Date applyTime;//申请时间
-    private Long  modifyStaffName;//修改人
+    private Long  modifyStaffName;//修改人ID
     private Date modifyTime;//修改时间
 //    private List<Long> accountIdList;//账号ID
 

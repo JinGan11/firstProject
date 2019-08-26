@@ -4,7 +4,7 @@
              label-width="0px" v-loading="loading">
       <h3 class="login_title" style="color: white">系统登录</h3>
       <el-form-item prop="username">
-        <el-input type="text" v-model="loginForm.username"
+        <el-input type="text" v-model="usernameComputed"
                   autocomplete="off" placeholder="账号"></el-input>
       </el-form-item>
       <el-form-item prop="password">
@@ -62,6 +62,16 @@
     },
     mounted() {
     },
+    computed : {
+      usernameComputed : {
+        get: function(){
+          return this.loginForm.username;
+        },
+        set : function(val){
+          this.loginForm.username = val.toLowerCase();
+        }
+      }
+    },
     components: {App},
     methods: {
       submitForm () {
@@ -91,7 +101,7 @@
                   });
                 }else if (result.code === 202) {
                   utils.$emit("loginSuccess",true,result.accountName, result.powerList);
-                  self.$confirm('已有账号登陆，自动为您跳转！如需登陆其它账号请先退出！', '提示', {
+                  self.$confirm('已有账号登录，自动为您跳转！如需登录其它账号请先退出！', '提示', {
                     showCancelButton:false,
                     showClose:false,
                     confirmButtonText: '确定',
@@ -110,6 +120,9 @@
                   }).then(() => {
                     utils.$emit("loginSuccess",true,self.loginForm.username, result.powerList);
                     utils.$emit("isFirstLogin");
+                    window.localStorage.setItem("isLogin",1);
+                    global.accountName = result.accountName;
+                    window.localStorage.setItem("accountName",result.accountName);
                     self.$router.replace("/index");
                   }).catch(() => {
                     self.$message({
@@ -129,6 +142,9 @@
                   }).then(() => {
                     utils.$emit("loginSuccess",true,self.loginForm.username, result.powerList);
                     utils.$emit("isFirstLogin");
+                    window.localStorage.setItem("isLogin",1);
+                    global.accountName = result.accountName;
+                    window.localStorage.setItem("accountName",result.accountName);
                     self.$router.replace("/index");
                   }).catch(() => {
                     self.$message({
@@ -144,7 +160,7 @@
               })
               .catch(function (error) {
                 commonUtils.Log("user/updatePwd:" + error);
-                self.$message.error("登陆错误，请联系管理员！");
+                self.$message.error("登录错误，请联系管理员！");
               });
           } else {
             console.log('error submit!!');

@@ -103,7 +103,7 @@
           <el-radio v-model="selection" @change="selectRow(scope.row)" :label="scope.row.id" ><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
-      <el-table-column prop="id"  label="隐藏id"></el-table-column>
+      <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
       <el-table-column prop="roleApplyNum" label="角色申请编号" width="150">
         <template slot-scope="scope">
           <el-button type="text" @click="roleApplyNumBtn(scope.row)">{{scope.row.roleApplyNum}}</el-button>
@@ -117,7 +117,9 @@
       <el-table-column prop="roleName" label="申请角色名称"  width="150"></el-table-column>
       <el-table-column prop="roleStatus" v-if="false" label="角色状态"  width="150"></el-table-column>
       <el-table-column prop="approverStaffName" label="审批负责人" width="150"></el-table-column>
+      <el-table-column prop="approverStaffNum" label="审批负责人员工编号" width="150"></el-table-column>
       <el-table-column prop="approverAccountName" v-if="false" label="审批负责人账号" width="150"></el-table-column>
+      <el-table-column prop="approverDepartmentName"  label="审批负责人部门" width="150"></el-table-column>
       <el-table-column prop="businessLine" label="角色支持业务线" width="150"></el-table-column>
       <el-table-column prop="applyAccountName" label="申请人登录账号" width="150"></el-table-column>
       <el-table-column prop="applyStaffNum" label="申请人员工编号" width="150"></el-table-column>
@@ -647,7 +649,11 @@
         }).catch(function (error) {
           //请求失败回调
           commonUtils.Log("roleApply/querylist.do_:"+error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
 
         this.selection=[];
@@ -789,7 +795,11 @@
             self.selection=[];
           }).catch(function (error) {
             commonUtils.Log("roleApply/deleteRoleApply.do_:" + error);
-            self.$message.error("获取数据错误");
+            if(error.message.includes('timeout')){
+              self.$message.error("请求超时！");
+            }else{
+              self.$message.error("获取数据错误");
+            }
           });
         }).catch(() => {
           this.$message({
@@ -824,7 +834,11 @@
             self.selection=[];
           }).catch(function (error) {
             commonUtils.Log("roleApply/commitRoleApply.do_:" + error);
-            self.$message.error("获取数据错误");
+            if(error.message.includes('timeout')){
+              self.$message.error("请求超时！");
+            }else{
+              self.$message.error("获取数据错误");
+            }
           });
         }).catch(() => {
           this.$message({
@@ -967,7 +981,11 @@
         }).catch(function (error) {
           //请求失败回调
           commonUtils.Log("roleApply/showAccountListByApplyId.do_:" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
       },
 
@@ -991,7 +1009,11 @@
           self.otherForm.modifyEmp = `${self.otherForm.modifyEmpNum}(${self.otherForm.modifyEmpName})`;
         }).catch(function (error) {
           commonUtils.Log("roleManage/getOtherOneInf.do_" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
         self.$http.get('roleManage/getOneInf.do_', {
           params: param
@@ -1001,12 +1023,16 @@
           self.formInfo.businessLine=self.formInfo.businessLine.split(';');
         }).catch(function (error) {
           commonUtils.Log("roleManage/getOneInf.do_:" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
       },
 
       cancalShowRoleDetails(){
-        this.roleInfoDetailFlag = true;
+        this.roleInfoDetailFlag = false;
       },
 
     }

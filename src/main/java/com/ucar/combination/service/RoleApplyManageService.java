@@ -39,7 +39,7 @@ public interface RoleApplyManageService {
     * @Return
     * @Date  15:25 2019/8/7
     */
-    void deleteRoleApply(int id);
+    void deleteRoleApply(Map<String, Object> params);
 
     /**
     * @Description:  提交审核
@@ -48,7 +48,7 @@ public interface RoleApplyManageService {
     * @Return
     * @Date  17:40 2019/8/7
     */
-    void commitRoleApply(int id);
+    void commitRoleApply(Map<String, Object> params);
 
     /**
     * @Description:

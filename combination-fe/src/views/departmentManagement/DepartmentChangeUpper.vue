@@ -8,7 +8,7 @@
     <br/>
     <div>
       <span style="color: red;">红色：无效部门</span><br/>
-      <span style="color: #CDAD00">黄色：本部门、本部门下级部门、业务线不包含本部门</span></span>
+<!--      <span style="color: #CDAD00">黄色：本部门、本部门下级部门、业务线不包含本部门</span></span>-->
       <br/><br/>
       <span>请选择该部门新的上级部门</span>
       </div>
@@ -21,9 +21,9 @@
       lazy="true"
       :default-expanded-keys="[1]"
       check-strictly
-      show-checkbox
+      :expand-on-click-node="false"
       :render-content="renderContent"
-      @check-change="handleClick">
+      @node-click="handleNodeClick">
     </el-tree>
 
   </home>
@@ -42,7 +42,8 @@
           status: 'status',
           canChoose: 'canChoose'
         },
-        cannotSave: true
+        cannotSave: true,
+        checkedNo: 'Z000001'
       }
     },
     mounted() {
@@ -64,32 +65,35 @@
 
         });
       },
-      handleClick(data,checked,node){
-        // 手动设置单选
-        if(checked === true) {
-          this.checkedId = data.id;
-          this.$refs.tree.setCheckedKeys([data.id]);
-          // 设置按钮是否可选（选中节点后调用两次handleClick，第一次checked为true，所以设置按钮写在这）
-          if(data.status === 1 && data.canChoose == true){
-            this.cannotSave=false;
-          }else{
-            this.cannotSave=true;
-          }
-        } else {
-          if (this.checkedId == data.id) {
-            this.$refs.tree.setCheckedKeys([data.id]);
-          }
-        }
-      },
       renderContent(h, { node, data, store }) {
         // 这里编译器有红色波浪线不影响运行...
         if(data.status != 1) {
-          return (<span style = "color:red" > {node.label} < /span>);
+          return (
+            <span style = "color:red">{node.label}</span>
+          );
         }
         if(data.canChoose == false){
-          return (<span style="color:#CDAD00">{node.label}</span>);
+          return (
+            <span>{node.label}</span>
+        );
         }
-        return (<span>{node.label}</span>);
+        return (
+          <span><input type="radio" name="departmentCheck" id={data.id} value={data.id}/>{node.label}</span>
+        );
+      },
+      handleNodeClick(data){
+        if(data.canChoose){
+          console.log(data);
+          var dept_options = document.getElementsByName("departmentCheck");
+          for(var i = 0;i<dept_options.length;i++){
+            if(dept_options[i].value==data.id){
+              dept_options[i].checked=true;
+              this.checkedNo=data.departmentNo;
+              this.cannotSave=false;
+              break;
+            }
+          }
+        }
       },
       save(){
         var self = this;
@@ -99,7 +103,7 @@
           forIEFresh: new Date().getTime()
         };
         params.id=self.dept_id;
-        params.upperDepartmentNo=self.$refs.tree.getCheckedNodes()[0].departmentNo;
+        params.upperDepartmentNo=self.checkedNo;
         self.$http.post("department/updateUpperDepartment.do_",params)
           .then(result => {
             if(result.result==false){

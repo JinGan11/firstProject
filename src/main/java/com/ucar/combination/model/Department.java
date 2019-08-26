@@ -30,6 +30,15 @@ public class Department extends BaseBean {
     private String remark;
     private String longitude;
     private String latitude;
+    private String addressDetail;
+
+    public String getAddressDetail() {
+        return addressDetail;
+    }
+
+    public void setAddressDetail(String addressDetail) {
+        this.addressDetail = addressDetail;
+    }
 
     public String getLongitude() {
         return longitude;

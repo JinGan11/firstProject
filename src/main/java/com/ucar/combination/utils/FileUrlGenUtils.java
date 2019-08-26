@@ -9,7 +9,7 @@ import java.util.Random;
 public class FileUrlGenUtils {
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
     //文件根目录
-    private static final String ROOT_DIR = "C:\\licenses\\";
+    private static final String ROOT_DIR = "/usr/local/src/combination/uploadPic/";
     //随机数种子
     private static Random rnd = new Random();
 

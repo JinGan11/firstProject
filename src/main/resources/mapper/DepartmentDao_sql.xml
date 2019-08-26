@@ -32,6 +32,7 @@
             remark,
             longitude,
             latitude,
+            address_detail,
             create_emp,
             create_time,
             modify_emp,
@@ -56,6 +57,7 @@
             #{remark},
             #{longitude},
             #{latitude},
+            #{addressDetail},
             #{createEmp},
             now(),
             #{modifyEmp},
@@ -114,6 +116,7 @@
             T.remark,
             T.longitude,
             T.latitude,
+            T.address_detail,
             T2.city_name cityName,
             T3.account_name createName,
             T4.account_name modifyName,
@@ -149,7 +152,8 @@
             T.modify_time=now(),
             T.remark=#{remark},
             T.longitude=#{longitude},
-            T.latitude=#{latitude}
+            T.latitude=#{latitude},
+            T.address_detail=#{addressDetail}
         WHERE T.id=#{id}
     </update>
     <select id="selectDepartmentIdAll" resultType="Long">
@@ -187,7 +191,7 @@
         where upper_department_no=#{departmentNo} and status=1
     </select>
     <select id="checkWorkplaceForUpper" resultType="Integer">
-        select count(*) from t_department where upper_department_no=#{upperDepartmentNo} and workplace=(select workplace from t_department where id=#{id})
+        select count(*) from t_department where upper_department_no=#{upperDepartmentNo} and workplace=(select workplace from t_department where id=#{id}) and id!=#{id}
     </select>
     <select id="selectLevel" resultType="Integer">
         select level from t_department where id=#{id}

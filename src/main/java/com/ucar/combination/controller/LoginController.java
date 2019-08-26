@@ -51,6 +51,7 @@ public class LoginController {
 //            return result1;
 //        }
         HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(30*60);
         Result result = userService.login(loginUser);
         List<User> list = (List<User>) result.get("list");
         if (result.get("code").equals(200)) {
