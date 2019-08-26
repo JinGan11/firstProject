@@ -14,7 +14,7 @@
           <el-row>
             <el-col :span="9">
               <el-form-item label="登录账户" prop="accountName">
-                <el-input  style="width:250px " v-model="newForm.accountName" autocomplete="off" clearable></el-input>
+                <el-input  style="width:250px " v-model.trim="newForm.accountName" autocomplete="off" clearable></el-input>
               </el-form-item>
               <div style="position: absolute; width: 0px">
                 <el-form-item label="">
@@ -29,7 +29,7 @@
               </el-form-item>
               </div>
               <el-form-item label="密码" prop="password">
-                <el-input style="width:250px " type="password" v-model="newForm.password" autocomplete="off" clearable></el-input>
+                <el-input style="width:250px " type="password" v-model.trim="newForm.password" autocomplete="off" clearable></el-input>
               </el-form-item>
             </el-col>
           </el-row>
