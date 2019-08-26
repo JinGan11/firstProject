@@ -391,7 +391,7 @@
           case 4:
             patternDeptNo = /^Q[a-zA-Z0-9]{6}$/;
             if (!patternDeptNo.test(this.form.departmentNo))
-              callback(new Error("格式错误：7位数字或字母，以Z开头"));
+              callback(new Error("格式错误：7位数字或字母，以Q开头"));
             break;
           case 5:
             patternDeptNo = /^B[a-zA-Z0-9]{6}$/;
@@ -628,7 +628,7 @@
           ],
           telephone: [
             {required: true, message: '请输入手机号', trigger: 'blur'},
-            {pattern: /^1[0-9]{10}$/, message: '手机号格式不正确', trigger: 'blur'}
+            {pattern: /^1(3|4|5|6|7|8|9)\d{9}$/, message: '手机号格式不正确', trigger: 'blur'}
           ],
           email: [
             {pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{1,4}){1,4})$/, message: '邮箱格式不正确', trigger: 'blur'}
