@@ -1201,6 +1201,7 @@
               self.quitDisabled = true;
               self.departmentDisabled=true;
               self.recoveryDisabled = false;
+              self.selection = '';
             } else {
               self.$message.error("离职失败")
             }
