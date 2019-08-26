@@ -318,7 +318,11 @@
                         return resolve(result.regionList);
                     }).catch(function (error) {
                         commonUtils.Log("/regionManage/getRegionList:" + error);
-                        self.$message.error("获取数据错误");
+                        if(error.message.includes('timeout')){
+                            self.$message.error("请求超时！");
+                        }else{
+                            self.$message.error("获取数据错误");
+                        }
                     });
                 }
 
@@ -346,7 +350,11 @@
                                 return resolve(data);
                             }).catch(function (error) {
                                 commonUtils.Log("/regionManage/getRegionList:" + error);
-                                self.$message.error("获取数据错误");
+                                if(error.message.includes('timeout')){
+                                    self.$message.error("请求超时！");
+                                }else{
+                                    self.$message.error("获取数据错误");
+                                }
                             });
                         } else {
                             data = [];
@@ -555,7 +563,11 @@
                     // console.log(self.form);
                 }).catch(function (error) {
                     commonUtils.Log("/regionManage/getRegionDetails:" + error);
-                    self.$message.error("获取数据错误");
+                    if(error.message.includes('timeout')){
+                        self.$message.error("请求超时！");
+                    }else{
+                        self.$message.error("获取数据错误");
+                    }
                 });
             },
 
@@ -689,7 +701,11 @@
 
                         }).catch(function (error) {
                             commonUtils.Log("/regionManage/modifyRegionSave:" + error);
-                            self.$message.error("获取数据错误");
+                            if(error.message.includes('timeout')){
+                                self.$message.error("请求超时！");
+                            }else{
+                                self.$message.error("获取数据错误");
+                            }
                         });
                     } else {
                         console.log('error submit!!');
@@ -753,7 +769,11 @@
 
                         }).catch(function (error) {
                             commonUtils.Log("/regionManage/createRegion:" + error);
-                            self.$message.error("获取数据错误");
+                            if(error.message.includes('timeout')){
+                                self.$message.error("请求超时！");
+                            }else{
+                                self.$message.error("获取数据错误");
+                            }
                         });
                     } else {
                         console.log('error submit!!');
