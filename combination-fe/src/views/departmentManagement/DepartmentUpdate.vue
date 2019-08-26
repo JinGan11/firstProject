@@ -89,13 +89,13 @@
         <el-col :span="8">
           <el-form-item label="详细地址" prop="address">
             <div><span :hidden="!haveWorkplace" style="color: #FF0000;">*</span>
-              <el-input style="width:300px;" v-model="form.address" maxlength="255" @focus="openAmap"></el-input></div>
+              <el-input style="width:280px;" v-model="form.address" maxlength="255" @focus="openAmap"></el-input></div>
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-form-item label="">
+          <el-form-item label="" prop="addressDetail">
             <div><span :hidden="!haveWorkplace" style="color: #FF0000;">*</span>
-              <el-input style="width:300px;" v-model="form.addressDetail" maxlength="255"></el-input></div>
+              <el-input style="width:280px;" v-model="form.addressDetail" maxlength="255"></el-input></div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -401,7 +401,12 @@
         callback();
       };
       var validAddress = (rule, value, callback) => {
-        if (this.haveWorkplace && value == '')
+        if (this.haveWorkplace && (value==null || value == ''))
+          callback(new Error("请填写详细地址"));
+        callback();
+      };
+      var validAddress2 = (rule, value, callback) => {
+        if (this.haveWorkplace && (value==null || value == ''))
           callback(new Error("请填写详细地址"));
         callback();
       };
@@ -434,7 +439,7 @@
       return {
         loading: false,
         address: null,
-        isDepartmentNameNull: true,
+        isCityNameNullValue: true,
         searchKey: '',
         amapManager,
         markers: [],
@@ -546,7 +551,8 @@
           upperDepartmentName: '',
           cityName: '',
           createName: '',
-          modifyName: ''
+          modifyName: '',
+          forIEFresh: new Date().getTime()
         },
         cityNameForMap:'',
         supports: [],
@@ -671,6 +677,9 @@
           ],
           address: [
             {validator: validAddress, trigger: 'blur'}
+          ],
+          addressDetail: [
+            {validator: validAddress2, trigger: 'blur'}
           ]
           // ccc
 
@@ -802,6 +811,7 @@
         else this.haveWorkplace=false;
         this.$options.methods.checkInputByHand(this,'level');
         this.$options.methods.checkInputByHand(this,'address');
+        this.$options.methods.checkInputByHand(this,'addressDetail');
         this.$options.methods.checkInputByHand(this,'departmentNo');
       },
       deptTypeChange(){
@@ -1069,13 +1079,13 @@
           self.$message.error("获取数据错误");
         });
       },
-      isDepartmentNameNull(self){
-        self.isDepartmentNameNull = false;
+      isCityNameNull(self){
+        self.isCityNameNullValue = false;
       },
       cityChangeValid(){
         // cityName原本存String的城市名，由于改用select，现在存Long的id
         var self = this;
-        self.$options.methods.isDepartmentNameNull(self);
+        self.$options.methods.isCityNameNull(self);
         self.$options.methods.checkInputByHand(self,'cityName');
         for(var i=0;i<self.cityOptions.length;i++){
           if(self.cityOptions[i].cityId==self.cityName){
@@ -1226,9 +1236,10 @@
       },
       mapConfirm() {
         const self = this;
-        self.form.address = self.searchKey
+        self.form.address = self.searchKey;
         self.baiduMapFlag = false;
         this.$options.methods.checkInputByHand(this,'address'); // 校验输入地址
+        this.$options.methods.checkInputByHand(this,'addressDetail');
       },
       openAmap() {
         const self = this;
