@@ -9,37 +9,40 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="角色ID">
-              <el-input style="width:200px;" :disabled="true"  placeholder="保存自动填入" v-model="form.roleID"></el-input>
+              <el-input style="width:200px;" :disabled="true" placeholder="保存自动填入" v-model="form.roleID"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="角色名称" prop="roleName">
-              <el-input style="width:200px;" placeholder="请填入名称(1-30个字符)" maxlength="30" v-model="form.roleName"></el-input>
+              <el-input style="width:200px;" placeholder="请填入名称(1-30个字符)" maxlength="30"
+                        v-model="form.roleName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="10">
             <el-form-item label="审批人账号" prop="accountNum">
-              <el-input style="width:200px;" :disabled="true"  placeholder="选择回填信息账号" v-model="form.accountNum"></el-input>
+              <el-input style="width:200px;" :disabled="true" placeholder="选择回填信息账号"
+                        v-model="form.accountNum"></el-input>
               <a style="color: #ffd408" @click="chooseAccount">选择</a>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="审批人员工编号">
-              <el-input style="width:200px;" :disabled="true"  placeholder="回填信息" v-model="form.staffNum"></el-input>
+              <el-input style="width:200px;" :disabled="true" placeholder="回填信息" v-model="form.staffNum"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="10">
             <el-form-item label="审批人姓名">
-              <el-input style="width:200px;" :disabled="true"  placeholder="回填信息" v-model="form.staffName"></el-input>
+              <el-input style="width:200px;" :disabled="true" placeholder="回填信息" v-model="form.staffName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="审批人所属部门">
-              <el-input style="width:200px;" :disabled="true"  placeholder="回填信息" v-model="form.departmentName"></el-input>
+              <el-input style="width:200px;" :disabled="true" placeholder="回填信息"
+                        v-model="form.departmentName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -51,7 +54,7 @@
                 <el-checkbox label="租车"></el-checkbox>
                 <el-checkbox label="闪贷"></el-checkbox>
                 <el-checkbox label="专车"></el-checkbox>
-                <el-checkbox label="保险" ></el-checkbox>
+                <el-checkbox label="保险"></el-checkbox>
               </el-checkbox-group>
             </el-form-item>
           </el-col>
@@ -59,7 +62,8 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="描述">
-              <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" maxlength="200" placeholder="填写角色描述（1-200字符）" v-model="form.description"></el-input>
+              <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" maxlength="200"
+                        placeholder="填写角色描述（1-200字符）" v-model="form.description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -112,12 +116,12 @@
       <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
     </div>
 
-    <el-dialog :title='title' :visible.sync="dialogVisibleAccount"  :close-on-click-modal="false" width="80%">
-      <div class = "dialog-main" style="overflow: auto">
+    <el-dialog :title='title' :visible.sync="dialogVisibleAccount" :close-on-click-modal="false" width="80%">
+      <div class="dialog-main" style="overflow: auto">
         <el-form ref="accountForm" :model="accountForm" label-width="100px">
           <el-row>
             <el-col :span="5">
-              <el-form-item label="登陆账号" >
+              <el-form-item label="登陆账号">
                 <el-input style="width:140px;" placeholder="登录账号" v-model="accountForm.accountNo" clearable></el-input>
               </el-form-item>
             </el-col>
@@ -147,7 +151,8 @@
           <el-row>
             <el-col :span="6">
               <el-form-item label="员工所属部门">
-                <el-input style="width:140px;" :disabled="true" placeholder="员工所属部门" v-model="accountForm.department"></el-input>
+                <el-input style="width:140px;" :disabled="true" placeholder="员工所属部门"
+                          v-model="accountForm.department"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="5">
@@ -187,49 +192,49 @@
             </el-col>
           </el-row>
         </el-form>
-      <div style="margin-bottom: 10px">
-        <el-button type="primary" @click="selectionConfirm" :disabled="isChoose" style="width:70px">确认选择</el-button>
-        <el-button type="primary" @click="selectionCancel" style="width:70px">取消</el-button>
-      </div>
-      <el-table ref="multipleTable" :data="tableData" border @current-change="handleSelectionChange" >
-        <!--      <el-table-column type="selection" width="35"></el-table-column>-->
-        <el-table-column label="选择" width="45">
-          <template slot-scope="scope">
-            <el-radio v-model="selection" :label="scope.row"><span width="0px;"></span></el-radio>
-          </template>
-        </el-table-column>
-        <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
-        <el-table-column prop="accountName" label="登陆账号" style="width:auto"></el-table-column>
-        <el-table-column prop="staffNum" label="员工编号" style="width:auto"></el-table-column>
-        <el-table-column prop="staffName" label="员工姓名" style="width:auto"></el-table-column>
-        <el-table-column prop="department" label="所属部门" style="width:auto"></el-table-column>
-        <el-table-column prop="premissions" label="数据权限类型" style="width:auto">
-          <template slot-scope="scope">
-            {{accountForm.permissionsEnum[scope.row.premissions]}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="accountState" label="账号状态" style="width:auto">
-          <template slot-scope="scope">
-            {{accountForm.accountStatusEnum[scope.row.accountState]}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="modifyTime" label="操作时间" style="width:auto"></el-table-column>
-        <el-table-column prop="modifyEmpName" label="操作人" style="width:auto">
-          <template slot-scope="scope">
-            <p v-if="scope.row.modifier!=null">{{scope.row.modifyEmpName}}({{scope.row.modifier}})</p>
-            <p v-else>{{scope.row.modifyEmpName}}</p>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination background
-                     @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page="currentPage"
-                     :page-sizes="[10, 50, 100, 200]"
-                     :page-size="pageSize"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="total">
-      </el-pagination>
+        <div style="margin-bottom: 10px">
+          <el-button type="primary" @click="selectionConfirm" :disabled="isChoose" style="width:70px">确认选择</el-button>
+          <el-button type="primary" @click="selectionCancel" style="width:70px">取消</el-button>
+        </div>
+        <el-table ref="multipleTable" :data="tableData" border @current-change="handleSelectionChange">
+          <!--      <el-table-column type="selection" width="35"></el-table-column>-->
+          <el-table-column label="选择" width="45">
+            <template slot-scope="scope">
+              <el-radio v-model="selection" :label="scope.row"><span width="0px;"></span></el-radio>
+            </template>
+          </el-table-column>
+          <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
+          <el-table-column prop="accountName" label="登陆账号" style="width:auto"></el-table-column>
+          <el-table-column prop="staffNum" label="员工编号" style="width:auto"></el-table-column>
+          <el-table-column prop="staffName" label="员工姓名" style="width:auto"></el-table-column>
+          <el-table-column prop="department" label="所属部门" style="width:auto"></el-table-column>
+          <el-table-column prop="premissions" label="数据权限类型" style="width:auto">
+            <template slot-scope="scope">
+              {{accountForm.permissionsEnum[scope.row.premissions]}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="accountState" label="账号状态" style="width:auto">
+            <template slot-scope="scope">
+              {{accountForm.accountStatusEnum[scope.row.accountState]}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="modifyTime" label="操作时间" style="width:auto"></el-table-column>
+          <el-table-column prop="modifyEmpName" label="操作人" style="width:auto">
+            <template slot-scope="scope">
+              <p v-if="scope.row.modifier!=null">{{scope.row.modifyEmpName}}({{scope.row.modifier}})</p>
+              <p v-else>{{scope.row.modifyEmpName}}</p>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination background
+                       @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage"
+                       :page-sizes="[10, 50, 100, 200]"
+                       :page-size="pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="total">
+        </el-pagination>
       </div>
     </el-dialog>
 
@@ -259,14 +264,14 @@
         const self = this;
         var param = {
           roleName: value,
-          date : new Date().getTime(),
+          date: new Date().getTime(),
         };
         self.$http.get("roleManage/judgeExist.do_", {
           params: param
         }).then((result) => {
-          if ( result.page.roleStatus ===0||result.page.roleStatus===1 ) {
+          if (result.page.roleStatus === 0 || result.page.roleStatus === 1) {
             callback(new Error('角色名称已存在'));
-          }else{
+          } else {
             if (self.form.checkPass !== '') {
               self.$refs.form.validateField('checkPass');
             }
@@ -290,82 +295,82 @@
         total: 0,
         currentPage: 1,
         pageSize: 10,
-        title:'选择账户',
-        dialogVisibleAccount:false,
+        title: '选择账户',
+        dialogVisibleAccount: false,
         form: {
-          roleName:'',
-          businessLine:[],
-          roleStatus:'',
-          accountNum:'',
-          staffNum:'',
-          staffName:'',
-          departmentName:'',
-          description:'',
+          roleName: '',
+          businessLine: [],
+          roleStatus: '',
+          accountNum: '',
+          staffNum: '',
+          staffName: '',
+          departmentName: '',
+          description: '',
         },
-        otherForm:{},
-        createTime:'',
-        modifyTime:'',
-        createEmp:'',
-        modifyEmp:'',
+        otherForm: {},
+        createTime: '',
+        modifyTime: '',
+        createEmp: '',
+        modifyEmp: '',
         accountForm: {//选择账户
           accountNo: null,
           staffNo: null,
           name: null,
-          permissionsList:[{
+          permissionsList: [{
             value: 0,
             label: '全选'
-          },{
+          }, {
             value: 1,
             label: "全部"
-          },{
+          }, {
             value: 2,
             label: "递归"
-          },{
+          }, {
             value: 3,
             label: "本部门"
-          },{
+          }, {
             value: 4,
             label: "本人"
-          },{
+          }, {
             value: 5,
             label: "手动选择"
           }],
-          permissionsEnum:{},
-          accountStatusList:[
+          permissionsEnum: {},
+          accountStatusList: [
             {
               value: 0,
               label: '全部'
-            },{
+            }, {
               value: 1,
               label: "正常"
-            },{
+            }, {
               value: 2,
               label: "冻结"
             }
           ],
-          accountStatusEnum:{},
-          isRelStaffoptions:[{
+          accountStatusEnum: {},
+          isRelStaffoptions: [{
             value: '',
             label: '全部'
-          },{
+          }, {
             value: 1,
             label: '是'
-          },{
+          }, {
             value: 0,
             label: '否'
           }],
           permissions: null,
-          department:null,
-          departmentId:'',
-          isRelStaff:null,
-          status:null,
+          department: null,
+          departmentId: '',
+          isRelStaff: null,
+          status: null,
         },
-        tableData:[],
-        selection:[],
+        tableData: [],
+        selection: [],
         rules: {
           roleName: [{required: true, message: '角色名称不允许为空', trigger: 'blur'},
-                     { min: 1, max: 30, message: '长度在1-30个字符', trigger: 'blur' },
-                     {validator: validatePass, trigger: 'blur'}],
+            {min: 1, max: 30, message: '长度在1-30个字符', trigger: 'blur'},
+            {validator: validatePass, trigger: 'blur'}],
           accountNum: [{required: true, message: '审批人账号不允许为空', trigger: 'blur'}],
           businessLine: [{required: true, message: '支持业务线不允许为空', trigger: 'blur'}]
         }
@@ -384,18 +389,18 @@
 
     methods: {
 
-      chooseDepartment(){
+      chooseDepartment() {
         this.chooseDepartmentFlag = true;
       },
-      clearDepartment(){
+      clearDepartment() {
         this.accountForm.departmentId = '';
         this.accountForm.department = '';
       },
-      closeChooseDepartment(){
+      closeChooseDepartment() {
         this.chooseDepartmentFlag = false;
       },
 
-      loadNodeDepartment(node,resolve){
+      loadNodeDepartment(node, resolve) {
         var self = this;
         self.$http.get('department/buildTree2.do_')
           .then((result) => {
@@ -405,9 +410,9 @@
         });
       },
 
-      handleClickChange(data,checked,node){
+      handleClickChange(data, checked, node) {
         // 手动设置单选
-        if(checked === true) {
+        if (checked === true) {
           this.checkedId = data.id;
           this.$refs.tree.setCheckedKeys([data.id]);
           this.accountForm.departmentId = data.id;
@@ -421,37 +426,36 @@
       },
 
 
-      selectionConfirm(){
+      selectionConfirm() {
         const self = this;
         var param = {
           id: self.selection.id,
-          date : new Date().getTime(),
+          date: new Date().getTime(),
         };
-        self.$http.get('account/selectAccountById.do_',{
+        self.$http.get('account/selectAccountById.do_', {
           params: param
         }).then((result) => {
-          if (result.account.accountState === 3){
+          if (result.account.accountState === 3) {
             self.$message.info("该账户已被删除，不可选择");
             this.formatForm();
             this.isChoose = true;
             this.fetchData();
-          }
-          else{
+          } else {
             this.form.accountNum = this.selection.accountName;
             this.form.staffNum = this.selection.staffNum;
             this.form.staffName = this.selection.staffName;
             this.form.departmentName = this.selection.department;
             this.isChoose = true;
-            this.dialogVisibleAccount=false;
+            this.dialogVisibleAccount = false;
           }
         }).catch(function (error) {
-          commonUtils.Log("account/selectAccountById.do_:"+error);
+          commonUtils.Log("account/selectAccountById.do_:" + error);
           self.$message.error("获取数据错误")
         });
       },
-      selectionCancel(){
+      selectionCancel() {
         this.isChoose = true;
-        this.dialogVisibleAccount=false;
+        this.dialogVisibleAccount = false;
       },
       handleSelectionChange(val) {
         this.selection = val;
@@ -459,54 +463,53 @@
       },
 
       save(formName) {//保存新建角色信息
-        const self = this;
-        self.$refs[formName].validate((valid) =>{
+        var self = this;
+        self.$refs[formName].validate((valid) => {
           if (valid) {
-                self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
-                  confirmButtonText: '确定',
-                  cancelButtonText: '取消',
-                  type: 'warning'
-                }).then(() => {
-
-                      self.form.businessLine = self.form.businessLine.join(';');
-                      self.$http.post("roleManage/insertRole.do_", self.form)
-                        .then((result) => {
-                          if (result.msg === '该账户已被删除，不可选择'){
-                            self.$message.info("该账户已被删除，不可选择");
-                          }
-                          else {
-                            self.$message({
-                              type: 'success',
-                              message: '保存成功!'
-                            });
-                            self.$router.replace("/roleManagement/roleManagement");
-                          }
-                        })
-                        .catch(function (error) {
-                          commonUtils.Log("roleManage/insertRole.do_" + error);
-                          self.$message.error("保存数据错误");
-                          self.$router.replace("/roleManagement/roleManagement");
-                        });
-                }).catch(() => {
-                  self.$message({
-                    type: 'info',
-                    message: '已取消保存'
-                  });
+            self.$confirm('此操作将保存该文件, 是否继续?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              self.form.businessLine = self.form.businessLine.join(';');
+              self.$http.post("roleManage/insertRole.do_", self.form)
+                .then((result) => {
+                  if (result.msg === '该账户已被删除，不可选择') {
+                    self.$message.info("该账户已被删除，不可选择");
+                    self.form.businessLine = self.form.businessLine.split(';');
+                  } else {
+                    self.$message({
+                      type: 'success',
+                      message: '保存成功!'
+                    });
+                    self.$router.replace("/roleManagement/roleManagement");
+                  }
+                })
+                .catch(function (error) {
+                  commonUtils.Log("roleManage/insertRole.do_" + error);
+                  self.$message.error("保存数据错误");
+                  self.$router.replace("/roleManagement/roleManagement");
                 });
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消保存'
+              });
+            });
           } else {
             console.log('error submit!!');
             return false;
           }
         });
       },
-      cancel(){//关闭新建角色页面，返回角色管理列表页面
+      cancel() {//关闭新建角色页面，返回角色管理列表页面
         this.$router.replace('/roleManagement/roleManagement')
       },
-      chooseAccount(){
+      chooseAccount() {
         //this.accountForm = {};
         this.formatForm();
         this.isChoose = true;
-        this.dialogVisibleAccount=true;
+        this.dialogVisibleAccount = true;
         this.fetchData();
       },
       handleSizeChange(val) {
@@ -526,20 +529,20 @@
         this.fetchData(val, this.pageSize);
         this.accountForm = string;
       },
-      fetchData(){
+      fetchData() {
         var self = this;
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
           accountName: self.accountForm.accountNo,
           staffNo: self.accountForm.staffNo,
-          name:self.accountForm.name,
+          name: self.accountForm.name,
           permissions: self.accountForm.permissions,
           department: self.accountForm.departmentId,
           isRelStaff: self.accountForm.isRelStaff,
           status: self.accountForm.status,
-          flag:1,
-          date : new Date().getTime(),
+          flag: 1,
+          date: new Date().getTime(),
         };
         self.$http.get('account/querylist.do_', {
           params: param
@@ -549,13 +552,12 @@
           self.accountForm.accountStatusEnum = result.accountStatusEnum;
           self.total = result.page.totalCount;
         }).catch(function (error) {
-          commonUtils.Log("account/querylist.do_:"+error);
+          commonUtils.Log("account/querylist.do_:" + error);
           self.$message.error("获取数据错误")
         });
       },
 
     },
-
 
 
   }
