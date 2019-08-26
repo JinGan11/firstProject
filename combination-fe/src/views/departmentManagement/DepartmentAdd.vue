@@ -921,7 +921,7 @@
       chooseStaff(staffData) {//关联员工
         var self = this;
         if(staffData.isDimission!=1){
-          self.form.staffId = staffData.id;
+          self.form.staffId = staffData.staffNum;
           self.form.staffName = staffData.staffName;
         }else{
           self.$message.error("无法选择离职的员工！");
