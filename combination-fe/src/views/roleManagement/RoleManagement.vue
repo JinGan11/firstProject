@@ -567,6 +567,7 @@
         });
       },
       fetchData(val) { //获取数据
+        this.flag=true;
         var self = this;
         var formName = '';
         if(val === 1) {
