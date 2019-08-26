@@ -441,6 +441,7 @@
         address: null,
         isCityNameNullValue: true,
         searchKey: '',
+        addressTemp: '',
         amapManager,
         markers: [],
         searchOption: {
@@ -475,12 +476,13 @@
             geocoder.getAddress([lng, lat], function (status, result) {
               if (status === 'complete' && result.info === 'OK') {
                 if (result && result.regeocode) {
-                  console.log(result.regeocode.formattedAddress)
-                  self.address = result.regeocode.addressComponent
+                  console.log(result.regeocode.formattedAddress);
+                  self.address = result.regeocode.addressComponent;
                   self.form.addressDetail = self.address.township + self.address.street + self.address.streetNumber;
-                  self.searchKey = result.regeocode.formattedAddress
+                  self.searchKey = result.regeocode.formattedAddress;
+                  self.addressTemp = result.regeocode.formattedAddress;
                   self.longitudeNum = lng;
-                  self.latitudeNum = lat
+                  self.latitudeNum = lat;
                   self.$nextTick()
                 }
               }
@@ -1237,6 +1239,11 @@
       mapConfirm() {
         const self = this;
         self.form.address = self.searchKey;
+        if (self.addressTemp !== self.searchKey) {
+          self.form.addressDetail = '';
+          self.longitudeNum = '';
+          self.latitudeNum = '';
+        }
         self.baiduMapFlag = false;
         this.$options.methods.checkInputByHand(this,'address'); // 校验输入地址
         this.$options.methods.checkInputByHand(this,'addressDetail');
