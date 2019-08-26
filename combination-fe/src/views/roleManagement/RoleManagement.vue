@@ -6,7 +6,7 @@
           <el-col :span="6">
             <el-form-item label="角色名称">
               <el-input style="width:200px;" placeholder="角色名称" v-model="form.name"
-                        @keyup.13.native="fetchData"></el-input>
+                        @keyup.13.native="fetchData1"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="3">
@@ -423,6 +423,7 @@
         isComfirmAdd: true,
         strict: false,
         chooseDepartmentFlag: false,
+        differentFetchData :0,
       }
     },
     activated() {
@@ -467,20 +468,11 @@
       },
       handleSizeChange(val) {
         this.pageSize = val;
-        this.currentPage = 1;
-        var string = {};
-        string = this.form;
-        this.form = {};
-        this.fetchData(1, val);
-        this.form = string;
+        this.fetchData();
       },
       handleCurrentChange(val) {
         this.currentPage = val;
-        var string = {};
-        string = this.form;
-        this.form = {};
-        this.fetchData(val, this.pageSize);
-        this.form = string;
+        this.fetchData();
       },
       handleSelectionChange(val) {
         this.selection = val;
@@ -565,10 +557,14 @@
       },
       fetchData() { //获取数据
         var self = this;
+        var formName = '';
+        if (self.differentFetchData === 1){
+          formName = self.form.name;
+        }
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
-          roleName: self.form.name,
+          roleName: formName,
           //flag: '1',
           date: new Date().getTime(),
         };
@@ -592,6 +588,12 @@
       fetchData1() { //获取数据
         this.currentPage = 1;
         var self = this;
+        if (self.form.name !==''){
+          self.differentFetchData = 1;
+        }
+        else{
+          self.differentFetchData = 0;
+        }
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
