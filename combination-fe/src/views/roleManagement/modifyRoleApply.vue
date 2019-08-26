@@ -1042,12 +1042,12 @@
         });
       },
 
-      saveModifyRoleApply(){// 保存修改
-        for(let i=0;i<this.tableDataAccount.length;i++){//账号ID
-          this.accountIdList.push(this.tableDataAccount[i].id);
+      saveModifyRoleApply(self){// 保存修改
+        for(let i=0;i<self.tableDataAccount.length;i++){//账号ID
+          self.accountIdList.push(self.tableDataAccount[i].id);
         }
-        for(let i=0;i<this.tableDataAccount.length;i++){//申请操作
-          this.applyOperationList.push(this.tableDataAccount[i].applyOperation)
+        for(let i=0;i<self.tableDataAccount.length;i++){//申请操作
+          self.applyOperationList.push(self.tableDataAccount[i].applyOperation)
         }
         var self=this;
         self.forms.id=self.applyId;

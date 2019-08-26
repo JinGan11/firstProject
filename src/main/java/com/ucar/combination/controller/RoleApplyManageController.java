@@ -93,10 +93,17 @@ public class RoleApplyManageController {
     */
     @ResponseBody
     @RequestMapping("/deleteRoleApply.do_")
-    public void deleteRoleApply(HttpServletRequest request){
+    public Result deleteRoleApply(HttpServletRequest request,HttpSession session){
         String stringId = request.getParameter("selection");
         int id = Integer.parseInt(stringId);
-        roleApplyManageService.deleteRoleApply(id);
+        Long accountId = (Long) session.getAttribute("accountId");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("id", id);
+        params.put("accountId", accountId);
+        roleApplyManageService.deleteRoleApply(params);
+        return Result.ok().put("msg","1");
+
+
     }
 
     /**
@@ -108,14 +115,18 @@ public class RoleApplyManageController {
     */
     @ResponseBody
     @RequestMapping("/commitRoleApply.do_")
-    public Result commitRoleApply(HttpServletRequest request){
+    public Result commitRoleApply(HttpServletRequest request,HttpSession session){
         String stringId = request.getParameter("selection");
         //String roleID=request.getParameter("roleId");//获取角色ID
         int id = Integer.parseInt(stringId);
         Long roleId=Long.parseLong(stringId);
         int roleState=roleApplyManageService.getRoleStateById(roleId);
+        Long accountId = (Long) session.getAttribute("accountId");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("id", id);
+        params.put("accountId", accountId);
         if(roleState!=0){//角色ID有效 提交审核
-            roleApplyManageService.commitRoleApply(id);
+            roleApplyManageService.commitRoleApply(params);
         }
         return Result.ok().put("roleState",roleState);
     }
@@ -226,6 +237,8 @@ public class RoleApplyManageController {
     @RequestMapping(value = "/modifyRoleApply.do_",method = RequestMethod.POST)
     public void modifyRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto,HttpSession session){
         createRoleApplyDto.setApplyStatus(1);
+        Long accountId = (Long) session.getAttribute("accountId");
+        createRoleApplyDto.setModifyStaffName(accountId);//修改人ID
         roleApplyManageService.modifyRoleApply(createRoleApplyDto);
         //修改之前先删除所有的账号
         roleApplyManageService.deleteAccountListInModifyApply(createRoleApplyDto.getId());
@@ -251,6 +264,8 @@ public class RoleApplyManageController {
     @RequestMapping(value = "/modifySaveCommitRoleApply.do_",method = RequestMethod.POST)
     public void modifySaveCommitRoleApply(@RequestBody CreateRoleApplyDto createRoleApplyDto,HttpSession session){
         createRoleApplyDto.setApplyStatus(2);
+        Long accountId = (Long) session.getAttribute("accountId");
+        createRoleApplyDto.setModifyStaffName(accountId);//修改人ID
         roleApplyManageService.modifyRoleApply(createRoleApplyDto);
         //修改之前先删除所有的账号
         roleApplyManageService.deleteAccountListInModifyApply(createRoleApplyDto.getId());

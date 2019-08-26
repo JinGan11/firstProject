@@ -25,7 +25,7 @@ public interface RoleApplyManageDao {
      * @Return
      * @Date 15:22 2019/8/7
      */
-    void deleteRoleApply(int id);
+    void deleteRoleApply(Map<String, Object> params);
 
     /**
      * @Description: 提交审核
@@ -34,7 +34,7 @@ public interface RoleApplyManageDao {
      * @Return
      * @Date 17:39 2019/8/7
      */
-    void commitRoleApply(int id);
+    void commitRoleApply(Map<String, Object> params);
 
     /**
      * @Description: 角色申请 新建

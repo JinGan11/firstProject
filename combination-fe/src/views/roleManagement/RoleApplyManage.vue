@@ -103,7 +103,7 @@
           <el-radio v-model="selection" @change="selectRow(scope.row)" :label="scope.row.id" ><span width="0px;"></span></el-radio>
         </template>
       </el-table-column>
-      <el-table-column prop="id"  label="隐藏id"></el-table-column>
+      <el-table-column prop="id" v-if="false" label="隐藏id"></el-table-column>
       <el-table-column prop="roleApplyNum" label="角色申请编号" width="150">
         <template slot-scope="scope">
           <el-button type="text" @click="roleApplyNumBtn(scope.row)">{{scope.row.roleApplyNum}}</el-button>
