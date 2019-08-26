@@ -5,13 +5,13 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="角色名称">
-              <el-input style="width:200px;" placeholder="角色名称" v-model="form.name"
-                        @keyup.13.native="fetchData1"></el-input>
+              <el-input style="width:200px;" placeholder="角色名称" v-model="name"
+                        @keyup.13.native="fetchData(1)"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="3">
             <el-form-item>
-              <el-button type="primary" @click="fetchData1" style="width:100px">查询</el-button>
+              <el-button type="primary" @click="fetchData(1)" style="width:100px">查询</el-button>
             </el-form-item>
           </el-col>
           <el-col :span="6">
@@ -312,6 +312,7 @@
   export default {
     data() {
       return {
+        name:'',
         defaultPropsTree: {
           label: 'departmentName',
           children: 'children',
@@ -440,7 +441,7 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
-      this.fetchData();
+      this.fetchData(0);
 
 
     },
@@ -468,11 +469,11 @@
       },
       handleSizeChange(val) {
         this.pageSize = val;
-        this.fetchData();
+        this.fetchData(0);
       },
       handleCurrentChange(val) {
         this.currentPage = val;
-        this.fetchData();
+        this.fetchData(0);
       },
       handleSelectionChange(val) {
         this.selection = val;
@@ -555,11 +556,23 @@
           self.$message.error("获取数据错误")
         });
       },
-      fetchData() { //获取数据
+      fetchData(val) { //获取数据
         var self = this;
         var formName = '';
-        if (self.differentFetchData === 1){
-          formName = self.form.name;
+        if(val === 1) {
+          this.currentPage = 1;
+          if (self.name !==''){
+            self.differentFetchData = 1;
+          }
+          else{
+            self.differentFetchData = 0;
+          }
+          formName = self.name;
+        }
+        else{
+          if (self.differentFetchData === 1){
+            formName = self.name;
+          }
         }
         var param = {
           page: self.currentPage,
@@ -575,41 +588,6 @@
           self.total = result.page.totalCount;
           self.RoleStatusEnum = result.RoleStatusEnum;
           self.roleDtoList = result.roleList;
-          //self.form.name="dsf";
-        }).catch(function (error) {
-          commonUtils.Log("roleManage/querylist.do_:" + error);
-          if(error.message.includes('timeout')){
-            self.$message.error("请求超时！");
-          }else{
-            self.$message.error("获取数据错误");
-          }
-        });
-      },
-      fetchData1() { //获取数据
-        this.currentPage = 1;
-        var self = this;
-        if (self.form.name !==''){
-          self.differentFetchData = 1;
-        }
-        else{
-          self.differentFetchData = 0;
-        }
-        var param = {
-          page: self.currentPage,
-          limit: self.pageSize,
-          roleName: self.form.name,
-          //flag: '1',
-          date: new Date().getTime(),
-        };
-        self.$http.get("roleManage/querylist.do_", {
-          params: param
-        }).then((result) => {
-          self.tableData = result.page.list;
-          self.total = result.page.totalCount;
-          self.RoleStatusEnum = result.RoleStatusEnum;
-          self.roleDtoList = result.roleList;
-          this.isAddCount = true;
-          this.isModify = true;
           //self.form.name="dsf";
         }).catch(function (error) {
           commonUtils.Log("roleManage/querylist.do_:" + error);
