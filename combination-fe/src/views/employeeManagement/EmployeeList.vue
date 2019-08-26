@@ -261,9 +261,9 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="归属部门:" prop="departmentName" placeholder="请选择归属部门" label-width="150px">
-                <el-input style="width:80px;" :disabled="true" v-model="createForm.departmentName"></el-input>
+                <el-input style="width:170px;" :disabled="true" v-model="createForm.departmentName"></el-input>
                 <el-button type="text" @click="selectDepartment">选择</el-button>
-                <el-button type="text" @click="clearDepartment">清空</el-button>
+                <!--<el-button type="text" @click="clearDepartment">清空</el-button>-->
               </el-form-item>
             </el-col>
           </el-row>
@@ -369,9 +369,9 @@
             </el-col>
             <el-col :span="12">
               <el-form-item label="归属部门:" prop="departmentName" label-width="150px">
-                <el-input style="width:80px;" :disabled="true" v-model="modifyForm.departmentName"></el-input>
+                <el-input style="width:170px;" :disabled="true" v-model="modifyForm.departmentName"></el-input>
                 <el-button type="text" @click="selectDepartmentModify">选择</el-button>
-                <el-button type="text" @click="clearDepartmentModify">清空</el-button>
+               <!-- <el-button type="text" @click="clearDepartmentModify">清空</el-button>-->
               </el-form-item>
             </el-col>
           </el-row>
