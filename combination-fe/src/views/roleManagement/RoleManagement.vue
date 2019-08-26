@@ -53,11 +53,16 @@
       </el-table-column>
       <el-table-column prop="roleName" label="角色名称" width="150" :show-overflow-tooltip='true'
                        class="el-tooltip__popper"></el-table-column>
-      <el-table-column prop="businessLine" v-if="false" label="支持业务线"></el-table-column>
-      <el-table-column prop="accountNum" label="审批人账号" width="120"></el-table-column>
-      <el-table-column prop="staffNum" label="审批人员工编号"></el-table-column>
-      <el-table-column prop="staffName" label="审批人姓名" width="200"></el-table-column>
-      <el-table-column prop="departmentName" label="审批人所属部门" width="120"></el-table-column>
+      <el-table-column prop="businessLine" v-if="false" label="支持业务线" :show-overflow-tooltip='true'
+                       class="el-tooltip__popper"></el-table-column>
+      <el-table-column prop="accountNum" label="审批人账号" width="120" :show-overflow-tooltip='true'
+                       class="el-tooltip__popper"></el-table-column>
+      <el-table-column prop="staffNum" label="审批人员工编号" :show-overflow-tooltip='true'
+                       class="el-tooltip__popper"></el-table-column>
+      <el-table-column prop="staffName" label="审批人姓名" width="200" :show-overflow-tooltip='true'
+                       class="el-tooltip__popper"></el-table-column>
+      <el-table-column prop="departmentName" label="审批人所属部门" width="120" :show-overflow-tooltip='true'
+                       class="el-tooltip__popper"></el-table-column>
       <el-table-column prop="roleStatus" label="状态" width="100" style="text-align: center">
         <template slot-scope="scope">
           {{RoleStatusEnum[scope.row.roleStatus]}}
@@ -577,7 +582,11 @@
           //self.form.name="dsf";
         }).catch(function (error) {
           commonUtils.Log("roleManage/querylist.do_:" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
       },
       fetchData1() { //获取数据
@@ -602,7 +611,11 @@
           //self.form.name="dsf";
         }).catch(function (error) {
           commonUtils.Log("roleManage/querylist.do_:" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
       },
 
@@ -632,7 +645,11 @@
           }
         }).catch(function (error) {
           commonUtils.Log("roleManage/getOneInf.do_" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
       },
 
@@ -708,7 +725,11 @@
           self.totalAccount = result.page.totalCount;
         }).catch(function (error) {
           commonUtils.Log("roleManage/getRoleAccountList.do_:" + error);
-          self.$message.error("获取数据错误")
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
       },
 
@@ -1036,7 +1057,7 @@
 
 <style>
   .el-tooltip__popper {
-    font-size: 14px;
+    font-size: 12px;
     max-width: 20%
   }
 

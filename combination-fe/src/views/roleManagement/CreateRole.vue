@@ -450,7 +450,11 @@
           }
         }).catch(function (error) {
           commonUtils.Log("account/selectAccountById.do_:" + error);
-          self.$message.error("获取数据错误")
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
       },
       selectionCancel() {
@@ -553,7 +557,11 @@
           self.total = result.page.totalCount;
         }).catch(function (error) {
           commonUtils.Log("account/querylist.do_:" + error);
-          self.$message.error("获取数据错误")
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
       },
 
