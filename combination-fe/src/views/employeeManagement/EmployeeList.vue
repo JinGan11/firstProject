@@ -925,7 +925,11 @@
           self.staffDtoList = result.staffDtoList;
         }).catch(function (error) {
           commonUtils.Log("employee/querylist.do_:" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         })
       } else {
         self.fetchData();
@@ -997,7 +1001,11 @@
           self.staffNumList=result.staffNumList;
         }).catch(function (error) {
           commonUtils.Log("employee/querylist.do_:" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){   // 判断请求异常信息中是否含有超时timeout字符串
+            self.$message.error("请求超时！");
+          }else{
+             self.$message.error("获取数据错误");
+          }
         });
       },
       save() {
@@ -1683,7 +1691,11 @@
           self.contentForm.modifyEmp = result.list.modifyEmpName;
         }).catch(function (error) {
           commonUtils.Log("employee/otherInfo.do_:" + error);
-          self.$message.error("获取数据错误");
+          if(error.message.includes('timeout')){   // 判断请求异常信息中是否含有超时timeout字符串
+            self.$message.error("请求超时！");
+          }else{
+            self.$message.error("获取数据错误");
+          }
         });
       },
       confirmInfo() {
