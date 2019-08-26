@@ -7,5 +7,5 @@ package com.ucar.combination.common;
  * @create: 2019-08-14 23:08
  */
 public final class StaticValues {
-    public static final String LOCALHOST = "localhost:8082";
+    public static final String LOCALHOST = "10.104.118.111:8082";
 }
