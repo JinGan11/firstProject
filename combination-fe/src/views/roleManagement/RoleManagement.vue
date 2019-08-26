@@ -822,7 +822,9 @@
           self.$refs.tree.setCheckedKeys([]);
         });
         self.roleAssignPermissionFlag = true;
-        self.getRolePower();
+        if (self.strict) {
+          self.getRolePower();
+        }
       },
       //获取角色的权限
       getRolePower() {
@@ -834,9 +836,9 @@
         }
         self.$http.post('roleManage/getRolePower.do_', param).then((result) => {
           self.selectedNodes = result.rolePowerList;
-          if (self.strict) {
+          // if (self.strict) {
             self.checkStrictly = false;
-          }
+          // }
           self.strict = true;
         }).catch(function (error) {
           commonUtils.Log("roleManage/getRolePower.do_" + error);
@@ -850,10 +852,11 @@
           params: null
         }).then((result) => {
           resolve([result.powerTree]);
-          if (self.strict) {
-            self.checkStrictly = false;
-            self.strict = true;
-          }
+          self.getRolePower();
+          // if (self.strict) {
+          //   self.checkStrictly = false;
+          //   self.strict = true;
+          // }
         }).catch(function (error) {
           commonUtils.Log("account/querylist.do_:" + error);
           self.$message.error("获取数据错误")

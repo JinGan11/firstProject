@@ -717,6 +717,22 @@
         });
         self.accountAssignPermissionFlag = true;
       },
+      getAccountPower() {
+        const self = this;
+        let param = {
+          id: self.myAccount.id
+        };
+        self.$http.post('power/getAccountPower.do_',param).then((result) => {
+          self.selectedNodes = result.accountPower;
+          // if (self.strict) {
+            self.checkStrictly = false;
+          // }
+          self.strict = true;
+        }).catch(function (error) {
+          commonUtils.Log("power/getAccountPower.do_" + error);
+          self.$message.error("获取数据错误")
+        });
+      },
       //初始化账户权限分配
       initAccountPermission() {
         const self = this;
@@ -724,16 +740,19 @@
         let param = {
           id: self.myAccount.id
         };
-        self.$http.post('power/getAccountPower.do_',param).then((result) => {
-          self.selectedNodes = result.accountPower;
-          if (self.strict) {
-            self.checkStrictly = false;
-          }
-          self.strict = true;
-        }).catch(function (error) {
-          commonUtils.Log("power/getAccountPower.do_" + error);
-          self.$message.error("获取数据错误")
-        });
+        if (self.strict) {
+          self.getAccountPower();
+        }
+        // self.$http.post('power/getAccountPower.do_',param).then((result) => {
+        //   self.selectedNodes = result.accountPower;
+        //   if (self.strict) {
+        //     self.checkStrictly = false;
+        //   }
+        //   self.strict = true;
+        // }).catch(function (error) {
+        //   commonUtils.Log("power/getAccountPower.do_" + error);
+        //   self.$message.error("获取数据错误")
+        // });
         self.$http.post('account/getRoleList.do_',param).then((result) => {
           self.roleList = result.notOwnedRole.list;
           self.selected = result.ownedRole.list;
@@ -791,10 +810,11 @@
           params: null
         }).then((result) => {
           resolve([result.powerTree]);
-          if (self.strict) {
-            self.checkStrictly = false;
-            self.strict = true;
-          }
+          self.getAccountPower();
+          // if (self.strict) {
+          //   self.checkStrictly = false;
+          //   self.strict = true;
+          // }
         }).catch(function (error) {
 
         });
