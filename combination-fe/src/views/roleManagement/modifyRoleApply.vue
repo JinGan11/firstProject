@@ -710,6 +710,7 @@
       },
       clearDepartment(){//清除部门的值
         this.form.department='';
+        this.form.departmentId = '';
       },
 
 
@@ -791,6 +792,7 @@
         });
         //确认选择按钮 选择角色
         this.dialogVisibleRole = false;
+        this.currentPage = 1;
       },
       selectInfoRow(row){
         //激活选择按钮
@@ -927,6 +929,7 @@
             }
             this.tableDataAccount = this.accountChangesList;
             this.dialogVisibleAccount = false;
+            this.currentPage = 1;
           }
         }).catch(function (error) {
           commonUtils.Log("roleApply/getAccountStateById.do_" + error);
@@ -993,8 +996,7 @@
         }).then((result) => {
           self.roleStatus = result.page.roleStatus;
           if (self.roleStatus == 0) {
-            self.$message.error("该角色已失效，保存修改失败！！！");
-            self.$router.replace("/roleManagement/apply");
+            self.$message.error("该角色已失效！请重新选择!!")
           }else{
             self.checkAccountState(self,msgs);
           }
@@ -1018,11 +1020,14 @@
         }).then((result) => {
           self.accountDeletedList1 = result.accountDeletedList;
           if (self.accountDeletedList1.length > 0) {
-            self.$message.error('账号    ' + self.accountDeletedList1 + '    已失效,保存修改失败！！！');
-            self.$router.replace("/roleManagement/apply");
+            self.$message.error('账号    ' + self.accountDeletedList1 + '    已失效！请重新选择!!');
+            // self.$router.replace("/roleManagement/apply");
             // self.tableDataAccount=[];
             // self.accountChangesList=[];
             // self.accountIdList1=[];
+            self.tableDataAccount=[];
+            self.accountChangesList=[];
+            self.accountIdList1=[];
           }else{
             if(msgs=='flagBtn1'){
               self.saveModifyRoleApply(self);

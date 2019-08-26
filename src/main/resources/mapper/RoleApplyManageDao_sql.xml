@@ -87,12 +87,12 @@
         LEFT JOIN t_staff t4 on t3.staff_id=t4.id
         LEFT JOIN t_department t5 on t5.id = t4.department_id
         where 1=1
-        <if test="loginAccountName!=null and loginAccountName.trim()!=''">
-            AND  t1.apply_account_name=#{loginAccountName}
-        </if>
-        <if test="loginAccountName!=null and loginAccountName.trim()!=''">
-            AND  t2.approver_account_name=#{loginAccountName}
-        </if>
+<!--        <if test="loginAccountName!=null and loginAccountName.trim()!=''">-->
+<!--            AND  t1.apply_account_name=#{loginAccountName}-->
+<!--        </if>-->
+<!--        <if test="loginAccountName!=null and loginAccountName.trim()!=''">-->
+<!--            AND  t2.approver_account_name=#{loginAccountName}-->
+<!--        </if>-->
         <if test="userPermission == 4">
             and t3.id = #{accountId}
         </if>
