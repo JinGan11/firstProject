@@ -1223,7 +1223,9 @@
               vm.searchKey = address
               vm.form.address = poi.address;
               vm.longitudeNum = lng;
-              vm.latitudeNum = lat
+              vm.latitudeNum = lat;
+              vm.form.addressDetail = poi.address;
+              vm.addressTemp = address;
             }
           })
         })
