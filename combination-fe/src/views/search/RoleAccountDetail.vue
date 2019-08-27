@@ -301,6 +301,16 @@
           accountState: '',
           departmentName: ''
         },
+        form2: {
+          roleName: '',
+          businessLine: '',
+          accountName: '',
+          staffNum: '',
+          staffName: '',
+          roleStatus: '',
+          accountState: '',
+          departmentName: ''
+        },
         //导出文件
         exportVisible: false,
         checkAll: false,
@@ -413,7 +423,7 @@
         };
         self.$http.get('roleAccount/getRoleAccountList.do', {params: param}).then((result) => {
           //对取回来的数据进行处理
-          console.log(result);
+          // console.log(result);
           self.tableData = result.page.list;
           self.total = result.page.totalCount;
           self.pageSize = result.page.pageSize;
@@ -422,6 +432,7 @@
           self.accountStatusEnum=result.accountStatusEnum;
           self.businessLineEnum=result.businessLineEnum;
           self.roleStatusEnum=result.roleStatusEnum;
+          self.setForm2();
         }).catch(function (error) {
           commonUtils.Log("roleAccount/getRoleAccountList.do:" + error);
           self.$message.error("获取数据错误");
@@ -432,20 +443,31 @@
         this.currentPage = 1;
         this.fetchData();
       },
+      // handleSizeChange(val) {
+      //   this.pageSize = val;
+      //   this.fetchData();
+      // },
+      // handleCurrentChange(val) {
+      //   this.currentPage = val;
+      //   this.fetchData();
+      // },
       handleSizeChange(val) {
+        this.setForm();
         this.pageSize = val;
-        this.fetchData();
+        this.currentPage = 1;
+        this.fetchData(1, val);
       },
       handleCurrentChange(val) {
+        this.setForm();
         this.currentPage = val;
-        this.fetchData();
+        this.fetchData(val, this.pageSize);
       },
       handleSelectionChange(val) {
         this.selection = val;
       },
 
       handleCheckAllChange(val) {//导出字段全选按钮
-        console.log("check:"+val);
+        // console.log("check:"+val);
         this.checkedRoleAccount = val ? this.roleAccountOptions : [];
         this.isIndeterminate = false;
       },
@@ -547,7 +569,7 @@
         });
       },
       handleClick1(data, checked, node) {
-        console.log(data);
+        //console.log(data);
         // 手动设置单选
         if (checked === true) {
           // this.checkedId = data.id;
@@ -601,7 +623,28 @@
         if(this.$refs.c1 != undefined){
           this.$refs.c1.fetchData(val);
         }
-      }
+      },
+
+      setForm(){
+        this.form.roleName = this.form2.roleName;
+        this.form.businessLine = this.form2.businessLine;
+        this.form.accountName = this.form2.accountName;
+        this.form.staffNum = this.form2.staffNum;
+        this.form.staffName = this.form2.staffName;
+        this.form.roleStatus = this.form2.roleStatus;
+        this.form.accountState = this.form2.accountState;
+        this.form.accountState = this.form2.accountState;
+      },
+      setForm2(){
+        this.form2.roleName = this.form.roleName;
+        this.form2.businessLine = this.form.businessLine;
+        this.form2.accountName = this.form.accountName;
+        this.form2.staffNum = this.form.staffNum;
+        this.form2.staffName = this.form.staffName;
+        this.form2.roleStatus = this.form.roleStatus;
+        this.form2.accountState = this.form.accountState;
+        this.form2.accountState = this.form.accountState;
+      },
     }
   }
 </script>
