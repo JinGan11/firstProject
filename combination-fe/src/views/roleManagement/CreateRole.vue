@@ -139,7 +139,7 @@
               <el-form-item label="数据权限类型">
                 <el-select style="width:180px;" v-model="accountForm.permissions" clearable placeholder="请选择">
                   <el-option
-                    v-for="item in accountForm.permissionsList"
+                    v-for="item in permissionsList"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -163,7 +163,7 @@
               <el-form-item label="是否关联员工">
                 <el-select style="width: 180px" v-model="accountForm.isRelStaff" clearable placeholder="请选择">
                   <el-option
-                    v-for="item in accountForm.isRelStaffoptions"
+                    v-for="item in isRelStaffoptions"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -175,7 +175,7 @@
               <el-form-item label="账号状态">
                 <el-select style="width:180px;" v-model="accountForm.status" clearable placeholder="请选择">
                   <el-option
-                    v-for="item in accountForm.accountStatusList"
+                    v-for="item in accountStatusList"
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
@@ -187,7 +187,7 @@
           <el-row>
             <el-col style="text-align: center">
               <el-form-item>
-                <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
+                <el-button type="primary" @click="fetchData(1)" style="width:100px">查询</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -210,12 +210,12 @@
           <el-table-column prop="department" label="所属部门" style="width:auto"></el-table-column>
           <el-table-column prop="premissions" label="数据权限类型" style="width:auto">
             <template slot-scope="scope">
-              {{accountForm.permissionsEnum[scope.row.premissions]}}
+              {{permissionsEnum[scope.row.premissions]}}
             </template>
           </el-table-column>
           <el-table-column prop="accountState" label="账号状态" style="width:auto">
             <template slot-scope="scope">
-              {{accountForm.accountStatusEnum[scope.row.accountState]}}
+              {{accountStatusEnum[scope.row.accountState]}}
             </template>
           </el-table-column>
           <el-table-column prop="modifyTime" label="操作时间" style="width:auto"></el-table-column>
@@ -313,60 +313,61 @@
         createEmp: '',
         modifyEmp: '',
         accountForm: {//选择账户
-          accountNo: null,
-          staffNo: null,
-          name: null,
-          permissionsList: [{
+          accountNo: '',
+          staffNo: '',
+          name: '',
+          permissions: '',
+          department: '',
+          departmentId: '',
+          isRelStaff: '',
+          status: '',
+        },
+        permissionsList: [{
+          value: 0,
+          label: '全选'
+        }, {
+          value: 1,
+          label: "全部"
+        }, {
+          value: 2,
+          label: "递归"
+        }, {
+          value: 3,
+          label: "本部门"
+        }, {
+          value: 4,
+          label: "本人"
+        }, {
+          value: 5,
+          label: "手动选择"
+        }],
+        permissionsEnum: {},
+        accountStatusList: [
+          {
             value: 0,
-            label: '全选'
-          }, {
-            value: 1,
-            label: "全部"
-          }, {
-            value: 2,
-            label: "递归"
-          }, {
-            value: 3,
-            label: "本部门"
-          }, {
-            value: 4,
-            label: "本人"
-          }, {
-            value: 5,
-            label: "手动选择"
-          }],
-          permissionsEnum: {},
-          accountStatusList: [
-            {
-              value: 0,
-              label: '全部'
-            }, {
-              value: 1,
-              label: "正常"
-            }, {
-              value: 2,
-              label: "冻结"
-            }
-          ],
-          accountStatusEnum: {},
-          isRelStaffoptions: [{
-            value: '',
             label: '全部'
           }, {
             value: 1,
-            label: '是'
+            label: "正常"
           }, {
-            value: 0,
-            label: '否'
-          }],
-          permissions: null,
-          department: null,
-          departmentId: '',
-          isRelStaff: null,
-          status: null,
-        },
+            value: 2,
+            label: "冻结"
+          }
+        ],
+        accountStatusEnum: {},
+        isRelStaffoptions: [{
+          value: '',
+          label: '全部'
+        }, {
+          value: 1,
+          label: '是'
+        }, {
+          value: 0,
+          label: '否'
+        }],
         tableData: [],
         selection: [],
+        differentFetchAccountData :0,
         rules: {
           roleName: [{required: true, message: '角色名称不允许为空', trigger: 'blur'},
             {min: 1, max: 30, message: '长度在1-30个字符', trigger: 'blur'},
@@ -439,7 +440,7 @@
             self.$message.info("该账户已被删除，不可选择");
             this.formatForm();
             this.isChoose = true;
-            this.fetchData();
+            this.fetchData(0);
           } else {
             this.form.accountNum = this.selection.accountName;
             this.form.staffNum = this.selection.staffNum;
@@ -514,37 +515,53 @@
         this.formatForm();
         this.isChoose = true;
         this.dialogVisibleAccount = true;
-        this.fetchData();
+        this.fetchData(0);
       },
       handleSizeChange(val) {
         this.pageSize = val;
-        var string = {};
-        string = this.accountForm;
-        this.accountForm = {};
-        this.currentPage = 1;
-        this.fetchData(1, val);
-        this.accountForm = string;
+        this.fetchData(0);
+
       },
       handleCurrentChange(val) {
         this.currentPage = val;
-        var string = {};
-        string = this.accountForm;
-        this.accountForm = {};
-        this.fetchData(val, this.pageSize);
-        this.accountForm = string;
+        this.fetchData(0);
       },
-      fetchData() {
+      fetchData(val) {
         var self = this;
+        var accountForm1 = {accountNo :'',staffNo:'',name:'',permissions:0,department:'',
+          departmentId:'',isRelStaff:'',status:0};
+        if(val === 1) {
+          this.currentPage = 1;
+          if ((self.accountForm.accountNo !== '')||
+            (self.accountForm.staffNo !== '')||
+            (self.accountForm.name !== '')||
+            (self.accountForm.permissions !== 0)||
+            (self.accountForm.department !== '')||
+            (self.accountForm.departmentId !== '')||
+            (self.accountForm.isRelStaff !== '')||
+            (self.accountForm.status !== 0)){
+            self.differentFetchAccountData = 1;
+          }
+          else{
+            self.differentFetchAccountData = 0;
+          }
+          accountForm1 = this.accountForm;
+        }
+        else{
+          if (self.differentFetchAccountData === 1){
+            accountForm1 = this.accountForm;
+          }
+        }
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
-          accountName: self.accountForm.accountNo,
-          staffNo: self.accountForm.staffNo,
-          name: self.accountForm.name,
-          permissions: self.accountForm.permissions,
-          department: self.accountForm.departmentId,
-          isRelStaff: self.accountForm.isRelStaff,
-          status: self.accountForm.status,
+          accountName: accountForm1.accountNo,
+          staffNo: accountForm1.staffNo,
+          name: accountForm1.name,
+          permissions: accountForm1.permissions,
+          department: accountForm1.departmentId,
+          isRelStaff: accountForm1.isRelStaff,
+          status: accountForm1.status,
           flag: 1,
           date: new Date().getTime(),
         };
@@ -552,8 +569,8 @@
           params: param
         }).then((result) => {
           self.tableData = result.page.list;
-          self.accountForm.permissionsEnum = result.permissionEnum;
-          self.accountForm.accountStatusEnum = result.accountStatusEnum;
+          self.permissionsEnum = result.permissionEnum;
+          self.accountStatusEnum = result.accountStatusEnum;
           self.total = result.page.totalCount;
         }).catch(function (error) {
           commonUtils.Log("account/querylist.do_:" + error);

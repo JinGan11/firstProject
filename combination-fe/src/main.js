@@ -66,13 +66,13 @@ VueAMap.initAMapApiLoader({
 });
 
 Vue.prototype.formatForm = function (){
-  this.accountForm.accountNo = null;
-  this.accountForm.staffNo = null;
-  this.accountForm.name = null;
-  this.accountForm.permissions = null;
-  this.accountForm.department = null;
-  this.accountForm.isRelStaff = null;
-  this.accountForm.status = null;
+  this.accountForm.accountNo = '';
+  this.accountForm.staffNo = '';
+  this.accountForm.name = '';
+  this.accountForm.permissions = '';
+  this.accountForm.department = '';
+  this.accountForm.isRelStaff = '';
+  this.accountForm.status = '';
   this.accountForm.isRelStaff = '';
   this.accountForm.status = 0;
   this.accountForm.permissions = 0;
