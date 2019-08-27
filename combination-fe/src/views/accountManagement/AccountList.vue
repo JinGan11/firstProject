@@ -216,7 +216,7 @@
         node-key="id"
         :load="loadNodeDepartment"
         lazy
-        default-expanded-keys="[1]"
+        :default-expanded-keys="[1]"
         check-strictly
         show-checkbox
         @check-change="handleClickChange">
@@ -311,6 +311,16 @@
           isRelStaff: null,
           status: ''
         },
+        form2: {
+          accountNo: '',
+          staffNo: '',
+          name: '',
+          permissions: '',
+          departmentId:'',
+          department:'',
+          isRelStaff: null,
+          status: ''
+        },
         tableData: [],
         accountDtoList: [],
         selection: [],
@@ -364,6 +374,7 @@
         historyRecords:[],
 
         strict: false,
+        DepartmentInf: 0,
       }
     },
      components: {accountView},
@@ -386,32 +397,16 @@
     created() {
       const self = this;
       self.judgmentAuthority();
+      self.form.status = 0;
+      self.form.permissions = 0;
+      self.form.isRelStaff = 2;
       self.$http.get('department/buildTree2.do_')
         .then((result) => {
           self.departmentDto = result.departmentDto;
         }).catch(function (error) {
 
       });
-      var param = {
-        date:new Date().getTime()
-      }
-      self.$http.get('account/querylist.do_',{
-        params: param
-      }).then((result) => {
-        self.tableData = result.page.list;
-        self.accountDtoList = result.accountDtoList;
-        self.form.permissionsList = result.permissionList;
-        self.form.permissionsEnum = result.permissionEnum;
-        self.form.accountStatusEnum = result.accountStatusEnum;
-        self.form.accountStatusList = result.accountStatusList;
-        self.total = result.page.totalCount;
-        self.form.status = 0;
-        self.form.permissions = 0;
-        self.form.isRelStaff = 2;
-      }).catch(function (error) {
-        commonUtils.Log("account/querylist.do_:"+error);
-        self.$message.error("获取数据错误")
-      });
+     self.fetchData();
     },
     methods: {
       getHistory(){
@@ -464,11 +459,20 @@
           this.form.departmentId = data.id;
           this.form.department = data.departmentName;
         } else {
-          if (this.checkedId == data.id) {
-            this.$refs.tree.setCheckedKeys([data.id]);
+          if (this.checkedId == data.id ) {
+            this.form.departmentId = '';
+            this.form.department = '';
+            this.$refs.tree.setCheckedKeys([]);
           }
         }
-        this.closeChooseDepartment();
+        if(this.DepartmentInf == 0){
+          this.closeChooseDepartment();
+        }else if(this.DepartmentInf == 2){
+          this.DepartmentInf = 1;
+        }else{
+          this.DepartmentInf = 0;
+        }
+
       },
       judgmentAuthority() {
         const self = this;
@@ -513,9 +517,11 @@
           this.$http.post("account/lock",accountId).then((result) => {
             if(result.code===20||result.code===30){
               this.$message.error(result.msg)
+              this.setForm();
               this.fetchData();
             }else{
               this.$message.success("冻结成功");
+              this.setForm();
               this.fetchData();
             }
           }).catch(function (error) {
@@ -541,9 +547,11 @@
           this.$http.post("account/unLock",accountId).then((result) => {
             if(result.code===10||result.code===30){
               this.$message.error(result.msg);
+              this.setForm();
               this.fetchData();
             }else{
               this.$message.success("解冻成功");
+              this.setForm();
               this.fetchData();
             }
           }).catch(function (error) {
@@ -564,12 +572,14 @@
       handleNodeClick(data) {
         console.log(data);
       },
-        handleSizeChange(val) {
+      handleSizeChange(val) {
+        this.setForm();
         this.pageSize = val;
         this.currentPage = 1;
         this.fetchData(1, val);
       },
       handleCurrentChange(val) {
+        this.setForm();
         this.currentPage = val;
         this.fetchData(val, this.pageSize);
       },
@@ -610,6 +620,7 @@
           self.form.accountStatusList = result.accountStatusList;
           self.total = result.page.totalCount;
           self.selection = 0;
+          self.setForm2();
         }).catch(function (error) {
           commonUtils.Log("account/querylist.do_:"+error);
           self.$message.error("获取数据错误")
@@ -642,6 +653,7 @@
               }else{
                 self.$message.info("删除成功");
               }
+              this.setForm();
               self.fetchData();
             }).catch(function (error) {
             commonUtils.Log("account/deleAccount.do_:" + error);
@@ -691,6 +703,7 @@
                 self.$alert("重置密码邮件已发送成功，请注意查收！", '消息提醒', {
                   confirmButtonText: '确定',
                 });
+                this.setForm();
                 self.fetchData();
               } else if (result.code === 201) {
                 self.$alert("系统繁忙，请稍后再试！", '消息提醒', {
@@ -849,6 +862,7 @@
             } else {
               self.$message.info("权限分配成功！")
             }
+            this.setForm();
             self.fetchData();
           })
           .catch(function (error) {
@@ -863,8 +877,18 @@
       },
       chooseDepartment(){
         this.chooseDepartmentFlag = true;
+        if(this.$refs.tree != undefined && this.DepartmentInf == 1){
+          this.$refs.tree.setCheckedKeys([]);
+        }
+        if(this.$refs.tree != undefined && this.DepartmentInf == 2){
+          if(this.form2.departmentId == ''){
+            this.DepartmentInf--;
+          }
+          this.$refs.tree.setCheckedKeys([this.form2.departmentId]);
+        }
       },
       clearDepartment(){
+        this.DepartmentInf = 1;
         this.form.departmentId = '';
         this.form.department = '';
       },
@@ -983,6 +1007,25 @@
           }
         }
         return this.filterVal;
+      },
+      setForm(){
+        this.form.staffNo = this.form2.staffNo;
+        this.form.name = this.form2.name;
+        this.form.permissions = this.form2.permissions;
+        this.form.departmentId = this.form2.departmentId;
+        this.form.department = this.form2.department;
+        this.form.isRelStaff = this.form2.isRelStaff;
+        this.form.status = this.form2.status;
+        this.DepartmentInf = 2;
+      },
+      setForm2(){
+        this.form2.staffNo = this.form.staffNo;
+        this.form2.name = this.form.name;
+        this.form2.permissions = this.form.permissions;
+        this.form2.departmentId = this.form.departmentId;
+        this.form2.department = this.form.department;
+        this.form2.isRelStaff = this.form.isRelStaff;
+        this.form2.status = this.form.status;
       },
     },
   }
