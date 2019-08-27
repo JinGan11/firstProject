@@ -1236,6 +1236,7 @@
               self.recoveryDisabled = true;
               self.quitDisabled = false;
               self.departmentDisabled=false;
+              self.isDiss=false;
             } else {
               self.$message.error("恢复失败")
             }
