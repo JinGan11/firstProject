@@ -15,7 +15,7 @@
           <el-col :span="10">
             <el-form-item label="角色名称" prop="roleName">
               <el-input style="width:200px;" placeholder="请填入名称(1-30个字符)" maxlength="30"
-                        v-model="form.roleName"></el-input>
+                        v-model.trim="form.roleName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -63,7 +63,7 @@
           <el-col :span="10">
             <el-form-item label="描述">
               <el-input type="textarea" :autosize="{ minRows: 2, maxRows: 4}" maxlength="200"
-                        placeholder="填写角色描述（1-200字符）" v-model="form.description"></el-input>
+                        placeholder="填写角色描述（1-200字符）" v-model.trim="form.description"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -122,17 +122,17 @@
           <el-row>
             <el-col :span="5">
               <el-form-item label="登陆账号">
-                <el-input style="width:140px;" placeholder="登录账号" v-model="accountForm.accountNo" clearable></el-input>
+                <el-input style="width:140px;" placeholder="登录账号" v-model.trim="accountForm.accountNo" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="员工编号">
-                <el-input style="width:160px;" placeholder="员工编号" v-model="accountForm.staffNo" clearable></el-input>
+                <el-input style="width:160px;" placeholder="员工编号" v-model.trim="accountForm.staffNo" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="员工姓名">
-                <el-input style="width:150px;" placeholder="员工姓名" v-model="accountForm.name" clearable></el-input>
+                <el-input style="width:150px;" placeholder="员工姓名" v-model.trim="accountForm.name" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -247,7 +247,7 @@
         lazy="true"
         check-strictly
         show-checkbox
-        default-expanded-keys="[1]"
+        :default-expanded-keys="[1]"
         @check-change="handleClickChange">
       </el-tree>
     </el-dialog>
@@ -520,7 +520,6 @@
       handleSizeChange(val) {
         this.pageSize = val;
         this.fetchData(0);
-
       },
       handleCurrentChange(val) {
         this.currentPage = val;

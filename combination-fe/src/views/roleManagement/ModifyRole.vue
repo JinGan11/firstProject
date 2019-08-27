@@ -8,12 +8,12 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="角色ID">
-              <el-input style="width:200px;" :disabled="true" v-model="form.roleID"></el-input>
+              <el-input style="width:200px;" :disabled="true" v-model.trim="form.roleID"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="角色名称" prop="roleName">
-              <el-input style="width:200px;" v-model="form.roleName" placeholder="请填入名称(1-30字符)"
+              <el-input style="width:200px;" v-model.trim="form.roleName" placeholder="请填入名称(1-30字符)"
                         maxlength="30"></el-input>
             </el-form-item>
           </el-col>
@@ -21,32 +21,32 @@
         <el-row>
           <el-col :span="10">
             <el-form-item label="审批人账号" prop="accountNum">
-              <el-input style="width:200px;" :disabled="true" v-model="form.accountNum"></el-input>
+              <el-input style="width:200px;" :disabled="true" v-model.trim="form.accountNum"></el-input>
               <a style="color: #ffd408" @click="chooseAccount">选择</a>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="审批人员工编号">
-              <el-input style="width:200px;" :disabled="true" v-model="form.staffNum"></el-input>
+              <el-input style="width:200px;" :disabled="true" v-model.trim="form.staffNum"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="10">
             <el-form-item label="审批人姓名">
-              <el-input style="width:200px;" :disabled="true" v-model="form.staffName"></el-input>
+              <el-input style="width:200px;" :disabled="true" v-model.trim="form.staffName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="10">
             <el-form-item label="审批人所属部门">
-              <el-input style="width:200px;" :disabled="true" v-model="form.departmentName"></el-input>
+              <el-input style="width:200px;" :disabled="true" v-model.trim="form.departmentName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="15">
             <el-form-item label="支持业务线" prop="businessLine">
-              <el-checkbox-group v-model="form.businessLine">
+              <el-checkbox-group v-model.trim="form.businessLine">
                 <el-checkbox label="买买车"></el-checkbox>
                 <el-checkbox label="租车"></el-checkbox>
                 <el-checkbox label="闪贷"></el-checkbox>
@@ -123,17 +123,17 @@
           <el-row>
             <el-col :span="5">
               <el-form-item label="登陆账号">
-                <el-input style="width:140px;" placeholder="登录账号" v-model="accountForm.accountNo" clearable></el-input>
+                <el-input style="width:140px;" placeholder="登录账号" v-model.trim="accountForm.accountNo" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="员工编号">
-                <el-input style="width:160px;" placeholder="员工编号" v-model="accountForm.staffNo" clearable></el-input>
+                <el-input style="width:160px;" placeholder="员工编号" v-model.trim="accountForm.staffNo" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
               <el-form-item label="员工姓名">
-                <el-input style="width:150px;" placeholder="员工姓名" v-model="accountForm.name" clearable></el-input>
+                <el-input style="width:150px;" placeholder="员工姓名" v-model.trim="accountForm.name" clearable></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="6">
@@ -152,7 +152,7 @@
           <el-row>
             <el-col :span="6">
               <el-form-item label="员工所属部门">
-                <el-input style="width:140px;" placeholder="员工所属部门" v-model="accountForm.department"></el-input>
+                <el-input style="width:140px;" placeholder="员工所属部门" v-model.trim="accountForm.department"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="5">
@@ -248,7 +248,7 @@
         lazy="true"
         check-strictly
         show-checkbox
-        default-expanded-keys="[1]"
+        :default-expanded-keys="[1]"
         @check-change="handleClickChange">
       </el-tree>
     </el-dialog>

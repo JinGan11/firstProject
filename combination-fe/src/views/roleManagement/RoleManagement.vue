@@ -5,7 +5,7 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="角色名称">
-              <el-input style="width:200px;" placeholder="角色名称" v-model="name"
+              <el-input style="width:200px;" placeholder="角色名称" v-model.trim="name"
                         @keyup.13.native="fetchData(1)"></el-input>
             </el-form-item>
           </el-col>
@@ -471,19 +471,11 @@
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;
-        var string = {};
-        string = this.form;
-        this.form = {};
         this.fetchData(1, val);
-        this.form = string;
       },
       handleCurrentChange(val) {
         this.currentPage = val;
-        var string = {};
-        string = this.form;
-        this.form = {};
         this.fetchData(val, this.pageSize);
-        this.form = string;
       },
       handleSelectionChange(val) {
         this.selection = val;
