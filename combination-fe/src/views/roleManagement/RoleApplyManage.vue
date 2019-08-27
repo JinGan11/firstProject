@@ -89,7 +89,7 @@
       </el-form>
     </div>
     <div style="margin-bottom: 10px; margin-top:20px; margin-left:40px">
-      <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
+      <el-button type="primary" @click="fetchData('queryconditon')" style="width:100px">查询</el-button>
       <el-button type="primary" @click="createRoleApply"   style="width:70px">新建</el-button>
       <el-button type="primary" @click="modifyRoleApply" style="width:70px" :disabled="disabledDelete">修改</el-button>
       <el-button type="primary" @click="deleteRoleApply" style="width:70px" :disabled="disabledDelete">删除</el-button>
@@ -579,6 +579,7 @@
           modifyEmpName:'',
           modifyEmpTime:'',
         },
+        differentFetchData:0,
       }
     },
     activated() {
@@ -586,18 +587,18 @@
     },
     mounted() {
       commonUtils.Log("页面进来");
-      this.fetchData();
+      this.fetchData('start');
 
     },
     methods: {
       handleSizeChange(val) {
         this.pageSize = val;
         this.currentPage = 1;
-        this.fetchData(1, val);
+        this.fetchData('start');
       },
       handleCurrentChange(val) {
         this.currentPage = val;
-        this.fetchData(val, this.pageSize);
+        this.fetchData('start');
       },
       handleSelectionChange(val) {
         this.selection = val;
@@ -610,7 +611,7 @@
         this.$router.push({path: '/RoleInf', query: {roleID: val,type:'申请'}});
       },
 
-      fetchData() { //获取数据
+      fetchData(isQuery) { //获取数据
         var self = this;
         if(self.form.applyTime==null){
           self.form.applyTime=['',''];
@@ -618,25 +619,72 @@
         if(self.form.modifyTime==null){
           self.form.modifyTime=['',''];
         }
-        var param = {
-          page: self.currentPage,
-          limit: self.pageSize,
-          roleApplyNum:self.form.roleApplyNum,
-          roleId:self.form.roleId,
-          roleName:self.form.roleName,
-          applyAccountName: self.form.applyAccountName,
-          applyStaffNum:self.form.applyStaffNum ,
-          applyStaffName: self.form.applyStaffName,
-          applyDepartmentName:self.form.applyDepartmentName,
-          applyStatus: self.form.applyStatus,
-          applyTimeStart:self.form.applyTime[0],
-          applyTimeEnd:self.form.applyTime[1],
-          modifyTimeStart: self.form.modifyTime[0],
-          modifyTimeEnd: self.form.modifyTime[1],
-          loginAccountName: sessionStorage.getItem('loginUsername'),
-          type:'角色申请',
-          date : new Date().getTime(),
-        };
+        if(isQuery=='queryconditon'){//点击查询
+          this.currentPage = 1;
+          self.differentFetchData = 1;
+          var param = {
+            page: self.currentPage,
+            limit: self.pageSize,
+            roleApplyNum:self.form.roleApplyNum,
+            roleId:self.form.roleId,
+            roleName:self.form.roleName,
+            applyAccountName: self.form.applyAccountName,
+            applyStaffNum:self.form.applyStaffNum ,
+            applyStaffName: self.form.applyStaffName,
+            applyDepartmentName:self.form.applyDepartmentName,
+            applyStatus: self.form.applyStatus,
+            applyTimeStart:self.form.applyTime[0],
+            applyTimeEnd:self.form.applyTime[1],
+            modifyTimeStart: self.form.modifyTime[0],
+            modifyTimeEnd: self.form.modifyTime[1],
+            loginAccountName: sessionStorage.getItem('loginUsername'),
+            type:'角色申请',
+            date : new Date().getTime(),
+          };
+        }else{//分页
+          if(self.differentFetchData === 1){
+            var param = {
+              page: self.currentPage,
+              limit: self.pageSize,
+              roleApplyNum:self.form.roleApplyNum,
+              roleId:self.form.roleId,
+              roleName:self.form.roleName,
+              applyAccountName: self.form.applyAccountName,
+              applyStaffNum:self.form.applyStaffNum ,
+              applyStaffName: self.form.applyStaffName,
+              applyDepartmentName:self.form.applyDepartmentName,
+              applyStatus: self.form.applyStatus,
+              applyTimeStart:self.form.applyTime[0],
+              applyTimeEnd:self.form.applyTime[1],
+              modifyTimeStart: self.form.modifyTime[0],
+              modifyTimeEnd: self.form.modifyTime[1],
+              loginAccountName: sessionStorage.getItem('loginUsername'),
+              type:'角色申请',
+              date : new Date().getTime(),
+            };
+          }
+          else{
+            param={
+              page: self.currentPage,
+              limit: self.pageSize,
+              roleApplyNum:'',
+              roleId:'',
+              roleName:'',
+              applyAccountName: '',
+              applyStaffNum:'',
+              applyStaffName: '',
+              applyDepartmentName:'',
+              applyStatus: '',
+              applyTimeStart:'',
+              applyTimeEnd:'',
+              modifyTimeStart: '',
+              modifyTimeEnd:'',
+              loginAccountName: sessionStorage.getItem('loginUsername'),
+              type:'角色申请',
+              date : new Date().getTime(),
+            };
+          }
+        }
         self.$http.get('roleApply/querylist.do_', {
           params: param
         }).then((result) => {
@@ -655,10 +703,11 @@
             self.$message.error("获取数据错误");
           }
         });
-
         this.selection=[];
         this.disabledDelete=true;
       },
+
+
       createRoleApply(){//新建角色申请
         this.$router.replace('/createRoleApply')
       },

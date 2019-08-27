@@ -91,12 +91,6 @@
         LEFT JOIN t_account t6 on t6.id=t1.modify_emp
         LEFT JOIN t_staff t7 on t2.approver_staff_num=t7.staff_num
         where 1=1
-<!--        <if test="loginAccountName!=null and loginAccountName.trim()!=''">-->
-<!--            AND  t1.apply_account_name=#{loginAccountName}-->
-<!--        </if>-->
-<!--        <if test="loginAccountName!=null and loginAccountName.trim()!=''">-->
-<!--            AND  t2.approver_account_name=#{loginAccountName}-->
-<!--        </if>-->
         <if test="userPermission == 4">
             and (t3.id = #{accountId} or t2.approver_account_name=#{loginAccountName})
         </if>

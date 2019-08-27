@@ -182,7 +182,7 @@
               </el-col>
               <el-col :span ="10">
                 <el-form-item>
-                  <el-button type="primary" @click="fetchDataRole" style="width:100px">查询</el-button>
+                  <el-button type="primary" @click="fetchDataRole(1)" style="width:100px">查询</el-button>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -652,6 +652,7 @@
           modifyEmpName: '',
           modifyEmpTime: '',
         },
+        differentFetchData:0,
 
       }
     },
@@ -724,7 +725,7 @@
         //点击选择，弹出选择角色对话框
         this.dialogVisibleRole = true;
         //显示所有角色列表
-        this.fetchDataRole();
+        this.fetchDataRole(0);
         //清除选中状态
         this.selectionRoleInfo = [];
         //
@@ -749,12 +750,28 @@
       },
 
 
-      fetchDataRole() { //获取数据
+      fetchDataRole(val) { //获取数据
         var self = this;
+        var formName = '';
+        if(val === 1) {
+          this.currentPage = 1;
+          if (self.formSelectRole.name !==''){
+            self.differentFetchData = 1;
+          }
+          else{
+            self.differentFetchData = 0;
+          }
+          formName = self.formSelectRole.name;
+        }
+        else{
+          if (self.differentFetchData === 1){
+            formName = self.formSelectRole.name;
+          }
+        }
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
-          roleName: self.formSelectRole.name,
+          roleName: formName,
           flag: 1,
           date : new Date().getTime(),
         };
