@@ -527,19 +527,19 @@
                   self.formData.append("company", JSON.stringify(self.form));
                   self.$http.post("company/createCompany", self.formData)
                       .then((result) => {
-                          self.$alert("创建公司成功！");
-                          self.$router.replace("/CompanyManagement");
-                          self.formData=new FormData();
+                          if(result === "success"){
+                            self.$alert("创建公司成功！");
+                            self.$router.replace("/CompanyManagement");
+                            self.formData=new FormData();
+                          }else{
+                            self.$message.error("新建公司失败");
+                          }
                       })
                       .catch(function (error) {
                           commonUtils.Log("company/createCompany:" + error);
                           self.$message.error("新建公司失败");
                           self.formData=new FormData();
                       });
-                  this.$message({
-                      type: 'success',
-                      message: '创建成功!'
-                  });
               }).catch(() => {
                   this.$message({
                       type: 'info',
