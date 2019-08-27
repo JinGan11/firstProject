@@ -948,6 +948,9 @@
               } else if (list[i].premissions === 5) {
                 list[i].premissions = '手动选择'
               }
+              if (list[i].modifier != null && list[i].modifier != ''){
+                list[i].modifyEmpName = list[i].modifyEmpName +'('+list[i].modifier+')';
+              }
               if (list[i].accountState === 1) {
                 list[i].accountState = '正常'
               } else if (list[i].accountState === 2) {
