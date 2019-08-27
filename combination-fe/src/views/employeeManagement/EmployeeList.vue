@@ -1233,6 +1233,7 @@
             if (result.status == "success") {
               self.$message.success("恢复成功");
               self.fetchData();
+              self.selection = '';
               self.recoveryDisabled = true;
               self.quitDisabled = false;
               self.departmentDisabled=false;
