@@ -1241,7 +1241,7 @@
       mapConfirm() {
         const self = this;
         self.form.address = self.searchKey;
-        if (self.addressTemp !== self.searchKey) {
+        if (self.addressTemp !== self.searchKey || self.searchKey === '') {
           self.form.addressDetail = '';
           self.longitudeNum = '';
           self.latitudeNum = '';
