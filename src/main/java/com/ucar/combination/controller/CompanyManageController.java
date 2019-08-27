@@ -84,8 +84,9 @@ public class CompanyManageController {
     public String createCompany(@RequestParam("businessLicenses") MultipartFile[] businessLicenses,
                                 @RequestParam("company") String data ,HttpSession session){
         Company company = JSON.parseObject(data, Company.class);
-        Map<String, Object> map =companyManageService.creditCodeValidate(company.getCreditCode());
-        if(map.get("result")=="false") {
+        String code = company.getCreditCode();
+        Map<String, Object> map =companyManageService.creditCodeValidate(code);
+        if("false".equals(map.get("result").toString()) ||(code.length() !=15 && code.length() !=18)) {
             return "error";
         }
         companyManageService.insertCompany(businessLicenses, data,session);
