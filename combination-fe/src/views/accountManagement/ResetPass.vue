@@ -1,17 +1,27 @@
 <template>
   <div class="bg">
-    <div style="width: 500px;position: fixed; left: 30%; top: 30%; ">
+    <div style="width: 450px;position: fixed; left: 30%; top: 30%; ">
       <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="100px"
                class="login-container">
         <h2 class="login_title" style="color: white">密码重置</h2>
-        <el-form-item label="账号" prop="accountName">
-          <el-input type="text" v-model="ruleForm.accountName" autocomplete="off"></el-input>
+        <el-form-item label="账号" prop="accountName" class="whiteFont" style="margin-top: -20px">
+          <el-input type="text" v-model.trim="usernameComputed" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="新密码" prop="newPass" >
-          <el-input type="password" v-model="ruleForm.newPass" autocomplete="off"></el-input>
+        <div style="position: absolute; width: 0px">
+          <el-form-item label="">
+            <el-input  autocomplete="off"></el-input>
+          </el-form-item>
+        </div>
+        <div style="position: absolute; width: 0px">
+          <el-form-item label="">
+            <el-input  type="password"  autocomplete="off" ></el-input>
+          </el-form-item>
+        </div>
+        <el-form-item label="新密码" prop="newPass" class="whiteFont">
+          <el-input type="password" v-model.trim="ruleForm.newPass" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="确认新密码" prop="checkPass" >
-          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+        <el-form-item label="确认新密码" prop="checkPass" class="whiteFont">
+          <el-input type="password" v-model.trim="ruleForm.checkPass" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item style="text-align: center;margin-left: -50px">
           <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
@@ -75,6 +85,16 @@
           ],
         }
       };
+    },
+    computed : {
+      usernameComputed : {
+        get: function(){
+          return this.ruleForm.accountName;
+        },
+        set : function(val){
+          this.ruleForm.accountName = val.toLowerCase();
+        }
+      }
     },
     methods: {
       submitForm(formName) {
@@ -143,11 +163,12 @@
   .login-container {
     border-radius: 15px;
     background-clip: padding-box;
-    width: 500px;
-    padding: 35px 55px 15px 35px;
+    width: 450px;
+    height: 280px;
+    padding: 15px 55px 5px 25px;
     background: #fff;
     border: 1px solid #eaeaea;
-    z-index: 5;
+    z-index: 3;
     box-shadow: 0 0 25px #cac6c6;
     background: rgba(150, 130, 120, 0.5);
   }
