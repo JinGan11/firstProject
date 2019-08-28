@@ -75,6 +75,7 @@
 <!--            </el-select>-->
 
             <el-select
+              ref="citySelect"
               v-model="cityName"
               filterable
               remote
@@ -83,6 +84,7 @@
               @focus="cityFocus"
               @change="cityChangeValid"
               @blur="cityBlurValid"
+              @visible-change="blurSearch"
               :loading="loading">
               <el-option
                 v-for="item in cityOptions"
@@ -1038,6 +1040,12 @@
         var self = this;
         self.$options.methods.checkInputByHand(self,'cityName');
       },
+      blurSearch(isShow){
+        if(!isShow){
+          this.loading = false;
+          this.$refs.citySelect.blur();
+        }
+      },
       cityFocus(){
         var self = this;
         self.$http.get('/regionManage/searchCityByKeyword.do_', {
@@ -1063,13 +1071,15 @@
           this.$http.get('/regionManage/searchCityByKeyword.do_', {
             params: param
           }).then((result) => {
-            self.loading = false;
-            self.cityOptions = result;
+            if(self.loading==true){
+              self.loading = false;
+              self.cityOptions = result;
+            }
           }).catch(function (error) {
             self.loading = false;
             self.$message.error("获取数据错误");
           });
-        }, 200);
+        }, 500);
       },
       chooseCityDo2(){
         self.$message.info(this.countySearchList[2].regionName);
