@@ -106,7 +106,7 @@
       </el-table-column>
       <el-table-column prop="accountState" label="账号状态">
         <template slot-scope="scope">
-          {{scope.row.accountState=="1"?'正常':(scope.row.accountState=="2"?'冻结':'无效')}}
+          {{scope.row.accountState=="1"?'正常':(scope.row.accountState=="2"?'冻结':(scope.row.accountState=="3"?'无效':'未关联账号'))}}
         </template>
       </el-table-column>
     </el-table>
@@ -618,7 +618,6 @@
       //账户信息明细
       accountBtn(val){
         localStorage.setItem("accountId",val);
-        self.accountId = val;
         this.accountFlag = true;
         if(this.$refs.c1 != undefined){
           this.$refs.c1.fetchData(val);
