@@ -1,16 +1,16 @@
 <template>
   <home>
     <div style="width:100%;">
-      <el-form ref="form" :model="form" label-width="80px">
+      <el-form ref="forma" :model="forma" label-width="80px">
         <el-row>
           <el-col :span="6">
             <el-form-item label="角色名称" label-width="150px;">
-              <el-input placeholder="角色名称" style="width:150px;" v-model="form.roleName"></el-input>
+              <el-input placeholder="角色名称" style="width:150px;" v-model="forma.roleName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="支持业务线" label-width="150px;">
-              <el-select v-model="form.businessLine" clearable style="width:150px;" placeholder="请选择">
+              <el-select v-model="forma.businessLine" clearable style="width:150px;" placeholder="请选择">
                 <el-option
                   v-for="item in businessLineOptions"
                   :key="item.value"
@@ -22,12 +22,12 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="登录账号" label-width="150px;">
-              <el-input placeholder="登录账号" style="width:150px;" v-model="form.accountName"></el-input>
+              <el-input placeholder="登录账号" style="width:150px;" v-model="forma.accountName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="员工编号" label-width="150px;">
-              <el-input placeholder="员工编号" style="width:140px;" v-model="form.staffNum"></el-input>
+              <el-input placeholder="员工编号" style="width:140px;" v-model="forma.staffNum"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -35,12 +35,12 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="员工姓名" label-width="150px;">
-              <el-input placeholder="员工姓名" style="width:150px;" v-model="form.staffName"></el-input>
+              <el-input placeholder="员工姓名" style="width:150px;" v-model="forma.staffName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="角色状态" label-width="150px;">
-              <el-select v-model="form.roleStatus" clearable style="width:150px;margin-left: 15px;" placeholder="请选择">
+              <el-select v-model="forma.roleStatus" clearable style="width:150px;margin-left: 15px;" placeholder="请选择">
                 <el-option
                   v-for="item in roleStatusOptions"
                   :key="item.value"
@@ -52,7 +52,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="账号状态" label-width="150px;">
-              <el-select v-model="form.accountState" clearable style="width:150px;" placeholder="请选择">
+              <el-select v-model="forma.accountState" clearable style="width:150px;" placeholder="请选择">
                 <el-option
                   v-for="item in accountStateOptions"
                   :key="item.value"
@@ -64,7 +64,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="所属部门" label-width="150px;">
-              <el-input :disabled="true" style="width:140px;" v-model="form.departmentName"></el-input>
+              <el-input :disabled="true" style="width:140px;" v-model="forma.departmentName"></el-input>
             <el-button type="text" @click="chooseDepartmentFlag=true">选择</el-button>
             <el-button type="text" @click="clearDepartment">取消</el-button>
             </el-form-item>
@@ -155,7 +155,7 @@
             <p>角色信息</p>
           </div>
           <div style="width:85%; margin-left: 70px">
-            <el-form ref="form" :model="formInfo" label-width="110px">
+            <el-form ref="formInfo" :model="formInfo" label-width="110px">
               <el-row>
                 <el-col :span="10">
                   <el-form-item label="角色ID">
@@ -301,7 +301,7 @@
           accountState: '',
           departmentName: ''
         },
-        form2: {
+        forma: {
           roleName: '',
           businessLine: '',
           accountName: '',
@@ -366,7 +366,6 @@
           }],
         roleAccountOptions: ['角色ID', '角色名称', '支持业务线', '登录账号', '员工编号', '员工姓名', '所属部门', '角色状态', '账号状态'],
         chooseDepartmentFlag: false,
-        accountStatusList:[],
         accountStatusEnum:[],
         businessLineEnum:[],
         roleStatusEnum:[],
@@ -422,6 +421,7 @@
           currentPage: self.currentPage,
           pageSize: self.pageSize
         };
+        console.log(param.roleStatus);
         self.$http.get('roleAccount/getRoleAccountList.do', {params: param}).then((result) => {
           //对取回来的数据进行处理
           // console.log(result);
@@ -431,10 +431,8 @@
           self.currentPage = result.page.currPage;
           self.roleAccountList=result.roleAccountList;
           self.accountStatusEnum=result.accountStatusEnum;
-          self.accountStatusList = result.accountStatusList;
           self.businessLineEnum=result.businessLineEnum;
           self.roleStatusEnum=result.roleStatusEnum;
-          self.setForm2();
         }).catch(function (error) {
           commonUtils.Log("roleAccount/getRoleAccountList.do:" + error);
           self.$message.error("获取数据错误");
@@ -443,26 +441,16 @@
       },
       search(){
         this.currentPage = 1;
+        this.form=Object.assign({}, this.forma);
         this.fetchData();
       },
-      // handleSizeChange(val) {
-      //   this.pageSize = val;
-      //   this.fetchData();
-      // },
-      // handleCurrentChange(val) {
-      //   this.currentPage = val;
-      //   this.fetchData();
-      // },
       handleSizeChange(val) {
-        this.setForm();
         this.pageSize = val;
-        this.currentPage = 1;
-        this.fetchData(1, val);
+        this.fetchData();
       },
       handleCurrentChange(val) {
-        this.setForm();
         this.currentPage = val;
-        this.fetchData(val, this.pageSize);
+        this.fetchData();
       },
       handleSelectionChange(val) {
         this.selection = val;
@@ -625,26 +613,6 @@
         }
       },
 
-      setForm(){
-        this.form.roleName = this.form2.roleName;
-        this.form.businessLine = this.form2.businessLine;
-        this.form.accountName = this.form2.accountName;
-        this.form.staffNum = this.form2.staffNum;
-        this.form.staffName = this.form2.staffName;
-        this.form.roleStatus = this.form2.roleStatus;
-        this.form.accountState = this.form2.accountState;
-        this.form.accountState = this.form2.accountState;
-      },
-      setForm2(){
-        this.form2.roleName = this.form.roleName;
-        this.form2.businessLine = this.form.businessLine;
-        this.form2.accountName = this.form.accountName;
-        this.form2.staffNum = this.form.staffNum;
-        this.form2.staffName = this.form.staffName;
-        this.form2.roleStatus = this.form.roleStatus;
-        this.form2.accountState = this.form.accountState;
-        this.form2.accountState = this.form.accountState;
-      },
     }
   }
 </script>

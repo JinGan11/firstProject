@@ -56,7 +56,6 @@ public class SerachController {
 		return new Result().ok().put("page", resultPage)
 				.put("roleAccountList",roleAccountList)
 				.put("accountStatusEnum", CommonEnums.toEnumMap(CommonEnums.AccountStatusEnum.values()))
-				.put("businessLineEnum", CommonEnums.toEnumMap(CommonEnums.BusinessLineEnum.values()))
 				.put("roleStatusEnum", CommonEnums.toEnumMap(CommonEnums.RoleStatusEnum.values()))
 				.put("permissionList", CommonEnums.toJsonList(CommonEnums.Permission.values()))
 				.put("permissionEnum", CommonEnums.toEnumMap(CommonEnums.Permission.values()));
