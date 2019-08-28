@@ -277,7 +277,7 @@
         T.email,
         T.landline,
         T.level,
-        T.upper_department_no,
+        T4.department_name upper_department_no,
         T.support_business,
         T.department_type,
         T.status,
@@ -291,6 +291,7 @@
         from t_department T LEFT JOIN t_b_city T1 on T.city_id=T1.city_id
         LEFT JOIN t_r_department_company T2 on T.id = T2.department_id
         LEFT  JOIN t_company T3 ON T2.company_id=T3.id
+        LEFT JOIN t_department T4 ON T.upper_department_no=T4.department_no
         <where>
             <if test="staffId !=null and staffId.trim()!=''">AND T.staff_id=#{staffId}</if>
             <if test="departmentName != null and departmentName.trim()!=''">AND T.department_name=#{departmentName}</if>
