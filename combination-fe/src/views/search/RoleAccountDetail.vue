@@ -491,7 +491,6 @@
             const list = this.roleAccountList;  //把data里的roleAccountList存到list
             for (let i = 0; i < list.length; i++) {
               list[i].roleStatus = this.roleStatusEnum[list[i].roleStatus];
-              list[i].businessLine=this.businessLineEnum[list[i].businessLine];
               list[i].accountState=this.accountStatusEnum[list[i].accountState];
             }
             //获取当前时间
