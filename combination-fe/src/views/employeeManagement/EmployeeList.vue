@@ -35,36 +35,32 @@
         </el-row>
 
         <el-row>
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item label="所属部门">
               <el-input placeholder="所属部门" :disabled="true" style="width:200px;" v-model="searchDeptName"></el-input>
+              <el-button
+                type="text"
+                @click="searchDeptDialogVisible = true">选择
+              </el-button>
+              <el-button
+                type="text"
+                @click="searchDeptClear">清空
+              </el-button>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
-            <el-button
-              type="text"
-              @click="searchDeptDialogVisible = true">选择
-            </el-button>
-            <el-button
-              type="text"
-              @click="searchDeptClear">清空
-            </el-button>
-          </el-col>
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item label="上级部门">
               <el-input placeholder="上级部门" :disabled="true" style="width:200px;"
                         v-model="searchDeptUpperName"></el-input>
+              <el-button
+                type="text"
+                @click="searchDeptUpperDialogVisible = true">选择
+              </el-button>
+              <el-button
+                type="text"
+                @click="searchDeptUpperClear">清空
+              </el-button>
             </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-button
-              type="text"
-              @click="searchDeptUpperDialogVisible = true">选择
-            </el-button>
-            <el-button
-              type="text"
-              @click="searchDeptUpperClear">清空
-            </el-button>
           </el-col>
         </el-row>
         <el-row>
@@ -105,7 +101,7 @@
       </el-button>
     </div>
     <div style="margin-bottom: 10px" v-else>
-      <el-button type="primary" @click="confirmChoice" style="width:70px">确认选择</el-button>
+      <el-button type="primary" @click="confirmChoice" style="width:80px">确认选择</el-button>
       <el-button type="primary" @click="cancelChoice" style="width:70px">取消</el-button>
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
