@@ -120,7 +120,7 @@
             </el-row>
           </el-form>
           <div style="margin-bottom: 10px">
-            <el-button type="primary" @click="confirmBtn(selection)" style="width:70px">确认选择</el-button>
+            <el-button type="primary" @click="confirmBtn(selection)" style="width:80px">确认选择</el-button>
             <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
           </div>
           <el-table ref="multipleTable2" :data="tableData" border @selection-change="handleSelectionChange" >
