@@ -106,7 +106,7 @@
       </el-table-column>
       <el-table-column prop="accountState" label="账号状态">
         <template slot-scope="scope">
-          {{scope.row.accountState=="1"?'正常':(scope.row.accountState=="2"?'冻结':(scope.row.accountState=="3"?'无效':'未关联账号'))}}
+          {{accountStatusEnum[scope.row.accountState]}}
         </template>
       </el-table-column>
     </el-table>
@@ -366,6 +366,7 @@
           }],
         roleAccountOptions: ['角色ID', '角色名称', '支持业务线', '登录账号', '员工编号', '员工姓名', '所属部门', '角色状态', '账号状态'],
         chooseDepartmentFlag: false,
+        accountStatusList:[],
         accountStatusEnum:[],
         businessLineEnum:[],
         roleStatusEnum:[],
@@ -430,6 +431,7 @@
           self.currentPage = result.page.currPage;
           self.roleAccountList=result.roleAccountList;
           self.accountStatusEnum=result.accountStatusEnum;
+          self.accountStatusList = result.accountStatusList;
           self.businessLineEnum=result.businessLineEnum;
           self.roleStatusEnum=result.roleStatusEnum;
           self.setForm2();
