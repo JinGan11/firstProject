@@ -155,6 +155,7 @@
       deleteDept(){
         var self = this;
         if( this.$options.methods.checkHaveChildren(self.checkedNode.children) ){
+          this.dialogVisible = false;
           this.$message.error("删除失败，请先删除该部门的下级部门");
           return;
         }
