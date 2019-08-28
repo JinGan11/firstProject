@@ -452,8 +452,7 @@
             return false;
           }
         })
-        self.showClose = false;
-
+        self.resetPasswordStaticFlag = false;
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
