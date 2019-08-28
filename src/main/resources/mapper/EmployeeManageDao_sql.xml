@@ -203,7 +203,8 @@
         WHERE id = #{staffId}
     </select>
 
-    <select id="getAccountIdByid" parameterType="String">
-        select account_id from t_staff where id = #{id}
+    <select id="getAccountIdByid" parameterType="java.lang.String" resultType="Long">
+        SELECT account_id FROM t_staff
+        WHERE id = #{id}
     </select>
 </mapper>
