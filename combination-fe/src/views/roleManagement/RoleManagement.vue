@@ -426,6 +426,7 @@
         chooseDepartmentFlag:false,
         flag:true,
         differentFetchData :0,
+        accountNames:[]
       }
     },
     activated() {
@@ -521,7 +522,8 @@
         }
         this.selectAccountIds = [];
         for (let i = 0; i < this.addSelection.length; i++) {
-          this.selectAccountIds.push(val[i].id)
+          this.selectAccountIds.push(val[i].id);
+          this.accountNames.push(val[i].accountName);
         }
       },
       fetchAddData() {
@@ -946,6 +948,7 @@
         var param = {
           roleId: self.myRole.roleId,
           accountIds: self.selectAccountIds.toString(),
+          accountNames:self.accountNames.toString(),
           date: new Date().getTime(),
         };
         self.$http.get('roleManage/addRoleAccount.do_', {
@@ -955,10 +958,16 @@
             this.chooseAccountPage = false;
             this.fetchAccountData();
             this.clear();
-          } else {
+            self.$message.success("添加成功！");
+          } else if(result.msg === "添加失败"){
             self.$message.error("添加失败，该角色已失效！")
             this.fetchAccountData();
             this.fetchData();
+          } else {
+            self.$message.error(result.msg);
+            this.chooseAccountPage = false;
+            this.fetchAccountData();
+            this.clear();
           }
         }).catch(function (error) {
           commonUtils.Log("roleManage/addRoleAccount.do_:" + error);
@@ -986,6 +995,7 @@
         this.form.departmentId = '';
         this.form.isRelStaff = '';
         this.form.status = '';
+        this.accountNames=[];
       },
       chooseDepartment() {
         this.chooseDepartmentFlag = true;

@@ -320,14 +320,36 @@ public class RoleManagementServiceImpl implements RoleManagementService {
     @Override
     public String addRoleAccount(Map<String, Object> map){
         String roleId = null;
+        String[] ids = null;
+        String[] names =null;
+        List<String> accountIds=new ArrayList<>();
+        String invalid = "";
+        if(map.get("accountIds")!=null){
+            ids = (String[]) map.get("accountIds");
+        }
+        if(map.get("accountNames")!=null){
+            names = (String[]) map.get("accountNames");
+        }
         if(map.get("roleId")!=null) {
             roleId = (String) map.get("roleId");
         }
-
         if(roleManagementDao.isRoleInvalid( Long.parseLong(roleId)) == 0){
              return "添加失败";
         }else{
+            for (int i = 0; i < ids.length ; i++) {
+                if(roleManagementDao.isAccountInvalid(Long.parseLong(ids[i])) == 3){
+                    invalid+= names[i];
+                    invalid+=" ";
+                }else{
+                    accountIds.add(ids[i]);
+                }
+            }
+            map.put("accountIds",accountIds);
             roleManagementDao.addRoleAccount(map);
+            if(invalid != ""){
+                invalid+="已经无效，添加失败，其余添加成功！";
+                return invalid;
+            }
             return "添加成功";
         }
     }

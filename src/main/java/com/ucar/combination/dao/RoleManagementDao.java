@@ -180,4 +180,12 @@ public interface RoleManagementDao {
      * @param  map
      */
     Map<String, Object> isAccountRemoved(Map<String, Object> map);
+
+    /**
+     * description: 验证账号是否被移除
+     * @author qingyu.lan@ucarinc.com
+     * @date   2019/8/28 17:36
+     * @param  accountId
+     */
+    int isAccountInvalid(Long accountId);
 }

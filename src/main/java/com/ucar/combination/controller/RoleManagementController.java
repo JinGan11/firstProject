@@ -319,11 +319,14 @@ public class RoleManagementController {
     public Result addRoleAccount(HttpServletRequest request, HttpSession session) {
         String roleId = request.getParameter("roleId");
         String ids = request.getParameter("accountIds");
+        String names =request.getParameter("accountNames");
         String[] accountIds = ids.split(",");
+        String[] accountNames = names.split(",");
         Long createId = (Long) session.getAttribute("accountId");
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("roleId", roleId);
         params.put("accountIds", accountIds);
+        params.put("accountNames", accountNames);
         params.put("createEmp", createId);
         params.put("modifyEmp", createId);
         String msg = roleManagementService.addRoleAccount(params);
