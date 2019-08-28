@@ -452,6 +452,8 @@
             return false;
           }
         })
+        self.showClose = false;
+
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
