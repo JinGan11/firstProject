@@ -122,7 +122,7 @@
                            ON (t2.department_id = t3.id)
                  LEFT JOIN t_staff t5
                            ON t1.modifier = t5.id
-        WHERE t1.account_state != 0
+        WHERE t1.id != 1
         <if test="flag == 1">
             and t1.account_state != 3
         </if>

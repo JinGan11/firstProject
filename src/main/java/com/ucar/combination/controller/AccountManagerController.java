@@ -282,7 +282,7 @@ public class AccountManagerController {
             if(accountStaff.getPermissions() == 5){
                 accountManagerService.insertDepartmentPower(accountStaff.getAccountId(),accountStaff.getTree());
             }
-            if(accountStaff.getOldStaffId() != accountStaff.getStaffId() && accountStaff.getOldStaffId() != null){
+            if(accountStaff.getOldStaffId() != null && !accountStaff.getOldStaffId().equals(accountStaff.getStaffId())){
                 accountStaff.setSecretEmail("");
                 accountStaff.setStaffId(accountStaff.getOldStaffId());
                 accountStaff.setAccountId(0L);

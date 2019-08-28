@@ -898,7 +898,6 @@
       //账户信息明细
       accountBtn(val){
         localStorage.setItem("accountId",val);
-        self.accountId = val;
         this.accounFlag = true;
         if(this.$refs.c1 != undefined){
           this.$refs.c1.fetchData(val);
