@@ -168,14 +168,14 @@
       </div>
     </el-dialog>
     <el-dialog :title="roleAssignPermissionTitle" :visible.sync="roleAssignPermissionFlag" :close-on-click-modal="false"
-               width="700px">
+               width="400px">
       <div class="dialog-main" >
         <el-form>
           <el-row type="flex" justify="center" style="width: 100%;">
             <el-col :span="11">
               <el-scrollbar style="width: 400px">
                 <el-tree
-                  style="float: left;margin-left: 100px;height: 350px"
+                  style="float: left;height: 350px"
                   ref="permTree"
                   :props="PermissionProps"
                   node-key="powerId"
