@@ -146,4 +146,13 @@ public interface EmployeeManageDao {
      */
     Staff getStaffInfById(Long staffId);
 
+    /**
+     * description: 根据员工id查询关联账号的id
+     * @author junqiang.zhang@ucarinc.com
+     * @date: 2019/8/20
+     * @params: id 员工id
+     * @return:
+     */
+    Long getAccountIdByid(String id);
+
 }

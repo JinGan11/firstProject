@@ -114,6 +114,8 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
      */
     @Override
     public int updateDimissionRecovery(String id) {
+        Long accountId = employeeManageDao.getAccountIdByid(id);
+        accountManageDao.updataStaffIdById(accountId);
         return employeeManageDao.updateDimissionRecovery(id);
     }
     /**

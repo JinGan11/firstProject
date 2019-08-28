@@ -186,13 +186,6 @@ public interface AccountManageDao {
      */
     int getAccountStateById(Long accountId);
 
-    /**
-     * description: 根据账户id查询员工id
-     * @author junqiang.zhang@ucarinc.com
-     * @date: 2019/8/20
-     * @params: accountId 账户id
-     * @return: int 账户状态
-     */
 
     //根据员工ID获取员工状态
     //int selectAccountStatusById(long accountId);
@@ -207,4 +200,13 @@ public interface AccountManageDao {
     String getStaffNameByAccountId(Long id);
 
     Account selectAccountByNum(String accountName);
+
+    /**
+     * description:  根据id修改账户关联员工的信息
+     * @author junqiang.zhang@ucarinc.com
+     * @date:   2019/8/28 15:36
+     * @params: id 账户id
+     * @return:
+    */
+    int updataStaffIdById(Long id);
 }

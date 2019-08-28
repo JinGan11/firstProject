@@ -381,6 +381,11 @@
     <select id="getStaffNameByAccountId" parameterType="java.lang.Long" resultType="java.lang.String">
         SELECT T.staff_name FROM  t_account T1 JOIN t_staff T ON T1.staff_id=T.id  WHERE T1.id= #{id}
     </select>
+
+    <update id="updataStaffIdById" parameterType="java.lang.Long">
+        update t_account set staff_id = 0
+        where id = #{id}
+    </update>
 </mapper>
 
 

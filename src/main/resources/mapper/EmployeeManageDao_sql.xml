@@ -202,4 +202,8 @@
         SELECT is_dimission,status,account_id FROM t_staff
         WHERE id = #{staffId}
     </select>
+
+    <select id="getAccountIdByid" parameterType="String">
+        select account_id from t_staff where id = #{id}
+    </select>
 </mapper>
