@@ -37,7 +37,7 @@
         },
         loginMsg: '',
         visible: false,
-        loading: false
+        loading: false,
       }
     },
     created() {
@@ -96,6 +96,10 @@
                     confirmButtonText: '确定',
                   });
                 }else if (result.code === 303) {
+                  self.$alert(result.Msg, '消息提醒', {
+                    confirmButtonText: '确定',
+                  });
+                }else if (result.code === 305) {
                   self.$alert(result.Msg, '消息提醒', {
                     confirmButtonText: '确定',
                   });

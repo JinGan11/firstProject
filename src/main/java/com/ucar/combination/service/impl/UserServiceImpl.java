@@ -48,6 +48,10 @@ public class UserServiceImpl implements UserService {
                 return Result.ok().put("code", 303)
                         .put("Msg", "登录失败，账号失效");
             }
+            if (list.get(0).getAccountState() == 2) {
+                return Result.ok().put("code", 305)
+                        .put("Msg", "登录失败，账号被冻结");
+            }
             String md5Password = DigestUtils.md5DigestAsHex(loginUser.getAccountPassword().getBytes());
             if (md5Password.equals(list.get(0).getAccountPassword())) {
                 return Result.ok().put("code", 200)
