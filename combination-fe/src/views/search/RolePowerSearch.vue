@@ -93,11 +93,11 @@
           <el-col style="text-align: center">
             <el-form-item>
               <div v-if="!BtnPermission.exportPermission">
-                <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
+                <el-button type="primary" @click="search" style="width:100px">查询</el-button>
                 <el-button type="primary" style="width:100px" @click="exportRolePower">导出</el-button>
               </div>
               <div v-else>
-                <el-button type="primary" @click="fetchData" style="width:100px">查询</el-button>
+                <el-button type="primary" @click="search" style="width:100px">查询</el-button>
               </div>
             </el-form-item>
           </el-col>
@@ -464,6 +464,10 @@
       },
       handleSelectionChange(val) {
         this.selection = val;
+      },
+      search(){
+        this.currentPage = 1;
+        this.fetchData();
       },
       fetchData() { //获取数据
         var self = this;
