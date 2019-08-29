@@ -308,9 +308,10 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <el-form-item label="备注:" prop="remark" label-width="150px">
-                <el-input style="width:385px;" v-model="createForm.remark"></el-input>
+              <el-form-item label="备注:" prop = "remark" label-width="150px">
+                <el-input style="width: 72%" type="textarea" :rows="2" v-model="createForm.remark"></el-input>
               </el-form-item>
+
             </el-col>
           </el-row>
         </div>
@@ -417,7 +418,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="备注:" prop="remark" label-width="150px">
-                <el-input style="width:390px;" v-model="modifyForm.remark"></el-input>
+                  <el-input style="width: 72%" type="textarea" :rows="2" v-model="modifyForm.remark"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
