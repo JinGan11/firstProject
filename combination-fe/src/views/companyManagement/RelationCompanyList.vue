@@ -3,7 +3,7 @@
     <div>
       <div style="margin-bottom: 10px;margin-left:0px">
         <el-button type="primary" @click="addCompanyBtn" style="width:70px">添加</el-button>
-        <el-button type="primary" @click="removeCompanyBtn" style="width:70px">移除</el-button>
+        <el-button type="primary" :disabled="delBtnDisable" @click="removeCompanyBtn" style="width:70px">移除</el-button>
         <span style="margin-left: 700px">
         <el-button type="primary" @click="saveBtn" style="width:70px">保存</el-button>
         <el-button type="primary" @click="backBtn" style="width:70px">取消</el-button>
@@ -120,7 +120,7 @@
             </el-row>
           </el-form>
           <div style="margin-bottom: 10px">
-            <el-button type="primary" @click="confirmBtn(selection)" style="width:80px">确认选择</el-button>
+            <el-button type="primary" :disabled="checkBtnDisable" @click="confirmBtn(selection)" style="width:80px">确认选择</el-button>
             <el-button type="primary" @click="cancel" style="width:70px">取消</el-button>
           </div>
           <el-table ref="multipleTable2" :data="tableData" border @selection-change="handleSelectionChange" >
@@ -420,6 +420,8 @@
     components: {license},
     data() {
       return {
+        delBtnDisable: true,
+        checkBtnDisable: true,
         dep:[],
         previewId:'',
         preview:false,
@@ -620,10 +622,19 @@
       },
       handleSelectionChange(val){
         this.selection = val;
-
+        if(this.selection==null || this.selection.length==0 || this.selection==[]){
+          this.checkBtnDisable=true;
+        }else{
+          this.checkBtnDisable=false;
+        }
       },
       handleRelationChange(val){
         this.relationSelection=val;
+        if(this.relationSelection==null || this.relationSelection.length==0 || this.relationSelection==[]){
+          this.delBtnDisable=true;
+        }else{
+          this.delBtnDisable=false;
+        }
       },
       addCompanyBtn(){//添加公司
         this.companyFlag=true;
