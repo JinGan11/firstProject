@@ -1,16 +1,16 @@
 <template>
   <home>
     <div style="width:100%;">
-      <el-form ref="forma" :model="forma" label-width="80px">
+      <el-form ref="form" :model="form1" label-width="80px">
         <el-row>
           <el-col :span="6">
             <el-form-item label="角色名称" label-width="150px;">
-              <el-input placeholder="角色名称" style="width:150px;" v-model="forma.roleName"></el-input>
+              <el-input placeholder="角色名称" style="width:150px;" v-model="form1.roleName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="支持业务线" label-width="150px;">
-              <el-select v-model="forma.businessLine" clearable style="width:150px;" placeholder="请选择">
+              <el-select v-model="form1.businessLine" clearable style="width:150px;" placeholder="请选择">
                 <el-option
                   v-for="item in businessLineOptions"
                   :key="item.value"
@@ -22,12 +22,12 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="登录账号" label-width="150px;">
-              <el-input placeholder="登录账号" style="width:150px;" v-model="forma.accountName"></el-input>
+              <el-input placeholder="登录账号" style="width:150px;" v-model="form1.accountName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="员工编号" label-width="150px;">
-              <el-input placeholder="员工编号" style="width:140px;" v-model="forma.staffNum"></el-input>
+              <el-input placeholder="员工编号" style="width:140px;" v-model="form1.staffNum"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -35,12 +35,12 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="员工姓名" label-width="150px;">
-              <el-input placeholder="员工姓名" style="width:150px;" v-model="forma.staffName"></el-input>
+              <el-input placeholder="员工姓名" style="width:150px;" v-model="form1.staffName"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item label="角色状态" label-width="150px;">
-              <el-select v-model="forma.roleStatus" clearable style="width:150px;margin-left: 15px;" placeholder="请选择">
+              <el-select v-model="form1.roleStatus" clearable style="width:150px;margin-left: 15px;" placeholder="请选择">
                 <el-option
                   v-for="item in roleStatusOptions"
                   :key="item.value"
@@ -52,7 +52,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="账号状态" label-width="150px;">
-              <el-select v-model="forma.accountState" clearable style="width:150px;" placeholder="请选择">
+              <el-select v-model="form1.accountState" clearable style="width:150px;" placeholder="请选择">
                 <el-option
                   v-for="item in accountStateOptions"
                   :key="item.value"
@@ -64,7 +64,7 @@
           </el-col>
           <el-col :span="6">
             <el-form-item label="所属部门" label-width="150px;">
-              <el-input :disabled="true" style="width:140px;" v-model="forma.departmentName"></el-input>
+              <el-input :disabled="true" style="width:140px;" v-model="form1.departmentName"></el-input>
             <el-button type="text" @click="chooseDepartmentFlag=true">选择</el-button>
             <el-button type="text" @click="clearDepartment">取消</el-button>
             </el-form-item>
@@ -301,7 +301,7 @@
           accountState: '',
           departmentName: ''
         },
-        forma: {
+        form1: {
           roleName: '',
           businessLine: '',
           accountName: '',
@@ -441,7 +441,7 @@
       },
       search(){
         this.currentPage = 1;
-        this.form=Object.assign({}, this.forma);
+        this.form=Object.assign({}, this.form1);
         this.fetchData();
       },
       handleSizeChange(val) {
@@ -546,7 +546,7 @@
       },
       clearDepartment(){
         //this.form.departmentId = '';
-        this.form.departmentName = '';
+        this.form1.departmentName = '';
         this.$refs.tree.setCheckedKeys([]);
       },
       loadNodeDepartment(node, resolve) {
@@ -564,7 +564,7 @@
           // this.checkedId = data.id;
           this.$refs.tree.setCheckedKeys([data.id]);
           // this.form.departmentId = data.id;
-          this.form.departmentName = data.departmentName;
+          this.form1.departmentName = data.departmentName;
         } else {
           // if (this.checkedId == data.id) {
           //   this.$refs.tree.setCheckedKeys([data.id]);
