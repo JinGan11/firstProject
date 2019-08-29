@@ -1204,15 +1204,16 @@
           self.$http.get('employee/quitEmployee.do_', {
             params: param
           }).then((result) => {
-            if (result.status == "success") {
+            if (result.code===10||result.code===30) {
+              this.$message.error(result.msg);
+              self.fetchData();
+            } else {
               self.$message.success("成功离职");
               self.fetchData();
               self.quitDisabled = true;
               self.departmentDisabled=true;
               self.recoveryDisabled = false;
               self.selection = '';
-            } else {
-              self.$message.error("离职失败")
             }
           }).catch(function (error) {
             commonUtils.Log("employee/quitEmployee.do_" + error);
@@ -1240,7 +1241,10 @@
           self.$http.get('employee/recoverEmployee.do_', {
             params: param
           }).then((result) => {
-            if (result.status == "success") {
+            if (result.code===20||result.code===30) {
+              this.$message.error(result.msg);
+              self.fetchData();
+            } else {
               self.$message.success("恢复成功");
               self.fetchData();
               self.selection = '';
@@ -1248,8 +1252,6 @@
               self.quitDisabled = false;
               self.departmentDisabled=false;
               self.isDiss=false;
-            } else {
-              self.$message.error("恢复失败")
             }
 
           }).catch(function (error) {

@@ -44,6 +44,8 @@ public class EmployeeManageController {
 
     @Autowired
     private DepartmentService departmentService;
+    @Autowired
+    private EmployeeManageService staffInf;
 
     /**
      * 查询员工列表
@@ -166,28 +168,34 @@ public class EmployeeManageController {
     @ResponseBody
     @RequestMapping("/quitEmployee.do_")
     public Result quitEmployee(HttpServletRequest request, @RequestParam String id){
-        Integer status1=employeeManageService.updateDimission(id);
-        Integer status2=accountManagerService.updateState(id);
-        Staff staff=employeeManageService.selectById(id);
-        AccountStaff accountStaff = new AccountStaff();
-        accountStaff.setAccountId(staff.getAccountId());
-        accountStaff.setStaffName(staff.getStaffName());
-        accountStaff.setStaffNum(staff.getStaffNum());
-        if (staff.getAccountId()!=null){
-            Account account=accountManagerService.selectById(staff.getAccountId());
-            if (account!=null){
-                accountStaff.setPermissions(account.getPremissions());
-                accountStaff.setAccountState(account.getaccountState());
-            }
-        }
-        accountStaff.setOperationType("离职");
-        accountStaff.setCreateEmp((Long)(request.getSession().getAttribute("accountId")));
-        Integer status3=accountManagerService.insertAccountHistory(accountStaff);
-        if (status1!=0&status3!=0){
-            return Result.ok().put("status","success");
-        }else {
-            return Result.ok().put("status","error");
-        }
+       if(staffInf.getStaffInfById(Long.parseLong(id)).getIsDimission().equals(0) && staffInf.getStaffInfById(Long.parseLong(id)).getStatus().equals(1)) {
+           Integer status1 = employeeManageService.updateDimission(id);
+           Integer status2 = accountManagerService.updateState(id);
+           Staff staff = employeeManageService.selectById(id);
+           AccountStaff accountStaff = new AccountStaff();
+           accountStaff.setAccountId(staff.getAccountId());
+           accountStaff.setStaffName(staff.getStaffName());
+           accountStaff.setStaffNum(staff.getStaffNum());
+           if (staff.getAccountId() != null) {
+               Account account = accountManagerService.selectById(staff.getAccountId());
+               if (account != null) {
+                   accountStaff.setPermissions(account.getPremissions());
+                   accountStaff.setAccountState(account.getaccountState());
+               }
+           }
+           accountStaff.setOperationType("离职");
+           accountStaff.setCreateEmp((Long) (request.getSession().getAttribute("accountId")));
+           Integer status3 = accountManagerService.insertAccountHistory(accountStaff);
+           if (status1 != 0 & status3 != 0) {
+               return Result.ok().put("status", "success");
+           } else {
+               return Result.ok().put("status", "error");
+           }
+       }else if(staffInf.getStaffInfById(Long.parseLong(id)).getIsDimission().equals(1) && staffInf.getStaffInfById(Long.parseLong(id)).getStatus().equals(1)){
+           return Result.error(10,"员工已经离职，离职失败");
+       }else {
+           return Result.error(30,"员工已经被删除，离职失败");
+       }
     }
     /**
      * description: 员工恢复在职
@@ -200,14 +208,19 @@ public class EmployeeManageController {
     @ResponseBody
     @RequestMapping("/recoverEmployee.do_")
     public Result recoverEmployee(HttpServletRequest request,@RequestParam String id){
-        Integer status1=employeeManageService.updateDimissionRecovery(id);
-        Map<String,Object> status=new HashMap<>();
-        if (status1!=0){
-            return Result.ok().put("status","success");
+        if(staffInf.getStaffInfById(Long.parseLong(id)).getIsDimission().equals(1) && staffInf.getStaffInfById(Long.parseLong(id)).getStatus().equals(1)) {
+            Integer status1 = employeeManageService.updateDimissionRecovery(id);
+            Map<String, Object> status = new HashMap<>();
+            if (status1 != 0) {
+                return Result.ok().put("status", "success");
+            } else {
+                return Result.ok().put("status", "error");
+            }
+        }else if(staffInf.getStaffInfById(Long.parseLong(id)).getIsDimission().equals(0)&& staffInf.getStaffInfById(Long.parseLong(id)).getStatus().equals(1) ){
+            return Result.error(20,"员工已经在职，恢复失败");
         }else {
-            return Result.ok().put("status","error");
+            return Result.error(30,"员工已经被删除，恢复失败");
         }
-
     }
     /**
      * description:在员工表更改员工信息

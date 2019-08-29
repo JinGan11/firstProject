@@ -170,5 +170,12 @@ public class EmployeeManageServiceImpl implements EmployeeManageService {
     public Integer updateDepartmentByEmployee(Map<String, String> employeeMap) {
         return employeeManageDao.updateDepartmentByEmployee(employeeMap);
     }
+
+    @Override
+    public Staff getStaffInfById(Long staffId) {
+        return employeeManageDao.getStaffInfById(staffId);
+    }
+
+
 }
 

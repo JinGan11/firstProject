@@ -104,4 +104,7 @@ public interface EmployeeManageService {
      * @return 状态
      */
     public Integer updateDepartmentByEmployee(Map<String,String> employeeMap);
+
+   //lzy
+    Staff getStaffInfById(Long staffId);
 }
