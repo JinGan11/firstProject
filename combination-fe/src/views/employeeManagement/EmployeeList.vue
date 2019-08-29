@@ -1187,6 +1187,7 @@
           var self = this;
           var param = {
             id: self.selection,
+            date: new Date().getTime(),
           };
           self.$http.get('employee/quitEmployee.do_', {
             params: param
@@ -1222,6 +1223,7 @@
           var self = this;
           var param = {
             id: self.selection,
+            date: new Date().getTime(),
           };
           self.$http.get('employee/recoverEmployee.do_', {
             params: param
