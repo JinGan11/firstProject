@@ -309,7 +309,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="备注:" prop="remark" label-width="150px">
-                <el-input style="width:200px;" v-model="createForm.remark"></el-input>
+                <el-input style="width:385px;" v-model="createForm.remark"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -417,7 +417,7 @@
           <el-row>
             <el-col :span="12">
               <el-form-item label="备注:" prop="remark" label-width="150px">
-                <el-input style="width:200px;" v-model="modifyForm.remark"></el-input>
+                <el-input style="width:390px;" v-model="modifyForm.remark"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -668,6 +668,15 @@
           callback();
         }
       };
+      var checkName=(rule, value, callback)=>{
+        if (value == "") {
+          callback(new Error("员工姓名为必填项，不允许为空嘛"));
+        } else if (!this.isName(value)) {//引入methods中封装的检查手机格式的方法
+          callback(new Error("员工姓名不允许全为空格"));
+        } else {
+          callback();
+        }
+      };
       return {
         isDiss:true,
         total: 0,
@@ -707,13 +716,14 @@
         },
         rulesCreate: {
           staffNum: [{required: true, validator: checkNum, trigger: 'blur'}],
-          staffName: [{required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur'},
+          staffName: [{required: true, validator:checkName, trigger: 'blur'},
             {min: 1, max: 30, message: '员工姓名不满足录入条件，需为1-30个字符', trigger: 'blur'}],
           staffTelephone: [{required: true, validator: checkphone, trigger: "blur"}],
           staffEmail: [
             {type: 'email',message: '邮箱不满足录入条件', trigger: ['blur', 'change']},
             {min: 1,max:30,message:'邮箱不满足录入条件，需为1-30个字符',trigger: 'blur'}],
           departmentName: [{required: true, message: '归属部门为必填项，不允许为空'}],
+          remark:[{min: 1,max:200,message:'备注不满足录入条件，需为1-200个字符'}]
         },
         modifyForm: {
           accountName: '',
@@ -745,7 +755,7 @@
         },
         rulesModify: {
           staffNum: [{required: true, validator: checkUpdateNum, trigger: 'blur'}],
-          staffName: [{required: true, message: '员工姓名为必填项，不允许为空', trigger: 'blur'},
+          staffName: [{required: true,validator: checkName,  trigger: 'blur'},
             {min: 1, max: 30, message: '员工姓名不满足录入条件，需为1-30个字符', trigger: 'blur'}],
 
           staffTelephone: [{required: true, validator: checkphone, trigger: "blur"}],
@@ -753,6 +763,7 @@
             {type: 'email',  message: '邮箱不满足录入条件', trigger: ['blur', 'change']},
             {min: 1,max:30,message:'邮箱不满足录入条件，需为1-30个字符',trigger: 'blur'}],
           departmentName: [{required: true, message: '归属部门为必填项，不允许为空'}],
+          remark:[{min: 1,max:200,message:'备注不满足录入条件，需为1-200个字符'}]
         },
 
         tableData: [],
@@ -1653,6 +1664,13 @@
           return true;
         }
 
+      },
+      isName(val) {
+        if (!/^(?!(\s+$))/.test(val)) {
+          return false;
+        } else {
+          return true;
+        }
       },
      /* sendEmail: function() {
         var regEmail = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
