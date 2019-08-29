@@ -716,7 +716,7 @@
       chooseDepartment() {
         this.chooseDepartmentFlag = true;
       },
-      clearDepartment() {//清除部门的值
+      clearDepartment() {//清空部门的值
         this.form.department = '';
         this.form.departmentId = '';
       },
@@ -997,6 +997,9 @@
           self.applyOperationList = [];
           return;
         }
+        // if (!self.$options.methods.checkRole(self)) {//校验角色
+        //   return;
+        // }
         self.$http.post("roleApply/createRoleApply.do_", self.forms)
           .then(result => {
             self.$message.info("新建角色申请成功");

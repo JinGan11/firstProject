@@ -112,16 +112,16 @@
             AND t1.role_id=#{roleId}
         </if>
         <if test="roleName!=null and roleName.trim()!=''">
-            AND t2.role_name=#{roleName}
+            AND t2.role_name like concat('%',#{roleName},'%')
         </if>
         <if test="applyAccountName!=null and applyAccountName.trim()!=''">
-            AND t1.apply_account_name=#{applyAccountName}
+            AND t1.apply_account_name like concat('%',#{applyAccountName},'%')
         </if>
         <if test="applyStaffNum!=null and applyStaffNum.trim()!=''">
-            AND t4.staff_num =#{applyStaffNum}
+            AND t4.staff_num like concat('%',#{applyStaffNum},'%')
         </if>
         <if test="applyStaffName!=null and applyStaffName.trim()!=''">
-            AND t4.staff_name=#{applyStaffName}
+            AND t4.staff_name like concat('%',#{applyStaffName},'%')
         </if>
         <if test="applyDepartmentName!=null and applyDepartmentName.trim()!=''">
             AND t5.department_name=#{applyDepartmentName}
@@ -135,7 +135,7 @@
         <if test="applyTimeStart!=null and applyTimeStart.trim()!=''">
             AND t1.apply_time<![CDATA[ >= ]]> #{applyTimeStart}
         </if>
-        <if test="applyTimeEnd!=null and applyTimeEnd.trim()!=''">
+        <if test="showAccountListByApplyIdapplyTimeEnd!=null and applyTimeEnd.trim()!=''">
             AND t1.apply_time<![CDATA[ <= ]]> #{applyTimeEnd}
         </if>
         <if test="modifyTimeStart!=null and modifyTimeStart.trim()!=''">
