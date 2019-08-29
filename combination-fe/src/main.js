@@ -35,8 +35,7 @@ document.addEventListener("visibilitychange",function(){ //这个方法是监测
     Http.$http.post("login/getLoginInfo.do_")
       .then(result => {
         localStorage.setItem("accountName",result.accountName);
-        if (global.accountName !== result.accountName) {
-          console.log("- - - - - asdasdasdas- ");
+        if (store.state.loginUserName !== result.accountName) {
           router.push({path: '/'});
         }
       })
