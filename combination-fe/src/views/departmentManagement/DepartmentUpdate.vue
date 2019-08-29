@@ -240,7 +240,7 @@
       <el-row>
         <el-col :span="16">
           <el-form-item label="备注">
-            <el-input style="width:500px;" v-model="form.remark" maxlength="255"></el-input>
+            <el-input style="width:500px;" v-model="form.remark" maxlength="200"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
