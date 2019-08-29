@@ -135,7 +135,7 @@
         <if test="applyTimeStart!=null and applyTimeStart.trim()!=''">
             AND t1.apply_time<![CDATA[ >= ]]> #{applyTimeStart}
         </if>
-        <if test="showAccountListByApplyIdapplyTimeEnd!=null and applyTimeEnd.trim()!=''">
+        <if test="applyTimeEnd!=null and applyTimeEnd.trim()!=''">
             AND t1.apply_time<![CDATA[ <= ]]> #{applyTimeEnd}
         </if>
         <if test="modifyTimeStart!=null and modifyTimeStart.trim()!=''">
