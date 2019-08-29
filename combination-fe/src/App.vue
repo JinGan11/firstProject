@@ -88,7 +88,7 @@
           </el-form>
         </div>
       </el-dialog>
-      <el-dialog title="密码重置" :visible.sync="resetPasswordFlag" :close-on-click-modal="false" width="700px">
+      <el-dialog title="密码重置" :visible.sync="resetPasswordFlag" :close-on-click-modal="false" width="700px" @close="cencelDialog">
         <div class="dialog-main">
           <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="100px"
                    class="demo-ruleForm">
@@ -460,6 +460,12 @@
         this.ruleForm.oldPass='';
         this.ruleForm.checkPass='';
       },
+      cencelDialog() {
+        this.$refs["ruleForm"].resetFields();
+        this.ruleForm.newPass='';
+        this.ruleForm.oldPass='';
+        this.ruleForm.checkPass='';
+      }
     },
     watch: {
       $route() {
