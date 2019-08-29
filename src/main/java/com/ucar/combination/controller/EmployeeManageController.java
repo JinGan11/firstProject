@@ -125,7 +125,7 @@ public class EmployeeManageController {
         }
         employeeManageService.updateStatus(id);
         AccountStaff accountStaff=new AccountStaff();
-        if(accountId!=null){
+        if(accountId!=null&&Integer.parseInt(accountId)!=0){
             HttpSession session = request.getSession();
             String currentAccountId = session.getAttribute("accountId").toString();
             Date date = new Date();
