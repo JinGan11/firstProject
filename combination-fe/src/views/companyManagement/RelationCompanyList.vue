@@ -565,6 +565,9 @@
       },
       fetchData() { //获取数据，不相关但是有效的数据包括关联公司表中status为无效
         var self = this;
+        if(self.form.birthdayName==null){
+          self.form.birthdayName=['',''];
+        }
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
