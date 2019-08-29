@@ -671,7 +671,7 @@
       };
       var checkName=(rule, value, callback)=>{
         if (value == "") {
-          callback(new Error("员工姓名为必填项，不允许为空嘛"));
+          callback(new Error("员工姓名为必填项，不允许为空"));
         } else if (!this.isName(value)) {//引入methods中封装的检查手机格式的方法
           callback(new Error("员工姓名不允许全为空格"));
         } else {
