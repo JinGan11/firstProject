@@ -184,8 +184,15 @@ public class DepartmentController {
         department.setModifyEmp(accountId);
 
         Map<String, Object> map = departmentService.checkInput(department);
-        if ((Boolean) map.get("result"))
-            departmentService.updateDepartment(department);
+        if ((Boolean) map.get("result")){
+            if(departmentService.checkStatusChange(department.getId(),null)){
+                departmentService.updateDepartment(department);
+            }else{
+                map.put("result",false);
+                map.put("msg","部门状态发生改变！");
+            }
+        }
+
         return map;
     }
 
