@@ -364,6 +364,13 @@
       let self = this;
 
       //各种校验 zzz
+      var validDepartmentName = (rule,value,callback) => {
+        if (this.form.departmentName == null || this.form.departmentName == "")
+          return callback(new Error("请输入部门名称"));
+        if (this.form.departmentName.trim()=="")
+          return callback(new Error("部门名称不能全为空格"));
+        callback();
+      };
       var validLevel = (rule, value, callback) => {
         if (this.form.level == '' || this.form.level<= 0)
           return callback(new Error("请选择部门级别"));
@@ -634,7 +641,7 @@
             {required:true, validator:validDepartmentNo, trigger: 'blur'}
           ],
           departmentName: [
-            {required: true, message: '请输入部门名称', trigger: 'blur'},
+            {required: true, validator: validDepartmentName, trigger: 'blur'},
           ],
           telephone: [
             {required: true, message: '请输入手机号', trigger: 'blur'},
