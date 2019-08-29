@@ -84,7 +84,7 @@
       </el-form>
     </div>
     <div style="margin-bottom: 10px; margin-top:20px; margin-left:40px">
-      <el-button type="primary" @click="approval" :disabled="isApproval" style="width:100px">审核</el-button>
+      <el-button type="primary" @click="approval" :disabled="isApproval" style="width:100px">审批</el-button>
     </div>
     <el-table ref="multipleTable" :data="tableData" border @selection-change="handleSelectionChange">
       <el-table-column label="选择" width="45">
@@ -619,7 +619,7 @@
         });
 
         this.apply.role_apply_id = val.roleApplyNum;
-        this.apply.role_id = val.roleId;
+        this.apply.role_id = val.roleName;
         this.apply.approver_emp = val.approverStaffName;
         this.apply.business_line = val.businessLine;
         this.apply.apply_staff_num = val.applyStaffNum;
