@@ -688,7 +688,7 @@
           staffNum: '',
           staffName: '',
           accountName: '',
-          isDimission: '',
+          isDimission: '2',
           departmentId: '',
           upperDepartmentNo: '',
         },
