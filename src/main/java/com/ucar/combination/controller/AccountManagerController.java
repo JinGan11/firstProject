@@ -7,6 +7,7 @@ import com.ucar.combination.common.ResultPage;
 import com.ucar.combination.dao.AccountManageDao;
 import com.ucar.combination.model.Account;
 import com.ucar.combination.model.AccountStaff;
+import com.ucar.combination.model.ResetPass;
 import com.ucar.combination.service.AccountManagerService;
 import com.ucar.combination.service.DepartmentService;
 import com.ucar.combination.service.MailService;
@@ -22,10 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.ucar.combination.common.StaticValues.LOCALHOST;
 
@@ -351,8 +349,13 @@ public class AccountManagerController {
         Long OperateAccountId = (Long) session.getAttribute("accountId");
         Account account1 = accountManagerService.selectAccountById(String.valueOf(account.getId()));
 //        if (account1.getaccountState())
-        String content = "请点击下面的链接重置密码 http://"+ LOCALHOST + "/resetPass 如果无法点击，请复制至浏览器。";
+        Date date = new Date();
+        String content = "请点击下面的链接重置密码 http://"+ LOCALHOST + "/resetPass?uid=" + account.getId() + "&time=" + date.toString() +"  如果无法点击，请复制至浏览器。";
         Result result = new Result();
+        ResetPass resetPass = new ResetPass();
+        resetPass.setAccountId(account.getId());
+        resetPass.setCreateTime(date);
+//        accountManagerService.insertResetPass(resetPass);
         result = accountManagerService.updateAccountStatue(account.getId(),OperateAccountId);
         AccountStaff accountStaff = new AccountStaff();
         if (account1.getSecretEmail() == null || account1.getSecretEmail().equals("")) {

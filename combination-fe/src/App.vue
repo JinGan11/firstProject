@@ -218,8 +218,8 @@
       'global.accountName' : 'refresh'
     },
     created() {
-      // console.log($route.path.slice(-6));
       const self = this;
+      // console.log($route.path.slice(-6));
       var log = localStorage.getItem("switchLog");
       // self.loginIn = localStorage.getItem('isLogin');
       if (log) {

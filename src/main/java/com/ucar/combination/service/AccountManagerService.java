@@ -230,4 +230,6 @@ public interface AccountManagerService {
     int getStaffInfBystaffId(Long staffId);
 
     Account selectAccountByNum(String accountName);
+
+    void insertResetPass(ResetPass resetPass);
 }

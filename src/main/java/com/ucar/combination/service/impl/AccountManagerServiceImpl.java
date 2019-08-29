@@ -367,7 +367,8 @@ public class AccountManagerServiceImpl implements AccountManagerService {
      * @params: accountName 账户名
      * @return: List<String> 查询到的账户
      */
-    public void updateAccountSecretEmailById(String secretEmail,String id){
+    @Override
+    public void updateAccountSecretEmailById(String secretEmail, String id){
         accountManageDao.updateAccountSecretEmailById(secretEmail,id);
     }
     /**
@@ -453,5 +454,10 @@ public class AccountManagerServiceImpl implements AccountManagerService {
     public Account selectAccountByNum(String accountName) {
         Account account = accountManageDao.selectAccountByNum(accountName);
         return account;
+    }
+
+    @Override
+    public void insertResetPass(ResetPass resetPass) {
+        accountManageDao.insertResetPass(resetPass);
     }
 }

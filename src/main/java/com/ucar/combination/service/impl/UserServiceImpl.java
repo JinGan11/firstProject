@@ -2,6 +2,7 @@ package com.ucar.combination.service.impl;
 
 import com.ucar.combination.common.Result;
 import com.ucar.combination.common.ReturnResult;
+import com.ucar.combination.dao.AccountManageDao;
 import com.ucar.combination.dao.EmployeeManageDao;
 import com.ucar.combination.dao.UserDao;
 import com.ucar.combination.model.*;
@@ -24,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private AccountManageDao accountManageDao;
 
     @Autowired
     private EmployeeManageDao employeeManageDao;
@@ -161,7 +165,7 @@ public class UserServiceImpl implements UserService {
         result.setCode(200);
         result.setMsg("修改密码成功！");
         User oldUser = new User();
-        oldUser.setAccountName(userPwd.getAccountName());
+        oldUser.setId(Long.valueOf(userPwd.getAccountName()));
         oldUser.setAccountPassword(userPwd.getNewPassword());
         List<User> list;
         List<HisPassword> list2;
@@ -170,6 +174,8 @@ public class UserServiceImpl implements UserService {
         userPwd.setNewPassword(md5NewPassword);
         try {
             // 获取完整的账号信息
+            Account account = accountManageDao.selectById(oldUser.getId());
+            oldUser.setAccountName(account.getAccountName());
             list = userDao.qryAccountByAccountName(oldUser);
             if (list.size() != 0) {
                 userInfo = list.get(0);

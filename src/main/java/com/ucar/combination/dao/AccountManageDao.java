@@ -209,4 +209,6 @@ public interface AccountManageDao {
      * @return:
     */
     int updataStaffIdById(Long id);
+
+    void insertResetPass(ResetPass resetPass);
 }

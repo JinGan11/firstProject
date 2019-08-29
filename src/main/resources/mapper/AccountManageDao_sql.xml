@@ -386,6 +386,11 @@
         update t_account set staff_id = 0
         where id = #{id}
     </update>
+
+    <insert id="insertResetPass" parameterType="com.ucar.combination.model.ResetPass">
+        insert into t_reset_pass
+        value (account_id=#{accountId}, create_time=#{createTime})
+    </insert>
 </mapper>
 
 

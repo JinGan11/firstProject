@@ -4,7 +4,7 @@
       <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" size="medium" label-width="100px"
                class="login-container">
         <h2 class="login_title" style="color: white">密码重置</h2>
-        <el-form-item label="账号" prop="accountName" class="whiteFont" style="margin-top: -20px">
+        <el-form-item label="账号" prop="accountName" class="whiteFont" style="margin-top: -20px;display: none;">
           <el-input type="text" v-model.trim="usernameComputed" autocomplete="off"></el-input>
         </el-form-item>
         <div style="position: absolute; width: 0px">
@@ -85,6 +85,10 @@
           ],
         }
       };
+    },
+    mounted () {
+      this.ruleForm.accountName = this.$route.query.uid;
+      console.log(this.ruleForm.accountName);
     },
     computed : {
       usernameComputed : {
