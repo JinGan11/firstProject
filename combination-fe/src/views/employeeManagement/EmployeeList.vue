@@ -986,6 +986,11 @@
       },
       fetchData() { //获取数据
         var self = this;
+        this.isDiss = true;
+        this.disabled = true;
+        this.quitDisabled = true;
+        this.recoveryDisabled = true;
+        this.departmentDisabled =true;
         var param = {
           page: self.currentPage,
           limit: self.pageSize,
@@ -1107,10 +1112,6 @@
                   self.$message.success("修改成功");
                   self.fetchData();
                   self.selection = '';
-                  self.isDiss = true;
-                  self.disabled = true;
-                  self.quitDisabled = true;
-                  self.departmentDisabled = true;
                   self.$refs['modifyForm'].resetFields();
                   self.modifyForm.accountId = '';
                   self.modifyForm.departmentId = '';
@@ -1178,6 +1179,7 @@
           }).then((result) => {
             self.$message.success("成功删除");
             self.fetchData();
+            self.selection = '';
           }).catch(function (error) {
             commonUtils.Log("employee/deleteEmployee" + error);
             self.$message.error("获取数据错误");
@@ -1210,9 +1212,6 @@
             } else {
               self.$message.success("成功离职");
               self.fetchData();
-              self.quitDisabled = true;
-              self.departmentDisabled=true;
-              self.recoveryDisabled = false;
               self.selection = '';
             }
           }).catch(function (error) {
@@ -1248,10 +1247,6 @@
               self.$message.success("恢复成功");
               self.fetchData();
               self.selection = '';
-              self.recoveryDisabled = true;
-              self.quitDisabled = false;
-              self.departmentDisabled=false;
-              self.isDiss=false;
             }
 
           }).catch(function (error) {
@@ -1284,6 +1279,7 @@
               if (result.status == "success") {
                 self.$message.success(" 分配成功");
                 self.fetchData();
+                self.selection = '';
               } else {
                 self.$message.error("分配失败")
               }
