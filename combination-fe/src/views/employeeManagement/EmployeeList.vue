@@ -1177,9 +1177,14 @@
           self.$http.get('employee/deleteEmployee', {
             params: param
           }).then((result) => {
-            self.$message.success("成功删除");
-            self.fetchData();
-            self.selection = '';
+            if (result.code===30) {
+             this.$message.error(result.msg);
+             self.fetchData();
+            }else{
+              self.$message.success("成功删除");
+              self.selection = '';
+              self.fetchData();
+            }
           }).catch(function (error) {
             commonUtils.Log("employee/deleteEmployee" + error);
             self.$message.error("获取数据错误");
@@ -1211,8 +1216,8 @@
               self.fetchData();
             } else {
               self.$message.success("成功离职");
-              self.fetchData();
               self.selection = '';
+              self.fetchData();
             }
           }).catch(function (error) {
             commonUtils.Log("employee/quitEmployee.do_" + error);
@@ -1245,8 +1250,8 @@
               self.fetchData();
             } else {
               self.$message.success("恢复成功");
-              self.fetchData();
               self.selection = '';
+              self.fetchData();
             }
 
           }).catch(function (error) {

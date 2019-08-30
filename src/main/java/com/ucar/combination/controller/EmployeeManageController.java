@@ -115,46 +115,50 @@ public class EmployeeManageController {
      */
     @ResponseBody
     @RequestMapping("/deleteEmployee")
-    public Result update(HttpServletRequest request){
-        String strid=request.getParameter("id");
-        int id = Integer.parseInt(request.getParameter("id"));
+    public Result update(HttpServletRequest request,@RequestParam String id){
+        if(staffInf.getStaffInfById(Long.parseLong(id)).getStatus().equals(1)) {
+            String strid = request.getParameter("id");
+            int statusId = Integer.parseInt(request.getParameter("id"));
 
-        String accountId=request.getParameter("accountId");
+            String accountId = request.getParameter("accountId");
 
-        Integer accountID = null;
-        if (accountId != null) {
-            accountID=Integer.parseInt(accountId);
-        }
-        employeeManageService.updateStatus(id);
-        AccountStaff accountStaff=new AccountStaff();
-        if(accountId!=null&&Integer.parseInt(accountId)!=0){
-            HttpSession session = request.getSession();
-            String currentAccountId = session.getAttribute("accountId").toString();
-            Date date = new Date();
-            Account account1 = new Account();
-            account1.setModifyEmpId(Long.parseLong(currentAccountId));
-            account1.setModifierId(accountManagerService.selectStaffIdById(account1.getModifyEmpId()));
-            account1.setModifyTime(date);
-            account1.setId(Long.parseLong(String.valueOf(id)));
-            accountManagerService.updateStatus(accountID,3);
-            Account account=accountManagerService.selectAccountById(accountId);
-            /*accountStaff.setAccountId(Long.valueOf(accountId));*/
-            accountStaff.setAccountId(account.getId());
-            accountStaff.setOperationType("员工删除");
-            accountStaff.setStaffName(account.getStaffName());
-            accountStaff.setStaffNum(account.getStaffNum());
-            accountStaff.setPermissions(account.getPremissions());
-            accountStaff.setAccountState(account.getaccountState());
-            accountStaff.setCreateEmp((Long)(request.getSession().getAttribute("accountId")));
+            Integer accountID = null;
+            if (accountId != null) {
+                accountID = Integer.parseInt(accountId);
+            }
+            employeeManageService.updateStatus(statusId);
+            AccountStaff accountStaff = new AccountStaff();
+            if (accountId != null && Integer.parseInt(accountId) != 0) {
+                HttpSession session = request.getSession();
+                String currentAccountId = session.getAttribute("accountId").toString();
+                Date date = new Date();
+                Account account1 = new Account();
+                account1.setModifyEmpId(Long.parseLong(currentAccountId));
+                account1.setModifierId(accountManagerService.selectStaffIdById(account1.getModifyEmpId()));
+                account1.setModifyTime(date);
+                account1.setId(Long.parseLong(String.valueOf(id)));
+                accountManagerService.updateStatus(accountID, 3);
+                Account account = accountManagerService.selectAccountById(accountId);
+                /*accountStaff.setAccountId(Long.valueOf(accountId));*/
+                accountStaff.setAccountId(account.getId());
+                accountStaff.setOperationType("员工删除");
+                accountStaff.setStaffName(account.getStaffName());
+                accountStaff.setStaffNum(account.getStaffNum());
+                accountStaff.setPermissions(account.getPremissions());
+                accountStaff.setAccountState(account.getaccountState());
+                accountStaff.setCreateEmp((Long) (request.getSession().getAttribute("accountId")));
+            } else {
+                Staff staff = employeeManageService.selectById(strid);
+                accountStaff.setOperationType("员工删除");
+                accountStaff.setCreateEmp((Long) (request.getSession().getAttribute("accountId")));
+                accountStaff.setStaffName(staff.getStaffName());
+                accountStaff.setStaffNum(staff.getStaffNum());
+            }
+            accountManagerService.insertAccountHistory(accountStaff);
+            return Result.ok();
         }else{
-            Staff staff=employeeManageService.selectById(strid);
-            accountStaff.setOperationType("员工删除");
-            accountStaff.setCreateEmp((Long)(request.getSession().getAttribute("accountId")));
-            accountStaff.setStaffName(staff.getStaffName());
-            accountStaff.setStaffNum(staff.getStaffNum());
+            return Result.error(30,"员工已经被删除，删除失败");
         }
-        accountManagerService.insertAccountHistory(accountStaff);
-        return Result.ok();
 
     }
 
