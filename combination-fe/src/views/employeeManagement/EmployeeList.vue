@@ -1281,12 +1281,13 @@
                 departmentId: self.formdiStributionDepartment.staffAfterDepartment,
               }
             }).then((result) => {
-              if (result.status == "success") {
-                self.$message.success(" 分配成功");
-                self.fetchData();
-                self.selection = '';
+              if (result.code===30) {
+                this.$message.error(result.msg);
+                this.fetchData();
               } else {
-                self.$message.error("分配失败")
+                self.$message.success(" 分配成功");
+                self.selection = '';
+                self.fetchData();
               }
             }).catch(function (error) {
               commonUtils.Log("employee/updateDepartmentByEmployee.do_" + error);

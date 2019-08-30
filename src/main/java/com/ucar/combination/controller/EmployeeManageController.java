@@ -273,17 +273,21 @@ public class EmployeeManageController {
     //@RequestParam(defaultValue = "")String id,@RequestParam(defaultValue = "")String departmentId
     @ResponseBody
     @RequestMapping("/updateDepartmentByEmployee.do_")
-    public Result updateDepartmentByEmployee(HttpServletRequest request){
-        String id=request.getParameter("id");
-        String departmentId=request.getParameter("departmentId");
-        Map<String,String> employeeMap=new HashMap<>();
-        employeeMap.put("id",id);
-        employeeMap.put("departmentId",departmentId);
-        Integer status=employeeManageService.updateDepartmentByEmployee(employeeMap);
-        if (status!=0){
-            return Result.ok().put("status","success");
-        }else {
-            return Result.ok().put("status","error");
+    public Result updateDepartmentByEmployee(HttpServletRequest request,@RequestParam String id) {
+        if (staffInf.getStaffInfById(Long.parseLong(id)).getStatus().equals(1)) {
+        String staffId = request.getParameter("id");
+        String departmentId = request.getParameter("departmentId");
+        Map<String, String> employeeMap = new HashMap<>();
+        employeeMap.put("id", staffId);
+        employeeMap.put("departmentId", departmentId);
+        Integer status = employeeManageService.updateDepartmentByEmployee(employeeMap);
+        if (status != 0) {
+            return Result.ok().put("status", "success");
+        } else {
+            return Result.ok().put("status", "error");
+        }
+    }else{
+            return Result.error(30,"员工已经被删除，无法分配");
         }
     }
 
