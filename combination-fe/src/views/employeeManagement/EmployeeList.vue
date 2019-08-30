@@ -159,7 +159,7 @@
       <div class="dialog-main">
         <el-form :inline="true" :rules="ruleDepartment" ref="formdiStributionDepartment"
                  :model="formdiStributionDepartment"  label-width="130px">
-          <el-form-item label="分配部门"></el-form-item>
+          <!--<el-form-item label="分配部门"></el-form-item>-->
           <br>
           <el-form-item label="员工编号">
             <el-input v-model="formdiStributionDepartment.staffNum" disabled></el-input>
@@ -781,7 +781,7 @@
         upperDepartmentName: '',
         isDimission: '',
         isDimissionEnum: {},
-        title: '模板',
+        title: '员工分配部门页面',
         excelTitle: '请选择需要导出的字段',
         createTitle: '员工新建页面',
         modifyTitle: '员工信息修改页面',
