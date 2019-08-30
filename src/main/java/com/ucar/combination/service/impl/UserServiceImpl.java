@@ -176,6 +176,7 @@ public class UserServiceImpl implements UserService {
             // 获取完整的账号信息
             Account account = accountManageDao.selectById(oldUser.getId());
             oldUser.setAccountName(account.getAccountName());
+            userPwd.setAccountName(account.getAccountName());
             list = userDao.qryAccountByAccountName(oldUser);
             if (list.size() != 0) {
                 userInfo = list.get(0);
