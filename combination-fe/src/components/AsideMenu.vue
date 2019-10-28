@@ -25,7 +25,7 @@
               <MenuItem :data="item.children"></MenuItem>
             </el-menu-item-group>
           </el-submenu>
-        </template>
+          </template>
         </el-aside>
         <!--<MenuItem :data="data"></MenuItem>-->
       </el-menu>

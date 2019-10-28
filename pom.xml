@@ -145,7 +145,7 @@
             </properties>
         </profile>
     </profiles>
-
+    <!--plugins将应用打包成一个可运行的jar文件，在target文件夹下-->
     <build>
         <resources>
             <resource>
